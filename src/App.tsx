@@ -44,19 +44,8 @@ function App() {
               localCurrency,
               homeCurrency,
             )}
+            disabled
           ></GasPrice>
-          <label htmlFor="homePrice">
-            Home price (USD per gallon)
-            <input
-              type="number"
-              value={getPriceInCurrency(
-                localPricePerLiter * LITERS_PER_GALLON,
-                localCurrency,
-                homeCurrency,
-              )}
-              disabled
-            />
-          </label>
         </fieldset>
       </div>
     </>
