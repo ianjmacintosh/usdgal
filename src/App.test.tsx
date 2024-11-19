@@ -14,11 +14,12 @@ describe('<App />', () => {
     // 4.42838284 rounded to 2 places is 4.43
 
     // Expect price to show correctly in USD
-
-    const input = screen.getByRole('spinbutton')
+    const input = screen.getByLabelText('Local price (BRL per liter)')
     fireEvent.change(input, {target: {value: '6.78'}})
 
-    // Get by h1
-    expect(screen.getAllByText(`4.43 USD per gallon`, { exact: false })).toBeTruthy()
+    // Get output
+    const output = screen.getByLabelText('Home price (USD per gallon)')
+    // Expect output to be 4.43
+    expect(output.value).toBe('4.43')
   })
 });
