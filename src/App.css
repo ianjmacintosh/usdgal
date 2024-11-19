@@ -1,0 +1,10 @@
+/* Styles */
+body {
+    display: grid;
+    width: 64rem;
+}
+fieldset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
