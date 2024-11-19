@@ -1,10 +1,16 @@
 /* Styles */
-body {
-    display: grid;
-    width: 64rem;
-}
 fieldset {
+    font-family: sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+fieldset input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 48px;
 }

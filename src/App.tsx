@@ -11,15 +11,17 @@ function App() {
   const getPriceInUSDFromPriceInBRL = (priceInBrl: number, brlPerUsd: number) => (priceInBrl / brlPerUsd).toFixed(2)
   return (
     <>
-      <h1>Convert BRL per liter to USD per gallon</h1>
+    <div className="container">
+      <h1>Convert Gas Price</h1>
       <fieldset>
-        <label htmlFor="localPrice">Per liter price in BRL
+        <label htmlFor="localPrice">Local price (BRL per liter)
           <input type="number" value={localPricePerLiter} onChange={(e) => setLocalPricePerLiter(Number(e.target.value))} name="localPrice" id="localPrice" />
         </label>
-        <label htmlFor="homePrice">Per gallon price in USD
+        <label htmlFor="homePrice">Home price (USD per gallon)
           <input type="number" value={getPriceInUSDFromPriceInBRL(localPricePerLiter * LITERS_PER_GALLON, BRL_PER_USD)} disabled name="homePrice" id="homePrice" />
         </label>
       </fieldset>
+      </div>
     </>
   );
 }
