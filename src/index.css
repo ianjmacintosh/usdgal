@@ -70,6 +70,7 @@ h6 {
 /* ^^ Thanks Josh! Much love. https://www.joshwcomeau.com/css/custom-css-reset/ */
 
 body {
+  font-family: sans-serif;
   width: 100%;
 }
 

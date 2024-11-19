@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 
+import GasPrice from "./GasPrice";
+
 function App() {
   const LITERS_PER_GALLON = 3.78541;
 
@@ -10,7 +12,8 @@ function App() {
     BRL: 5.7955874,
     USD: 1,
   };
-
+  const [localCurrency, setLocalCurrency] = useState("BRL");
+  const [homeCurrency, setHomeCurrency] = useState("USD");
   const [localPricePerLiter, setLocalPricePerLiter] = useState(0);
   const getPriceInCurrency = (
     price: number,
@@ -27,28 +30,31 @@ function App() {
       <div className="container">
         <h1>Convert Gas Price</h1>
         <fieldset>
-          <label htmlFor="localPrice">
-            Local price (BRL per liter)
-            <input
-              type="number"
-              value={localPricePerLiter}
-              onChange={(e) => setLocalPricePerLiter(Number(e.target.value))}
-              name="localPrice"
-              id="localPrice"
-            />
-          </label>
+          <GasPrice
+            label={`Local price (${localCurrency} per liter)`}
+            currency={localCurrency}
+            price={localPricePerLiter}
+            onChange={(e: any) => setLocalPricePerLiter(Number(e.target.value))}
+          />
+          <GasPrice
+            label={`Home price (${homeCurrency} per gallon)`}
+            currency={homeCurrency}
+            price={getPriceInCurrency(
+              localPricePerLiter * LITERS_PER_GALLON,
+              localCurrency,
+              homeCurrency,
+            )}
+          ></GasPrice>
           <label htmlFor="homePrice">
             Home price (USD per gallon)
             <input
               type="number"
               value={getPriceInCurrency(
                 localPricePerLiter * LITERS_PER_GALLON,
-                "BRL",
-                "USD",
+                localCurrency,
+                homeCurrency,
               )}
               disabled
-              name="homePrice"
-              id="homePrice"
             />
           </label>
         </fieldset>
