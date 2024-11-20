@@ -12,8 +12,8 @@ function App() {
     BRL: 5.7955874,
     USD: 1,
   };
-  const [localCurrency, setLocalCurrency] = useState("BRL");
-  const [homeCurrency, setHomeCurrency] = useState("USD");
+  const [localCurrency] = useState("BRL");
+  const [homeCurrency] = useState("USD");
   const [localPricePerLiter, setLocalPricePerLiter] = useState(0);
   const getPriceInCurrency = (
     price: number,
@@ -31,12 +31,14 @@ function App() {
         <h1>Convert Gas Price</h1>
         <fieldset>
           <GasPrice
+            id="localPrice"
             label={`Local price (${localCurrency} per liter)`}
             currency={localCurrency}
             price={localPricePerLiter}
             onChange={(e: any) => setLocalPricePerLiter(Number(e.target.value))}
           />
           <GasPrice
+            id="homePrice"
             label={`Home price (${homeCurrency} per gallon)`}
             currency={homeCurrency}
             price={getPriceInCurrency(

@@ -1,13 +1,13 @@
-function GasPrice({ label, currency, price, onChange, disabled }: any) {
+function GasPrice({ label, currency, price, onChange, disabled, id }: any) {
   return (
-    <label htmlFor="localPrice">
+    <label htmlFor={id}>
       {label}
       <input
         type="number"
         value={price}
         onChange={onChange}
-        name="localPrice"
-        id="localPrice"
+        name={id}
+        id={id}
         disabled={disabled !== undefined ? true : false}
       />
     </label>
