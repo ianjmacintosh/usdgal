@@ -7,7 +7,7 @@ function App() {
   const LITERS_PER_GALLON = 3.78541;
   const [localCurrency] = useState("BRL");
   const [homeCurrency] = useState("USD");
-  const [localPrice, setLocalPrice] = useState("0.00");
+  const [localPrice, setLocalPrice] = useState("");
   const [homePrice, setHomePrice] = useState("0.00");
   // This table shows how much a dollar costs
   // Updated on 2024-11-17
@@ -29,13 +29,16 @@ function App() {
       )
     };
 
-    const newHomePrice = Number(getPriceInCurrency(
+    const newHomePrice = getPriceInCurrency(
       Number(localPrice) * LITERS_PER_GALLON,
       localCurrency,
       homeCurrency,
-    )).toFixed(2)
+    )
 
-  setHomePrice(newHomePrice)
+    const formattedNewHomePrice = Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(newHomePrice)
+    
+
+  setHomePrice(formattedNewHomePrice)
 
   }, [ localPrice, localCurrency, homeCurrency, LITERS_PER_GALLON, dollarCost ])
 
