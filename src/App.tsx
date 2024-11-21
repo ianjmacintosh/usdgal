@@ -52,6 +52,18 @@ function App() {
             price={localPrice}
             onChange={(e: any) => setLocalPrice(e.target.value)}
           />
+          <table className="operations">
+            <tbody>
+              <tr>
+                <td className="operation">× {LITERS_PER_GALLON}</td>
+                <td className="operation-description">liters per gallon</td>
+              </tr>
+              <tr>
+                <td className="operation">÷ {dollarCost[localCurrency]}</td>
+                <td className="operation-description">{localCurrency} per USD<br /><em>(updated 2024-11-17)</em></td>
+              </tr>
+            </tbody>
+          </table>
           <GasPrice
             id="homePrice"
             label={`Home price (${homeCurrency} per gallon)`}

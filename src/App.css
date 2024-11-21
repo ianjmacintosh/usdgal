@@ -2,7 +2,21 @@
 fieldset {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   border: none;
   padding: 0;
+  row-gap: 20px;
+  margin-top: 40px;
+}
+
+.operations {
+  width: 100%;
+}
+
+.operations td {
+  vertical-align: top;
+}
+
+.operation-description {
+  text-align: right;
 }

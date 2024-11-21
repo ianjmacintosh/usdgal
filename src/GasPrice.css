@@ -5,9 +5,11 @@ fieldset input {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 48px;
+    font-weight: bold;
 }
 
 label {
     color: #333;
     font-size: 18px;
+    font-weight: bold;
 }
