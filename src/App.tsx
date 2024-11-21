@@ -7,8 +7,8 @@ function App() {
   const LITERS_PER_GALLON = 3.78541;
   const [localCurrency] = useState("BRL");
   const [homeCurrency] = useState("USD");
-  const [localPrice, setLocalPrice] = useState("0");
-  const [homePrice, setHomePrice] = useState("0");
+  const [localPrice, setLocalPrice] = useState("0.00");
+  const [homePrice, setHomePrice] = useState("0.00");
   // This table shows how much a dollar costs
   // Updated on 2024-11-17
   const dollarCost = useMemo((): { [key: string]: number } => ({
