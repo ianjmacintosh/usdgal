@@ -61,6 +61,7 @@ function App() {
           ></GasPrice>
         </fieldset>
       </div>
+      <footer>&copy; 2024 Ian J. MacIntosh</footer>
     </>
   );
 }

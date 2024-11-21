@@ -1,3 +1,5 @@
+import "./GasPrice.css";
+
 function GasPrice({ label, currency, price, onChange, disabled, id }: any) {
 
   return (
