@@ -15,7 +15,7 @@ function App() {
     // Get the price in USD, then convert from USD to target currency
     return Number(
       (price / dollarCost[currency]) * dollarCost[targetCurrency],
-    ).toFixed(2);
+    )
   };
 
   // This table shows how much a dollar costs
@@ -26,15 +26,15 @@ function App() {
   };
   const [localCurrency] = useState("BRL");
   const [homeCurrency] = useState("USD");
-  const [localPrice, setLocalPrice] = useState(0);
-  const [homePrice, setHomePrice] = useState(0);
+  const [localPrice, setLocalPrice] = useState("0");
+  const [homePrice, setHomePrice] = useState("0");
 
   useEffect(() => {
     const newHomePrice = Number(getPriceInCurrency(
-      localPrice * LITERS_PER_GALLON,
+      Number(localPrice) * LITERS_PER_GALLON,
       localCurrency,
       homeCurrency,
-    ))
+    )).toFixed(2)
 
   setHomePrice(newHomePrice)
 
@@ -50,7 +50,7 @@ function App() {
             label={`Local price (${localCurrency} per liter)`}
             currency={localCurrency}
             price={localPrice}
-            onChange={(e: any) => setLocalPrice(Number(e.target.value))}
+            onChange={(e: any) => setLocalPrice(e.target.value)}
           />
           <GasPrice
             id="homePrice"

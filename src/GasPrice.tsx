@@ -1,12 +1,11 @@
 function GasPrice({ label, currency, price, onChange, disabled, id }: any) {
-  const formattedPrice = Number(price).toFixed(2);
 
   return (
     <label htmlFor={id}>
       {label}
       <input
         type="text"
-        value={formattedPrice}
+        value={price}
         onChange={onChange}
         name={id}
         id={id}
