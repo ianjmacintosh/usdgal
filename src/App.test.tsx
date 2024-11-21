@@ -17,7 +17,7 @@ describe("<App />", () => {
     fireEvent.change(input, { target: { value: "6.78" } });
 
     // Get output
-    const output = screen.getByLabelText("Home price (USD per gallon)");
+    const output = screen.getByLabelText("Home price (USD per gallon)") as HTMLInputElement;;
     // Expect output to be 4.43
     expect(output.value).toBe("4.43");
   });
@@ -36,7 +36,7 @@ describe("<App />", () => {
     fireEvent.change(input, { target: { value: "6.73" } });
 
     // Get output
-    const output = screen.getByLabelText("Home price (USD per gallon)");
+    const output = screen.getByLabelText("Home price (USD per gallon)") as HTMLInputElement;
     // Expect output to be 4.4
     expect(output.value).toBe("4.40");
   });

@@ -22,7 +22,7 @@ describe("<GasPrice />", () => {
     // 4.42838284 rounded to 2 places is 4.43
 
     // Get output
-    const input = screen.getByLabelText("Simple Test");
+    const input = screen.getByLabelText("Simple Test") as HTMLInputElement;
     fireEvent.change(input, { target: { value: "1.23" } });
     expect(input.value).toBe("1.23");
   });

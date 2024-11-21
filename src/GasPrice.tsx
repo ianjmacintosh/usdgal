@@ -1,6 +1,6 @@
 import "./GasPrice.css";
 
-function GasPrice({ label, currency, price, onChange, disabled, id }: any) {
+function GasPrice({ label, price, onChange, disabled, id }: any) {
 
   return (
     <label htmlFor={id}>
