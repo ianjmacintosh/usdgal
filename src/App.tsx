@@ -44,6 +44,7 @@ function App() {
     const newChar = newValue?.slice(-1)
 
     if (newValue && RegExp(/[0-9\\.]/).test(newChar) === false) return
+    if (Number.isNaN(Number(newValue))) return
     setLocalPrice(event.target.value);
   };
 
