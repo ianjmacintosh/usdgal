@@ -1,35 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
 import GasPrice from "./GasPrice";
 
 function App() {
   const LITERS_PER_GALLON = 3.78541;
-
-
-  const getPriceInCurrency = (
-    price: number,
-    currency: string,
-    targetCurrency: string,
-  ) => {
-    // Get the price in USD, then convert from USD to target currency
-    return Number(
-      (price / dollarCost[currency]) * dollarCost[targetCurrency],
-    )
-  };
-
-  // This table shows how much a dollar costs
-  // Updated on 2024-11-17
-  const dollarCost: { [key: string]: number } = {
-    BRL: 5.7955874,
-    USD: 1,
-  };
   const [localCurrency] = useState("BRL");
   const [homeCurrency] = useState("USD");
-  const [localPrice, setLocalPrice] = useState("0");
-  const [homePrice, setHomePrice] = useState("0");
+  const [localPrice, setLocalPrice] = useState("0.00");
+  const [homePrice, setHomePrice] = useState("0.00");
+  // This table shows how much a dollar costs
+  // Updated on 2024-11-17
+  const dollarCost = useMemo((): { [key: string]: number } => ({
+    BRL: 5.7955874,
+    USD: 1,
+  }), []);
 
   useEffect(() => {
+    const getPriceInCurrency = (
+      price: number,
+      currency: string,
+      targetCurrency: string,
+    ) => {
+
+      // Get the price in USD, then convert from USD to target currency
+      return Number(
+        (price / dollarCost[currency]) * dollarCost[targetCurrency],
+      )
+    };
+
     const newHomePrice = Number(getPriceInCurrency(
       Number(localPrice) * LITERS_PER_GALLON,
       localCurrency,
@@ -38,7 +37,20 @@ function App() {
 
   setHomePrice(newHomePrice)
 
-  }, [ localPrice, localCurrency, homeCurrency ])
+  }, [ localPrice, localCurrency, homeCurrency, LITERS_PER_GALLON, dollarCost ])
+
+  const handleLocalPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    const newChar = newValue?.slice(-1)
+
+    // If the new value is not "" and the new char is not a number, return
+    if (newValue && RegExp(/[0-9\\.]/).test(newChar) === false) return
+
+    // If the new value is not a number, return
+    if (Number.isNaN(Number(newValue))) return
+    
+    setLocalPrice(event.target.value);
+  };
 
   return (
     <>
@@ -48,9 +60,8 @@ function App() {
           <GasPrice
             id="localPrice"
             label={`Local price (${localCurrency} per liter)`}
-            currency={localCurrency}
             price={localPrice}
-            onChange={(e: any) => setLocalPrice(e.target.value)}
+            onChange={handleLocalPriceChange}
           />
           <table className="operations">
             <tbody>
@@ -67,7 +78,6 @@ function App() {
           <GasPrice
             id="homePrice"
             label={`Home price (${homeCurrency} per gallon)`}
-            currency={homeCurrency}
             price={homePrice}
             disabled
           ></GasPrice>
