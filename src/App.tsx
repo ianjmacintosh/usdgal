@@ -39,6 +39,13 @@ function App() {
 
   }, [ localPrice, localCurrency, homeCurrency, LITERS_PER_GALLON, dollarCost ])
 
+  const handleLocalPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // const isALegalCharacter = (char: string) => char.match(/[0-9\\.]/)
+    // if (isALegalCharacter(event.target.value)) {
+    // }
+    setLocalPrice(event.target.value);
+  };
+
   return (
     <>
       <div className="container">
@@ -48,7 +55,7 @@ function App() {
             id="localPrice"
             label={`Local price (${localCurrency} per liter)`}
             price={localPrice}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setLocalPrice(event.target.value)}
+            onChange={handleLocalPriceChange}
           />
           <table className="operations">
             <tbody>

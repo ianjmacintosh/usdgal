@@ -3,14 +3,12 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 
 describe("<GasPrice />", () => {
-    let price = 0
+  let price = "0.00";
   render(<GasPrice
     id="notRealCurrency"
     label="Simple Test"
-    currency="NOT_REAL_CURRENCY"
-    price="0"
-    value={price}
-    onChange={(e: any) => { price = e.target.value }} />)
+    price={price}
+    onChange={(e: React.ChangeEvent<HTMLInputElement>) => { price = e.target.value }} />)
 
   // 6.73 BRL per liter converts to 4.40 USD per gallon
   // 4.40 gets displayed as as 4.4, and that's a bug
