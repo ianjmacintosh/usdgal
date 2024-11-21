@@ -14,7 +14,7 @@ function App() {
   };
   const [localCurrency] = useState("BRL");
   const [homeCurrency] = useState("USD");
-  const [localPricePerLiter, setLocalPricePerLiter] = useState(0);
+  const [localPrice, setLocalPrice] = useState(0);
   const getPriceInCurrency = (
     price: number,
     currency: string,
@@ -34,15 +34,15 @@ function App() {
             id="localPrice"
             label={`Local price (${localCurrency} per liter)`}
             currency={localCurrency}
-            price={localPricePerLiter}
-            onChange={(e: any) => setLocalPricePerLiter(Number(e.target.value))}
+            price={localPrice}
+            onChange={(e: any) => setLocalPrice(Number(e.target.value))}
           />
           <GasPrice
             id="homePrice"
             label={`Home price (${homeCurrency} per gallon)`}
             currency={homeCurrency}
             price={getPriceInCurrency(
-              localPricePerLiter * LITERS_PER_GALLON,
+              localPrice * LITERS_PER_GALLON,
               localCurrency,
               homeCurrency,
             )}
