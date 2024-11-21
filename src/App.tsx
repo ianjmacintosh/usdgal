@@ -43,8 +43,12 @@ function App() {
     const newValue = event.target.value;
     const newChar = newValue?.slice(-1)
 
+    // If the new value is not "" and the new char is not a number, return
     if (newValue && RegExp(/[0-9\\.]/).test(newChar) === false) return
+
+    // If the new value is not a number, return
     if (Number.isNaN(Number(newValue))) return
+    
     setLocalPrice(event.target.value);
   };
 
