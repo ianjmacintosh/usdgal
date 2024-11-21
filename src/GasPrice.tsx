@@ -12,6 +12,9 @@ function GasPrice({ label, price, onChange, disabled, id }: { label: string, pri
         name={id}
         id={id}
         disabled={disabled !== undefined ? true : false}
+        autoComplete="off"
+        inputMode="numeric"
+        pattern="^[0-9]*[.,]?[0-9]*$"
       />
     </label>
   );
