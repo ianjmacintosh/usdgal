@@ -22,6 +22,19 @@ describe("<App />", () => {
     expect(localPriceInput.value).toBe("")
   });
 
+  test("prevents the user from entering illegal characters", async () => {
+    // Populate price per liter in BRL
+    // Hard-coded conversion from BRL to USD: 1 USD = 5.7955874 BRL
+    // pricePerLiterInBRL * 3.78541 / 5.7955874 = pricePerGallonInUSD
+    // Example: 6.78 * 3.78541 / 5.7955874 = 4.42838284
+    // 4.42838284 rounded to 2 places is 4.43
+
+    // Expect price to show correctly in USD
+    await user.click(localPriceInput);
+    await user.keyboard('not a number');
+    expect(localPriceInput.value).toBe("")
+  });
+
   test("correctly converts BRL per liter to USD per gallon", async () => {
     // Populate price per liter in BRL
     // Hard-coded conversion from BRL to USD: 1 USD = 5.7955874 BRL

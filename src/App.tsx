@@ -40,9 +40,10 @@ function App() {
   }, [ localPrice, localCurrency, homeCurrency, LITERS_PER_GALLON, dollarCost ])
 
   const handleLocalPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // const isALegalCharacter = (char: string) => char.match(/[0-9\\.]/)
-    // if (isALegalCharacter(event.target.value)) {
-    // }
+    const newValue = event.target.value;
+    const newChar = newValue?.slice(-1)
+
+    if (newValue && RegExp(/[0-9\\.]/).test(newChar) === false) return
     setLocalPrice(event.target.value);
   };
 
