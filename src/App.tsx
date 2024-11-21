@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 import GasPrice from "./GasPrice";
@@ -27,11 +27,19 @@ function App() {
   const [localCurrency] = useState("BRL");
   const [homeCurrency] = useState("USD");
   const [localPrice, setLocalPrice] = useState(0);
-  const homePrice = getPriceInCurrency(
-    localPrice * LITERS_PER_GALLON,
-    localCurrency,
-    homeCurrency,
-  )
+  const [homePrice, setHomePrice] = useState(0);
+
+  useEffect(() => {
+    const newHomePrice = Number(getPriceInCurrency(
+      localPrice * LITERS_PER_GALLON,
+      localCurrency,
+      homeCurrency,
+    ))
+
+  setHomePrice(newHomePrice)
+
+  }, [ localPrice, localCurrency, homeCurrency ])
+
   return (
     <>
       <div className="container">
