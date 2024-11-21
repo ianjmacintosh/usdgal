@@ -75,7 +75,7 @@ h6 {
   font-family: sans-serif;
   width: 100%;
   min-height: 100vh;
-  grid-template-rows: 1fr max-content;
+  grid-template-rows: auto max-content;
 }
 
 .container {
@@ -89,4 +89,5 @@ footer {
   font-weight: bold;
   color: #322;
   text-align: center;
+  width: 100%;
 }

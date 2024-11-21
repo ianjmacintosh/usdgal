@@ -1,8 +1,13 @@
-input {
+fieldset input {
     width: 100%;
     margin: 10px 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 48px;
+}
+
+label {
+    color: #333;
+    font-size: 18px;
 }
