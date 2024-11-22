@@ -31,7 +31,10 @@ describe("<App />", () => {
   test("prevents the user from entering legal characters to produce illegal values", async () => {
     await user.click(localPriceInput);
     await user.keyboard('..');
-    expect(localPriceInput.value).toBe("")
+    expect(localPriceInput.value).toBe(".")
+
+    // Clean up after ourselves, leave an empty field for the next test
+    await user.keyboard('{backspace}');
   });
 
   test("correctly converts BRL per liter to USD per gallon", async () => {
@@ -73,12 +76,30 @@ describe("<App />", () => {
   });
 
   test("updates the local price", async () => {
-    // Clear the home price input
+    // Set a home price
     await user.click(homePriceInput);
     await user.keyboard('4.43');
 
-    // Expect the field to be editable... that is: empty
+    // Expect the local price field to have a value based on the home price
     expect(localPriceInput.value).toBe("6.78");
+  });
+
+  test("allows the user to add commas to the local price", async () => {
+    // Clear the home price input
+    await user.click(localPriceInput);
+    await user.keyboard('{backspace}{backspace}{backspace}{backspace}');
+    await user.keyboard('1,000');
+
+    expect(localPriceInput.value).toBe("1,000");
+  });
+
+  test("allows the user to modify fields with commas", async () => {
+    // Clear the home price input
+    await user.click(localPriceInput);
+    await user.keyboard('{backspace}{backspace}{backspace}{backspace}{backspace}');
+    await user.keyboard('4.43');
+
+    expect(localPriceInput.value).toBe("4.43");
   });
 
 });

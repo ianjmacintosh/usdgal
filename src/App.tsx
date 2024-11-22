@@ -31,15 +31,33 @@ function App() {
     return Intl.NumberFormat('en-US', { style: 'currency', currency: localCurrency, currencyDisplay: 'code' }).format(price).replace(localCurrency, "").trim();
   }
 
-  const handleLocalPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
-    const newChar = newValue?.slice(-1)
+  const isLegalPriceValue = (price: string) => {
+    // Generate a regular expression that confirms a character is legal for en-US formatting
+    const isLegalPriceChar = new RegExp(/[0-9\\.\\,]/);
 
+    // Is this something that someone logically type if they were writing a number out one character at a time?
+    // RegExp should allow values:
+    // - Any number of digits (including after the decimal point)
+    // - Any number of commas
+    // - Could start or end with a decimal point
+    // - Optionally, one decimal point
+    // - No commas allowed after the decimal point
+    const isLegalPrice = new RegExp(/^(\d{0,}(,\d{0,})*|\d*)?(\.\d*)?$/);
+
+    const newChar = price?.slice(-1)
     // If the new value is not "" and the new char is not a number, return
-    if (newValue && RegExp(/[0-9\\.]/).test(newChar) === false) return
+    if (price && isLegalPriceChar.test(newChar) === false) return false
 
     // If the new value is not a number, return
-    if (Number.isNaN(Number(newValue))) return
+    if (isLegalPrice.test(price) === false) return false
+
+    return true
+  }
+
+  const handleLocalPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+
+    if (isLegalPriceValue(newValue) === false) return
 
     setLocalPrice(newValue);
 
@@ -51,13 +69,8 @@ function App() {
 
   const handleHomePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
-    const newChar = newValue?.slice(-1)
 
-    // If the new value is not "" and the new char is not a number, return
-    if (newValue && RegExp(/[0-9\\.]/).test(newChar) === false) return
-
-    // If the new value is not a number, return
-    if (Number.isNaN(Number(newValue))) return
+    if (isLegalPriceValue(newValue) === false) return
 
     setHomePrice(newValue);
 
