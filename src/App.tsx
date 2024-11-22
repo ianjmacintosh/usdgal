@@ -55,6 +55,19 @@ function App() {
     setLocalPrice(event.target.value);
   };
 
+  const handleHomePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    const newChar = newValue?.slice(-1)
+
+    // If the new value is not "" and the new char is not a number, return
+    if (newValue && RegExp(/[0-9\\.]/).test(newChar) === false) return
+
+    // If the new value is not a number, return
+    if (Number.isNaN(Number(newValue))) return
+    
+    setHomePrice(event.target.value);
+  };
+
   return (
     <>
       <div className="container">
@@ -82,7 +95,7 @@ function App() {
             id="homePrice"
             label={`Home price (${homeCurrency} per gallon)`}
             price={homePrice}
-            disabled
+            onChange={handleHomePriceChange}
           ></GasPrice>
         </fieldset>
       </div>
