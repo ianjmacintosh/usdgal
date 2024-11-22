@@ -55,7 +55,7 @@ describe("<App />", () => {
   // 4.40 gets displayed as as 4.4, and that's a bug
   test("rounds prices correctly (to 2 decimal places)", async () => {
 
-    // Expect price to show correctly in USD
+    // Enter a new price of 6.73
     await user.click(localPriceInput);
     await user.keyboard('{backspace}{backspace}{backspace}{backspace}6.73');
 
@@ -63,12 +63,22 @@ describe("<App />", () => {
     expect(homePriceInput.value).toBe("4.40");
   });
 
-  test("allows the user to adjust the home price to update the local price", async () => {
-
-    // Expect price to show correctly in USD
+  test("allows the user to adjust the home price", async () => {
+    // Clear the home price input
     await user.click(homePriceInput);
     await user.keyboard('{backspace}{backspace}{backspace}{backspace}');
 
+    // Expect the field to be editable... that is: empty
     expect(homePriceInput.value).toBe("");
   });
+
+  test("updates the local price", async () => {
+    // Clear the home price input
+    await user.click(homePriceInput);
+    await user.keyboard('4.43');
+
+    // Expect the field to be editable... that is: empty
+    expect(localPriceInput.value).toBe("6.78");
+  });
+
 });
