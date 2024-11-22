@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
 
 import GasPrice from "./GasPrice";
-import { g } from "vitest/dist/chunks/suite.B2jumIFP.js";
 
 function App() {
   const LITERS_PER_GALLON = 3.78541;
