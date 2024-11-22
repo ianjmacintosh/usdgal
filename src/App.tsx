@@ -22,9 +22,15 @@ function App() {
   ) => {
 
     // Get the price in USD, then convert from USD to target currency
-    return Number(
+    let newValue = Number(
       (price / dollarCost[currency]) * dollarCost[targetCurrency],
     )
+
+    if (Number.isNaN(newValue)) {
+      newValue = 0
+    }
+
+    return newValue
   };
 
   const getFormattedPrice = (price: number) => {

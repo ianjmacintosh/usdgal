@@ -102,4 +102,13 @@ describe("<App />", () => {
     expect(localPriceInput.value).toBe("4.43");
   });
 
+  test("doesn't throw NaN errors when the user provides weird numbers", async () => {
+    // Clear the local price input
+    await user.click(localPriceInput);
+    await user.keyboard('{backspace}{backspace}{backspace}{backspace}');
+    await user.keyboard('.');
+
+    expect(homePriceInput.value).not.toBe("NaN");
+  });
+
 });
