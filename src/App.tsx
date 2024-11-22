@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
 
 import GasPrice from "./GasPrice";
@@ -15,32 +15,21 @@ function App() {
     BRL: 5.7955874,
     USD: 1,
   }), []);
+  const getPriceInCurrency = (
+    price: number,
+    currency: string,
+    targetCurrency: string,
+  ) => {
 
-  useEffect(() => {
-    const getPriceInCurrency = (
-      price: number,
-      currency: string,
-      targetCurrency: string,
-    ) => {
-
-      // Get the price in USD, then convert from USD to target currency
-      return Number(
-        (price / dollarCost[currency]) * dollarCost[targetCurrency],
-      )
-    };
-
-    const newHomePrice = getPriceInCurrency(
-      Number(localPrice) * LITERS_PER_GALLON,
-      localCurrency,
-      homeCurrency,
+    // Get the price in USD, then convert from USD to target currency
+    return Number(
+      (price / dollarCost[currency]) * dollarCost[targetCurrency],
     )
+  };
 
-    const formattedNewHomePrice = Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(newHomePrice)
-    
-
-  setHomePrice(formattedNewHomePrice)
-
-  }, [ localPrice, localCurrency, homeCurrency, LITERS_PER_GALLON, dollarCost ])
+  const getFormattedPrice = (price: number) => {
+    return Intl.NumberFormat('en-US', { style: 'currency', currency: localCurrency, currencyDisplay: 'code' }).format(price).replace(localCurrency, "").trim();
+  }
 
   const handleLocalPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -51,8 +40,31 @@ function App() {
 
     // If the new value is not a number, return
     if (Number.isNaN(Number(newValue))) return
-    
-    setLocalPrice(event.target.value);
+
+    setLocalPrice(newValue);
+
+    const newHomePrice = getPriceInCurrency((Number(newValue) * LITERS_PER_GALLON), localCurrency, homeCurrency)
+    const newFormattedHomePrice = getFormattedPrice(newHomePrice)
+
+    setHomePrice(newFormattedHomePrice)
+  };
+
+  const handleHomePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    const newChar = newValue?.slice(-1)
+
+    // If the new value is not "" and the new char is not a number, return
+    if (newValue && RegExp(/[0-9\\.]/).test(newChar) === false) return
+
+    // If the new value is not a number, return
+    if (Number.isNaN(Number(newValue))) return
+
+    setHomePrice(newValue);
+
+    const newLocalPrice = getPriceInCurrency((Number(newValue) / LITERS_PER_GALLON), homeCurrency, localCurrency)
+    const newFormattedLocalPrice = getFormattedPrice(newLocalPrice)
+
+    setLocalPrice(newFormattedLocalPrice)
   };
 
   return (
@@ -82,7 +94,7 @@ function App() {
             id="homePrice"
             label={`Home price (${homeCurrency} per gallon)`}
             price={homePrice}
-            disabled
+            onChange={handleHomePriceChange}
           ></GasPrice>
         </fieldset>
       </div>
