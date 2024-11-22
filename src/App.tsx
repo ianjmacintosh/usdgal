@@ -29,7 +29,7 @@ function App() {
   };
 
   const getFormattedPrice = (price: number) => {
-    return Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(price)
+    return Intl.NumberFormat('en-US', { style: 'currency', currency: localCurrency, currencyDisplay: 'code' }).format(price).replace(localCurrency, "").trim();
   }
 
   const handleLocalPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +41,7 @@ function App() {
 
     // If the new value is not a number, return
     if (Number.isNaN(Number(newValue))) return
-    
+
     setLocalPrice(newValue);
 
     const newHomePrice = getPriceInCurrency((Number(newValue) * LITERS_PER_GALLON), localCurrency, homeCurrency)
@@ -59,7 +59,7 @@ function App() {
 
     // If the new value is not a number, return
     if (Number.isNaN(Number(newValue))) return
-    
+
     setHomePrice(newValue);
 
     const newLocalPrice = getPriceInCurrency((Number(newValue) / LITERS_PER_GALLON), homeCurrency, localCurrency)
