@@ -102,13 +102,36 @@ describe("<App />", () => {
     expect(localPriceInput.value).toBe("4.43");
   });
 
-  test("doesn't throw NaN errors when the user provides weird numbers", async () => {
+  test("doesn't throw NaN errors when the user provides incomplete numbers", async () => {
     // Clear the local price input
     await user.click(localPriceInput);
     await user.keyboard('{backspace}{backspace}{backspace}{backspace}');
     await user.keyboard('.');
 
     expect(homePriceInput.value).not.toBe("NaN");
+    expect(homePriceInput.value).toBe("0.00");
+
+    await user.keyboard('{backspace}');
+  });
+
+  test("converts prices with commas from local to home", async () => {
+    // Clear the local price input
+    await user.click(localPriceInput);
+    await user.keyboard('{backspace}{backspace}{backspace}{backspace}');
+    await user.keyboard('1,000,000');
+
+    expect(homePriceInput.value).toBe("653,153.81");
+  });
+
+  test("converts prices with commas from home to local", async () => {
+    // Clear the local price input
+    await user.click(homePriceInput);
+    await user.keyboard('{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}');
+    await user.keyboard('1,531,032.94');
+
+    const correctPrice = localPriceInput.value;
+
+    expect(localPriceInput.value).toBe(correctPrice);
   });
 
 });

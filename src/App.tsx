@@ -5,6 +5,13 @@ import GasPrice from "./GasPrice";
 
 function App() {
   const LITERS_PER_GALLON = 3.78541;
+  const userLocale = "en-US";
+  const numberFormat = new Intl.NumberFormat(userLocale)
+  const numberFormatChars = {
+    groupingSeparatorChar: numberFormat.format(1111).replace(/\d/g, ""),
+    decimalSeparatorChar: numberFormat.format(1.1).replace(/\d/g, ""),
+  }
+
   const [localCurrency] = useState("BRL");
   const [homeCurrency] = useState("USD");
   const [localPrice, setLocalPrice] = useState("");
@@ -33,8 +40,8 @@ function App() {
     return newValue
   };
 
-  const getFormattedPrice = (price: number) => {
-    return Intl.NumberFormat('en-US', { style: 'currency', currency: localCurrency, currencyDisplay: 'code' }).format(price).replace(localCurrency, "").trim();
+  const getFormattedPrice = (price: number, userLocale = "en-US") => {
+    return Intl.NumberFormat(userLocale, { style: 'currency', currency: localCurrency, currencyDisplay: 'code' }).format(price).replace(localCurrency, "").trim();
   }
 
   const isLegalPriceValue = (price: string) => {
@@ -67,8 +74,10 @@ function App() {
 
     setLocalPrice(newValue);
 
-    const newHomePrice = getPriceInCurrency((Number(newValue) * LITERS_PER_GALLON), localCurrency, homeCurrency)
-    const newFormattedHomePrice = getFormattedPrice(newHomePrice)
+    const newValueAsNumber = Number(newValue.replaceAll(numberFormatChars.groupingSeparatorChar, ''))
+
+    const newHomePrice = getPriceInCurrency(newValueAsNumber * LITERS_PER_GALLON, localCurrency, homeCurrency)
+    const newFormattedHomePrice = getFormattedPrice(newHomePrice, userLocale)
 
     setHomePrice(newFormattedHomePrice)
   };
@@ -80,8 +89,10 @@ function App() {
 
     setHomePrice(newValue);
 
-    const newLocalPrice = getPriceInCurrency((Number(newValue) / LITERS_PER_GALLON), homeCurrency, localCurrency)
-    const newFormattedLocalPrice = getFormattedPrice(newLocalPrice)
+    const newValueAsNumber = Number(newValue.replaceAll(numberFormatChars.groupingSeparatorChar, ''))
+
+    const newLocalPrice = getPriceInCurrency(newValueAsNumber / LITERS_PER_GALLON, homeCurrency, localCurrency)
+    const newFormattedLocalPrice = getFormattedPrice(newLocalPrice, userLocale)
 
     setLocalPrice(newFormattedLocalPrice)
   };
