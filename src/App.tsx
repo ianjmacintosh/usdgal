@@ -5,6 +5,13 @@ import GasPrice from "./GasPrice";
 
 function App() {
   const LITERS_PER_GALLON = 3.78541;
+  const userLocale = "en-US";
+  const numberFormat = new Intl.NumberFormat(userLocale)
+  const numberFormatChars = {
+    groupingSeparatorChar: numberFormat.format(1111).replace(/\d/g, ""),
+    decimalSeparatorChar: numberFormat.format(1.1).replace(/\d/g, ""),
+  }
+
   const [localCurrency] = useState("BRL");
   const [homeCurrency] = useState("USD");
   const [localPrice, setLocalPrice] = useState("");
@@ -22,47 +29,70 @@ function App() {
   ) => {
 
     // Get the price in USD, then convert from USD to target currency
-    return Number(
+    let newValue = Number(
       (price / dollarCost[currency]) * dollarCost[targetCurrency],
     )
+
+    if (Number.isNaN(newValue)) {
+      newValue = 0
+    }
+
+    return newValue
   };
 
-  const getFormattedPrice = (price: number) => {
-    return Intl.NumberFormat('en-US', { style: 'currency', currency: localCurrency, currencyDisplay: 'code' }).format(price).replace(localCurrency, "").trim();
+  const getFormattedPrice = (price: number, userLocale = "en-US") => {
+    return Intl.NumberFormat(userLocale, { style: 'currency', currency: localCurrency, currencyDisplay: 'code' }).format(price).replace(localCurrency, "").trim();
+  }
+
+  const isLegalPriceValue = (price: string) => {
+    // Generate a regular expression that confirms a character is legal for en-US formatting
+    const isLegalPriceChar = new RegExp(/[0-9\\.\\,]/);
+
+    // Is this something that someone logically type if they were writing a number out one character at a time?
+    // RegExp should allow values:
+    // - Any number of digits (including after the decimal point)
+    // - Any number of commas
+    // - Could start or end with a decimal point
+    // - Optionally, one decimal point
+    // - No commas allowed after the decimal point
+    const isLegalPrice = new RegExp(/^(\d{0,}(,\d{0,})*|\d*)?(\.\d*)?$/);
+
+    const newChar = price?.slice(-1)
+    // If the new value is not "" and the new char is not a number, return
+    if (price && isLegalPriceChar.test(newChar) === false) return false
+
+    // If the new value is not a number, return
+    if (isLegalPrice.test(price) === false) return false
+
+    return true
   }
 
   const handleLocalPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
-    const newChar = newValue?.slice(-1)
 
-    // If the new value is not "" and the new char is not a number, return
-    if (newValue && RegExp(/[0-9\\.]/).test(newChar) === false) return
-
-    // If the new value is not a number, return
-    if (Number.isNaN(Number(newValue))) return
+    if (isLegalPriceValue(newValue) === false) return
 
     setLocalPrice(newValue);
 
-    const newHomePrice = getPriceInCurrency((Number(newValue) * LITERS_PER_GALLON), localCurrency, homeCurrency)
-    const newFormattedHomePrice = getFormattedPrice(newHomePrice)
+    const newValueAsNumber = Number(newValue.replaceAll(numberFormatChars.groupingSeparatorChar, ''))
+
+    const newHomePrice = getPriceInCurrency(newValueAsNumber * LITERS_PER_GALLON, localCurrency, homeCurrency)
+    const newFormattedHomePrice = getFormattedPrice(newHomePrice, userLocale)
 
     setHomePrice(newFormattedHomePrice)
   };
 
   const handleHomePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
-    const newChar = newValue?.slice(-1)
 
-    // If the new value is not "" and the new char is not a number, return
-    if (newValue && RegExp(/[0-9\\.]/).test(newChar) === false) return
-
-    // If the new value is not a number, return
-    if (Number.isNaN(Number(newValue))) return
+    if (isLegalPriceValue(newValue) === false) return
 
     setHomePrice(newValue);
 
-    const newLocalPrice = getPriceInCurrency((Number(newValue) / LITERS_PER_GALLON), homeCurrency, localCurrency)
-    const newFormattedLocalPrice = getFormattedPrice(newLocalPrice)
+    const newValueAsNumber = Number(newValue.replaceAll(numberFormatChars.groupingSeparatorChar, ''))
+
+    const newLocalPrice = getPriceInCurrency(newValueAsNumber / LITERS_PER_GALLON, homeCurrency, localCurrency)
+    const newFormattedLocalPrice = getFormattedPrice(newLocalPrice, userLocale)
 
     setLocalPrice(newFormattedLocalPrice)
   };
