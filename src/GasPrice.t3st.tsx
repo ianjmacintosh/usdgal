@@ -4,11 +4,16 @@ import GasPrice from "./GasPrice";
 
 describe("<GasPrice />", () => {
   let price = "0.00";
-  render(<GasPrice
-    id="notRealCurrency"
-    label="Simple Test"
-    price={price}
-    onChange={(e: React.ChangeEvent<HTMLInputElement>) => { price = e.target.value }} />)
+  render(
+    <GasPrice
+      id="notRealCurrency"
+      label="Simple Test"
+      price={price}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        price = e.target.value;
+      }}
+    />,
+  );
 
   // 6.73 BRL per liter converts to 4.40 USD per gallon
   // 4.40 gets displayed as as 4.4, and that's a bug
