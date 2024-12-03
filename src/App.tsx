@@ -1,16 +1,12 @@
 import { useMemo, useState } from "react";
 import "./App.css";
+import getNumberFormatChar from "./utils/numberFormat";
 
 import GasPrice from "./GasPrice";
 
 function App() {
   const LITERS_PER_GALLON = 3.78541;
   const userLocale = "en-US";
-  const numberFormat = new Intl.NumberFormat(userLocale);
-  const numberFormatChars = {
-    groupingSeparatorChar: numberFormat.format(1111).replace(/\d/g, ""),
-    decimalSeparatorChar: numberFormat.format(1.1).replace(/\d/g, ""),
-  };
 
   const [localCurrency] = useState("BRL");
   const [homeCurrency] = useState("USD");
@@ -86,7 +82,7 @@ function App() {
     setLocalPrice(newValue);
 
     const newValueAsNumber = Number(
-      newValue.replaceAll(numberFormatChars.groupingSeparatorChar, ""),
+      newValue.replaceAll(getNumberFormatChar("groupingSeparatorChar", userLocale), ""),
     );
 
     const newHomePrice = getPriceInCurrency(
@@ -109,7 +105,7 @@ function App() {
     setHomePrice(newValue);
 
     const newValueAsNumber = Number(
-      newValue.replaceAll(numberFormatChars.groupingSeparatorChar, ""),
+      newValue.replaceAll(getNumberFormatChar("groupingSeparatorChar", userLocale), ""),
     );
 
     const newLocalPrice = getPriceInCurrency(
