@@ -13,7 +13,7 @@ describe("<App />", () => {
     "Home price (USD per gallon)",
   ) as HTMLInputElement;
 
-  test("allows the user to clear the input field", async () => {
+  test("allows the user to add and backspace chars the local price input", async () => {
     // Populate price per liter in BRL
     // Hard-coded conversion from BRL to USD: 1 USD = 5.7955874 BRL
     // pricePerLiterInBRL * 3.78541 / 5.7955874 = pricePerGallonInUSD
@@ -22,6 +22,8 @@ describe("<App />", () => {
 
     // Expect price to show correctly in USD
     await user.click(localPriceInput);
+    await user.keyboard("1234");
+    expect(localPriceInput.value).toBe("1234");
     await user.keyboard("{backspace}{backspace}{backspace}{backspace}");
     expect(localPriceInput.value).toBe("");
   });
@@ -36,18 +38,11 @@ describe("<App />", () => {
     await user.click(localPriceInput);
     await user.keyboard("..");
     expect(localPriceInput.value).toBe(".");
-
-    // Clean up after ourselves, leave an empty field for the next test
-    await user.keyboard("{backspace}");
   });
 
   test("correctly converts BRL per liter to USD per gallon", async () => {
-    // Populate price per liter in BRL
-    // Hard-coded conversion from BRL to USD: 1 USD = 5.7955874 BRL
-    // pricePerLiterInBRL * 3.78541 / 5.7955874 = pricePerGallonInUSD
-    // Example: 6.78 * 3.78541 / 5.7955874 = 4.42838284
-    // 4.42838284 rounded to 2 places is 4.43
-
+    // Clear the local price input
+    await userEvent.clear(localPriceInput);
     // Expect price to show correctly in USD
     await user.click(localPriceInput);
     await user.keyboard("6.78");
@@ -61,20 +56,22 @@ describe("<App />", () => {
   // 6.73 BRL per liter converts to 4.40 USD per gallon (at an exchange rate of 1 USD = 5.7955874 BRL)
   // 4.40 gets displayed as as 4.4, and that's a bug
   test("rounds prices correctly (to 2 decimal places)", async () => {
+    // Clear the local price input
+    await userEvent.clear(localPriceInput);
     // Enter a new price of 6.73
     await user.click(localPriceInput);
-    await user.keyboard("{backspace}{backspace}{backspace}{backspace}6.73");
+    await user.keyboard("6.73");
 
     // Expect output to be 4.40
     expect(homePriceInput.value).toBe("4.40");
   });
 
-  test("allows the user to adjust the home price", async () => {
-    // Clear the home price input
+  test("allows the user to add and backspace chars the local price input", async () => {
+    await userEvent.clear(homePriceInput);
     await user.click(homePriceInput);
+    await user.keyboard("1234");
+    expect(homePriceInput.value).toBe("1234");
     await user.keyboard("{backspace}{backspace}{backspace}{backspace}");
-
-    // Expect the field to be editable... that is: empty
     expect(homePriceInput.value).toBe("");
   });
 
@@ -89,19 +86,17 @@ describe("<App />", () => {
 
   test("allows the user to add commas to the local price", async () => {
     // Clear the home price input
+    await userEvent.clear(localPriceInput);
     await user.click(localPriceInput);
-    await user.keyboard("{backspace}{backspace}{backspace}{backspace}");
     await user.keyboard("1,000");
 
     expect(localPriceInput.value).toBe("1,000");
   });
 
   test("allows the user to modify fields with commas", async () => {
-    // Clear the home price input
+    // Clear the local price input
+    await userEvent.clear(localPriceInput);
     await user.click(localPriceInput);
-    await user.keyboard(
-      "{backspace}{backspace}{backspace}{backspace}{backspace}",
-    );
     await user.keyboard("4.43");
 
     expect(localPriceInput.value).toBe("4.43");
@@ -109,8 +104,8 @@ describe("<App />", () => {
 
   test("doesn't throw NaN errors when the user provides incomplete numbers", async () => {
     // Clear the local price input
+    await userEvent.clear(localPriceInput);
     await user.click(localPriceInput);
-    await user.keyboard("{backspace}{backspace}{backspace}{backspace}");
     await user.keyboard(".");
 
     expect(homePriceInput.value).not.toBe("NaN");
@@ -121,8 +116,7 @@ describe("<App />", () => {
 
   test("converts prices with commas from local to home", async () => {
     // Clear the local price input
-    await user.click(localPriceInput);
-    await user.keyboard("{backspace}{backspace}{backspace}{backspace}");
+    await userEvent.clear(localPriceInput);
     await user.keyboard("1,000,000");
 
     expect(homePriceInput.value).toBe("653,153.81");
@@ -130,14 +124,10 @@ describe("<App />", () => {
 
   test("converts prices with commas from home to local", async () => {
     // Clear the local price input
+    await userEvent.clear(homePriceInput);
     await user.click(homePriceInput);
-    await user.keyboard(
-      "{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}",
-    );
-    await user.keyboard("1,531,032.94");
+    await user.keyboard("653,153.81");
 
-    const correctPrice = localPriceInput.value;
-
-    expect(localPriceInput.value).toBe(correctPrice);
+    expect(localPriceInput.value).toBe("1,000,000.00");
   });
 });
