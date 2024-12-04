@@ -8,8 +8,8 @@ function App() {
   const LITERS_PER_GALLON = 3.78541;
   const userLocale = "en-US";
 
-  const [localCurrency] = useState("BRL");
-  const [homeCurrency] = useState("USD");
+  const [localCurrency] = useState<keyof typeof dollarCost>("BRL");
+  const [homeCurrency] = useState<keyof typeof dollarCost>("USD");
   const [localPrice, setLocalPrice] = useState("");
   const [homePrice, setHomePrice] = useState("0.00");
 

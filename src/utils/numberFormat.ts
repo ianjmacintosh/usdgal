@@ -1,4 +1,4 @@
-const getNumberFormatChar = (char: "groupingSeparatorChar" | "decimalSeparatorChar", locale: string) => {
+const getNumberFormatChar = (char: "decimalSeparatorChar" | "groupingSeparatorChar", locale: string) => {
     const numberFormat = new Intl.NumberFormat(locale);
     const chars = {
         groupingSeparatorChar: numberFormat.format(1111).replace(/\d/g, ""),
@@ -43,8 +43,8 @@ const isLegalPriceValue = (price: string) => {
 };
 const getPriceInCurrency = (
   price: number,
-  currency: "BRL" | "USD",
-  targetCurrency: "BRL" | "USD",
+  currency: keyof typeof dollarCost,
+  targetCurrency: keyof typeof dollarCost,
 ) => {
   // Get the price in USD, then convert from USD to target currency
   let newValue = Number(
