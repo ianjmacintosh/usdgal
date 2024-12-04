@@ -1,125 +1,74 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import "./App.css";
+import { getNumberFormatChar, getFormattedPrice, isLegalPriceValue, getPriceInCurrency, dollarCost } from "./utils/numberFormat";
 
 import GasPrice from "./GasPrice";
 
 function App() {
   const LITERS_PER_GALLON = 3.78541;
   const userLocale = "en-US";
-  const numberFormat = new Intl.NumberFormat(userLocale);
-  const numberFormatChars = {
-    groupingSeparatorChar: numberFormat.format(1111).replace(/\d/g, ""),
-    decimalSeparatorChar: numberFormat.format(1.1).replace(/\d/g, ""),
-  };
 
-  const [localCurrency] = useState("BRL");
-  const [homeCurrency] = useState("USD");
+  const [localCurrency] = useState<keyof typeof dollarCost>("BRL");
+  const [homeCurrency] = useState<keyof typeof dollarCost>("USD");
   const [localPrice, setLocalPrice] = useState("");
   const [homePrice, setHomePrice] = useState("0.00");
-  // This table shows how much a dollar costs
-  // Updated on 2024-11-17
-  const dollarCost = useMemo(
-    (): { [key: string]: number } => ({
-      BRL: 5.7955874,
-      USD: 1,
-    }),
-    [],
-  );
-  const getPriceInCurrency = (
-    price: number,
-    currency: string,
-    targetCurrency: string,
-  ) => {
-    // Get the price in USD, then convert from USD to target currency
-    let newValue = Number(
-      (price / dollarCost[currency]) * dollarCost[targetCurrency],
-    );
 
-    if (Number.isNaN(newValue)) {
-      newValue = 0;
-    }
-
-    return newValue;
-  };
-
-  const getFormattedPrice = (price: number, userLocale = "en-US") => {
-    return Intl.NumberFormat(userLocale, {
-      style: "currency",
-      currency: localCurrency,
-      currencyDisplay: "code",
-    })
-      .format(price)
-      .replace(localCurrency, "")
-      .trim();
-  };
-
-  const isLegalPriceValue = (price: string) => {
-    // Generate a regular expression that confirms a character is legal for en-US formatting
-    const isLegalPriceChar = new RegExp(/[0-9\\.\\,]/);
-
-    // Is this something that someone logically type if they were writing a number out one character at a time?
-    // RegExp should allow values:
-    // - Any number of digits (including after the decimal point)
-    // - Any number of commas
-    // - Could start or end with a decimal point
-    // - Optionally, one decimal point
-    // - No commas allowed after the decimal point
-    const isLegalPrice = new RegExp(/^(\d{0,}(,\d{0,})*|\d*)?(\.\d*)?$/);
-
-    const newChar = price?.slice(-1);
-    // If the new value is not "" and the new char is not a number, return
-    if (price && isLegalPriceChar.test(newChar) === false) return false;
-
-    // If the new value is not a number, return
-    if (isLegalPrice.test(price) === false) return false;
-
-    return true;
-  };
-
-  const handleLocalPriceChange = (
+  /**
+   * Handles changes to either the local or home gas price inputs.
+   * Takes the new value, the currency of the input that triggered the change,
+   * and the currency of the other input.
+   *
+   * @param event - The change event that triggered this function
+   * @param sourceCurrency - The currency of the input that triggered the change
+   * @param targetCurrency - The currency of the other input
+   */
+  const handlePriceChange = (
     event: React.ChangeEvent<HTMLInputElement>,
+    sourceCurrency: keyof typeof dollarCost,
+    targetCurrency: keyof typeof dollarCost,
   ) => {
+    /**
+     * Get the new value from the input element
+     */
     const newValue = event.target.value;
 
-    if (isLegalPriceValue(newValue) === false) return;
+    /**
+     * If the new value is not a valid price (i.e. contains characters other than numbers, periods, and commas), return
+     */
+    if (!isLegalPriceValue(newValue)) return;
 
-    setLocalPrice(newValue);
-
-    const newValueAsNumber = Number(
-      newValue.replaceAll(numberFormatChars.groupingSeparatorChar, ""),
+    /**
+     * Remove any grouping characters (e.g. commas in the US) from the new value
+     */
+    const newPrice = Number(
+      newValue.replace(new RegExp(getNumberFormatChar("groupingSeparatorChar", userLocale), "g"), ""),
     );
 
-    const newHomePrice = getPriceInCurrency(
-      newValueAsNumber * LITERS_PER_GALLON,
-      localCurrency,
-      homeCurrency,
+    /**
+     * Convert the new price from the source currency to the target currency
+     * Multiply by LITERS_PER_GALLON if the source currency is the local currency, divide by LITERS_PER_GALLON if it is the home currency
+     */
+    const convertedPrice = getPriceInCurrency(
+      newPrice * (sourceCurrency === localCurrency ? LITERS_PER_GALLON : 1 / LITERS_PER_GALLON),
+      sourceCurrency,
+      targetCurrency,
     );
-    const newFormattedHomePrice = getFormattedPrice(newHomePrice, userLocale);
 
-    setHomePrice(newFormattedHomePrice);
+    /**
+     * Format the converted price for display
+     */
+    const formattedConvertedPrice = getFormattedPrice(convertedPrice, userLocale, targetCurrency);
+
+    /**
+     * Set the state of both inputs to the new values
+     */
+    setPrice(sourceCurrency, newValue);
+    setPrice(targetCurrency, formattedConvertedPrice);
   };
 
-  const handleHomePriceChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const newValue = event.target.value;
-
-    if (isLegalPriceValue(newValue) === false) return;
-
-    setHomePrice(newValue);
-
-    const newValueAsNumber = Number(
-      newValue.replaceAll(numberFormatChars.groupingSeparatorChar, ""),
-    );
-
-    const newLocalPrice = getPriceInCurrency(
-      newValueAsNumber / LITERS_PER_GALLON,
-      homeCurrency,
-      localCurrency,
-    );
-    const newFormattedLocalPrice = getFormattedPrice(newLocalPrice, userLocale);
-
-    setLocalPrice(newFormattedLocalPrice);
+  const setPrice = (currency: keyof typeof dollarCost, value: string) => {
+    if (currency === localCurrency) setLocalPrice(value);
+    else setHomePrice(value);
   };
 
   return (
@@ -131,7 +80,10 @@ function App() {
             id="localPrice"
             label={`Local price (${localCurrency} per liter)`}
             price={localPrice}
-            onChange={handleLocalPriceChange}
+
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              handlePriceChange(event, localCurrency, homeCurrency)
+            }
           />
           <table className="operations">
             <tbody>
@@ -153,7 +105,9 @@ function App() {
             id="homePrice"
             label={`Home price (${homeCurrency} per gallon)`}
             price={homePrice}
-            onChange={handleHomePriceChange}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              handlePriceChange(event, homeCurrency, localCurrency)
+            }
           ></GasPrice>
         </fieldset>
       </div>
