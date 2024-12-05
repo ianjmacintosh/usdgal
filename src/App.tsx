@@ -12,9 +12,19 @@ function App() {
   const [sourceUnit, setSourceUnit] = useState("liter");
   const targetUnit = "gallon"
   const targetCurrency = "USD"
-  const targetNumber = getFormattedPrice(getPriceInCurrency(getUnits(Number(
-    sourceNumber.replace(new RegExp(getNumberFormatChar("groupingSeparatorChar", userLocale), "g"), ""),
-  ), sourceUnit, targetUnit), sourceCurrency, targetCurrency), userLocale, "USD");
+  const targetNumber = () => {
+    // Safely convert the number string into a Number()
+    let result = Number(sourceNumber.replace(new RegExp(getNumberFormatChar("groupingSeparatorChar", userLocale), "g"), ""))
+
+    // Convert that number from using source units to target units
+    result = getUnits(result, sourceUnit, targetUnit)
+
+    // Convert _that_ number using the exchange rate from source currency to target currency
+    result = getPriceInCurrency(result, sourceCurrency, targetCurrency)
+
+    // Finally, format that number as a string
+    return getFormattedPrice(result, userLocale, targetCurrency);
+  };
 
   const handlePriceChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -68,7 +78,7 @@ function App() {
           <GasPrice
             id="homePrice"
             label={`Target gas price (${targetCurrency} per ${targetUnit})`}
-            number={targetNumber}
+            number={targetNumber()}
             disabled
           ></GasPrice>
         </fieldset>
