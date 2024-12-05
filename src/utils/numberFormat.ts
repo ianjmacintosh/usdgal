@@ -78,10 +78,10 @@ const dollarCost = {
  */
 const getUnits = (price: number, fromUnit: string, toUnit: string) => {
   const LITERS_PER_GALLON = 3.78541;
-  if (fromUnit === "liters" && toUnit === "gallons") {
+  if (fromUnit === "liter" && toUnit === "gallon") {
     return price * LITERS_PER_GALLON;
   }
-  if (fromUnit === "gallons" && toUnit === "liters") {
+  if (fromUnit === "gallon" && toUnit === "liter") {
     return price / LITERS_PER_GALLON;
   }
   return price;
