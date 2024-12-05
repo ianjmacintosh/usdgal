@@ -1,9 +1,10 @@
 import "./GasPrice.css";
+import { isLegalPriceValue } from "./utils/numberFormat";
 
 function GasPrice({
   label,
   number,
-  onChange,
+  onChange: extraOnChange,
   disabled,
   id,
 }: {
@@ -13,6 +14,15 @@ function GasPrice({
   disabled?: boolean;
   id: string;
 }) {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    if (!isLegalPriceValue(newValue)) return;
+
+    if (extraOnChange) {
+      extraOnChange(event);
+    }
+  }
+
   return (
     <label htmlFor={id}>
       {label}
