@@ -15,14 +15,8 @@ describe("<App />", () => {
   const localPriceCurrencyInput = screen.getByLabelText(
     "Local currency",
   ) as HTMLSelectElement;
-  const homePriceCurrencyInput = screen.getByLabelText(
-    "Home currency",
-  ) as HTMLSelectElement;
   const localUnitInput = screen.getByLabelText(
     "Local unit of measure",
-  ) as HTMLSelectElement;
-  const homeUnitInput = screen.getByLabelText(
-    "Home unit of measure",
   ) as HTMLSelectElement;
 
   test("allows the user to add and backspace chars the local price input", async () => {

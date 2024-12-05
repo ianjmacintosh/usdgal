@@ -1,14 +1,21 @@
-const getNumberFormatChar = (char: "decimalSeparatorChar" | "groupingSeparatorChar", locale: string) => {
-    const numberFormat = new Intl.NumberFormat(locale);
-    const chars = {
-        groupingSeparatorChar: numberFormat.format(1111).replace(/\d/g, ""),
-        decimalSeparatorChar: numberFormat.format(1.1).replace(/\d/g, ""),
-    }
+const getNumberFormatChar = (
+  char: "decimalSeparatorChar" | "groupingSeparatorChar",
+  locale: string,
+) => {
+  const numberFormat = new Intl.NumberFormat(locale);
+  const chars = {
+    groupingSeparatorChar: numberFormat.format(1111).replace(/\d/g, ""),
+    decimalSeparatorChar: numberFormat.format(1.1).replace(/\d/g, ""),
+  };
 
-    return chars[char]
+  return chars[char];
 };
 
-const getFormattedPrice = (price: number, userLocale = "en-US", currency = "USD") => {
+const getFormattedPrice = (
+  price: number,
+  userLocale = "en-US",
+  currency = "USD",
+) => {
   return Intl.NumberFormat(userLocale, {
     style: "currency",
     currency: currency,
@@ -61,8 +68,30 @@ const getPriceInCurrency = (
 // This table shows how much a dollar costs
 // Updated on 2024-11-17
 const dollarCost = {
-    BRL: 5.7955874,
-    USD: 1,
-    }
+  BRL: 5.7955874,
+  USD: 1,
+};
 
-export { getNumberFormatChar, getFormattedPrice, isLegalPriceValue, getPriceInCurrency, dollarCost };
+/**
+ * Convert the new price from the source currency to the target currency
+ * Multiply by LITERS_PER_GALLON if the source currency is the local currency, divide by LITERS_PER_GALLON if it is the home currency
+ */
+const getUnits = (price: number, fromUnit: string, toUnit: string) => {
+  const LITERS_PER_GALLON = 3.78541;
+  if (fromUnit === "liters" && toUnit === "gallons") {
+    return price * LITERS_PER_GALLON;
+  }
+  if (fromUnit === "gallons" && toUnit === "liters") {
+    return price / LITERS_PER_GALLON;
+  }
+  return price;
+};
+
+export {
+  getUnits,
+  getNumberFormatChar,
+  getFormattedPrice,
+  isLegalPriceValue,
+  getPriceInCurrency,
+  dollarCost,
+};

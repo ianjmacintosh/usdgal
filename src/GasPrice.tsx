@@ -2,13 +2,13 @@ import "./GasPrice.css";
 
 function GasPrice({
   label,
-  price,
+  number,
   onChange,
   disabled,
   id,
 }: {
   label: string;
-  price: string;
+  number: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   id: string;
@@ -18,7 +18,7 @@ function GasPrice({
       {label}
       <input
         type="text"
-        value={price}
+        value={number}
         onChange={onChange}
         name={id}
         id={id}
