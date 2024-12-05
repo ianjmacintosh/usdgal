@@ -1,5 +1,5 @@
 import { describe, test, expect, afterEach, beforeAll } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
