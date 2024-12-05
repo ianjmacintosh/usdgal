@@ -55,8 +55,8 @@ function App() {
           </label>
           <label>Source unit of measure
             <select id="sourceUnit" defaultValue={sourceUnit} onChange={(event) => setSourceUnit(event.target.value)}>
-              <option value="gallon">per gallon</option>
-              <option value="liter">per liter</option>
+              <option value="gallon">gallons</option>
+              <option value="liter">liters</option>
             </select>
           </label>
           <table className="operations">
