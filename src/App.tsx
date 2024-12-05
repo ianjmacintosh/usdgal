@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { getNumberFormatChar, getFormattedPrice, isLegalPriceValue, getPriceInCurrency, dollarCost, getUnits } from "./utils/numberFormat";
+import { getNumberFormatChar, getFormattedPrice, getPriceInCurrency, dollarCost, getUnits } from "./utils/numberFormat";
 
 import GasPrice from "./GasPrice";
 
