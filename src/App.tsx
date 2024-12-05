@@ -8,10 +8,12 @@ function App() {
   const LITERS_PER_GALLON = 3.78541;
   const userLocale = "en-US";
 
-  const [localCurrency] = useState<keyof typeof dollarCost>("BRL");
-  const [homeCurrency] = useState<keyof typeof dollarCost>("USD");
+  const [localCurrency, setLocalCurrency] = useState<keyof typeof dollarCost>("BRL");
+  const [homeCurrency, setHomeCurrency] = useState<keyof typeof dollarCost>("USD");
   const [localPrice, setLocalPrice] = useState("");
   const [homePrice, setHomePrice] = useState("0.00");
+  const [localUnit, setLocalUnit] = useState("liters");
+  const [homeUnit, setHomeUnit] = useState("gallons");
 
   /**
    * Handles changes to either the local or home gas price inputs.
@@ -48,8 +50,20 @@ function App() {
      * Convert the new price from the source currency to the target currency
      * Multiply by LITERS_PER_GALLON if the source currency is the local currency, divide by LITERS_PER_GALLON if it is the home currency
      */
+    const convertUnit = (price: number, fromUnit: string, toUnit: string) => {
+      if (fromUnit === "liters" && toUnit === "gallons") {
+        return price * LITERS_PER_GALLON;
+      }
+      if (fromUnit === "gallons" && toUnit === "liters") {
+        return price / LITERS_PER_GALLON;
+      }
+      return price;
+    };
+
+    const convertedUnitPrice = convertUnit(newPrice, sourceCurrency === localCurrency ? localUnit : homeUnit, sourceCurrency === localCurrency ? homeUnit : localUnit);
+
     const convertedPrice = getPriceInCurrency(
-      newPrice * (sourceCurrency === localCurrency ? LITERS_PER_GALLON : 1 / LITERS_PER_GALLON),
+      convertedUnitPrice,
       sourceCurrency,
       targetCurrency,
     );
@@ -62,13 +76,13 @@ function App() {
     /**
      * Set the state of both inputs to the new values
      */
-    setPrice(sourceCurrency, newValue);
-    setPrice(targetCurrency, formattedConvertedPrice);
-  };
-
-  const setPrice = (currency: keyof typeof dollarCost, value: string) => {
-    if (currency === localCurrency) setLocalPrice(value);
-    else setHomePrice(value);
+    if (event.target.id === "localPrice") {
+      setLocalPrice(newValue);
+      setHomePrice(formattedConvertedPrice);
+    } else {
+      setHomePrice(newValue);
+      setLocalPrice(formattedConvertedPrice);
+    }
   };
 
   return (
@@ -85,6 +99,18 @@ function App() {
               handlePriceChange(event, localCurrency, homeCurrency)
             }
           />
+          <label>Local currency
+            <select id="localCurrency" defaultValue={localCurrency} onChange={(event) => setLocalCurrency(event.target.value as keyof typeof dollarCost)}>
+              <option value="USD">US Dollar (USD)</option>
+              <option value="BRL">Brazilian Real (BRL)</option>
+            </select>
+          </label>
+          <label>Local unit of measure
+            <select id="localUnit" defaultValue={localUnit} onChange={(event) => setLocalUnit(event.target.value)}>
+              <option value="gallons">per gallon</option>
+              <option value="liters">per liter</option>
+            </select>
+          </label>
           <table className="operations">
             <tbody>
               <tr>
@@ -109,6 +135,18 @@ function App() {
               handlePriceChange(event, homeCurrency, localCurrency)
             }
           ></GasPrice>
+          <label>Home currency
+            <select id="homeCurrency" defaultValue={homeCurrency} onChange={(event) => setHomeCurrency(event.target.value as keyof typeof dollarCost)}>
+              <option value="USD">USD</option>
+              <option value="BRL">BRL</option>
+            </select>
+          </label>
+          <label>Home unit of measure
+            <select id="homeUnit" defaultValue={homeUnit} onChange={(event) => setHomeUnit(event.target.value)}>
+              <option value="gallons">per gallon</option>
+              <option value="liters">per liter</option>
+            </select>
+          </label>
         </fieldset>
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>

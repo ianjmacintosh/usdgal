@@ -12,6 +12,18 @@ describe("<App />", () => {
   const homePriceInput = screen.getByLabelText(
     "Home price (USD per gallon)",
   ) as HTMLInputElement;
+  const localPriceCurrencyInput = screen.getByLabelText(
+    "Local currency",
+  ) as HTMLSelectElement;
+  const homePriceCurrencyInput = screen.getByLabelText(
+    "Home currency",
+  ) as HTMLSelectElement;
+  const localUnitInput = screen.getByLabelText(
+    "Local unit of measure",
+  ) as HTMLSelectElement;
+  const homeUnitInput = screen.getByLabelText(
+    "Home unit of measure",
+  ) as HTMLSelectElement;
 
   test("allows the user to add and backspace chars the local price input", async () => {
     // Populate price per liter in BRL
@@ -123,11 +135,29 @@ describe("<App />", () => {
   });
 
   test("converts prices with commas from home to local", async () => {
-    // Clear the local price input
+    // Clear the home price input
     await userEvent.clear(homePriceInput);
     await user.click(homePriceInput);
     await user.keyboard("653,153.81");
 
     expect(localPriceInput.value).toBe("1,000,000.00");
+  });
+
+  test("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {
+    // Clear the local price input
+    await userEvent.clear(localPriceInput);
+
+    await user.selectOptions(localPriceCurrencyInput, "US Dollar (USD)");
+    expect(localPriceCurrencyInput.value).toBe("USD");
+
+    await user.selectOptions(localUnitInput, "per gallon");
+    expect(localUnitInput.value).toBe("gallons");
+
+    await user.click(localPriceInput);
+    await user.keyboard("1234");
+
+    expect(localPriceInput.value).toBe("1234");
+
+    expect(homePriceInput.value).toBe("1,234.00");
   });
 });
