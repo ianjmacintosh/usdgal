@@ -18,7 +18,6 @@ function App() {
   const [sourceCurrency, setSourceCurrency] =
     useState<keyof typeof dollarCost>("BRL");
   const [sourceUnit, setSourceUnit] = useState("liter");
-  const targetUnit = "gallon";
   const targetNumber = () => {
     // Safely convert the number string into a Number()
     let result = Number(
@@ -41,6 +40,7 @@ function App() {
     return getFormattedPrice(result, userLocale, targetCurrency);
   };
   const targetCurrency = "USD";
+  const targetUnit = "gallon";
 
   const handleGasPriceChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const type = event.target.id.split("_")[1];
@@ -87,7 +87,6 @@ function App() {
           number={targetNumber()}
           currency={targetCurrency}
           unit={targetUnit}
-          disabled
         ></GasPrice>
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>
