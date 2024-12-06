@@ -100,6 +100,7 @@ describe("<GasPrice />", () => {
     // Move over pig, I'm gonna make my OWN component!!
     cleanup();
     render(<TestComponent disabled />);
+
     const input = screen.getByLabelText("Simple Test gas price", { exact: false }) as HTMLInputElement;
 
     await user.click(input);
