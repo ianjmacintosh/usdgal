@@ -3,23 +3,39 @@ import { render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
+import { dollarCost } from "./utils/numberFormat";
 
 describe("<GasPrice />", () => {
   const user = userEvent.setup();
   const TestComponent = () => {
     const [number, setNumber] = useState("0.00");
+    const [currency, setCurrency] = useState<keyof typeof dollarCost>("BRL");
+    const [unit, setUnit] = useState("liter");
 
     return (
       <GasPrice
         id="notRealCurrency"
         label="Simple Test"
         number={number}
-        currency="BRL"
-        unit="liter"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          const newValue = e.target.value;
+        currency={currency}
+        unit={unit}
+        onChange={(event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+          const type = event.target.id.split("_")[1];
+          const newValue = event.target.value;
 
-          setNumber(newValue);
+          switch (type) {
+            case "number":
+              setNumber(newValue);
+              break;
+            case "currency":
+              setCurrency(newValue as keyof typeof dollarCost);
+              break;
+            case "unit":
+              setUnit(newValue);
+              break;
+            default:
+              break;
+          }
         }}
       />
     );

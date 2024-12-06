@@ -6,8 +6,8 @@ import userEvent from "@testing-library/user-event";
 describe("<App />", () => {
   const user = userEvent.setup();
   render(<App />);
-  const localPriceInput = screen.getByLabelText(
-    "Source gas price", { selector: 'input', exact: false },
+  const sourcePriceInput = screen.getByLabelText(
+    "Source gas price (BRL per liter)", { selector: 'input' },
   ) as HTMLInputElement;
   const homePriceInput = screen.getByLabelText(
     "Target gas price", { selector: 'input', exact: false },
@@ -19,15 +19,17 @@ describe("<App />", () => {
     "Source unit of measure",
   ) as HTMLSelectElement;
 
-  afterEach(cleanup);
+  afterEach(() => {
+    user.clear(sourcePriceInput);
+  });
 
   test("correctly converts BRL per liter to USD per gallon", async () => {
     // Clear the local price input
-    await userEvent.clear(localPriceInput);
+    await userEvent.clear(sourcePriceInput);
     // Expect price to show correctly in USD
-    await user.click(localPriceInput);
+    await user.click(sourcePriceInput);
     await user.keyboard("6.78");
-    expect(localPriceInput.value).toBe("6.78");
+    expect(sourcePriceInput.value).toBe("6.78");
 
     // Get output
     // Expect output to be 4.43
@@ -38,9 +40,9 @@ describe("<App />", () => {
   // 4.40 gets displayed as as 4.4, and that's a bug
   test("rounds prices correctly (to 2 decimal places)", async () => {
     // Clear the local price input
-    await userEvent.clear(localPriceInput);
+    await userEvent.clear(sourcePriceInput);
     // Enter a new price of 6.73
-    await user.click(localPriceInput);
+    await user.click(sourcePriceInput);
     await user.keyboard("6.73");
 
     // Expect output to be 4.40
@@ -53,13 +55,13 @@ describe("<App />", () => {
     await user.keyboard("4.43");
 
     // Expect the local price field to have a value based on the home price
-    expect(localPriceInput.value).toBe("6.78");
+    expect(sourcePriceInput.value).toBe("6.78");
   });
 
   test("doesn't throw NaN errors when the user provides incomplete numbers", async () => {
     // Clear the local price input
-    await userEvent.clear(localPriceInput);
-    await user.click(localPriceInput);
+    await userEvent.clear(sourcePriceInput);
+    await user.click(sourcePriceInput);
     await user.keyboard(".");
 
     expect(homePriceInput.value).not.toBe("NaN");
@@ -70,7 +72,7 @@ describe("<App />", () => {
 
   test("converts prices with commas from local to home", async () => {
     // Clear the local price input
-    await userEvent.clear(localPriceInput);
+    await userEvent.clear(sourcePriceInput);
     await user.keyboard("1,000,000");
 
     expect(homePriceInput.value).toBe("653,153.81");
@@ -78,7 +80,7 @@ describe("<App />", () => {
 
   test("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {
     // Clear the local price input
-    await userEvent.clear(localPriceInput);
+    await userEvent.clear(sourcePriceInput);
 
     await user.selectOptions(localPriceCurrencyInput, "US Dollar (USD)");
     expect(localPriceCurrencyInput.value).toBe("USD");
@@ -86,10 +88,10 @@ describe("<App />", () => {
     await user.selectOptions(localUnitInput, "gallons");
     expect(localUnitInput.value).toBe("gallon");
 
-    await user.click(localPriceInput);
+    await user.click(sourcePriceInput);
     await user.keyboard("1234");
 
-    expect(localPriceInput.value).toBe("1234");
+    expect(sourcePriceInput.value).toBe("1234");
 
     expect(homePriceInput.value).toBe("1,234.00");
   });

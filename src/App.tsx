@@ -43,15 +43,21 @@ function App() {
   const targetCurrency = "USD";
 
   const handleGasPriceChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    const key = event.target.id;
+    const type = event.target.id.split("_")[1];
     const newValue = event.target.value;
 
-    if (key === "number") {
-      setSourceNumber(newValue);
-    } else if (key === "currency") {
-      setSourceCurrency(newValue as keyof typeof dollarCost);
-    } else if (key === "unit") {
-      setSourceUnit(newValue);
+    switch (type) {
+      case "number":
+        setSourceNumber(newValue);
+        break;
+      case "currency":
+        setSourceCurrency(newValue as keyof typeof dollarCost);
+        break;
+      case "unit":
+        setSourceUnit(newValue);
+        break;
+      default:
+        break;
     }
   };
 
@@ -59,31 +65,30 @@ function App() {
     <>
       <div className="container">
         <h1>Convert Gas Price</h1>
-        <fieldset>
-          <GasPrice
-            label="Source"
-            number={sourceNumber}
-            currency={sourceCurrency}
-            unit={sourceUnit}
-            onChange={(event) => {
-              handleGasPriceChange(event);
-            }}
-          />
-          <ConversionTable
-            sourceUnit={sourceUnit}
-            targetUnit={targetUnit}
-            sourceCurrency={sourceCurrency}
-            targetCurrency={targetCurrency}
-          />
-          <GasPrice
-            id="homePrice"
-            label="Target"
-            number={targetNumber()}
-            currency={targetCurrency}
-            unit={targetUnit}
-            disabled
-          ></GasPrice>
-        </fieldset>
+        <GasPrice
+          id="localPrice"
+          label="Source"
+          number={sourceNumber}
+          currency={sourceCurrency}
+          unit={sourceUnit}
+          onChange={(event) => {
+            handleGasPriceChange(event);
+          }}
+        />
+        <ConversionTable
+          sourceUnit={sourceUnit}
+          targetUnit={targetUnit}
+          sourceCurrency={sourceCurrency}
+          targetCurrency={targetCurrency}
+        />
+        <GasPrice
+          id="homePrice"
+          label="Target"
+          number={targetNumber()}
+          currency={targetCurrency}
+          unit={targetUnit}
+          disabled
+        ></GasPrice>
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>
     </>

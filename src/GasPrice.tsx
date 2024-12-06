@@ -18,7 +18,7 @@ function GasPrice({
   id: string;
 }) {
   const onChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    if (event.target.id === "number") {
+    if (event.target.id.split("_")[1].includes("number")) {
       const newValue = event.target.value;
       if (!isLegalPriceValue(newValue)) return;
     }
@@ -36,7 +36,7 @@ function GasPrice({
           type="text"
           value={number}
           onChange={onChange}
-          id="number"
+          id={`${label}_number`}
           disabled={disabled !== undefined ? true : false}
           autoComplete="off"
           inputMode="numeric"
@@ -47,9 +47,10 @@ function GasPrice({
       <label>
         {label} currency
         <select
-          id="currency"
+          id={`${label}_currency`}
           defaultValue={currency}
           onChange={onChange}
+          aria-description="Currency"
         >
           <option value="USD">US Dollar (USD)</option>
           <option value="BRL">Brazilian Real (BRL)</option>
@@ -58,9 +59,10 @@ function GasPrice({
       <label>
         {label} unit of measure
         <select
-          id="unit"
+          id={`${label}_unit`}
           defaultValue={unit}
           onChange={onChange}
+          aria-description="Unit of volume"
         >
           <option value="gallon">gallons</option>
           <option value="liter">liters</option>
