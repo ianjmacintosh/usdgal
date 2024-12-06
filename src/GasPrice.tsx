@@ -6,7 +6,6 @@ function GasPrice({
   number,
   onChange: extraOnChange,
   disabled,
-  id,
   currency,
   unit,
 }: {
@@ -37,7 +36,6 @@ function GasPrice({
           type="text"
           value={number}
           onChange={onChange}
-          name={id}
           id="number"
           disabled={disabled !== undefined ? true : false}
           autoComplete="off"
