@@ -1,5 +1,5 @@
-import { describe, test, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, test, expect, afterEach } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 
@@ -7,10 +7,10 @@ describe("<App />", () => {
   const user = userEvent.setup();
   render(<App />);
   const localPriceInput = screen.getByLabelText(
-    "Source gas price", { exact: false },
+    "Source gas price", { selector: 'input', exact: false },
   ) as HTMLInputElement;
   const homePriceInput = screen.getByLabelText(
-    "Target gas price", { exact: false },
+    "Target gas price", { selector: 'input', exact: false },
   ) as HTMLInputElement;
   const localPriceCurrencyInput = screen.getByLabelText(
     "Source currency",
@@ -18,6 +18,8 @@ describe("<App />", () => {
   const localUnitInput = screen.getByLabelText(
     "Source unit of measure",
   ) as HTMLSelectElement;
+
+  afterEach(cleanup);
 
   test("correctly converts BRL per liter to USD per gallon", async () => {
     // Clear the local price input

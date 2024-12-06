@@ -42,10 +42,17 @@ function App() {
   };
   const targetCurrency = "USD";
 
-  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGasPriceChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+    const key = event.target.id;
     const newValue = event.target.value;
 
-    setSourceNumber(newValue);
+    if (key === "number") {
+      setSourceNumber(newValue);
+    } else if (key === "currency") {
+      setSourceCurrency(newValue as keyof typeof dollarCost);
+    } else if (key === "unit") {
+      setSourceUnit(newValue);
+    }
   };
 
   return (
@@ -54,37 +61,14 @@ function App() {
         <h1>Convert Gas Price</h1>
         <fieldset>
           <GasPrice
-            id="localPrice"
-            label={`Source gas price (${sourceCurrency} per ${sourceUnit})`}
+            label="Source"
             number={sourceNumber}
+            currency={sourceCurrency}
+            unit={sourceUnit}
             onChange={(event) => {
-              handlePriceChange(event);
+              handleGasPriceChange(event);
             }}
           />
-          <label>
-            Source currency
-            <select
-              id="localCurrency"
-              defaultValue={sourceCurrency}
-              onChange={(event) =>
-                setSourceCurrency(event.target.value as keyof typeof dollarCost)
-              }
-            >
-              <option value="USD">US Dollar (USD)</option>
-              <option value="BRL">Brazilian Real (BRL)</option>
-            </select>
-          </label>
-          <label>
-            Source unit of measure
-            <select
-              id="sourceUnit"
-              defaultValue={sourceUnit}
-              onChange={(event) => setSourceUnit(event.target.value)}
-            >
-              <option value="gallon">gallons</option>
-              <option value="liter">liters</option>
-            </select>
-          </label>
           <ConversionTable
             sourceUnit={sourceUnit}
             targetUnit={targetUnit}
@@ -93,8 +77,10 @@ function App() {
           />
           <GasPrice
             id="homePrice"
-            label={`Target gas price (${targetCurrency} per ${targetUnit})`}
+            label="Target"
             number={targetNumber()}
+            currency={targetCurrency}
+            unit={targetUnit}
             disabled
           ></GasPrice>
         </fieldset>
