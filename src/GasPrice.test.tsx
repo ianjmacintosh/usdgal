@@ -1,4 +1,4 @@
-import { describe, test, expect, afterEach, beforeAll, beforeEach } from "vitest";
+import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
