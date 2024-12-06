@@ -1,21 +1,35 @@
+import { dollarCost } from "./utils/numberFormat";
+
 const ConversionTable = ({
-    exchangeRate,
+    sourceUnit,
+    targetUnit,
     sourceCurrency,
     targetCurrency,
 }: {
-    exchangeRate: number;
-    sourceCurrency: string;
-    targetCurrency: string;
+    sourceUnit: string;
+    targetUnit: string;
+    sourceCurrency: keyof typeof dollarCost;
+    targetCurrency: keyof typeof dollarCost;
 }) => {
+    const exchangeRate = Number(
+        dollarCost[sourceCurrency] / dollarCost[targetCurrency],
+    )
+    const unitExchangeRate = sourceUnit === "gallon" ? 1 : 3.78541;
     return (
         <table className="operations">
+            <caption>Conversion Operations</caption>
             <tbody>
-                <tr>
-                    <td className="operation">× 3.78541</td>
-                    <td className="operation-description">liters per gallon</td>
+                <tr aria-label="Unit of measure conversion">
+                    {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
+                    if I don't include it, it reads like "x 1gallons per gallon" */}
+                    <td className="operation">× {unitExchangeRate} </td>
+                    {/* TODO: Use an Intl method to pluralize the source unit. Adding an "s" to pluralize the source unit is a bit of a hack */}
+                    <td className="operation-description">{sourceUnit}s per {targetUnit}</td>
                 </tr>
-                <tr>
-                    <td className="operation">÷ {exchangeRate}</td>
+                <tr aria-label="Currency conversion">
+                    {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
+                    if I don't include it, it reads like "÷ 1USD per USD" */}
+                    <td className="operation">÷ {exchangeRate} </td>
                     <td className="operation-description">
                         {sourceCurrency} per {targetCurrency}
                         <br />

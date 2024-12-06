@@ -86,7 +86,8 @@ function App() {
             </select>
           </label>
           <ConversionTable
-            exchangeRate={dollarCost[sourceCurrency]}
+            sourceUnit={sourceUnit}
+            targetUnit={targetUnit}
             sourceCurrency={sourceCurrency}
             targetCurrency={targetCurrency}
           />
