@@ -81,7 +81,7 @@ describe("<App />", () => {
     await user.selectOptions(localPriceCurrencyInput, "US Dollar (USD)");
     expect(localPriceCurrencyInput.value).toBe("USD");
 
-    await user.selectOptions(localUnitInput, "per gallon");
+    await user.selectOptions(localUnitInput, "gallons");
     expect(localUnitInput.value).toBe("gallon");
 
     await user.click(localPriceInput);
