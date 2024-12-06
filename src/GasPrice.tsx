@@ -51,6 +51,7 @@ function GasPrice({
           defaultValue={currency}
           onChange={onChange}
           aria-description="Currency"
+          disabled={disabled}
         >
           <option value="USD">US Dollar (USD)</option>
           <option value="BRL">Brazilian Real (BRL)</option>
@@ -63,6 +64,7 @@ function GasPrice({
           defaultValue={unit}
           onChange={onChange}
           aria-description="Unit of volume"
+          disabled={disabled}
         >
           <option value="gallon">gallons</option>
           <option value="liter">liters</option>
