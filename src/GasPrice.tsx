@@ -37,7 +37,7 @@ function GasPrice({
           value={number}
           onChange={onChange}
           id={`${label.toLowerCase()}_number`}
-          disabled={disabled !== undefined ? true : false}
+          disabled={label === "Target" || disabled}
           autoComplete="off"
           inputMode="numeric"
           pattern="^[0-9]*[.,]?[0-9]*$"
