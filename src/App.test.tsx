@@ -9,15 +9,15 @@ describe("<App />", () => {
   const sourcePriceInput = screen.getByLabelText(
     "Source gas price (BRL per liter)", { selector: 'input' },
   ) as HTMLInputElement;
-  const homePriceInput = screen.getByLabelText(
-    "Target gas price", { selector: 'input', exact: false },
-  ) as HTMLInputElement;
-  const localPriceCurrencyInput = screen.getByLabelText(
+  const sourceCurrencyInput = screen.getByLabelText(
     "Source currency",
   ) as HTMLSelectElement;
-  const localUnitInput = screen.getByLabelText(
+  const sourceUnitInput = screen.getByLabelText(
     "Source unit of measure",
   ) as HTMLSelectElement;
+  const targetPriceInput = screen.getByLabelText(
+    "Target gas price", { selector: 'input', exact: false },
+  ) as HTMLInputElement;
 
   afterEach(() => {
     user.clear(sourcePriceInput);
@@ -33,7 +33,7 @@ describe("<App />", () => {
 
     // Get output
     // Expect output to be 4.43
-    expect(homePriceInput.value).toBe("4.43");
+    expect(targetPriceInput.value).toBe("4.43");
   });
 
   // 6.73 BRL per liter converts to 4.40 USD per gallon (at an exchange rate of 1 USD = 5.7955874 BRL)
@@ -46,12 +46,12 @@ describe("<App />", () => {
     await user.keyboard("6.73");
 
     // Expect output to be 4.40
-    expect(homePriceInput.value).toBe("4.40");
+    expect(targetPriceInput.value).toBe("4.40");
   });
 
   test.skip("updates the local price", async () => {
     // Set a home price
-    await user.click(homePriceInput);
+    await user.click(targetPriceInput);
     await user.keyboard("4.43");
 
     // Expect the local price field to have a value based on the home price
@@ -64,8 +64,8 @@ describe("<App />", () => {
     await user.click(sourcePriceInput);
     await user.keyboard(".");
 
-    expect(homePriceInput.value).not.toBe("NaN");
-    expect(homePriceInput.value).toBe("0.00");
+    expect(targetPriceInput.value).not.toBe("NaN");
+    expect(targetPriceInput.value).toBe("0.00");
 
     await user.keyboard("{backspace}");
   });
@@ -75,24 +75,24 @@ describe("<App />", () => {
     await userEvent.clear(sourcePriceInput);
     await user.keyboard("1,000,000");
 
-    expect(homePriceInput.value).toBe("653,153.81");
+    expect(targetPriceInput.value).toBe("653,153.81");
   });
 
   test("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {
     // Clear the local price input
     await userEvent.clear(sourcePriceInput);
 
-    await user.selectOptions(localPriceCurrencyInput, "US Dollar (USD)");
-    expect(localPriceCurrencyInput.value).toBe("USD");
+    await user.selectOptions(sourceCurrencyInput, "US Dollar (USD)");
+    expect(sourceCurrencyInput.value).toBe("USD");
 
-    await user.selectOptions(localUnitInput, "gallons");
-    expect(localUnitInput.value).toBe("gallon");
+    await user.selectOptions(sourceUnitInput, "gallons");
+    expect(sourceUnitInput.value).toBe("gallon");
 
     await user.click(sourcePriceInput);
     await user.keyboard("1234");
 
     expect(sourcePriceInput.value).toBe("1234");
 
-    expect(homePriceInput.value).toBe("1,234.00");
+    expect(targetPriceInput.value).toBe("1,234.00");
   });
 });
