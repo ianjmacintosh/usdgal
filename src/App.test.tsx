@@ -18,6 +18,12 @@ describe("<App />", () => {
   const targetPriceInput = screen.getByLabelText(
     "Target gas price", { selector: 'input', exact: false },
   ) as HTMLInputElement;
+  const targetCurrencyInput = screen.getByLabelText(
+    "Target currency",
+  ) as HTMLSelectElement;
+  const targetUnitInput = screen.getByLabelText(
+    "Target unit of measure",
+  ) as HTMLSelectElement;
 
   afterEach(() => {
     user.clear(sourcePriceInput);
@@ -94,5 +100,23 @@ describe("<App />", () => {
     expect(sourcePriceInput.value).toBe("1234");
 
     expect(targetPriceInput.value).toBe("1,234.00");
+  });
+
+  test("updates target price (but not source price) when the user updates the target currency or units", async () => {
+    // Clear the local price input
+    await userEvent.clear(sourcePriceInput);
+    await user.keyboard("6.78");
+
+    await user.selectOptions(sourceCurrencyInput, "Brazilian Real (BRL)");
+    await user.selectOptions(sourceUnitInput, "liters");
+
+    expect(sourcePriceInput.value).toBe("6.78");
+    expect(targetPriceInput.value).toBe("4.43");
+
+    await user.selectOptions(targetCurrencyInput, "Brazilian Real (BRL)");
+    expect(targetPriceInput.value).toBe("25.67");
+
+    await user.selectOptions(targetUnitInput, "liters");
+    expect(targetPriceInput.value).toBe("6.78");
   });
 });

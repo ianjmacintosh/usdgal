@@ -39,22 +39,30 @@ function App() {
     // Finally, format that number as a string
     return getFormattedPrice(result, userLocale, targetCurrency);
   };
-  const targetCurrency = "USD";
-  const targetUnit = "gallon";
+
+  const [targetCurrency, setTargetCurrency] = useState<keyof typeof dollarCost>("USD");
+  const [targetUnit, setTargetUnit] = useState("gallon");
 
   const handleGasPriceChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    const type = event.target.id.split("_")[1];
+    const type = event.target.id;
     const newValue = event.target.value;
 
+    // TODO: Fix this insanity; use nested components to define individual change handlers
     switch (type) {
-      case "number":
+      case "source_number":
         setSourceNumber(newValue);
         break;
-      case "currency":
+      case "source_currency":
         setSourceCurrency(newValue as keyof typeof dollarCost);
         break;
-      case "unit":
+      case "source_unit":
         setSourceUnit(newValue);
+        break;
+      case "target_currency":
+        setTargetCurrency(newValue as keyof typeof dollarCost);
+        break;
+      case "target_unit":
+        setTargetUnit(newValue);
         break;
       default:
         break;
@@ -87,6 +95,9 @@ function App() {
           number={targetNumber()}
           currency={targetCurrency}
           unit={targetUnit}
+          onChange={(event) => {
+            handleGasPriceChange(event);
+          }}
         ></GasPrice>
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>

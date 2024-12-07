@@ -36,7 +36,7 @@ function GasPrice({
           type="text"
           value={number}
           onChange={onChange}
-          id={`${label}_number`}
+          id={`${label.toLowerCase()}_number`}
           disabled={disabled !== undefined ? true : false}
           autoComplete="off"
           inputMode="numeric"
@@ -47,7 +47,7 @@ function GasPrice({
       <label>
         {label} currency
         <select
-          id={`${label}_currency`}
+          id={`${label.toLowerCase()}_currency`}
           defaultValue={currency}
           onChange={onChange}
           aria-description="Currency"
@@ -60,7 +60,7 @@ function GasPrice({
       <label>
         {label} unit of measure
         <select
-          id={`${label}_unit`}
+          id={`${label.toLowerCase()}_unit`}
           defaultValue={unit}
           onChange={onChange}
           aria-description="Unit of volume"
