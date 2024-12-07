@@ -6,9 +6,7 @@
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
-    "ghcr.io/duduribeiro/devcontainer-features/tmux:1": {
-        "version": "latest"
-    }
+    "ghcr.io/duduribeiro/devcontainer-features/tmux:1": {}
 },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
@@ -31,7 +29,7 @@
     }
   },
   // Configure tool-specific properties.
-  // "customizations": {},
+  // "customizations": {}
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  "remoteUser": "root"
+  // "remoteUser": "root"
 }
