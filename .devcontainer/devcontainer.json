@@ -11,10 +11,10 @@
   // Use 'postCreateCommand' to run commands after the container is created.
   // "post": "yarn install",
   "postCreateCommand": "npm install",
-  "postAttachCommand": {
-    "server": "npm run dev",
-    "test": "npm test"
-  },
+  // "postAttachCommand": {
+  //   "server": "npm run dev",
+  //   "test": "npm test"
+  // },
   "customizations": {
     "vscode": {
       "editor.formatOnSave": true,
