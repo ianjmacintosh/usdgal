@@ -17,7 +17,7 @@ function App() {
   const [sourceNumber, setSourceNumber] = useState("");
   const [sourceCurrency, setSourceCurrency] =
     useState<keyof typeof dollarCost>("BRL");
-  const [sourceUnit, setSourceUnit] = useState("liter");
+  const [sourceUnit, setSourceUnit] = useState<"liter" | "gallon">("liter");
   const targetNumber = () => {
     // Safely convert the number string into a Number()
     let result = Number(
@@ -41,7 +41,7 @@ function App() {
   };
 
   const [targetCurrency, setTargetCurrency] = useState<keyof typeof dollarCost>("USD");
-  const [targetUnit, setTargetUnit] = useState("gallon");
+  const [targetUnit, setTargetUnit] = useState<"liter" | "gallon">("gallon");
 
   const handleGasPriceChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const type = event.target.id;
@@ -56,13 +56,13 @@ function App() {
         setSourceCurrency(newValue as keyof typeof dollarCost);
         break;
       case "source_unit":
-        setSourceUnit(newValue);
+        setSourceUnit(newValue as "liter" | "gallon");
         break;
       case "target_currency":
         setTargetCurrency(newValue as keyof typeof dollarCost);
         break;
       case "target_unit":
-        setTargetUnit(newValue);
+        setTargetUnit(newValue as "liter" | "gallon");
         break;
       default:
         break;

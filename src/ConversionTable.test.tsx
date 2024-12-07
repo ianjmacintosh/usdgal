@@ -47,6 +47,25 @@ describe("<ConversionTable />", () => {
 
         expect(
             screen.getByLabelText("Currency conversion").textContent,
-        ).toContain('÷ 1 USD per USD');
+        ).toContain('× 1 USD per USD');
+    });
+
+    test("changes operations to keep numbers positive", async () => {
+        render(
+            <ConversionTable
+                sourceUnit="gallon"
+                targetUnit="liter"
+                sourceCurrency="USD"
+                targetCurrency="BRL"
+            />,
+        );
+
+        expect(
+            screen.getByLabelText("Unit of measure conversion").textContent,
+        ).toContain('÷ 3.78541 gallons per liter');
+
+        expect(
+            screen.getByLabelText("Currency conversion").textContent,
+        ).toContain('× 5.7955874 USD per BRL');
     });
 });
