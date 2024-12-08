@@ -3,7 +3,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
-import { dollarCost } from "./utils/numberFormat";
+import { dollarCost, getFormattedPrice, getNumberFormatChar } from "./utils/numberFormat";
 
 describe("<GasPrice />", () => {
   const user = userEvent.setup();
@@ -36,6 +36,10 @@ describe("<GasPrice />", () => {
             default:
               break;
           }
+        }}
+        onNumberBlur={(newValue: string) => {
+          newValue = newValue.replace(getNumberFormatChar("groupingSeparatorChar", "en-US"), "");
+          setNumber(getFormattedPrice(Number(newValue), "en-US", currency));
         }}
         {...props}
       />

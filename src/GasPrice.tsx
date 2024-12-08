@@ -1,10 +1,11 @@
 import "./GasPrice.css";
-import { dollarCost, getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
+import { dollarCost, isLegalPriceValue } from "./utils/numberFormat";
 
 function GasPrice({
   label,
   number,
   onChange: extraOnChange,
+  onNumberBlur: handleNumberBlur,
   disabled,
   currency,
   unit,
@@ -13,6 +14,7 @@ function GasPrice({
   number: string;
   currency: keyof typeof dollarCost;
   unit: string;
+  onNumberBlur?: (newValue: string) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
   id: string;
@@ -28,21 +30,6 @@ function GasPrice({
     }
   }
 
-  const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    let newValue = event.target.value;
-
-    if (event.target.id.includes("number")) {
-      newValue = newValue.replace(
-        new RegExp(
-          getNumberFormatChar("groupingSeparatorChar", "en-US"),
-          "g",
-        ),
-        "",
-      );
-      event.target.value = getFormattedPrice(Number(newValue), "en-US", currency);
-    }
-  }
-
   return (
     <fieldset>
       <label>
@@ -51,7 +38,7 @@ function GasPrice({
           type="text"
           value={number}
           onChange={onChange}
-          onBlur={onBlur}
+          onBlur={(event) => handleNumberBlur?.(event.target.value)}
           id={`${label.toLowerCase()}_number`}
           disabled={label === "Target" || disabled}
           autoComplete="off"

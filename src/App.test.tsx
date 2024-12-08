@@ -87,6 +87,9 @@ describe("<App />", () => {
   test("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {
     // Clear the local price input
     await userEvent.clear(sourcePriceInput);
+    await user.click(sourcePriceInput);
+    await user.keyboard("1234");
+    expect(sourcePriceInput.value).toBe("1234");
 
     await user.selectOptions(sourceCurrencyInput, "US Dollar (USD)");
     expect(sourceCurrencyInput.value).toBe("USD");
@@ -94,10 +97,7 @@ describe("<App />", () => {
     await user.selectOptions(sourceUnitInput, "gallons");
     expect(sourceUnitInput.value).toBe("gallon");
 
-    await user.click(sourcePriceInput);
-    await user.keyboard("1234");
 
-    expect(sourcePriceInput.value).toBe("1234");
 
     expect(targetPriceInput.value).toBe("1,234.00");
   });

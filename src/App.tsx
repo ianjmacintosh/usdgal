@@ -89,6 +89,10 @@ function App() {
           onChange={(event) => {
             handleGasPriceChange(event);
           }}
+          onNumberBlur={(newValue: string) => {
+            newValue = newValue.replace(getNumberFormatChar("groupingSeparatorChar", userLocale), "");
+            setSourceNumber(getFormattedPrice(Number(newValue), userLocale, sourceCurrency));
+          }}
         />
         <ConversionTable
           sourceUnit={sourceUnit}
