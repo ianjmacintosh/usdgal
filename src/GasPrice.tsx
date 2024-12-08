@@ -1,5 +1,5 @@
 import "./GasPrice.css";
-import { dollarCost, isLegalPriceValue } from "./utils/numberFormat";
+import { dollarCost, getFormattedPrice, isLegalPriceValue } from "./utils/numberFormat";
 
 function GasPrice({
   label,
@@ -28,6 +28,14 @@ function GasPrice({
     }
   }
 
+  const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+
+    if (event.target.id.includes("number")) {
+      event.target.value = getFormattedPrice(Number(newValue), "en-US", currency);
+    }
+  }
+
   return (
     <fieldset>
       <label>
@@ -36,6 +44,7 @@ function GasPrice({
           type="text"
           value={number}
           onChange={onChange}
+          onBlur={onBlur}
           id={`${label.toLowerCase()}_number`}
           disabled={label === "Target" || disabled}
           autoComplete="off"
