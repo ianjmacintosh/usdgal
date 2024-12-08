@@ -159,4 +159,15 @@ describe("<GasPrice />", () => {
 
     expect(input.value).toBe("1.00")
   });
+
+  test("keeps value and display value separate", async () => {
+    const input = screen.getByLabelText("SimpleTest gas price", { exact: false }) as HTMLInputElement;
+
+    await user.clear(input);
+    await user.click(input);
+    await user.keyboard("1,000");
+    await user.tab();
+
+    expect(input.dataset.number).toBe("1000");
+  })
 });

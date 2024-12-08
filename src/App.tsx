@@ -14,11 +14,15 @@ import ConversionTable from "./ConversionTable";
 function App() {
   const userLocale = "en-US";
 
-  const [sourceNumber, setSourceNumber] = useState("");
-  const [sourceCurrency, setSourceCurrency] =
+  const [topNumber, setTopNumber] = useState("");
+  const [topCurrency, setTopCurrency] =
     useState<keyof typeof dollarCost>("BRL");
-  const [sourceUnit, setSourceUnit] = useState<"liter" | "gallon">("liter");
-  const targetNumber = () => {
+  const [topUnit, setTopUnit] = useState<"liter" | "gallon">("liter");
+  const [bottomNumber, setBottomNumber] = useState("0.00");
+  const [bottomCurrency, setBottomCurrency] = useState<keyof typeof dollarCost>("USD");
+  const [bottomUnit, setBottomUnit] = useState<"liter" | "gallon">("gallon");
+
+  const getGasPriceNumber = (sourceNumber: number, sourceCurrency: keyof typeof dollarCost, sourceUnit: "liter" | "gallon", targetCurrency: keyof typeof dollarCost, targetUnit: "liter" | "gallon") => {
     // Safely convert the number string into a Number()
     let result = Number(
       sourceNumber.replace(
@@ -36,20 +40,11 @@ function App() {
     // Convert _that_ number using the exchange rate from source currency to target currency
     result = getPriceInCurrency(result, sourceCurrency, targetCurrency);
 
-    // Finally, format that number as a string
-    return getFormattedPrice(result, userLocale, targetCurrency);
-  };
+    return result;
+  }
 
-  const [targetCurrency, setTargetCurrency] = useState<keyof typeof dollarCost>("USD");
-  const [targetUnit, setTargetUnit] = useState<"liter" | "gallon">("gallon");
-  const [direction, setDirection] = useState<"up" | "down">("down");
-
-  const topNumber = direction === "up" ? targetNumber() : sourceNumber,
-    topCurrency = direction === "up" ? targetCurrency : sourceCurrency,
-    topUnit = direction === "up" ? targetUnit : sourceUnit,
-    bottomNumber = direction === "up" ? sourceNumber : targetNumber(),
-    bottomCurrency = direction === "up" ? sourceCurrency : targetCurrency,
-    bottomUnit = direction === "up" ? sourceUnit : targetUnit;
+  const topToBottomResult = getGasPriceNumber(Number(topNumber), topCurrency, topUnit, bottomCurrency, bottomUnit);
+  const bottomToTopResult = getGasPriceNumber(Number(bottomNumber), bottomCurrency, bottomUnit, topCurrency, topUnit);
 
   const handleGasPriceChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const type = event.target.id;
@@ -58,39 +53,23 @@ function App() {
     // TODO: Fix this insanity; use nested components to define individual change handlers
     switch (type) {
       case "source_number":
-        setDirection("down")
-        setSourceNumber(newValue);
+        setTopNumber(newValue)
         break;
       case "source_currency":
-        setSourceCurrency(newValue as keyof typeof dollarCost);
+        setTopCurrency(newValue as keyof typeof dollarCost);
         break;
       case "source_unit":
-        setSourceUnit(newValue as "liter" | "gallon");
+        setTopUnit(newValue as "liter" | "gallon");
         break;
       case "target_currency":
-        setTargetCurrency(newValue as keyof typeof dollarCost);
+        setBottomCurrency(newValue as keyof typeof dollarCost);
         break;
       case "target_unit":
-        setTargetUnit(newValue as "liter" | "gallon");
-        break;
-      case "target_number":
-        {
-          const newSourceCurrency = targetCurrency;
-          const newSourceUnit = targetUnit;
-          const newSourceNumber = newValue;
-          const newTargetCurrency = sourceCurrency;
-          const newTargetUnit = sourceUnit;
-          setDirection("up")
-          setSourceUnit(newSourceUnit);
-          setSourceCurrency(newSourceCurrency);
-          setSourceNumber(newSourceNumber);
-          setTargetUnit(newTargetUnit);
-          setTargetCurrency(newTargetCurrency);
-          break;
-        }
-      default:
+        setBottomUnit(newValue as "liter" | "gallon");
         break;
     }
+
+    setBottomNumber(getFormattedPrice(bottomToTopResult(topToBottomResult, userLocale, bottomCurrency)))
   };
 
   return (
