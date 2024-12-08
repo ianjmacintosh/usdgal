@@ -42,13 +42,14 @@ function App() {
 
   const [targetCurrency, setTargetCurrency] = useState<keyof typeof dollarCost>("USD");
   const [targetUnit, setTargetUnit] = useState<"liter" | "gallon">("gallon");
+  const [direction, setDirection] = useState<"up" | "down">("down");
 
-  const topNumber = sourceNumber,
-    topCurrency = sourceCurrency,
-    topUnit = sourceUnit,
-    bottomNumber = targetNumber(),
-    bottomCurrency = targetCurrency,
-    bottomUnit = targetUnit;
+  const topNumber = direction === "up" ? targetNumber() : sourceNumber,
+    topCurrency = direction === "up" ? targetCurrency : sourceCurrency,
+    topUnit = direction === "up" ? targetUnit : sourceUnit,
+    bottomNumber = direction === "up" ? sourceNumber : targetNumber(),
+    bottomCurrency = direction === "up" ? sourceCurrency : targetCurrency,
+    bottomUnit = direction === "up" ? sourceUnit : targetUnit;
 
   const handleGasPriceChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const type = event.target.id;
@@ -57,6 +58,7 @@ function App() {
     // TODO: Fix this insanity; use nested components to define individual change handlers
     switch (type) {
       case "source_number":
+        setDirection("down")
         setSourceNumber(newValue);
         break;
       case "source_currency":
@@ -70,6 +72,10 @@ function App() {
         break;
       case "target_unit":
         setTargetUnit(newValue as "liter" | "gallon");
+        break;
+      case "target_number":
+        setDirection("up")
+        setSourceNumber(newValue);
         break;
       default:
         break;
@@ -108,6 +114,10 @@ function App() {
           unit={bottomUnit}
           onChange={(event) => {
             handleGasPriceChange(event);
+          }}
+          onNumberBlur={(newValue: string) => {
+            newValue = newValue.replace(getNumberFormatChar("groupingSeparatorChar", userLocale), "");
+            setSourceNumber(getFormattedPrice(Number(newValue), userLocale, sourceCurrency));
           }}
         ></GasPrice>
       </div>

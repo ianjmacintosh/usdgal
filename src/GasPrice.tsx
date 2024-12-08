@@ -40,7 +40,7 @@ function GasPrice({
           onChange={onChange}
           onBlur={(event) => handleNumberBlur?.(event.target.value)}
           id={`${label.toLowerCase()}_number`}
-          disabled={label === "Target" || disabled}
+          disabled={disabled}
           autoComplete="off"
           inputMode="numeric"
           pattern="^[0-9]*[.,]?[0-9]*$"

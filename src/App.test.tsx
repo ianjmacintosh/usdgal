@@ -55,15 +55,6 @@ describe("<App />", () => {
     expect(targetPriceInput.value).toBe("4.40");
   });
 
-  test.skip("updates the local price", async () => {
-    // Set a home price
-    await user.click(targetPriceInput);
-    await user.keyboard("4.43");
-
-    // Expect the local price field to have a value based on the home price
-    expect(sourcePriceInput.value).toBe("6.78");
-  });
-
   test("doesn't throw NaN errors when the user provides incomplete numbers", async () => {
     // Clear the local price input
     await userEvent.clear(sourcePriceInput);
@@ -118,5 +109,14 @@ describe("<App />", () => {
 
     await user.selectOptions(targetUnitInput, "liters");
     expect(targetPriceInput.value).toBe("6.78");
+  });
+
+  test("updates the top price when the user changes the bottom price", async () => {
+    // Set a home price
+    await user.click(targetPriceInput);
+    await user.keyboard("4.43");
+
+    // Expect the local price field to have a value based on the home price
+    expect(sourcePriceInput.value).toBe("6.78");
   });
 });
