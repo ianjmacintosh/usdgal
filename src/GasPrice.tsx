@@ -1,5 +1,5 @@
 import "./GasPrice.css";
-import { dollarCost, getFormattedPrice, isLegalPriceValue } from "./utils/numberFormat";
+import { dollarCost, getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
 
 function GasPrice({
   label,
@@ -29,9 +29,16 @@ function GasPrice({
   }
 
   const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
+    let newValue = event.target.value;
 
     if (event.target.id.includes("number")) {
+      newValue = newValue.replace(
+        new RegExp(
+          getNumberFormatChar("groupingSeparatorChar", "en-US"),
+          "g",
+        ),
+        "",
+      );
       event.target.value = getFormattedPrice(Number(newValue), "en-US", currency);
     }
   }

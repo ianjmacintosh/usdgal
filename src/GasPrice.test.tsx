@@ -127,4 +127,15 @@ describe("<GasPrice />", () => {
 
     expect(input.value).toBe("10,000.00");
   });
+
+  test("doesn't throw NaN when receiving a malformed string", async () => {
+    const input = screen.getByLabelText("SimpleTest gas price", { exact: false }) as HTMLInputElement;
+
+    await user.clear(input);
+    await user.click(input);
+    await user.keyboard("11,11.00");
+    await user.tab();
+
+    expect(input.value).toBe("1,111.00");
+  });
 });
