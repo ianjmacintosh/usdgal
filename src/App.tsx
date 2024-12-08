@@ -43,6 +43,13 @@ function App() {
   const [targetCurrency, setTargetCurrency] = useState<keyof typeof dollarCost>("USD");
   const [targetUnit, setTargetUnit] = useState<"liter" | "gallon">("gallon");
 
+  const topNumber = sourceNumber,
+    topCurrency = sourceCurrency,
+    topUnit = sourceUnit,
+    bottomNumber = targetNumber(),
+    bottomCurrency = targetCurrency,
+    bottomUnit = targetUnit;
+
   const handleGasPriceChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const type = event.target.id;
     const newValue = event.target.value;
@@ -76,9 +83,9 @@ function App() {
         <GasPrice
           id="localPrice"
           label="Source"
-          number={sourceNumber}
-          currency={sourceCurrency}
-          unit={sourceUnit}
+          number={topNumber}
+          currency={topCurrency}
+          unit={topUnit}
           onChange={(event) => {
             handleGasPriceChange(event);
           }}
@@ -92,9 +99,9 @@ function App() {
         <GasPrice
           id="homePrice"
           label="Target"
-          number={targetNumber()}
-          currency={targetCurrency}
-          unit={targetUnit}
+          number={bottomNumber}
+          currency={bottomCurrency}
+          unit={bottomUnit}
           onChange={(event) => {
             handleGasPriceChange(event);
           }}
