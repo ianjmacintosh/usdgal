@@ -74,9 +74,20 @@ function App() {
         setTargetUnit(newValue as "liter" | "gallon");
         break;
       case "target_number":
-        setDirection("up")
-        setSourceNumber(newValue);
-        break;
+        {
+          const newSourceCurrency = targetCurrency;
+          const newSourceUnit = targetUnit;
+          const newSourceNumber = newValue;
+          const newTargetCurrency = sourceCurrency;
+          const newTargetUnit = sourceUnit;
+          setDirection("up")
+          setSourceUnit(newSourceUnit);
+          setSourceCurrency(newSourceCurrency);
+          setSourceNumber(newSourceNumber);
+          setTargetUnit(newTargetUnit);
+          setTargetCurrency(newTargetCurrency);
+          break;
+        }
       default:
         break;
     }
