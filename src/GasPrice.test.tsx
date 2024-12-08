@@ -138,4 +138,21 @@ describe("<GasPrice />", () => {
 
     expect(input.value).toBe("1,111.00");
   });
+
+  test("doesn't get value and state out of sync", async () => {
+    const input = screen.getByLabelText("SimpleTest gas price", { exact: false }) as HTMLInputElement;
+
+    await user.clear(input);
+    await user.click(input);
+    await user.keyboard("1,");
+    await user.tab();
+
+    expect(input.value).toBe("1.00");
+
+    await user.click(input);
+    await user.keyboard(",");
+
+
+    expect(input.value).toBe("1.00")
+  });
 });
