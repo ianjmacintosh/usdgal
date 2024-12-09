@@ -3,7 +3,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
-import { dollarCost, getFormattedPrice, getNumberFormatChar } from "./utils/numberFormat";
+import { dollarCost } from "./utils/numberFormat";
 
 describe("<GasPrice />", () => {
   const user = userEvent.setup();

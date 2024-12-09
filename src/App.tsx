@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import {
-  getNumberFormatChar,
-  getFormattedPrice,
   getPriceInCurrency,
   dollarCost,
   getUnits,
@@ -12,7 +10,7 @@ import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
 
 function App() {
-  const userLocale = "en-US";
+  // const userLocale = "en-US";
 
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] =
@@ -22,6 +20,7 @@ function App() {
   const [bottomCurrency, setBottomCurrency] =
     useState<keyof typeof dollarCost>("USD");
   const [bottomUnit, setBottomUnit] = useState<"liter" | "gallon">("gallon");
+  const [direction, setDirection] = useState<"up" | "down">("down");
 
   const getGasPrice = (
     sourceNumber: number,
@@ -39,6 +38,22 @@ function App() {
     return result;
   };
 
+  useEffect(() => {
+    const sourceNumber = direction === "down" ? topNumber : bottomNumber;
+    const sourceCurrency = direction === "down" ? topCurrency : bottomCurrency;
+    const sourceUnit = direction === "down" ? topUnit : bottomUnit;
+    const targetCurrency = direction === "down" ? bottomCurrency : topCurrency;
+    const targetUnit = direction === "down" ? bottomUnit : topUnit;
+
+    const newResult = getGasPrice(sourceNumber, sourceCurrency, sourceUnit, targetCurrency, targetUnit)
+
+    if (direction === "up") {
+      setTopNumber(newResult)
+    } else {
+      setBottomNumber(newResult)
+    }
+  }, [direction, topNumber, topCurrency, topUnit, bottomCurrency, bottomUnit, bottomNumber])
+
   return (
     <>
       <div className="container">
@@ -50,6 +65,7 @@ function App() {
           currency={topCurrency}
           unit={topUnit}
           onNumberChange={(newNumber: number) => {
+            setDirection("down")
             setTopNumber(newNumber);
           }}
           onUnitChange={(newUnit: "liter" | "gallon") => {
@@ -68,8 +84,12 @@ function App() {
         <GasPrice
           id="homePrice"
           label="Bottom"
-          number={getGasPrice(topNumber, topCurrency, topUnit, bottomCurrency, bottomUnit)}
+          number={bottomNumber}
           currency={bottomCurrency}
+          onNumberChange={(newValue: number) => {
+            setDirection("up")
+            setBottomNumber(newValue);
+          }}
           unit={bottomUnit}
           onUnitChange={(newUnit: "liter" | "gallon") => {
             setBottomUnit(newUnit);
@@ -78,6 +98,7 @@ function App() {
             setBottomCurrency(newCurrency);
           }}
         ></GasPrice>
+        Direction: {direction}
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>
     </>
