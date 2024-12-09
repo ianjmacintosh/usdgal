@@ -98,7 +98,6 @@ function App() {
             setBottomCurrency(newCurrency);
           }}
         ></GasPrice>
-        Direction: {direction}
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>
     </>
