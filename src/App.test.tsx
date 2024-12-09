@@ -7,22 +7,22 @@ describe("<App />", () => {
   const user = userEvent.setup();
   render(<App />);
   const sourcePriceInput = screen.getByLabelText(
-    "Source gas price (BRL per liter)", { selector: 'input' },
+    "Top gas price", { selector: 'input', exact: false },
   ) as HTMLInputElement;
   const sourceCurrencyInput = screen.getByLabelText(
-    "Source currency",
+    "Top currency",
   ) as HTMLSelectElement;
   const sourceUnitInput = screen.getByLabelText(
-    "Source unit of measure",
+    "Top unit of measure",
   ) as HTMLSelectElement;
   const targetPriceInput = screen.getByLabelText(
-    "Target gas price", { selector: 'input', exact: false },
+    "Bottom gas price", { selector: 'input', exact: false },
   ) as HTMLInputElement;
   const targetCurrencyInput = screen.getByLabelText(
-    "Target currency",
+    "Bottom currency",
   ) as HTMLSelectElement;
   const targetUnitInput = screen.getByLabelText(
-    "Target unit of measure",
+    "Bottom unit of measure",
   ) as HTMLSelectElement;
 
   afterEach(() => {
@@ -87,8 +87,6 @@ describe("<App />", () => {
 
     await user.selectOptions(sourceUnitInput, "gallons");
     expect(sourceUnitInput.value).toBe("gallon");
-
-
 
     expect(targetPriceInput.value).toBe("1,234.00");
   });

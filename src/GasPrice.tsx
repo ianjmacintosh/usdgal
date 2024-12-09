@@ -1,33 +1,57 @@
+import { useEffect, useRef, useState } from "react";
 import "./GasPrice.css";
-import { dollarCost, isLegalPriceValue } from "./utils/numberFormat";
+import { dollarCost, getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
 
 function GasPrice({
   label,
   number,
-  onChange: extraOnChange,
-  onNumberBlur: handleNumberBlur,
+  onNumberChange: handleNumberChange = () => { },
+  onUnitChange: handleUnitChange = () => { },
+  onCurrencyChange: handleCurrencyChange = () => { },
   disabled,
   currency,
   unit,
 }: {
   label: string;
-  number: string;
+  number: number;
   currency: keyof typeof dollarCost;
   unit: string;
+  onNumberChange: (newValue: number) => void;
+  onCurrencyChange: (newValue: keyof typeof dollarCost) => void;
+  onUnitChange: (newUnit: "liter" | "gallon") => void;
   onNumberBlur?: (newValue: string) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
   id: string;
 }) {
-  const onChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    if (event.target.id.split("_")[1].includes("number")) {
-      const newValue = event.target.value;
-      if (!isLegalPriceValue(newValue)) return;
-    }
+  const [displayNumber, setDisplayNumber] = useState(getFormattedPrice(number, "en-US", currency));
+  const [numberFocused, setNumberFocused] = useState(false);
+  const numberRef = useRef<HTMLInputElement>(null);
+  const currencyRef = useRef<HTMLSelectElement>(null);
+  const unitRef = useRef<HTMLSelectElement>(null);
 
-    if (extraOnChange) {
-      extraOnChange(event);
-    }
+  useEffect(() => {
+    if (numberFocused) return
+
+    setDisplayNumber(getFormattedPrice(number, "en-US", currency));
+  }, [number, currency]);
+
+  const handleDisplayNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const displayNumber = event.target.value;
+
+    if (!isLegalPriceValue(displayNumber)) return
+
+    setDisplayNumber(displayNumber);
+
+    const number = Number(displayNumber.replace(
+      new RegExp(
+        getNumberFormatChar("groupingSeparatorChar", "en-US"),
+        "g",
+      ),
+      "",
+    ));
+
+    handleNumberChange(number);
   }
 
   return (
@@ -35,10 +59,17 @@ function GasPrice({
       <label>
         {label} gas price ({currency} per {unit})
         <input
+          ref={numberRef}
           type="text"
-          value={number}
-          onChange={onChange}
-          onBlur={(event) => handleNumberBlur?.(event.target.value)}
+          value={displayNumber}
+          onFocus={() => {
+            setNumberFocused(true);
+          }}
+          onBlur={() => {
+            setDisplayNumber(getFormattedPrice(number, "en-US", currency));
+            setNumberFocused(false);
+          }}
+          onChange={handleDisplayNumberChange}
           id={`${label.toLowerCase()}_number`}
           disabled={disabled}
           autoComplete="off"
@@ -50,9 +81,10 @@ function GasPrice({
       <label>
         {label} currency
         <select
+          ref={currencyRef}
           id={`${label.toLowerCase()}_currency`}
           defaultValue={currency}
-          onChange={onChange}
+          onChange={(event) => handleCurrencyChange(event.target.value as keyof typeof dollarCost)}
           aria-description="Currency"
           disabled={disabled}
         >
@@ -63,9 +95,10 @@ function GasPrice({
       <label>
         {label} unit of measure
         <select
+          ref={unitRef}
           id={`${label.toLowerCase()}_unit`}
           defaultValue={unit}
-          onChange={onChange}
+          onChange={(event) => handleUnitChange(event.target.value as "liter" | "gallon")}
           aria-description="Unit of volume"
           disabled={disabled}
         >
