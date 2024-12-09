@@ -9,25 +9,28 @@ import {
 import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
 
+type SupportedCurrencies = keyof typeof dollarCost;
+type SupportedUnits = "liter" | "gallon";
+
 function App() {
   // const userLocale = "en-US";
 
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] =
-    useState<keyof typeof dollarCost>("BRL");
-  const [topUnit, setTopUnit] = useState<"liter" | "gallon">("liter");
+    useState<SupportedCurrencies>("BRL");
+  const [topUnit, setTopUnit] = useState<SupportedUnits>("liter");
   const [bottomNumber, setBottomNumber] = useState(0);
   const [bottomCurrency, setBottomCurrency] =
-    useState<keyof typeof dollarCost>("USD");
-  const [bottomUnit, setBottomUnit] = useState<"liter" | "gallon">("gallon");
-  const [direction, setDirection] = useState<"up" | "down">("down");
+    useState<SupportedCurrencies>("USD");
+  const [bottomUnit, setBottomUnit] = useState<SupportedUnits>("gallon");
+  const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
 
   const getGasPrice = (
     sourceNumber: number,
-    sourceCurrency: keyof typeof dollarCost,
-    sourceUnit: "liter" | "gallon",
-    targetCurrency: keyof typeof dollarCost,
-    targetUnit: "liter" | "gallon",
+    sourceCurrency: SupportedCurrencies,
+    sourceUnit: SupportedUnits,
+    targetCurrency: SupportedCurrencies,
+    targetUnit: SupportedUnits,
   ) => {
     // Convert that number from using source units to target units
     let result = getUnits(sourceNumber, sourceUnit, targetUnit);
@@ -39,20 +42,14 @@ function App() {
   };
 
   useEffect(() => {
-    const sourceNumber = direction === "down" ? topNumber : bottomNumber;
-    const sourceCurrency = direction === "down" ? topCurrency : bottomCurrency;
-    const sourceUnit = direction === "down" ? topUnit : bottomUnit;
-    const targetCurrency = direction === "down" ? bottomCurrency : topCurrency;
-    const targetUnit = direction === "down" ? bottomUnit : topUnit;
-
-    const newResult = getGasPrice(sourceNumber, sourceCurrency, sourceUnit, targetCurrency, targetUnit)
-
-    if (direction === "up") {
-      setTopNumber(newResult)
-    } else {
+    if (isUpdatingBottomNumber) {
+      const newResult = getGasPrice(topNumber, topCurrency, topUnit, bottomCurrency, bottomUnit);
       setBottomNumber(newResult)
+    } else {
+      const newResult = getGasPrice(bottomNumber, bottomCurrency, bottomUnit, topCurrency, topUnit);
+      setTopNumber(newResult)
     }
-  }, [direction, topNumber, topCurrency, topUnit, bottomCurrency, bottomUnit, bottomNumber])
+  }, [isUpdatingBottomNumber, topNumber, topCurrency, topUnit, bottomCurrency, bottomUnit, bottomNumber])
 
   return (
     <>
@@ -65,13 +62,13 @@ function App() {
           currency={topCurrency}
           unit={topUnit}
           onNumberChange={(newNumber: number) => {
-            setDirection("down")
+            setIsUpdatingBottomNumber(true)
             setTopNumber(newNumber);
           }}
-          onUnitChange={(newUnit: "liter" | "gallon") => {
+          onUnitChange={(newUnit: SupportedUnits) => {
             setTopUnit(newUnit);
           }}
-          onCurrencyChange={(newCurrency: keyof typeof dollarCost) => {
+          onCurrencyChange={(newCurrency: SupportedCurrencies) => {
             setTopCurrency(newCurrency);
           }}
         />
@@ -87,14 +84,14 @@ function App() {
           number={bottomNumber}
           currency={bottomCurrency}
           onNumberChange={(newValue: number) => {
-            setDirection("up")
+            setIsUpdatingBottomNumber(false)
             setBottomNumber(newValue);
           }}
           unit={bottomUnit}
-          onUnitChange={(newUnit: "liter" | "gallon") => {
+          onUnitChange={(newUnit: SupportedUnits) => {
             setBottomUnit(newUnit);
           }}
-          onCurrencyChange={(newCurrency: keyof typeof dollarCost) => {
+          onCurrencyChange={(newCurrency: SupportedCurrencies) => {
             setBottomCurrency(newCurrency);
           }}
         ></GasPrice>

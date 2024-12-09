@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import "./GasPrice.css";
 import { dollarCost, getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
 
+type SupportedCurrencies = keyof typeof dollarCost;
+type SupportedUnits = "liter" | "gallon";
+
 function GasPrice({
   label,
   number,
@@ -14,12 +17,11 @@ function GasPrice({
 }: {
   label: string;
   number: number;
-  currency: keyof typeof dollarCost;
+  currency: SupportedCurrencies;
   unit: string;
   onNumberChange: (newValue: number) => void;
-  onCurrencyChange: (newValue: keyof typeof dollarCost) => void;
-  onUnitChange: (newUnit: "liter" | "gallon") => void;
-  onNumberBlur?: (newValue: string) => void;
+  onCurrencyChange: (newValue: SupportedCurrencies) => void;
+  onUnitChange: (newUnit: SupportedUnits) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
   id: string;
@@ -34,7 +36,7 @@ function GasPrice({
     if (numberFocused) return
 
     setDisplayNumber(getFormattedPrice(number, "en-US", currency));
-  }, [number, currency]);
+  }, [number, currency, numberFocused]);
 
   const handleDisplayNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const displayNumber = event.target.value;
@@ -84,7 +86,7 @@ function GasPrice({
           ref={currencyRef}
           id={`${label.toLowerCase()}_currency`}
           defaultValue={currency}
-          onChange={(event) => handleCurrencyChange(event.target.value as keyof typeof dollarCost)}
+          onChange={(event) => handleCurrencyChange(event.target.value as SupportedCurrencies)}
           aria-description="Currency"
           disabled={disabled}
         >
@@ -98,7 +100,7 @@ function GasPrice({
           ref={unitRef}
           id={`${label.toLowerCase()}_unit`}
           defaultValue={unit}
-          onChange={(event) => handleUnitChange(event.target.value as "liter" | "gallon")}
+          onChange={(event) => handleUnitChange(event.target.value as SupportedUnits)}
           aria-description="Unit of volume"
           disabled={disabled}
         >
