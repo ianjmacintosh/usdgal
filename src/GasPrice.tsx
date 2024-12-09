@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./GasPrice.css";
 import { dollarCost, getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
 
@@ -27,16 +27,13 @@ function GasPrice({
   id: string;
 }) {
   const [displayNumber, setDisplayNumber] = useState(getFormattedPrice(number, "en-US", currency));
-  const [numberFocused, setNumberFocused] = useState(false);
-  const numberRef = useRef<HTMLInputElement>(null);
-  const currencyRef = useRef<HTMLSelectElement>(null);
-  const unitRef = useRef<HTMLSelectElement>(null);
+  const [isNumberFocused, setIsNumberFocused] = useState(false);
 
   useEffect(() => {
-    if (numberFocused) return
+    if (isNumberFocused) return
 
     setDisplayNumber(getFormattedPrice(number, "en-US", currency));
-  }, [number, currency, numberFocused]);
+  }, [number, currency, isNumberFocused]);
 
   const handleDisplayNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const displayNumber = event.target.value;
@@ -61,15 +58,14 @@ function GasPrice({
       <label>
         {label} gas price ({currency} per {unit})
         <input
-          ref={numberRef}
           type="text"
           value={displayNumber}
           onFocus={() => {
-            setNumberFocused(true);
+            setIsNumberFocused(true);
           }}
           onBlur={() => {
             setDisplayNumber(getFormattedPrice(number, "en-US", currency));
-            setNumberFocused(false);
+            setIsNumberFocused(false);
           }}
           onChange={handleDisplayNumberChange}
           id={`${label.toLowerCase()}_number`}
@@ -83,7 +79,6 @@ function GasPrice({
       <label>
         {label} currency
         <select
-          ref={currencyRef}
           id={`${label.toLowerCase()}_currency`}
           defaultValue={currency}
           onChange={(event) => handleCurrencyChange(event.target.value as SupportedCurrencies)}
@@ -97,7 +92,6 @@ function GasPrice({
       <label>
         {label} unit of measure
         <select
-          ref={unitRef}
           id={`${label.toLowerCase()}_unit`}
           defaultValue={unit}
           onChange={(event) => handleUnitChange(event.target.value as SupportedUnits)}
