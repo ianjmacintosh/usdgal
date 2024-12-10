@@ -8,6 +8,10 @@ fieldset {
   margin: 20px 0;
 }
 
+fieldset legend {
+  font-size: 24px;
+}
+
 fieldset input {
   font-weight: bold;
   padding: 10px;

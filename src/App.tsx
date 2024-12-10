@@ -57,7 +57,7 @@ function App() {
         <h1>Convert Gas Price</h1>
         <GasPrice
           id="localPrice"
-          label="Top"
+          label="From"
           number={topNumber}
           currency={topCurrency}
           unit={topUnit}
@@ -80,7 +80,7 @@ function App() {
         />
         <GasPrice
           id="homePrice"
-          label="Bottom"
+          label="To"
           number={bottomNumber}
           currency={bottomCurrency}
           onNumberChange={(newValue: number) => {

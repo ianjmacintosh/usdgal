@@ -55,6 +55,7 @@ function GasPrice({
 
   return (
     <fieldset>
+      <legend>{label}</legend>
       {/* <label htmlFor={`${label}_number`}>
       </label> */}
       <input
@@ -74,12 +75,13 @@ function GasPrice({
         inputMode="numeric"
         pattern="^[0-9]*[.,]?[0-9]*$"
         className="number"
+        aria-label={`Amount of ${currency} paid per ${unit} of gas`}
       />
       <select
         id={`${label.toLowerCase()}_currency`}
         defaultValue={currency}
         onChange={(event) => handleCurrencyChange(event.target.value as SupportedCurrencies)}
-        aria-description="Currency"
+        aria-label={`Currency`}
         disabled={disabled}
         className="currency"
       >
@@ -90,7 +92,7 @@ function GasPrice({
         id={`${label.toLowerCase()}_unit`}
         defaultValue={unit}
         onChange={(event) => handleUnitChange(event.target.value as SupportedUnits)}
-        aria-description="Unit of volume"
+        aria-label={`Unit of sale (liters or gallons)`}
         disabled={disabled}
         className="unit"
       >
