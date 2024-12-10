@@ -81,6 +81,7 @@ h6 {
 .container {
   width: 320px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 footer {
