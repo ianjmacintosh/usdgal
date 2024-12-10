@@ -1,0 +1,17 @@
+.operations {
+    width: 100%;
+}
+
+.operations caption {
+    font-weight: bold;
+    text-transform: capitalize;
+    text-align: left;
+}
+
+.operations td {
+    vertical-align: top;
+}
+
+.operation-description {
+    text-align: right;
+}
