@@ -6,24 +6,24 @@ import userEvent from "@testing-library/user-event";
 describe("<App />", () => {
   const user = userEvent.setup();
   render(<App />);
-  const topPriceInput = screen.getByLabelText(
-    "Top gas price", { selector: 'input', exact: false },
-  ) as HTMLInputElement;
-  const topCurrencyInput = screen.getByLabelText(
-    "Top currency",
-  ) as HTMLSelectElement;
-  const topUnitInput = screen.getByLabelText(
-    "Top unit of measure",
-  ) as HTMLSelectElement;
-  const bottomPriceInput = screen.getByLabelText(
-    "Bottom gas price", { selector: 'input', exact: false },
-  ) as HTMLInputElement;
-  const bottomCurrencyInput = screen.getByLabelText(
-    "Bottom currency",
-  ) as HTMLSelectElement;
-  const bottomUnitInput = screen.getByLabelText(
-    "Bottom unit of measure",
-  ) as HTMLSelectElement;
+  const topPriceInput = screen.getAllByLabelText(
+    "Amount", { selector: 'input', exact: false },
+  )[0] as HTMLInputElement;
+  const topCurrencyInput = screen.getAllByLabelText(
+    "Currency", { selector: 'select', exact: false },
+  )[0] as HTMLSelectElement;
+  const topUnitInput = screen.getAllByLabelText(
+    "Unit of sale", { selector: 'select', exact: false },
+  )[0] as HTMLSelectElement;
+  const bottomPriceInput = screen.getAllByLabelText(
+    "Amount", { selector: 'input', exact: false },
+  )[1] as HTMLInputElement;
+  const bottomCurrencyInput = screen.getAllByLabelText(
+    "Currency", { selector: 'select', exact: false },
+  )[1] as HTMLSelectElement;
+  const bottomUnitInput = screen.getAllByLabelText(
+    "Unit of sale", { selector: 'select', exact: false },
+  )[1] as HTMLSelectElement;
 
   afterEach(() => {
     user.clear(topPriceInput);
@@ -82,10 +82,10 @@ describe("<App />", () => {
     await user.keyboard("1234");
     expect(topPriceInput.value).toBe("1234");
 
-    await user.selectOptions(topCurrencyInput, "US Dollar (USD)");
+    await user.selectOptions(topCurrencyInput, "USD");
     expect(topCurrencyInput.value).toBe("USD");
 
-    await user.selectOptions(topUnitInput, "gallons");
+    await user.selectOptions(topUnitInput, "per gallon");
     expect(topUnitInput.value).toBe("gallon");
 
     expect(bottomPriceInput.value).toBe("1,234.00");
@@ -96,24 +96,24 @@ describe("<App />", () => {
     await userEvent.clear(topPriceInput);
     await user.keyboard("6.78");
 
-    await user.selectOptions(topCurrencyInput, "Brazilian Real (BRL)");
-    await user.selectOptions(topUnitInput, "liters");
+    await user.selectOptions(topCurrencyInput, "BRL");
+    await user.selectOptions(topUnitInput, "per liter");
 
     expect(topPriceInput.value).toBe("6.78");
     expect(bottomPriceInput.value).toBe("4.43");
 
-    await user.selectOptions(bottomCurrencyInput, "Brazilian Real (BRL)");
+    await user.selectOptions(bottomCurrencyInput, "BRL");
     expect(bottomPriceInput.value).toBe("25.67");
 
-    await user.selectOptions(bottomUnitInput, "liters");
+    await user.selectOptions(bottomUnitInput, "per liter");
     expect(bottomPriceInput.value).toBe("6.78");
   });
 
   test("updates the top price when the user changes the bottom price", async () => {
-    await user.selectOptions(topCurrencyInput, "Brazilian Real (BRL)");
-    await user.selectOptions(topUnitInput, "liters");
-    await user.selectOptions(bottomCurrencyInput, "US Dollar (USD)");
-    await user.selectOptions(bottomUnitInput, "gallons");
+    await user.selectOptions(topCurrencyInput, "BRL");
+    await user.selectOptions(topUnitInput, "per liter");
+    await user.selectOptions(bottomCurrencyInput, "USD");
+    await user.selectOptions(bottomUnitInput, "per gallon");
 
     // Set a home price;
     await user.click(bottomPriceInput);
