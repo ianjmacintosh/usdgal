@@ -55,53 +55,48 @@ function GasPrice({
 
   return (
     <fieldset>
-      <label>
-        {label} gas price ({currency} per {unit})
-        <input
-          type="text"
-          value={displayNumber}
-          onFocus={() => {
-            setIsNumberFocused(true);
-          }}
-          onBlur={() => {
-            setDisplayNumber(getFormattedPrice(number, "en-US", currency));
-            setIsNumberFocused(false);
-          }}
-          onChange={handleDisplayNumberChange}
-          id={`${label.toLowerCase()}_number`}
-          disabled={disabled}
-          autoComplete="off"
-          inputMode="numeric"
-          pattern="^[0-9]*[.,]?[0-9]*$"
-        />
-      </label>
-
-      <label>
-        {label} currency
-        <select
-          id={`${label.toLowerCase()}_currency`}
-          defaultValue={currency}
-          onChange={(event) => handleCurrencyChange(event.target.value as SupportedCurrencies)}
-          aria-description="Currency"
-          disabled={disabled}
-        >
-          <option value="USD">US Dollar (USD)</option>
-          <option value="BRL">Brazilian Real (BRL)</option>
-        </select>
-      </label>
-      <label>
-        {label} unit of measure
-        <select
-          id={`${label.toLowerCase()}_unit`}
-          defaultValue={unit}
-          onChange={(event) => handleUnitChange(event.target.value as SupportedUnits)}
-          aria-description="Unit of volume"
-          disabled={disabled}
-        >
-          <option value="gallon">gallons</option>
-          <option value="liter">liters</option>
-        </select>
-      </label>
+      {/* <label htmlFor={`${label}_number`}>
+      </label> */}
+      <input
+        type="text"
+        value={displayNumber}
+        onFocus={() => {
+          setIsNumberFocused(true);
+        }}
+        onBlur={() => {
+          setDisplayNumber(getFormattedPrice(number, "en-US", currency));
+          setIsNumberFocused(false);
+        }}
+        onChange={handleDisplayNumberChange}
+        id={`${label.toLowerCase()}_number`}
+        disabled={disabled}
+        autoComplete="off"
+        inputMode="numeric"
+        pattern="^[0-9]*[.,]?[0-9]*$"
+        className="number"
+      />
+      <select
+        id={`${label.toLowerCase()}_currency`}
+        defaultValue={currency}
+        onChange={(event) => handleCurrencyChange(event.target.value as SupportedCurrencies)}
+        aria-description="Currency"
+        disabled={disabled}
+        className="currency"
+      >
+        <option value="USD">USD</option>
+        <option value="BRL">BRL</option>
+      </select>
+      <select
+        id={`${label.toLowerCase()}_unit`}
+        defaultValue={unit}
+        onChange={(event) => handleUnitChange(event.target.value as SupportedUnits)}
+        aria-description="Unit of volume"
+        disabled={disabled}
+        className="unit"
+      >
+        <option value="gallon">per gallon</option>
+        <option value="liter">per liter</option>
+      </select>
     </fieldset>
   );
 }
