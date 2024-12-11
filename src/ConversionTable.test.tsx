@@ -1,10 +1,34 @@
-import { describe, test, expect, afterEach } from "vitest";
+import { describe, test, expect, afterEach, beforeAll, afterAll } from "vitest";
+import { http, HttpResponse } from "msw";
+import { setupServer } from "msw/node";
 import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import ConversionTable from "./ConversionTable";
 
+const server = setupServer(
+    // capture "GET /greeting" requests
+    http.get('/currencies.json', () => {
+        // respond using a mocked JSON body
+        return HttpResponse.json({
+            "BRL": 5.7955874,
+            "USD": 1
+        })
+    }),
+)
+
 describe("<ConversionTable />", () => {
-    afterEach(cleanup)
+
+    beforeAll(() => {
+        server.listen();
+    });
+
+    afterEach(() => {
+        cleanup();
+        server.resetHandlers();
+    });
+
+    afterAll(() => server.close());
+
 
     test("displays the conversion table", async () => {
         render(

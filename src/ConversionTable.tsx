@@ -20,7 +20,7 @@ const ConversionTable = ({
     sourceCurrency: SupportedCurrencies;
     targetCurrency: SupportedCurrencies;
 }) => {
-    const [exchangeRates, setExchangeRates] = useState<Partial<Record<SupportedCurrencies, number>>>({ "USD": 1 });
+    const [exchangeRates, setExchangeRates] = useState<Partial<Record<SupportedCurrencies, number>>>({ "BRL": 5.7955874, "USD": 1 });
     useEffect(() => {
         fetch("/currencies.json").then((response) => {
             if (response.ok) {
