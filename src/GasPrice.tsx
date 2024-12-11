@@ -72,7 +72,7 @@ function GasPrice({
         id={`${label.toLowerCase()}_number`}
         disabled={disabled}
         autoComplete="off"
-        inputMode="numeric"
+        inputMode="decimal"
         pattern="^[0-9]*[.,]?[0-9]*$"
         className="number"
         aria-label={`Amount of ${currency} paid per ${unit} of gas`}
