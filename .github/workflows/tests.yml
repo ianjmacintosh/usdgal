@@ -1,9 +1,13 @@
 name: Run Tests
 on:
   pull_request:
-    types: ["opened", "edited", "reopened", "synchronize"]
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
 jobs:
-    npm-test:
+  test:
     name: Run `npm run test`
     runs-on: ubuntu-latest
     steps:
