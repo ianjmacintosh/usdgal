@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import "./ConversionTable.css";
-import { dollarCost } from "./utils/numberFormat";
 
-type SupportedCurrencies = keyof typeof dollarCost;
+type SupportedCurrencies = "BRL" | "USD";
 type SupportedUnits = "liter" | "gallon";
 
 const volumesInLiters = {
@@ -20,8 +20,18 @@ const ConversionTable = ({
     sourceCurrency: SupportedCurrencies;
     targetCurrency: SupportedCurrencies;
 }) => {
-    const sourceCurrencyDollarCost = dollarCost[sourceCurrency];
-    const targetCurrencyDollarCost = dollarCost[targetCurrency];
+    const [exchangeRates, setExchangeRates] = useState<Partial<Record<SupportedCurrencies, number>>>({ "USD": 1 });
+    useEffect(() => {
+        fetch("/currencies.json").then((response) => {
+            if (response.ok) {
+                response.json().then((data) => {
+                    setExchangeRates(data);
+                });
+            }
+        })
+    })
+    const sourceCurrencyDollarCost = exchangeRates[sourceCurrency] ? exchangeRates[sourceCurrency] : 1;
+    const targetCurrencyDollarCost = exchangeRates[targetCurrency] ? exchangeRates[targetCurrency] : 1;
     const exchangeRate = sourceCurrencyDollarCost / targetCurrencyDollarCost;
     const currencyExchangeFormula = {
         "operation": exchangeRate > 1 ? "÷" : "×",
