@@ -1,6 +1,9 @@
 import "./ConversionTable.css";
 import { dollarCost } from "./utils/numberFormat";
 
+type SupportedCurrencies = keyof typeof dollarCost;
+type SupportedUnits = "liter" | "gallon";
+
 const volumesInLiters = {
     "liter": 1,
     "gallon": 3.78541
@@ -12,10 +15,10 @@ const ConversionTable = ({
     sourceCurrency,
     targetCurrency,
 }: {
-    sourceUnit: keyof typeof volumesInLiters;
-    targetUnit: keyof typeof volumesInLiters;
-    sourceCurrency: keyof typeof dollarCost;
-    targetCurrency: keyof typeof dollarCost;
+    sourceUnit: SupportedUnits;
+    targetUnit: SupportedUnits;
+    sourceCurrency: SupportedCurrencies;
+    targetCurrency: SupportedCurrencies;
 }) => {
     const sourceCurrencyDollarCost = dollarCost[sourceCurrency];
     const targetCurrencyDollarCost = dollarCost[targetCurrency];
