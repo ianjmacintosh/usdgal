@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import {
   getPriceInCurrency,
-  dollarCost,
   getUnits,
 } from "./utils/numberFormat";
 
 import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
 
-type SupportedCurrencies = keyof typeof dollarCost;
+type SupportedCurrencies = "BRL" | "USD";
 type SupportedUnits = "liter" | "gallon";
 
 function App() {

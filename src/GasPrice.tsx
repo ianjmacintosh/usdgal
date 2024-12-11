@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import "./GasPrice.css";
-import { dollarCost, getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
+import { getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
 
-type SupportedCurrencies = keyof typeof dollarCost;
+type SupportedCurrencies = "BRL" | "USD";
 type SupportedUnits = "liter" | "gallon";
 
 function GasPrice({
