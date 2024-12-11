@@ -1,115 +1,100 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import { getNumberFormatChar, getFormattedPrice, isLegalPriceValue, getPriceInCurrency, dollarCost } from "./utils/numberFormat";
+import {
+  getPriceInCurrency,
+  dollarCost,
+  getUnits,
+} from "./utils/numberFormat";
 
 import GasPrice from "./GasPrice";
+import ConversionTable from "./ConversionTable";
+
+type SupportedCurrencies = keyof typeof dollarCost;
+type SupportedUnits = "liter" | "gallon";
 
 function App() {
-  const LITERS_PER_GALLON = 3.78541;
-  const userLocale = "en-US";
+  // const userLocale = "en-US";
 
-  const [localCurrency] = useState<keyof typeof dollarCost>("BRL");
-  const [homeCurrency] = useState<keyof typeof dollarCost>("USD");
-  const [localPrice, setLocalPrice] = useState("");
-  const [homePrice, setHomePrice] = useState("0.00");
+  const [topNumber, setTopNumber] = useState(0);
+  const [topCurrency, setTopCurrency] =
+    useState<SupportedCurrencies>("BRL");
+  const [topUnit, setTopUnit] = useState<SupportedUnits>("liter");
+  const [bottomNumber, setBottomNumber] = useState(0);
+  const [bottomCurrency, setBottomCurrency] =
+    useState<SupportedCurrencies>("USD");
+  const [bottomUnit, setBottomUnit] = useState<SupportedUnits>("gallon");
+  const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
 
-  /**
-   * Handles changes to either the local or home gas price inputs.
-   * Takes the new value, the currency of the input that triggered the change,
-   * and the currency of the other input.
-   *
-   * @param event - The change event that triggered this function
-   * @param sourceCurrency - The currency of the input that triggered the change
-   * @param targetCurrency - The currency of the other input
-   */
-  const handlePriceChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    sourceCurrency: keyof typeof dollarCost,
-    targetCurrency: keyof typeof dollarCost,
+  const getGasPrice = (
+    sourceNumber: number,
+    sourceCurrency: SupportedCurrencies,
+    sourceUnit: SupportedUnits,
+    targetCurrency: SupportedCurrencies,
+    targetUnit: SupportedUnits,
   ) => {
-    /**
-     * Get the new value from the input element
-     */
-    const newValue = event.target.value;
+    // Convert that number from using source units to target units
+    let result = getUnits(sourceNumber, sourceUnit, targetUnit);
 
-    /**
-     * If the new value is not a valid price (i.e. contains characters other than numbers, periods, and commas), return
-     */
-    if (!isLegalPriceValue(newValue)) return;
+    // Convert _that_ number using the exchange rate from source currency to target currency
+    result = getPriceInCurrency(result, sourceCurrency, targetCurrency);
 
-    /**
-     * Remove any grouping characters (e.g. commas in the US) from the new value
-     */
-    const newPrice = Number(
-      newValue.replace(new RegExp(getNumberFormatChar("groupingSeparatorChar", userLocale), "g"), ""),
-    );
-
-    /**
-     * Convert the new price from the source currency to the target currency
-     * Multiply by LITERS_PER_GALLON if the source currency is the local currency, divide by LITERS_PER_GALLON if it is the home currency
-     */
-    const convertedPrice = getPriceInCurrency(
-      newPrice * (sourceCurrency === localCurrency ? LITERS_PER_GALLON : 1 / LITERS_PER_GALLON),
-      sourceCurrency,
-      targetCurrency,
-    );
-
-    /**
-     * Format the converted price for display
-     */
-    const formattedConvertedPrice = getFormattedPrice(convertedPrice, userLocale, targetCurrency);
-
-    /**
-     * Set the state of both inputs to the new values
-     */
-    setPrice(sourceCurrency, newValue);
-    setPrice(targetCurrency, formattedConvertedPrice);
+    return result;
   };
 
-  const setPrice = (currency: keyof typeof dollarCost, value: string) => {
-    if (currency === localCurrency) setLocalPrice(value);
-    else setHomePrice(value);
-  };
+  useEffect(() => {
+    if (isUpdatingBottomNumber) {
+      const newResult = getGasPrice(topNumber, topCurrency, topUnit, bottomCurrency, bottomUnit);
+      setBottomNumber(newResult)
+    } else {
+      const newResult = getGasPrice(bottomNumber, bottomCurrency, bottomUnit, topCurrency, topUnit);
+      setTopNumber(newResult)
+    }
+  }, [isUpdatingBottomNumber, topNumber, topCurrency, topUnit, bottomCurrency, bottomUnit, bottomNumber])
 
   return (
     <>
       <div className="container">
-        <h1>Convert Gas Price</h1>
-        <fieldset>
-          <GasPrice
-            id="localPrice"
-            label={`Local price (${localCurrency} per liter)`}
-            price={localPrice}
-
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              handlePriceChange(event, localCurrency, homeCurrency)
-            }
-          />
-          <table className="operations">
-            <tbody>
-              <tr>
-                <td className="operation">× {LITERS_PER_GALLON}</td>
-                <td className="operation-description">liters per gallon</td>
-              </tr>
-              <tr>
-                <td className="operation">÷ {dollarCost[localCurrency]}</td>
-                <td className="operation-description">
-                  {localCurrency} per USD
-                  <br />
-                  <em>(updated 2024-11-17)</em>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <GasPrice
-            id="homePrice"
-            label={`Home price (${homeCurrency} per gallon)`}
-            price={homePrice}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              handlePriceChange(event, homeCurrency, localCurrency)
-            }
-          ></GasPrice>
-        </fieldset>
+        <h1>Convert Foreign Gas Price</h1>
+        <GasPrice
+          id="localPrice"
+          label="From"
+          number={topNumber}
+          currency={topCurrency}
+          unit={topUnit}
+          onNumberChange={(newNumber: number) => {
+            setIsUpdatingBottomNumber(true)
+            setTopNumber(newNumber);
+          }}
+          onUnitChange={(newUnit: SupportedUnits) => {
+            setTopUnit(newUnit);
+          }}
+          onCurrencyChange={(newCurrency: SupportedCurrencies) => {
+            setTopCurrency(newCurrency);
+          }}
+        />
+        <ConversionTable
+          sourceUnit={topUnit}
+          targetUnit={bottomUnit}
+          sourceCurrency={topCurrency}
+          targetCurrency={bottomCurrency}
+        />
+        <GasPrice
+          id="homePrice"
+          label="To"
+          number={bottomNumber}
+          currency={bottomCurrency}
+          onNumberChange={(newValue: number) => {
+            setIsUpdatingBottomNumber(false)
+            setBottomNumber(newValue);
+          }}
+          unit={bottomUnit}
+          onUnitChange={(newUnit: SupportedUnits) => {
+            setBottomUnit(newUnit);
+          }}
+          onCurrencyChange={(newCurrency: SupportedCurrencies) => {
+            setBottomCurrency(newCurrency);
+          }}
+        ></GasPrice>
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>
     </>
