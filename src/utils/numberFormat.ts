@@ -1,3 +1,6 @@
+type SupportedCurrencies = "BRL" | "USD";
+type SupportedUnits = "liter" | "gallon";
+
 const getNumberFormatChar = (
   char: "decimalSeparatorChar" | "groupingSeparatorChar",
   locale: string,
@@ -50,8 +53,8 @@ const isLegalPriceValue = (price: string) => {
 };
 const getPriceInCurrency = (
   price: number,
-  currency: keyof typeof dollarCost,
-  targetCurrency: keyof typeof dollarCost,
+  currency: SupportedCurrencies,
+  targetCurrency: SupportedCurrencies,
 ) => {
   // Get the price in USD, then convert from USD to target currency
   let newValue = Number(
@@ -76,7 +79,11 @@ const dollarCost = {
  * Convert the new price from the source currency to the target currency
  * Multiply by LITERS_PER_GALLON if the source currency is the local currency, divide by LITERS_PER_GALLON if it is the home currency
  */
-const getUnits = (price: number, fromUnit: string, toUnit: string) => {
+const getUnits = (
+  price: number,
+  fromUnit: SupportedUnits,
+  toUnit: SupportedUnits,
+) => {
   const LITERS_PER_GALLON = 3.78541;
   if (fromUnit === "liter" && toUnit === "gallon") {
     return price * LITERS_PER_GALLON;
