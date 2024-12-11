@@ -1,4 +1,4 @@
-import { describe, test, expect, afterEach } from "vitest";
+import { describe, test, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
@@ -6,122 +6,128 @@ import userEvent from "@testing-library/user-event";
 describe("<App />", () => {
   const user = userEvent.setup();
   render(<App />);
-  const topPriceInput = screen.getAllByLabelText(
-    "Amount", { selector: 'input', exact: false },
-  )[0] as HTMLInputElement;
-  const topCurrencyInput = screen.getAllByLabelText(
-    "Currency", { selector: 'select', exact: false },
-  )[0] as HTMLSelectElement;
-  const topUnitInput = screen.getAllByLabelText(
-    "Unit of sale", { selector: 'select', exact: false },
-  )[0] as HTMLSelectElement;
-  const bottomPriceInput = screen.getAllByLabelText(
-    "Amount", { selector: 'input', exact: false },
-  )[1] as HTMLInputElement;
-  const bottomCurrencyInput = screen.getAllByLabelText(
-    "Currency", { selector: 'select', exact: false },
-  )[1] as HTMLSelectElement;
-  const bottomUnitInput = screen.getAllByLabelText(
-    "Unit of sale", { selector: 'select', exact: false },
-  )[1] as HTMLSelectElement;
+  const localPriceInput = screen.getByLabelText(
+    "Local price (BRL per liter)",
+  ) as HTMLInputElement;
+  const homePriceInput = screen.getByLabelText(
+    "Home price (USD per gallon)",
+  ) as HTMLInputElement;
 
-  afterEach(() => {
-    user.clear(topPriceInput);
+  test("allows the user to add and backspace chars the local price input", async () => {
+    // Populate price per liter in BRL
+    // Hard-coded conversion from BRL to USD: 1 USD = 5.7955874 BRL
+    // pricePerLiterInBRL * 3.78541 / 5.7955874 = pricePerGallonInUSD
+    // Example: 6.78 * 3.78541 / 5.7955874 = 4.42838284
+    // 4.42838284 rounded to 2 places is 4.43
+
+    // Expect price to show correctly in USD
+    await user.click(localPriceInput);
+    await user.keyboard("1234");
+    expect(localPriceInput.value).toBe("1234");
+    await user.keyboard("{backspace}{backspace}{backspace}{backspace}");
+    expect(localPriceInput.value).toBe("");
+  });
+
+  test("prevents the user from entering illegal characters", async () => {
+    await user.click(localPriceInput);
+    await user.keyboard("not a number");
+    expect(localPriceInput.value).toBe("");
+  });
+
+  test("prevents the user from entering legal characters to produce illegal values", async () => {
+    await user.click(localPriceInput);
+    await user.keyboard("..");
+    expect(localPriceInput.value).toBe(".");
   });
 
   test("correctly converts BRL per liter to USD per gallon", async () => {
     // Clear the local price input
-    await userEvent.clear(topPriceInput);
+    await userEvent.clear(localPriceInput);
     // Expect price to show correctly in USD
-    await user.click(topPriceInput);
+    await user.click(localPriceInput);
     await user.keyboard("6.78");
-    expect(topPriceInput.value).toBe("6.78");
+    expect(localPriceInput.value).toBe("6.78");
 
     // Get output
     // Expect output to be 4.43
-    expect(bottomPriceInput.value).toBe("4.43");
+    expect(homePriceInput.value).toBe("4.43");
   });
 
   // 6.73 BRL per liter converts to 4.40 USD per gallon (at an exchange rate of 1 USD = 5.7955874 BRL)
   // 4.40 gets displayed as as 4.4, and that's a bug
   test("rounds prices correctly (to 2 decimal places)", async () => {
     // Clear the local price input
-    await userEvent.clear(topPriceInput);
+    await userEvent.clear(localPriceInput);
     // Enter a new price of 6.73
-    await user.click(topPriceInput);
+    await user.click(localPriceInput);
     await user.keyboard("6.73");
 
     // Expect output to be 4.40
-    expect(bottomPriceInput.value).toBe("4.40");
+    expect(homePriceInput.value).toBe("4.40");
+  });
+
+  test("allows the user to add and backspace chars the local price input", async () => {
+    await userEvent.clear(homePriceInput);
+    await user.click(homePriceInput);
+    await user.keyboard("1234");
+    expect(homePriceInput.value).toBe("1234");
+    await user.keyboard("{backspace}{backspace}{backspace}{backspace}");
+    expect(homePriceInput.value).toBe("");
+  });
+
+  test("updates the local price", async () => {
+    // Set a home price
+    await user.click(homePriceInput);
+    await user.keyboard("4.43");
+
+    // Expect the local price field to have a value based on the home price
+    expect(localPriceInput.value).toBe("6.78");
+  });
+
+  test("allows the user to add commas to the local price", async () => {
+    // Clear the home price input
+    await userEvent.clear(localPriceInput);
+    await user.click(localPriceInput);
+    await user.keyboard("1,000");
+
+    expect(localPriceInput.value).toBe("1,000");
+  });
+
+  test("allows the user to modify fields with commas", async () => {
+    // Clear the local price input
+    await userEvent.clear(localPriceInput);
+    await user.click(localPriceInput);
+    await user.keyboard("4.43");
+
+    expect(localPriceInput.value).toBe("4.43");
   });
 
   test("doesn't throw NaN errors when the user provides incomplete numbers", async () => {
     // Clear the local price input
-    await userEvent.clear(topPriceInput);
-    await user.click(topPriceInput);
+    await userEvent.clear(localPriceInput);
+    await user.click(localPriceInput);
     await user.keyboard(".");
 
-    expect(bottomPriceInput.value).not.toBe("NaN");
-    expect(bottomPriceInput.value).toBe("0.00");
+    expect(homePriceInput.value).not.toBe("NaN");
+    expect(homePriceInput.value).toBe("0.00");
 
     await user.keyboard("{backspace}");
   });
 
   test("converts prices with commas from local to home", async () => {
     // Clear the local price input
-    await userEvent.clear(topPriceInput);
+    await userEvent.clear(localPriceInput);
     await user.keyboard("1,000,000");
 
-    expect(bottomPriceInput.value).toBe("653,153.81");
+    expect(homePriceInput.value).toBe("653,153.81");
   });
 
-  test("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {
+  test("converts prices with commas from home to local", async () => {
     // Clear the local price input
-    await userEvent.clear(topPriceInput);
-    await user.click(topPriceInput);
-    await user.keyboard("1234");
-    expect(topPriceInput.value).toBe("1234");
+    await userEvent.clear(homePriceInput);
+    await user.click(homePriceInput);
+    await user.keyboard("653,153.81");
 
-    await user.selectOptions(topCurrencyInput, "USD");
-    expect(topCurrencyInput.value).toBe("USD");
-
-    await user.selectOptions(topUnitInput, "per gallon");
-    expect(topUnitInput.value).toBe("gallon");
-
-    expect(bottomPriceInput.value).toBe("1,234.00");
-  });
-
-  test("updates target price (but not source price) when the user updates the target currency or units", async () => {
-    // Clear the local price input
-    await userEvent.clear(topPriceInput);
-    await user.keyboard("6.78");
-
-    await user.selectOptions(topCurrencyInput, "BRL");
-    await user.selectOptions(topUnitInput, "per liter");
-
-    expect(topPriceInput.value).toBe("6.78");
-    expect(bottomPriceInput.value).toBe("4.43");
-
-    await user.selectOptions(bottomCurrencyInput, "BRL");
-    expect(bottomPriceInput.value).toBe("25.67");
-
-    await user.selectOptions(bottomUnitInput, "per liter");
-    expect(bottomPriceInput.value).toBe("6.78");
-  });
-
-  test("updates the top price when the user changes the bottom price", async () => {
-    await user.selectOptions(topCurrencyInput, "BRL");
-    await user.selectOptions(topUnitInput, "per liter");
-    await user.selectOptions(bottomCurrencyInput, "USD");
-    await user.selectOptions(bottomUnitInput, "per gallon");
-
-    // Set a home price;
-    await user.click(bottomPriceInput);
-    await user.clear(bottomPriceInput);
-    await user.keyboard("4.43");
-    expect(bottomPriceInput.value).toBe("4.43");
-
-    // Expect the local price field to have a value based on the home price
-    expect(topPriceInput.value).toBe("6.78");
+    expect(localPriceInput.value).toBe("1,000,000.00");
   });
 });
