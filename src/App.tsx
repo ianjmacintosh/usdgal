@@ -54,7 +54,7 @@ function App() {
   return (
     <>
       <div className="container">
-        <h1>Convert Gas Price</h1>
+        <h1>Convert Foreign Gas Price</h1>
         <GasPrice
           id="localPrice"
           label="From"
