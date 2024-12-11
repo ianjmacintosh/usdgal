@@ -3,13 +3,13 @@ on:
   pull_request:
     types: ["opened", "edited", "reopened", "synchronize"]
 jobs:
-    npm-test:
-    name: Run `npm run test`
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repo
-        uses: actions/checkout@v3
-      - name: Install deps
-        run: npm ci
-      - name: Run tests
-        run: npm run test
+    test:
+      name: Run `npm run test`
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check out repo
+          uses: actions/checkout@v3
+        - name: Install deps
+          run: npm ci
+        - name: Run tests
+          run: npm run test
