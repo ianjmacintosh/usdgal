@@ -23,29 +23,6 @@ function App() {
   const [bottomUnit, setBottomUnit] = useState<SupportedUnits>("gallon");
   const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
 
-
-  const getPriceInCurrency = (
-    price: number,
-    currency: SupportedCurrencies,
-    targetCurrency: SupportedCurrencies,
-  ) => {
-    const dollarCost = {
-      "BRL": 5.7955874,
-      "USD": 1
-    }
-
-    // Get the price in USD, then convert from USD to target currency
-    let newValue = Number(
-      (price / dollarCost[currency]) * dollarCost[targetCurrency],
-    );
-
-    if (Number.isNaN(newValue)) {
-      newValue = 0;
-    }
-
-    return newValue;
-  };
-
   const getGasPrice = (
     sourceNumber: number,
     sourceCurrency: SupportedCurrencies,
@@ -53,6 +30,28 @@ function App() {
     targetCurrency: SupportedCurrencies,
     targetUnit: SupportedUnits,
   ) => {
+    const getPriceInCurrency = (
+      price: number,
+      currency: SupportedCurrencies,
+      targetCurrency: SupportedCurrencies,
+    ) => {
+      const dollarCost = {
+        "BRL": 5.7955874,
+        "USD": 1
+      }
+
+      // Get the price in USD, then convert from USD to target currency
+      let newValue = Number(
+        (price / dollarCost[currency]) * dollarCost[targetCurrency],
+      );
+
+      if (Number.isNaN(newValue)) {
+        newValue = 0;
+      }
+
+      return newValue;
+    };
+
     // Convert that number from using source units to target units
     let result = getUnits(sourceNumber, sourceUnit, targetUnit);
 

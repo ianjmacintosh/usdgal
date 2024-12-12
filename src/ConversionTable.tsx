@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "./ConversionTable.css";
 
 type SupportedCurrencies = "BRL" | "USD";
