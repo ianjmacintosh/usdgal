@@ -13,16 +13,14 @@ const ConversionTable = ({
     targetUnit,
     sourceCurrency,
     targetCurrency,
+    dollarCost
 }: {
     sourceUnit: SupportedUnits;
     targetUnit: SupportedUnits;
     sourceCurrency: SupportedCurrencies;
     targetCurrency: SupportedCurrencies;
+    dollarCost: Record<string, number>
 }) => {
-    const dollarCost = {
-        "BRL": 5.7955874,
-        "USD": 1
-    }
 
     const sourceCurrencyDollarCost = dollarCost[sourceCurrency] ? dollarCost[sourceCurrency] : 1;
     const targetCurrencyDollarCost = dollarCost[targetCurrency] ? dollarCost[targetCurrency] : 1;

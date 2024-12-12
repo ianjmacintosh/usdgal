@@ -126,6 +126,7 @@ function App() {
           targetUnit={bottomUnit}
           sourceCurrency={topCurrency}
           targetCurrency={bottomCurrency}
+          dollarCost={dollarCost}
         />
         <GasPrice
           id="homePrice"
