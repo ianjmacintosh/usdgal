@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import {
-  getUnits,
-} from "./utils/numberFormat";
+import { getUnits } from "./utils/numberFormat";
 
 import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
@@ -14,14 +12,28 @@ function App() {
   // const userLocale = "en-US";
 
   const [topNumber, setTopNumber] = useState(0);
-  const [topCurrency, setTopCurrency] =
-    useState<SupportedCurrencies>("BRL");
+  const [topCurrency, setTopCurrency] = useState<SupportedCurrencies>("BRL");
   const [topUnit, setTopUnit] = useState<SupportedUnits>("liter");
   const [bottomNumber, setBottomNumber] = useState(0);
   const [bottomCurrency, setBottomCurrency] =
     useState<SupportedCurrencies>("USD");
   const [bottomUnit, setBottomUnit] = useState<SupportedUnits>("gallon");
   const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
+
+  const [dollarCost, setDollarCost] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch("/currencies.json")
+        .then((response) => response.json())
+        .then((data) => {
+          return data;
+        });
+      setDollarCost(result);
+    };
+
+    fetchData();
+  }, []);
 
   const getGasPrice = (
     sourceNumber: number,
@@ -35,11 +47,6 @@ function App() {
       currency: SupportedCurrencies,
       targetCurrency: SupportedCurrencies,
     ) => {
-      const dollarCost = {
-        "BRL": 5.7955874,
-        "USD": 1
-      }
-
       // Get the price in USD, then convert from USD to target currency
       let newValue = Number(
         (price / dollarCost[currency]) * dollarCost[targetCurrency],
@@ -63,13 +70,33 @@ function App() {
 
   useEffect(() => {
     if (isUpdatingBottomNumber) {
-      const newResult = getGasPrice(topNumber, topCurrency, topUnit, bottomCurrency, bottomUnit);
-      setBottomNumber(newResult)
+      const newResult = getGasPrice(
+        topNumber,
+        topCurrency,
+        topUnit,
+        bottomCurrency,
+        bottomUnit,
+      );
+      setBottomNumber(newResult);
     } else {
-      const newResult = getGasPrice(bottomNumber, bottomCurrency, bottomUnit, topCurrency, topUnit);
-      setTopNumber(newResult)
+      const newResult = getGasPrice(
+        bottomNumber,
+        bottomCurrency,
+        bottomUnit,
+        topCurrency,
+        topUnit,
+      );
+      setTopNumber(newResult);
     }
-  }, [isUpdatingBottomNumber, topNumber, topCurrency, topUnit, bottomCurrency, bottomUnit, bottomNumber])
+  }, [
+    isUpdatingBottomNumber,
+    topNumber,
+    topCurrency,
+    topUnit,
+    bottomCurrency,
+    bottomUnit,
+    bottomNumber,
+  ]);
 
   return (
     <>
@@ -82,7 +109,7 @@ function App() {
           currency={topCurrency}
           unit={topUnit}
           onNumberChange={(newNumber: number) => {
-            setIsUpdatingBottomNumber(true)
+            setIsUpdatingBottomNumber(true);
             setTopNumber(newNumber);
           }}
           onUnitChange={(newUnit: SupportedUnits) => {
@@ -104,7 +131,7 @@ function App() {
           number={bottomNumber}
           currency={bottomCurrency}
           onNumberChange={(newValue: number) => {
-            setIsUpdatingBottomNumber(false)
+            setIsUpdatingBottomNumber(false);
             setBottomNumber(newValue);
           }}
           unit={bottomUnit}
