@@ -5,7 +5,7 @@ import { getUnits } from "./utils/numberFormat";
 import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
 
-type SupportedCurrencies = "BRL" | "USD";
+type SupportedCurrencies = "USD" | "BRL";
 type SupportedUnits = "liter" | "gallon";
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
   const [bottomUnit, setBottomUnit] = useState<SupportedUnits>("gallon");
   const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
 
-  const [dollarCost, setDollarCost] = useState({});
+  const [dollarCost, setDollarCost] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,10 +47,11 @@ function App() {
       currency: SupportedCurrencies,
       targetCurrency: SupportedCurrencies,
     ) => {
-      // Get the price in USD, then convert from USD to target currency
-      let newValue = Number(
-        (price / dollarCost[currency]) * dollarCost[targetCurrency],
-      );
+      let newValue = 0;
+      if ((currency in dollarCost) && (targetCurrency in dollarCost)) {
+        // Get the price in USD, then convert from USD to target currency
+        newValue = Number(price / dollarCost[currency]) * dollarCost[targetCurrency];
+      }
 
       if (Number.isNaN(newValue)) {
         newValue = 0;
@@ -96,6 +97,7 @@ function App() {
     bottomCurrency,
     bottomUnit,
     bottomNumber,
+    getGasPrice
   ]);
 
   return (
