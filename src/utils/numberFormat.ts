@@ -51,22 +51,6 @@ const isLegalPriceValue = (price: string) => {
 
   return true;
 };
-const getPriceInCurrency = (
-  price: number,
-  currency: SupportedCurrencies,
-  targetCurrency: SupportedCurrencies,
-) => {
-  // Get the price in USD, then convert from USD to target currency
-  let newValue = Number(
-    (price / dollarCost[currency]) * dollarCost[targetCurrency],
-  );
-
-  if (Number.isNaN(newValue)) {
-    newValue = 0;
-  }
-
-  return newValue;
-};
 
 // This table shows how much a dollar costs
 // Updated on 2024-11-17

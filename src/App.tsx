@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import {
-  getPriceInCurrency,
   getUnits,
 } from "./utils/numberFormat";
 
@@ -23,6 +22,29 @@ function App() {
     useState<SupportedCurrencies>("USD");
   const [bottomUnit, setBottomUnit] = useState<SupportedUnits>("gallon");
   const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
+
+
+  const getPriceInCurrency = (
+    price: number,
+    currency: SupportedCurrencies,
+    targetCurrency: SupportedCurrencies,
+  ) => {
+    const dollarCost = {
+      "BRL": 5.7955874,
+      "USD": 1
+    }
+
+    // Get the price in USD, then convert from USD to target currency
+    let newValue = Number(
+      (price / dollarCost[currency]) * dollarCost[targetCurrency],
+    );
+
+    if (Number.isNaN(newValue)) {
+      newValue = 0;
+    }
+
+    return newValue;
+  };
 
   const getGasPrice = (
     sourceNumber: number,

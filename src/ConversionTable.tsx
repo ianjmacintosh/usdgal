@@ -20,18 +20,13 @@ const ConversionTable = ({
     sourceCurrency: SupportedCurrencies;
     targetCurrency: SupportedCurrencies;
 }) => {
-    const [exchangeRates, setExchangeRates] = useState<Partial<Record<SupportedCurrencies, number>>>({ "BRL": 5.7955874, "USD": 1 });
-    useEffect(() => {
-        fetch("/currencies.json").then((response) => {
-            if (response.ok) {
-                response.json().then((data) => {
-                    setExchangeRates(data);
-                });
-            }
-        })
-    })
-    const sourceCurrencyDollarCost = exchangeRates[sourceCurrency] ? exchangeRates[sourceCurrency] : 1;
-    const targetCurrencyDollarCost = exchangeRates[targetCurrency] ? exchangeRates[targetCurrency] : 1;
+    const dollarCost = {
+        "BRL": 5.7955874,
+        "USD": 1
+    }
+
+    const sourceCurrencyDollarCost = dollarCost[sourceCurrency] ? dollarCost[sourceCurrency] : 1;
+    const targetCurrencyDollarCost = dollarCost[targetCurrency] ? dollarCost[targetCurrency] : 1;
     const exchangeRate = sourceCurrencyDollarCost / targetCurrencyDollarCost;
     const currencyExchangeFormula = {
         "operation": exchangeRate > 1 ? "÷" : "×",
