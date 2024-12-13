@@ -3,9 +3,10 @@ import { cleanup, render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
-import dollarCost from "./currencies";
+import exchangeRateData from "./exchangeRateData";
 
 describe("<GasPrice />", () => {
+  const currencies = Object.keys(exchangeRateData.rates)
   const user = userEvent.setup();
   const TestComponent = ({ ...props }) => {
     const [number, setNumber] = useState(0);
@@ -27,7 +28,7 @@ describe("<GasPrice />", () => {
         onUnitChange={(newValue) => {
           setUnit(newValue);
         }}
-        dollarCost={dollarCost}
+        currencies={currencies}
         {...props}
       />
     );
@@ -165,18 +166,7 @@ describe("<GasPrice />", () => {
 
   test("dynamically renders currencies based on props", async () => {
     cleanup();
-    render(<TestComponent dollarCost={[{
-      currency: "BRL",
-      price: 5.7955874,
-    },
-    {
-      currency: "USD",
-      price: 1,
-    },
-    {
-      currency: "MXN",
-      price: 1,
-    }]} />);
+    render(<TestComponent currencies={["BRL", "USD", "MXN"]} />);
 
     const currency = screen.getByLabelText("Currency", {
       exact: false,

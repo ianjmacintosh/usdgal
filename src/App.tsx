@@ -4,12 +4,14 @@ import { getUnits } from "./utils/numberFormat";
 
 import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
-import dollarCost from "./currencies";
+import exchangeRateData from "./exchangeRateData";
 
 type SupportedUnits = "liter" | "gallon";
 
 function App() {
   // const userLocale = "en-US";
+  const exchangeRates = exchangeRateData.rates as Record<string, number>
+  const currencies = Object.keys(exchangeRateData.rates)
 
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] = useState<string>("BRL");
@@ -33,11 +35,11 @@ function App() {
         currency: string,
         targetCurrency: string,
       ) => {
-        const sourceDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === currency)?.price ?? 1;
-        const targetDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === targetCurrency)?.price ?? 1;
+        const sourceCurrencyExchangeRate = exchangeRates[currency] ?? 1;
+        const targetCurrencyExchangeRate = exchangeRates[targetCurrency] ?? 1;
         let newValue = 0;
         // Get the price in USD, then convert from USD to target currency
-        newValue = Number(price / sourceDollarCost) * targetDollarCost;
+        newValue = Number(price / sourceCurrencyExchangeRate) * targetCurrencyExchangeRate;
 
         if (Number.isNaN(newValue)) {
           newValue = 0;
@@ -103,14 +105,14 @@ function App() {
           onCurrencyChange={(newCurrency: string) => {
             setTopCurrency(newCurrency);
           }}
-          dollarCost={dollarCost}
+          currencies={currencies}
         />
         <ConversionTable
           sourceUnit={topUnit}
           targetUnit={bottomUnit}
           sourceCurrency={topCurrency}
           targetCurrency={bottomCurrency}
-          dollarCost={dollarCost}
+          exchangeRateData={exchangeRateData}
         />
         <GasPrice
           label="To"
@@ -127,7 +129,7 @@ function App() {
           onCurrencyChange={(newCurrency: string) => {
             setBottomCurrency(newCurrency);
           }}
-          dollarCost={dollarCost}
+          currencies={currencies}
         ></GasPrice>
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>

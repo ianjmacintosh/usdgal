@@ -2,6 +2,7 @@ import { describe, test, expect, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
+import exchangeRateData from "./exchangeRateData";
 
 describe("<App />", () => {
   const user = userEvent.setup();
@@ -52,7 +53,7 @@ describe("<App />", () => {
     await user.keyboard("6.73");
 
     // Expect output to be 4.40
-    expect(bottomPriceInput.value).toBe("4.40");
+    expect(bottomPriceInput.value).toBe(exchangeRateData.rates["BRL"] * exchangeRateData.rates["USD"]);
   });
 
   test("doesn't throw NaN errors when the user provides incomplete numbers", async () => {

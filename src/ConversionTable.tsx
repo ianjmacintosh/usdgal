@@ -12,18 +12,24 @@ const ConversionTable = ({
     targetUnit,
     sourceCurrency,
     targetCurrency,
-    dollarCost
+    exchangeRateData
 }: {
     sourceUnit: SupportedUnits;
     targetUnit: SupportedUnits;
     sourceCurrency: string;
     targetCurrency: string;
-    dollarCost: { currency: string; price: number, updated?: string; }[]
+    exchangeRateData: {
+        base: string,
+        date: string,
+        rates: { [key: string]: number },
+        success: boolean,
+        timestamp: number,
+    }
 }) => {
 
-    const sourceCurrencyDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === sourceCurrency)?.price ?? 1;
-    const targetCurrencyDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === targetCurrency)?.price ?? 1;
-    const targetCurrencyUpdatedDate = dollarCost.find((currencyInfo) => currencyInfo.currency === targetCurrency)?.updated ?? "2024-11-17";
+    const sourceCurrencyDollarCost = exchangeRateData.rates[sourceCurrency] ?? 1;
+    const targetCurrencyDollarCost = exchangeRateData.rates[targetCurrency] ?? 1;
+    const targetCurrencyUpdatedDate = exchangeRateData.date ?? "2024-11-17";
     const exchangeRate = sourceCurrencyDollarCost / targetCurrencyDollarCost;
     const currencyExchangeFormula = {
         "operation": exchangeRate > 1 ? "÷" : "×",
