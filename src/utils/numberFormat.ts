@@ -1,3 +1,5 @@
+type SupportedUnits = "liter" | "gallon";
+
 const getNumberFormatChar = (
   char: "decimalSeparatorChar" | "groupingSeparatorChar",
   locale: string,
@@ -48,35 +50,16 @@ const isLegalPriceValue = (price: string) => {
 
   return true;
 };
-const getPriceInCurrency = (
-  price: number,
-  currency: keyof typeof dollarCost,
-  targetCurrency: keyof typeof dollarCost,
-) => {
-  // Get the price in USD, then convert from USD to target currency
-  let newValue = Number(
-    (price / dollarCost[currency]) * dollarCost[targetCurrency],
-  );
-
-  if (Number.isNaN(newValue)) {
-    newValue = 0;
-  }
-
-  return newValue;
-};
-
-// This table shows how much a dollar costs
-// Updated on 2024-11-17
-const dollarCost = {
-  BRL: 5.7955874,
-  USD: 1,
-};
 
 /**
  * Convert the new price from the source currency to the target currency
  * Multiply by LITERS_PER_GALLON if the source currency is the local currency, divide by LITERS_PER_GALLON if it is the home currency
  */
-const getUnits = (price: number, fromUnit: string, toUnit: string) => {
+const getUnits = (
+  price: number,
+  fromUnit: SupportedUnits,
+  toUnit: SupportedUnits,
+) => {
   const LITERS_PER_GALLON = 3.78541;
   if (fromUnit === "liter" && toUnit === "gallon") {
     return price * LITERS_PER_GALLON;
@@ -87,11 +70,4 @@ const getUnits = (price: number, fromUnit: string, toUnit: string) => {
   return price;
 };
 
-export {
-  getUnits,
-  getNumberFormatChar,
-  getFormattedPrice,
-  isLegalPriceValue,
-  getPriceInCurrency,
-  dollarCost,
-};
+export { getUnits, getNumberFormatChar, getFormattedPrice, isLegalPriceValue };

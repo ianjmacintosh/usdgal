@@ -2,9 +2,13 @@ import { describe, test, expect, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import ConversionTable from "./ConversionTable";
+import dollarCost from "./currencies.ts"
 
 describe("<ConversionTable />", () => {
-    afterEach(cleanup)
+
+    afterEach(() => {
+        cleanup();
+    });
 
     test("displays the conversion table", async () => {
         render(
@@ -13,6 +17,7 @@ describe("<ConversionTable />", () => {
                 targetUnit="gallon"
                 sourceCurrency="BRL"
                 targetCurrency="USD"
+                dollarCost={dollarCost}
             />,
         );
 
@@ -27,6 +32,7 @@ describe("<ConversionTable />", () => {
                 targetUnit="gallon"
                 sourceCurrency="BRL"
                 targetCurrency="USD"
+                dollarCost={dollarCost}
             />,
         );
 
@@ -42,12 +48,13 @@ describe("<ConversionTable />", () => {
                 targetUnit="gallon"
                 sourceCurrency="USD"
                 targetCurrency="USD"
+                dollarCost={dollarCost}
             />,
         );
 
         expect(
             screen.getByLabelText("Currency conversion").textContent,
-        ).toContain('× 1 USD per USD');
+        ).toContain('× 1.0000000 USD per USD');
     });
 
     test("changes operations to keep numbers positive", async () => {
@@ -57,6 +64,7 @@ describe("<ConversionTable />", () => {
                 targetUnit="liter"
                 sourceCurrency="USD"
                 targetCurrency="BRL"
+                dollarCost={dollarCost}
             />,
         );
 
@@ -66,6 +74,6 @@ describe("<ConversionTable />", () => {
 
         expect(
             screen.getByLabelText("Currency conversion").textContent,
-        ).toContain('× 5.7955874 USD per BRL');
+        ).toContain('× 5.7955874 BRL per USD');
     });
 });
