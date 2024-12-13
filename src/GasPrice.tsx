@@ -13,7 +13,7 @@ function GasPrice({
   disabled,
   currency,
   unit,
-  dollarCost
+  currencies
 }: {
   label: string;
   number: number;
@@ -24,7 +24,7 @@ function GasPrice({
   onUnitChange: (newUnit: SupportedUnits) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
-  dollarCost: { currency: string, price: number, updated?: string }[]
+  currencies: string[]
 }) {
   const [displayNumber, setDisplayNumber] = useState(getFormattedPrice(number, "en-US", currency));
   const [isNumberFocused, setIsNumberFocused] = useState(false);
@@ -85,7 +85,7 @@ function GasPrice({
         disabled={disabled}
         className="currency"
       >
-        {dollarCost.map((currencyInfo) => <option key={currencyInfo.currency} value={currencyInfo.currency}>{currencyInfo.currency}</option>)}
+        {currencies.map((currency) => <option key={currency} value={currency}>{currency}</option>)}
       </select>
       <select
         id={`${label.toLowerCase()}_unit`}

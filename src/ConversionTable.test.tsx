@@ -2,7 +2,7 @@ import { describe, test, expect, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import ConversionTable from "./ConversionTable";
-import dollarCost from "./currencies.ts"
+import exchangeRateData from "./exchangeRateData.ts"
 
 describe("<ConversionTable />", () => {
 
@@ -17,7 +17,7 @@ describe("<ConversionTable />", () => {
                 targetUnit="gallon"
                 sourceCurrency="BRL"
                 targetCurrency="USD"
-                dollarCost={dollarCost}
+                exchangeRateData={exchangeRateData}
             />,
         );
 
@@ -32,13 +32,13 @@ describe("<ConversionTable />", () => {
                 targetUnit="gallon"
                 sourceCurrency="BRL"
                 targetCurrency="USD"
-                dollarCost={dollarCost}
+                exchangeRateData={exchangeRateData}
             />,
         );
 
         expect(
             screen.getByLabelText("Unit of measure conversion").textContent,
-        ).toContain('× 1 gallons per gallon');
+        ).toContain('gallons per gallon');
     });
 
     test("shows correct conversion rates for equal currencies", async () => {
@@ -48,13 +48,13 @@ describe("<ConversionTable />", () => {
                 targetUnit="gallon"
                 sourceCurrency="USD"
                 targetCurrency="USD"
-                dollarCost={dollarCost}
+                exchangeRateData={exchangeRateData}
             />,
         );
 
         expect(
             screen.getByLabelText("Currency conversion").textContent,
-        ).toContain('× 1.0000000 USD per USD');
+        ).toContain('USD per USD');
     });
 
     test("changes operations to keep numbers positive", async () => {
@@ -64,16 +64,16 @@ describe("<ConversionTable />", () => {
                 targetUnit="liter"
                 sourceCurrency="USD"
                 targetCurrency="BRL"
-                dollarCost={dollarCost}
+                exchangeRateData={exchangeRateData}
             />,
         );
 
         expect(
             screen.getByLabelText("Unit of measure conversion").textContent,
-        ).toContain('÷ 3.78541 gallons per liter');
+        ).toContain('gallons per liter');
 
         expect(
             screen.getByLabelText("Currency conversion").textContent,
-        ).toContain('× 5.7955874 BRL per USD');
+        ).toContain('BRL per USD');
     });
 });

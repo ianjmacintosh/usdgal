@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { getUnits } from "./utils/numberFormat";
+import getGasPrice from "./utils/getGasPrice";
 
 import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
-import dollarCost from "./currencies";
+import exchangeRateData from "./exchangeRateData";
 
 type SupportedUnits = "liter" | "gallon";
 
 function App() {
   // const userLocale = "en-US";
+  const currencies = Object.keys(exchangeRateData.rates)
 
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] = useState<string>("BRL");
@@ -21,40 +22,6 @@ function App() {
   const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
 
   useEffect(() => {
-    const getGasPrice = (
-      sourceNumber: number,
-      sourceCurrency: string,
-      sourceUnit: SupportedUnits,
-      targetCurrency: string,
-      targetUnit: SupportedUnits,
-    ) => {
-      const getPriceInCurrency = (
-        price: number,
-        currency: string,
-        targetCurrency: string,
-      ) => {
-        const sourceDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === currency)?.price ?? 1;
-        const targetDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === targetCurrency)?.price ?? 1;
-        let newValue = 0;
-        // Get the price in USD, then convert from USD to target currency
-        newValue = Number(price / sourceDollarCost) * targetDollarCost;
-
-        if (Number.isNaN(newValue)) {
-          newValue = 0;
-        }
-
-        return newValue;
-      };
-
-      // Convert that number from using source units to target units
-      let result = getUnits(sourceNumber, sourceUnit, targetUnit);
-
-      // Convert _that_ number using the exchange rate from source currency to target currency
-      result = getPriceInCurrency(result, sourceCurrency, targetCurrency);
-
-      return result;
-    };
-
     if (isUpdatingBottomNumber) {
       const newResult = getGasPrice(
         topNumber,
@@ -103,14 +70,14 @@ function App() {
           onCurrencyChange={(newCurrency: string) => {
             setTopCurrency(newCurrency);
           }}
-          dollarCost={dollarCost}
+          currencies={currencies}
         />
         <ConversionTable
           sourceUnit={topUnit}
           targetUnit={bottomUnit}
           sourceCurrency={topCurrency}
           targetCurrency={bottomCurrency}
-          dollarCost={dollarCost}
+          exchangeRateData={exchangeRateData}
         />
         <GasPrice
           label="To"
@@ -127,7 +94,7 @@ function App() {
           onCurrencyChange={(newCurrency: string) => {
             setBottomCurrency(newCurrency);
           }}
-          dollarCost={dollarCost}
+          currencies={currencies}
         ></GasPrice>
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>
