@@ -52,6 +52,16 @@ describe("<GasPrice />", () => {
     expect(input.value).toBe("123");
   });
 
+  test("clears the number input when the starting value is 0", async () => {
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
+
+    expect(input.value).toBe("0.00");
+    await user.click(input);
+    expect(input.value).toBe("");
+  });
+
   test("prevents the user from entering illegal characters", async () => {
     const input = screen.getByLabelText("Amount", {
       exact: false,
