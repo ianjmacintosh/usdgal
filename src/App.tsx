@@ -6,33 +6,32 @@ import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
 import dollarCost from "./currencies";
 
-type SupportedCurrencies = "USD" | "BRL";
 type SupportedUnits = "liter" | "gallon";
 
 function App() {
   // const userLocale = "en-US";
 
   const [topNumber, setTopNumber] = useState(0);
-  const [topCurrency, setTopCurrency] = useState<SupportedCurrencies>("BRL");
+  const [topCurrency, setTopCurrency] = useState<string>("BRL");
   const [topUnit, setTopUnit] = useState<SupportedUnits>("liter");
   const [bottomNumber, setBottomNumber] = useState(0);
   const [bottomCurrency, setBottomCurrency] =
-    useState<SupportedCurrencies>("USD");
+    useState<string>("USD");
   const [bottomUnit, setBottomUnit] = useState<SupportedUnits>("gallon");
   const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
 
   useEffect(() => {
     const getGasPrice = (
       sourceNumber: number,
-      sourceCurrency: SupportedCurrencies,
+      sourceCurrency: string,
       sourceUnit: SupportedUnits,
-      targetCurrency: SupportedCurrencies,
+      targetCurrency: string,
       targetUnit: SupportedUnits,
     ) => {
       const getPriceInCurrency = (
         price: number,
-        currency: SupportedCurrencies,
-        targetCurrency: SupportedCurrencies,
+        currency: string,
+        targetCurrency: string,
       ) => {
         const sourceDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === currency)?.price ?? 1;
         const targetDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === targetCurrency)?.price ?? 1;
@@ -101,7 +100,7 @@ function App() {
           onUnitChange={(newUnit: SupportedUnits) => {
             setTopUnit(newUnit);
           }}
-          onCurrencyChange={(newCurrency: SupportedCurrencies) => {
+          onCurrencyChange={(newCurrency: string) => {
             setTopCurrency(newCurrency);
           }}
           dollarCost={dollarCost}
@@ -125,7 +124,7 @@ function App() {
           onUnitChange={(newUnit: SupportedUnits) => {
             setBottomUnit(newUnit);
           }}
-          onCurrencyChange={(newCurrency: SupportedCurrencies) => {
+          onCurrencyChange={(newCurrency: string) => {
             setBottomCurrency(newCurrency);
           }}
           dollarCost={dollarCost}

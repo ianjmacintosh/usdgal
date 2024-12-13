@@ -5,13 +5,11 @@ import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import dollarCost from "./currencies";
 
-type SupportedCurrencies = "BRL" | "USD";
-
 describe("<GasPrice />", () => {
   const user = userEvent.setup();
   const TestComponent = ({ ...props }) => {
     const [number, setNumber] = useState(0);
-    const [currency, setCurrency] = useState<SupportedCurrencies>("BRL");
+    const [currency, setCurrency] = useState<string>("BRL");
     const [unit, setUnit] = useState("liter");
 
     return (

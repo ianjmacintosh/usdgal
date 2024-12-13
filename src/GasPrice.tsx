@@ -3,7 +3,6 @@ import "./GasPrice.css";
 import { getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
 import dollarCost from "./currencies";
 
-type SupportedCurrencies = "BRL" | "USD";
 type SupportedUnits = "liter" | "gallon";
 
 function GasPrice({
@@ -18,10 +17,10 @@ function GasPrice({
 }: {
   label: string;
   number: number;
-  currency: SupportedCurrencies;
+  currency: string;
   unit: string;
   onNumberChange: (newValue: number) => void;
-  onCurrencyChange: (newValue: SupportedCurrencies) => void;
+  onCurrencyChange: (newValue: string) => void;
   onUnitChange: (newUnit: SupportedUnits) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
@@ -81,12 +80,12 @@ function GasPrice({
       <select
         id={`${label.toLowerCase()}_currency`}
         defaultValue={currency}
-        onChange={(event) => handleCurrencyChange(event.target.value as SupportedCurrencies)}
+        onChange={(event) => handleCurrencyChange(event.target.value)}
         aria-label={`Currency`}
         disabled={disabled}
         className="currency"
       >
-        {dollarCost.map((currencyInfo) => <option value={currencyInfo.currency}>{currencyInfo.currency}</option>)}
+        {dollarCost.map((currencyInfo) => <option key={currencyInfo.currency} value={currencyInfo.currency}>{currencyInfo.currency}</option>)}
       </select>
       <select
         id={`${label.toLowerCase()}_unit`}

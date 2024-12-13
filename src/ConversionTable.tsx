@@ -1,6 +1,5 @@
 import "./ConversionTable.css";
 
-type SupportedCurrencies = "BRL" | "USD";
 type SupportedUnits = "liter" | "gallon";
 
 const volumesInLiters = {
@@ -17,8 +16,8 @@ const ConversionTable = ({
 }: {
     sourceUnit: SupportedUnits;
     targetUnit: SupportedUnits;
-    sourceCurrency: SupportedCurrencies;
-    targetCurrency: SupportedCurrencies;
+    sourceCurrency: string;
+    targetCurrency: string;
     dollarCost: { currency: string; price: number; }[]
 }) => {
 
