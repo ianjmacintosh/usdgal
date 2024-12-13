@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./GasPrice.css";
 import { getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
-import dollarCost from "./currencies";
 
 type SupportedUnits = "liter" | "gallon";
 
@@ -14,6 +13,7 @@ function GasPrice({
   disabled,
   currency,
   unit,
+  dollarCost
 }: {
   label: string;
   number: number;

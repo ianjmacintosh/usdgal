@@ -54,7 +54,7 @@ describe("<ConversionTable />", () => {
 
         expect(
             screen.getByLabelText("Currency conversion").textContent,
-        ).toContain('× 1 USD per USD');
+        ).toContain('× 1.0000000 USD per USD');
     });
 
     test("changes operations to keep numbers positive", async () => {
