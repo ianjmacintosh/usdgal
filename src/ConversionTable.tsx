@@ -58,7 +58,9 @@ const ConversionTable = ({
                     if I don't include it, it reads like "x 1gallons per gallon" */}
                     <td className="operation">{unitConversionFormula.operation} {unitConversionFormula.rate} </td>
                     {/* TODO: Use an Intl method to pluralize the source unit. Adding an "s" to pluralize the source unit is a bit of a hack */}
-                    <td className="operation-description">{sourceUnit}s per {targetUnit}</td>
+                    <td className="operation-description">
+                        {unitConversionFormula.operation === "÷" ? `${targetUnit}s per ${sourceUnit}` : `${sourceUnit}s per ${targetUnit}`}
+                    </td>
                 </tr>
                 <tr aria-label="Currency conversion">
                     {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but

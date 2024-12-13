@@ -62,6 +62,9 @@ function GasPrice({
         type="text"
         value={displayNumber}
         onFocus={() => {
+          if (displayNumber === "0.00") {
+            setDisplayNumber("")
+          }
           setIsNumberFocused(true);
         }}
         onBlur={() => {
