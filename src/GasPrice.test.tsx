@@ -28,10 +28,6 @@ describe("<GasPrice />", () => {
         onUnitChange={(newValue) => {
           setUnit(newValue);
         }}
-        dollarCost={{
-          BRL: 5.7955874,
-          USD: 1,
-        }}
         {...props}
       />
     );
