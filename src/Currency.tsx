@@ -1,5 +1,6 @@
 "use client"
 
+
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
 
@@ -19,28 +20,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-const frameworks = [
-    {
-        value: "next.js",
-        label: "Next.js",
-    },
-    {
-        value: "sveltekit",
-        label: "SvelteKit",
-    },
-    {
-        value: "nuxt.js",
-        label: "Nuxt.js",
-    },
-    {
-        value: "remix",
-        label: "Remix",
-    },
-    {
-        value: "astro",
-        label: "Astro",
-    },
-]
+import { symbols } from "./exchangeRateData"
 
 const Currency = ({
     label,
@@ -73,8 +53,8 @@ const Currency = ({
                     className="w-[200px] justify-between"
                 >
                     {value
-                        ? frameworks.find((framework) => framework.value === value)?.label
-                        : "Select framework..."}
+                        ? currencies.find((currency) => currency === value)
+                        : "Select currency..."}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
@@ -84,10 +64,10 @@ const Currency = ({
                     <CommandList>
                         <CommandEmpty>No framework found.</CommandEmpty>
                         <CommandGroup>
-                            {frameworks.map((framework) => (
+                            {currencies.map((currency) => (
                                 <CommandItem
-                                    key={framework.value}
-                                    value={framework.value}
+                                    key={currency}
+                                    value={currency}
                                     onSelect={(currentValue) => {
                                         setValue(currentValue === value ? "" : currentValue)
                                         setOpen(false)
@@ -96,10 +76,10 @@ const Currency = ({
                                     <Check
                                         className={cn(
                                             "mr-2 h-4 w-4",
-                                            value === framework.value ? "opacity-100" : "opacity-0"
+                                            value === currency ? "opacity-100" : "opacity-0"
                                         )}
                                     />
-                                    {framework.label}
+                                    {`${symbols[currency]} (${currency})`}
                                 </CommandItem>
                             ))}
                         </CommandGroup>
