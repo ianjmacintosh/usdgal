@@ -29,7 +29,7 @@ const Currency = ({
     currencies
 }) => {
     const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState("")
+    const [value, setValue] = React.useState(currency)
     /*
             <select
                 id={`${label.toLowerCase()}_currency`}
@@ -49,6 +49,7 @@ const Currency = ({
                 role="combobox"
                 aria-expanded={open}
                 className="w-[200px] justify-between"
+                aria-label="Currency"
             >
                 {value
                     ? currencies.find((currency) => currency === value)
@@ -58,9 +59,9 @@ const Currency = ({
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
             <Command>
-                <CommandInput placeholder="Search framework..." />
+                <CommandInput placeholder="Search for a currency..." />
                 <CommandList>
-                    <CommandEmpty>No framework found.</CommandEmpty>
+                    <CommandEmpty>No currencies found</CommandEmpty>
                     <CommandGroup>
                         {currencies.map((currency) => (
                             <CommandItem
@@ -68,6 +69,7 @@ const Currency = ({
                                 value={currency}
                                 onSelect={(currentValue) => {
                                     setValue(currentValue === value ? "" : currentValue)
+                                    handleCurrencyChange(currentValue)
                                     setOpen(false)
                                 }}
                             >
