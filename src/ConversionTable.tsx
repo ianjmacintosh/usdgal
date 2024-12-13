@@ -18,11 +18,12 @@ const ConversionTable = ({
     targetUnit: SupportedUnits;
     sourceCurrency: string;
     targetCurrency: string;
-    dollarCost: { currency: string; price: number; }[]
+    dollarCost: { currency: string; price: number, updated?: string; }[]
 }) => {
 
     const sourceCurrencyDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === sourceCurrency)?.price ?? 1;
     const targetCurrencyDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === targetCurrency)?.price ?? 1;
+    const targetCurrencyUpdatedDate = dollarCost.find((currencyInfo) => currencyInfo.currency === targetCurrency)?.updated ?? "2024-11-17";
     const exchangeRate = sourceCurrencyDollarCost / targetCurrencyDollarCost;
     const currencyExchangeFormula = {
         "operation": exchangeRate > 1 ? "÷" : "×",
@@ -56,11 +57,11 @@ const ConversionTable = ({
                 <tr aria-label="Currency conversion">
                     {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
                     if I don't include it, it reads like "÷ 1USD per USD" */}
-                    <td className="operation">{currencyExchangeFormula.operation} {currencyExchangeFormula.rate} </td>
+                    <td className="operation">{currencyExchangeFormula.operation} {Number(currencyExchangeFormula.rate).toFixed(5)} </td>
                     <td className="operation-description">
                         {currencyExchangeFormula.operation === "÷" ? `${sourceCurrency} per ${targetCurrency}` : `${targetCurrency} per ${sourceCurrency}`}
                         <br />
-                        <em>(updated 2024-11-17)</em>
+                        <em>(updated {targetCurrencyUpdatedDate})</em>
                     </td>
                 </tr>
             </tbody>
