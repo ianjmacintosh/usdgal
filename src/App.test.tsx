@@ -1,20 +1,7 @@
-import { describe, test, expect, beforeAll, afterEach, afterAll } from "vitest";
-import { http, HttpResponse } from "msw";
-import { setupServer } from "msw/node";
+import { describe, test, expect, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
-
-const server = setupServer(
-  // capture "GET /greeting" requests
-  http.get('/currencies.json', () => {
-    // respond using a mocked JSON body
-    return HttpResponse.json({
-      "BRL": 5.7955874,
-      "USD": 1
-    })
-  }),
-)
 
 describe("<App />", () => {
   const user = userEvent.setup();
@@ -38,16 +25,9 @@ describe("<App />", () => {
     "Unit of sale", { selector: 'select', exact: false },
   )[1] as HTMLSelectElement;
 
-  beforeAll(() => {
-    server.listen();
-  });
-
   afterEach(() => {
     user.clear(topPriceInput);
-    server.resetHandlers();
   });
-
-  afterAll(() => server.close());
 
   test("correctly converts BRL per liter to USD per gallon", async () => {
     // Clear the local price input
