@@ -82,8 +82,7 @@ function App() {
     topUnit,
     bottomCurrency,
     bottomUnit,
-    bottomNumber,
-    dollarCost
+    bottomNumber
   ]);
 
   return (
@@ -91,7 +90,6 @@ function App() {
       <div className="container">
         <h1>Convert Foreign Gas Price</h1>
         <GasPrice
-          id="localPrice"
           label="From"
           number={topNumber}
           currency={topCurrency}
@@ -106,6 +104,7 @@ function App() {
           onCurrencyChange={(newCurrency: SupportedCurrencies) => {
             setTopCurrency(newCurrency);
           }}
+          dollarCost={dollarCost}
         />
         <ConversionTable
           sourceUnit={topUnit}
@@ -115,7 +114,6 @@ function App() {
           dollarCost={dollarCost}
         />
         <GasPrice
-          id="homePrice"
           label="To"
           number={bottomNumber}
           currency={bottomCurrency}
@@ -130,6 +128,7 @@ function App() {
           onCurrencyChange={(newCurrency: SupportedCurrencies) => {
             setBottomCurrency(newCurrency);
           }}
+          dollarCost={dollarCost}
         ></GasPrice>
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>

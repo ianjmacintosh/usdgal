@@ -1,4 +1,3 @@
-type SupportedCurrencies = "BRL" | "USD";
 type SupportedUnits = "liter" | "gallon";
 
 const getNumberFormatChar = (
@@ -52,13 +51,6 @@ const isLegalPriceValue = (price: string) => {
   return true;
 };
 
-// This table shows how much a dollar costs
-// Updated on 2024-11-17
-const dollarCost = {
-  BRL: 5.7955874,
-  USD: 1,
-};
-
 /**
  * Convert the new price from the source currency to the target currency
  * Multiply by LITERS_PER_GALLON if the source currency is the local currency, divide by LITERS_PER_GALLON if it is the home currency
@@ -78,11 +70,4 @@ const getUnits = (
   return price;
 };
 
-export {
-  getUnits,
-  getNumberFormatChar,
-  getFormattedPrice,
-  isLegalPriceValue,
-  getPriceInCurrency,
-  dollarCost,
-};
+export { getUnits, getNumberFormatChar, getFormattedPrice, isLegalPriceValue };

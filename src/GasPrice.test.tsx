@@ -5,7 +5,6 @@ import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 
 type SupportedCurrencies = "BRL" | "USD";
-type SupportedUnits = "liter" | "gallon";
 
 describe("<GasPrice />", () => {
   const user = userEvent.setup();
