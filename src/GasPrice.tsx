@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./GasPrice.css";
 import { getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
+import Currency from "./Currency";
 
 type SupportedUnits = "liter" | "gallon";
 
@@ -80,16 +81,13 @@ function GasPrice({
         className="number"
         aria-label={`Amount of ${currency} paid per ${unit} of gas`}
       />
-      <select
-        id={`${label.toLowerCase()}_currency`}
-        defaultValue={currency}
-        onChange={(event) => handleCurrencyChange(event.target.value)}
-        aria-label={`Currency`}
+      <Currency
+        label={label}
+        currency={currency}
+        handleCurrencyChange={handleCurrencyChange}
         disabled={disabled}
-        className="currency"
-      >
-        {currencies.map((currency) => <option key={currency} value={currency}>{currency}</option>)}
-      </select>
+        currencies={currencies}
+      ></Currency>
       <select
         id={`${label.toLowerCase()}_unit`}
         defaultValue={unit}
