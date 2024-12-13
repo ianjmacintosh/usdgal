@@ -2,12 +2,9 @@ import { describe, test, expect, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import ConversionTable from "./ConversionTable";
+import dollarCost from "./currencies.ts"
 
 describe("<ConversionTable />", () => {
-    const dollarCost = {
-        "BRL": 5.7955874,
-        "USD": 1
-    }
 
     afterEach(() => {
         cleanup();
@@ -77,6 +74,6 @@ describe("<ConversionTable />", () => {
 
         expect(
             screen.getByLabelText("Currency conversion").textContent,
-        ).toContain('× 5.7955874 USD per BRL');
+        ).toContain('× 5.7955874 BRL per USD');
     });
 });

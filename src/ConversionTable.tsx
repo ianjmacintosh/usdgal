@@ -19,11 +19,11 @@ const ConversionTable = ({
     targetUnit: SupportedUnits;
     sourceCurrency: SupportedCurrencies;
     targetCurrency: SupportedCurrencies;
-    dollarCost: Record<string, number>
+    dollarCost: { currency: string; price: number; }[]
 }) => {
 
-    const sourceCurrencyDollarCost = dollarCost[sourceCurrency] ? dollarCost[sourceCurrency] : 1;
-    const targetCurrencyDollarCost = dollarCost[targetCurrency] ? dollarCost[targetCurrency] : 1;
+    const sourceCurrencyDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === sourceCurrency)?.price ?? 1;
+    const targetCurrencyDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === targetCurrency)?.price ?? 1;
     const exchangeRate = sourceCurrencyDollarCost / targetCurrencyDollarCost;
     const currencyExchangeFormula = {
         "operation": exchangeRate > 1 ? "÷" : "×",
@@ -59,7 +59,7 @@ const ConversionTable = ({
                     if I don't include it, it reads like "÷ 1USD per USD" */}
                     <td className="operation">{currencyExchangeFormula.operation} {currencyExchangeFormula.rate} </td>
                     <td className="operation-description">
-                        {sourceCurrency} per {targetCurrency}
+                        {currencyExchangeFormula.operation === "÷" ? `${sourceCurrency} per ${targetCurrency}` : `${targetCurrency} per ${sourceCurrency}`}
                         <br />
                         <em>(updated 2024-11-17)</em>
                     </td>

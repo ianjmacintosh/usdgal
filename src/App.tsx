@@ -34,11 +34,11 @@ function App() {
         currency: SupportedCurrencies,
         targetCurrency: SupportedCurrencies,
       ) => {
+        const sourceDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === currency)?.price ?? 1;
+        const targetDollarCost = dollarCost.find((currencyInfo) => currencyInfo.currency === targetCurrency)?.price ?? 1;
         let newValue = 0;
-        if ((currency in dollarCost) && (targetCurrency in dollarCost)) {
-          // Get the price in USD, then convert from USD to target currency
-          newValue = Number(price / dollarCost[currency]) * dollarCost[targetCurrency];
-        }
+        // Get the price in USD, then convert from USD to target currency
+        newValue = Number(price / sourceDollarCost) * targetDollarCost;
 
         if (Number.isNaN(newValue)) {
           newValue = 0;
