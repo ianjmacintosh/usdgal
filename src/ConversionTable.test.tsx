@@ -70,7 +70,7 @@ describe("<ConversionTable />", () => {
 
         expect(
             screen.getByLabelText("Unit of measure conversion").textContent,
-        ).toContain('gallons per liter');
+        ).toContain('liters per gallon');
 
         expect(
             screen.getByLabelText("Currency conversion").textContent,
