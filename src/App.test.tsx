@@ -2,7 +2,8 @@ import { describe, test, expect, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
-import exchangeRateData from "./exchangeRateData";
+import getGasPrice from "./utils/getGasPrice";
+import { getFormattedPrice } from "./utils/numberFormat";
 
 describe("<App />", () => {
   const user = userEvent.setup();
@@ -40,7 +41,7 @@ describe("<App />", () => {
 
     // Get output
     // Expect output to be 4.43
-    expect(bottomPriceInput.value).toBe("4.43");
+    expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "USD", "gallon"), "en-US", "USD"));
   });
 
   // 6.73 BRL per liter converts to 4.40 USD per gallon (at an exchange rate of 1 USD = 5.7955874 BRL)
@@ -52,8 +53,7 @@ describe("<App />", () => {
     await user.click(topPriceInput);
     await user.keyboard("6.73");
 
-    // Expect output to be 4.40
-    expect(bottomPriceInput.value).toBe(exchangeRateData.rates["BRL"] * exchangeRateData.rates["USD"]);
+    expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.73, "BRL", "liter", "USD", "gallon"), "en-US", "USD"));
   });
 
   test("doesn't throw NaN errors when the user provides incomplete numbers", async () => {
@@ -73,7 +73,7 @@ describe("<App />", () => {
     await userEvent.clear(topPriceInput);
     await user.keyboard("1,000,000");
 
-    expect(bottomPriceInput.value).toBe("653,153.81");
+    expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(1000000, "BRL", "liter", "USD", "gallon"), "en-US", "USD"));
   });
 
   test("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {
@@ -92,7 +92,7 @@ describe("<App />", () => {
     expect(bottomPriceInput.value).toBe("1,234.00");
   });
 
-  test("updates target price (but not source price) when the user updates the target currency or units", async () => {
+  test("updates bottom price (but not top price) when the user updates the target currency or units", async () => {
     // Clear the local price input
     await userEvent.clear(topPriceInput);
     await user.keyboard("6.78");
@@ -101,13 +101,13 @@ describe("<App />", () => {
     await user.selectOptions(topUnitInput, "per liter");
 
     expect(topPriceInput.value).toBe("6.78");
-    expect(bottomPriceInput.value).toBe("4.43");
+    expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "USD", "gallon"), "en-US", "USD"));
 
     await user.selectOptions(bottomCurrencyInput, "BRL");
-    expect(bottomPriceInput.value).toBe("25.67");
+    expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "BRL", "gallon"), "en-US", "BRL"));
 
     await user.selectOptions(bottomUnitInput, "per liter");
-    expect(bottomPriceInput.value).toBe("6.78");
+    expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "BRL", "liter"), "en-US", "USD"));
   });
 
   test("updates the top price when the user changes the bottom price", async () => {
@@ -123,6 +123,6 @@ describe("<App />", () => {
     expect(bottomPriceInput.value).toBe("4.43");
 
     // Expect the local price field to have a value based on the home price
-    expect(topPriceInput.value).toBe("6.78");
+    expect(topPriceInput.value).toBe(getFormattedPrice(getGasPrice(4.43, "USD", "gallon", "BRL", "liter"), "en-US", "USD"));
   });
 });

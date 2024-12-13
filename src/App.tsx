@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { getUnits } from "./utils/numberFormat";
+import getGasPrice from "./utils/getGasPrice";
 
 import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
@@ -10,7 +10,6 @@ type SupportedUnits = "liter" | "gallon";
 
 function App() {
   // const userLocale = "en-US";
-  const exchangeRates = exchangeRateData.rates as Record<string, number>
   const currencies = Object.keys(exchangeRateData.rates)
 
   const [topNumber, setTopNumber] = useState(0);
@@ -23,40 +22,6 @@ function App() {
   const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
 
   useEffect(() => {
-    const getGasPrice = (
-      sourceNumber: number,
-      sourceCurrency: string,
-      sourceUnit: SupportedUnits,
-      targetCurrency: string,
-      targetUnit: SupportedUnits,
-    ) => {
-      const getPriceInCurrency = (
-        price: number,
-        currency: string,
-        targetCurrency: string,
-      ) => {
-        const sourceCurrencyExchangeRate = exchangeRates[currency] ?? 1;
-        const targetCurrencyExchangeRate = exchangeRates[targetCurrency] ?? 1;
-        let newValue = 0;
-        // Get the price in USD, then convert from USD to target currency
-        newValue = Number(price / sourceCurrencyExchangeRate) * targetCurrencyExchangeRate;
-
-        if (Number.isNaN(newValue)) {
-          newValue = 0;
-        }
-
-        return newValue;
-      };
-
-      // Convert that number from using source units to target units
-      let result = getUnits(sourceNumber, sourceUnit, targetUnit);
-
-      // Convert _that_ number using the exchange rate from source currency to target currency
-      result = getPriceInCurrency(result, sourceCurrency, targetCurrency);
-
-      return result;
-    };
-
     if (isUpdatingBottomNumber) {
       const newResult = getGasPrice(
         topNumber,
