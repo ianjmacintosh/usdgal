@@ -14,6 +14,7 @@ function GasPrice({
   disabled,
   currency,
   unit,
+  dollarCost
 }: {
   label: string;
   number: number;
@@ -24,7 +25,7 @@ function GasPrice({
   onUnitChange: (newUnit: SupportedUnits) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
-  id: string;
+  dollarCost: Record<string, number>
 }) {
   const [displayNumber, setDisplayNumber] = useState(getFormattedPrice(number, "en-US", currency));
   const [isNumberFocused, setIsNumberFocused] = useState(false);

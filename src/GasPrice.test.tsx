@@ -3,18 +3,19 @@ import { cleanup, render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
-import { dollarCost } from "./utils/numberFormat";
+
+type SupportedCurrencies = "BRL" | "USD";
+type SupportedUnits = "liter" | "gallon";
 
 describe("<GasPrice />", () => {
   const user = userEvent.setup();
   const TestComponent = ({ ...props }) => {
     const [number, setNumber] = useState(0);
-    const [currency, setCurrency] = useState<keyof typeof dollarCost>("BRL");
+    const [currency, setCurrency] = useState<SupportedCurrencies>("BRL");
     const [unit, setUnit] = useState("liter");
 
     return (
       <GasPrice
-        id="notRealCurrency"
         label="SimpleTest"
         number={number}
         currency={currency}
@@ -28,18 +29,24 @@ describe("<GasPrice />", () => {
         onUnitChange={(newValue) => {
           setUnit(newValue);
         }}
+        dollarCost={{
+          BRL: 5.7955874,
+          USD: 1,
+        }}
         {...props}
       />
     );
   };
 
   beforeEach(() => {
-    cleanup()
+    cleanup();
     render(<TestComponent />);
   });
 
   test("loads the correct starting value, allows updates via typing", async () => {
-    const input = screen.getByLabelText("Amount", { exact: false }) as HTMLInputElement;
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
 
     expect(input.value).toBe("0.00");
     await user.click(input);
@@ -50,7 +57,9 @@ describe("<GasPrice />", () => {
   });
 
   test("prevents the user from entering illegal characters", async () => {
-    const input = screen.getByLabelText("Amount", { exact: false }) as HTMLInputElement;
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
 
     await user.clear(input);
     await user.click(input);
@@ -59,7 +68,9 @@ describe("<GasPrice />", () => {
   });
 
   test("prevents the user from entering legal characters to produce illegal values", async () => {
-    const input = screen.getByLabelText("Amount", { exact: false }) as HTMLInputElement;
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
 
     await user.clear(input);
     await user.click(input);
@@ -68,7 +79,9 @@ describe("<GasPrice />", () => {
   });
 
   test("allows the user to add commas to the local price", async () => {
-    const input = screen.getByLabelText("Amount", { exact: false }) as HTMLInputElement;
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
 
     await user.clear(input);
     await user.click(input);
@@ -78,7 +91,9 @@ describe("<GasPrice />", () => {
   });
 
   test("allows the user to modify fields with commas", async () => {
-    const input = screen.getByLabelText("Amount", { exact: false }) as HTMLInputElement;
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
 
     await user.clear(input);
     await user.click(input);
@@ -92,7 +107,9 @@ describe("<GasPrice />", () => {
     cleanup();
     render(<TestComponent disabled />);
 
-    const input = screen.getByLabelText("Amount", { exact: false }) as HTMLInputElement;
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
 
     await user.click(input);
     await user.keyboard("4.43");
@@ -101,7 +118,9 @@ describe("<GasPrice />", () => {
   });
 
   test("formats with commas and decimal places when the user exits a field", async () => {
-    const input = screen.getByLabelText("Amount", { exact: false }) as HTMLInputElement;
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
 
     await user.clear(input);
     await user.click(input);
@@ -109,7 +128,6 @@ describe("<GasPrice />", () => {
     await user.tab();
 
     expect(input.value).toBe("0.80");
-
 
     await user.clear(input);
     await user.click(input);
@@ -120,7 +138,9 @@ describe("<GasPrice />", () => {
   });
 
   test("doesn't throw NaN when receiving a malformed string", async () => {
-    const input = screen.getByLabelText("Amount", { exact: false }) as HTMLInputElement;
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
 
     await user.clear(input);
     await user.click(input);
@@ -131,7 +151,9 @@ describe("<GasPrice />", () => {
   });
 
   test("doesn't get value and state out of sync", async () => {
-    const input = screen.getByLabelText("Amount", { exact: false }) as HTMLInputElement;
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
 
     await user.clear(input);
     await user.click(input);
@@ -143,7 +165,6 @@ describe("<GasPrice />", () => {
     await user.click(input);
     await user.keyboard(",");
 
-
-    expect(input.value).toBe("1.00")
+    expect(input.value).toBe("1.00");
   });
 });
