@@ -7,6 +7,10 @@ const dollarCost = [
     currency: "USD",
     price: 1,
   },
+  {
+    currency: "MXN",
+    price: 1,
+  },
 ];
 
 export default dollarCost;

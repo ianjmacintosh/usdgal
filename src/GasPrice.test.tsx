@@ -3,6 +3,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
+import dollarCost from "./currencies";
 
 type SupportedCurrencies = "BRL" | "USD";
 
@@ -28,6 +29,7 @@ describe("<GasPrice />", () => {
         onUnitChange={(newValue) => {
           setUnit(newValue);
         }}
+        dollarCost={dollarCost}
         {...props}
       />
     );
@@ -161,5 +163,27 @@ describe("<GasPrice />", () => {
     await user.keyboard(",");
 
     expect(input.value).toBe("1.00");
+  });
+
+  test("dynamically renders currencies based on props", async () => {
+    cleanup();
+    render(<TestComponent dollarCost={[{
+      currency: "BRL",
+      price: 5.7955874,
+    },
+    {
+      currency: "USD",
+      price: 1,
+    },
+    {
+      currency: "MXN",
+      price: 1,
+    }]} />);
+
+    const currency = screen.getByLabelText("Currency", {
+      exact: false,
+    }) as HTMLSelectElement;
+
+    expect(currency.getElementsByTagName('option').length).toBe(3);
   });
 });

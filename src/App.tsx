@@ -104,6 +104,7 @@ function App() {
           onCurrencyChange={(newCurrency: SupportedCurrencies) => {
             setTopCurrency(newCurrency);
           }}
+          dollarCost={dollarCost}
         />
         <ConversionTable
           sourceUnit={topUnit}
@@ -127,6 +128,7 @@ function App() {
           onCurrencyChange={(newCurrency: SupportedCurrencies) => {
             setBottomCurrency(newCurrency);
           }}
+          dollarCost={dollarCost}
         ></GasPrice>
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>

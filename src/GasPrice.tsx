@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./GasPrice.css";
 import { getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
+import dollarCost from "./currencies";
 
 type SupportedCurrencies = "BRL" | "USD";
 type SupportedUnits = "liter" | "gallon";
@@ -24,6 +25,7 @@ function GasPrice({
   onUnitChange: (newUnit: SupportedUnits) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
+  dollarCost: { currency: string, price: number }[]
 }) {
   const [displayNumber, setDisplayNumber] = useState(getFormattedPrice(number, "en-US", currency));
   const [isNumberFocused, setIsNumberFocused] = useState(false);
@@ -84,8 +86,7 @@ function GasPrice({
         disabled={disabled}
         className="currency"
       >
-        <option value="USD">USD</option>
-        <option value="BRL">BRL</option>
+        {dollarCost.map((currencyInfo) => <option value={currencyInfo.currency}>{currencyInfo.currency}</option>)}
       </select>
       <select
         id={`${label.toLowerCase()}_unit`}
