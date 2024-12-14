@@ -6,8 +6,8 @@ const getPriceInCurrency = (
   price: number,
   currency: string,
   targetCurrency: string,
+  exchangeRates: { [key: string]: number } = exchangeRateData.rates,
 ) => {
-  const exchangeRates = exchangeRateData.rates as { [key: string]: number };
   const sourceCurrencyExchangeRate = exchangeRates[currency] ?? 1;
   const targetCurrencyExchangeRate = exchangeRates[targetCurrency] ?? 1;
   let newValue = 0;
@@ -28,12 +28,18 @@ const getGasPrice = (
   sourceUnit: SupportedUnits,
   targetCurrency: string,
   targetUnit: SupportedUnits,
+  exchangeRates?: { [key: string]: number },
 ) => {
   // Convert that number from using source units to target units
   let result = getUnits(sourceNumber, sourceUnit, targetUnit);
 
   // Convert _that_ number using the exchange rate from source currency to target currency
-  result = getPriceInCurrency(result, sourceCurrency, targetCurrency);
+  result = getPriceInCurrency(
+    result,
+    sourceCurrency,
+    targetCurrency,
+    exchangeRates,
+  );
 
   return result;
 };
