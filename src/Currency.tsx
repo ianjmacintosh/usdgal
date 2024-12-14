@@ -28,7 +28,6 @@ const Currency = ({
 }: {
     currency: string,
     handleCurrencyChange: (newValue: string) => void,
-    disabled: boolean,
     currencies: string[]
 }) => {
     const [open, setOpen] = React.useState(false)
@@ -66,7 +65,7 @@ const Currency = ({
                 <CommandList>
                     <CommandEmpty>No currencies found</CommandEmpty>
                     <CommandGroup>
-                        {currencies.map((currency: string) => (
+                        {currencies.map((currency) => (
                             <CommandItem
                                 key={currency}
                                 value={currency}
@@ -82,7 +81,7 @@ const Currency = ({
                                         value === currency ? "opacity-100" : "opacity-0"
                                     )}
                                 />
-                                {`${symbols[currency]} (${currency})`}
+                                {`${symbols[currency as keyof typeof symbols]} (${currency})`}
                             </CommandItem>
                         ))}
                     </CommandGroup>

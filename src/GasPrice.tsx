@@ -82,10 +82,8 @@ function GasPrice({
         aria-label={`Amount of ${currency} paid per ${unit} of gas`}
       />
       <Currency
-        label={label}
         currency={currency}
         handleCurrencyChange={handleCurrencyChange}
-        disabled={disabled}
         currencies={currencies}
       ></Currency>
       <select
