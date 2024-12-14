@@ -20,6 +20,7 @@ fieldset input {
   text-align: right;
 }
 
+fieldset .currency-button,
 fieldset input,
 fieldset select {
   width: auto;
@@ -30,11 +31,14 @@ fieldset select {
   color: #333;
 }
 
+fieldset .currency-button,
+fieldset button,
 fieldset select {
   background: #f9f9f9;
   cursor: pointer;
 }
 
+fieldset .currency-button:hover,
 fieldset input:hover,
 fieldset select:hover {
   background: #efefef;
@@ -51,7 +55,7 @@ fieldset .number {
   font-size: 36px;
 }
 
-fieldset .currency {
+fieldset .currency-button {
   border-top-right-radius: 10px;
   border: none;
   border-left: none;

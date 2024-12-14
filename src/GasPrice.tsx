@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./GasPrice.css";
 import { getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
+import Currency from "./Currency";
 
 type SupportedUnits = "liter" | "gallon";
 
@@ -54,7 +55,7 @@ function GasPrice({
   }
 
   return (
-    <fieldset>
+    <fieldset className="my-8">
       <legend>{label}</legend>
       {/* <label htmlFor={`${label}_number`}>
       </label> */}
@@ -80,16 +81,11 @@ function GasPrice({
         className="number"
         aria-label={`Amount of ${currency} paid per ${unit} of gas`}
       />
-      <select
-        id={`${label.toLowerCase()}_currency`}
-        defaultValue={currency}
-        onChange={(event) => handleCurrencyChange(event.target.value)}
-        aria-label={`Currency`}
-        disabled={disabled}
-        className="currency"
-      >
-        {currencies.map((currency) => <option key={currency} value={currency}>{currency}</option>)}
-      </select>
+      <Currency
+        currency={currency}
+        handleCurrencyChange={handleCurrencyChange}
+        currencies={currencies}
+      ></Currency>
       <select
         id={`${label.toLowerCase()}_unit`}
         defaultValue={unit}
