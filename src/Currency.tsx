@@ -50,7 +50,7 @@ const Currency = ({
                 variant="outline"
                 role="combobox"
                 aria-expanded={open}
-                className="w-[200px] justify-between"
+                className="rounded-none text-lg h-[60px] justify-between border-t-0 border-r-0 border-b-0 border-l-2"
                 aria-label="Currency"
             >
                 {value
@@ -59,7 +59,7 @@ const Currency = ({
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="w-[320px] p-0" align="end">
             <Command>
                 <CommandInput placeholder="Search for a currency..." />
                 <CommandList>

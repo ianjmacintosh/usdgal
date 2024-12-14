@@ -55,7 +55,7 @@ function GasPrice({
   }
 
   return (
-    <fieldset>
+    <fieldset className="my-8">
       <legend>{label}</legend>
       {/* <label htmlFor={`${label}_number`}>
       </label> */}
