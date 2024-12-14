@@ -11,18 +11,18 @@ describe("<App />", () => {
   const topPriceInput = screen.getAllByLabelText(
     "Amount", { selector: 'input', exact: false },
   )[0] as HTMLInputElement;
-  const topCurrencyInput = screen.getAllByLabelText(
-    "Currency", { selector: 'select', exact: false },
+  const topCurrencyButton = screen.getAllByLabelText(
+    "Currency", { selector: 'button', exact: false },
   )[0] as HTMLSelectElement;
   const topUnitInput = screen.getAllByLabelText(
     "Unit of sale", { selector: 'select', exact: false },
-  )[0] as HTMLSelectElement;
+  )[0] as HTMLButtonElement;
   const bottomPriceInput = screen.getAllByLabelText(
     "Amount", { selector: 'input', exact: false },
   )[1] as HTMLInputElement;
-  const bottomCurrencyInput = screen.getAllByLabelText(
-    "Currency", { selector: 'select', exact: false },
-  )[1] as HTMLSelectElement;
+  const bottomCurrencyButton = screen.getAllByLabelText(
+    "Currency", { selector: 'button', exact: false },
+  )[1] as HTMLButtonElement;
   const bottomUnitInput = screen.getAllByLabelText(
     "Unit of sale", { selector: 'select', exact: false },
   )[1] as HTMLSelectElement;
@@ -30,6 +30,11 @@ describe("<App />", () => {
   afterEach(() => {
     user.clear(topPriceInput);
   });
+
+  const selectItemFromCombobox = async (element: Element, option: string | RegExp) => {
+    await user.click(element);
+    await user.click(screen.getByRole("option", { name: option }));
+  }
 
   test("correctly converts BRL per liter to USD per gallon", async () => {
     // Clear the local price input
@@ -83,8 +88,8 @@ describe("<App />", () => {
     await user.keyboard("1234");
     expect(topPriceInput.value).toBe("1234");
 
-    await user.selectOptions(topCurrencyInput, "USD");
-    expect(topCurrencyInput.value).toBe("USD");
+    await selectItemFromCombobox(topCurrencyButton, "United States Dollar (USD)")
+    expect(topCurrencyButton.textContent).toBe("USD");
 
     await user.selectOptions(topUnitInput, "per gallon");
     expect(topUnitInput.value).toBe("gallon");
@@ -97,13 +102,13 @@ describe("<App />", () => {
     await userEvent.clear(topPriceInput);
     await user.keyboard("6.78");
 
-    await user.selectOptions(topCurrencyInput, "BRL");
+    await selectItemFromCombobox(topCurrencyButton, "Brazilian Real (BRL)")
     await user.selectOptions(topUnitInput, "per liter");
 
     expect(topPriceInput.value).toBe("6.78");
     expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "USD", "gallon"), "en-US", "USD"));
 
-    await user.selectOptions(bottomCurrencyInput, "BRL");
+    await selectItemFromCombobox(bottomCurrencyButton, "Brazilian Real (BRL)")
     expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "BRL", "gallon"), "en-US", "BRL"));
 
     await user.selectOptions(bottomUnitInput, "per liter");
@@ -111,9 +116,9 @@ describe("<App />", () => {
   });
 
   test("updates the top price when the user changes the bottom price", async () => {
-    await user.selectOptions(topCurrencyInput, "BRL");
+    await selectItemFromCombobox(topCurrencyButton, /BRL/)
     await user.selectOptions(topUnitInput, "per liter");
-    await user.selectOptions(bottomCurrencyInput, "USD");
+    await selectItemFromCombobox(bottomCurrencyButton, /USD/)
     await user.selectOptions(bottomUnitInput, "per gallon");
 
     // Set a home price;

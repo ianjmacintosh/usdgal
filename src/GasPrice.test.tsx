@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, getAllByRole, render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
@@ -178,10 +178,9 @@ describe("<GasPrice />", () => {
     cleanup();
     render(<TestComponent currencies={["BRL", "USD", "MXN"]} />);
 
-    const currency = screen.getByLabelText("Currency", {
-      exact: false,
-    }) as HTMLSelectElement;
-
-    expect(currency.getElementsByTagName('option').length).toBe(3);
+    const currencyButton = screen.getByLabelText("Currency")
+    await user.click(currencyButton)
+    const currency = getAllByRole(document.querySelector('[aria-label="Suggestions"]') as HTMLElement, "option");
+    expect(currency.length).toBe(3);
   });
 });

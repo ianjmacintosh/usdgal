@@ -22,11 +22,14 @@ import {
 import { symbols } from "./exchangeRateData"
 
 const Currency = ({
-    label,
     currency,
     handleCurrencyChange,
-    disabled,
     currencies
+}: {
+    currency: string,
+    handleCurrencyChange: (newValue: string) => void,
+    disabled: boolean,
+    currencies: string[]
 }) => {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState(currency)
@@ -52,7 +55,7 @@ const Currency = ({
                 aria-label="Currency"
             >
                 {value
-                    ? currencies.find((currency) => currency === value)
+                    ? currencies.find((currency: string) => currency === value)
                     : "Select currency..."}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -63,7 +66,7 @@ const Currency = ({
                 <CommandList>
                     <CommandEmpty>No currencies found</CommandEmpty>
                     <CommandGroup>
-                        {currencies.map((currency) => (
+                        {currencies.map((currency: string) => (
                             <CommandItem
                                 key={currency}
                                 value={currency}
