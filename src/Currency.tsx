@@ -50,7 +50,7 @@ const Currency = ({
                 variant="outline"
                 role="combobox"
                 aria-expanded={open}
-                className="rounded-none text-lg h-[60px] justify-between border-t-0 border-r-0 border-b-0 border-l-2"
+                className="currency-button rounded-none rounded-tr-lg text-lg h-[60px] justify-end gap-0"
                 aria-label="Currency"
             >
                 {value
