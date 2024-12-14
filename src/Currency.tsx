@@ -70,7 +70,7 @@ const Currency = ({
                                 key={currency}
                                 value={currency}
                                 onSelect={(currentValue) => {
-                                    setValue(currentValue === value ? "" : currentValue)
+                                    setValue(currentValue)
                                     handleCurrencyChange(currentValue)
                                     setOpen(false)
                                 }}

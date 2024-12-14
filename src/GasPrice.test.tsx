@@ -5,8 +5,13 @@ import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import exchangeRateData from "./exchangeRateData";
 
+
 describe("<GasPrice />", () => {
   const currencies = Object.keys(exchangeRateData.rates)
+  const selectItemFromCombobox = async (element: Element, option: string | RegExp) => {
+    await user.click(element);
+    await user.click(screen.getByRole("option", { name: option }));
+  }
   const user = userEvent.setup();
   const TestComponent = ({ ...props }) => {
     const [number, setNumber] = useState(0);
@@ -182,5 +187,19 @@ describe("<GasPrice />", () => {
     await user.click(currencyButton)
     const currency = getAllByRole(document.querySelector('[aria-label="Suggestions"]') as HTMLElement, "option");
     expect(currency.length).toBe(3);
+  });
+
+
+
+  test("doesn't deselect currency", async () => {
+    cleanup();
+    render(<TestComponent currencies={["BRL", "USD", "MXN"]} />);
+
+    const currencyButton = screen.getByLabelText("Currency")
+    await selectItemFromCombobox(currencyButton, /MXN/)
+    expect(currencyButton.textContent).toBe("MXN");
+
+    await selectItemFromCombobox(currencyButton, /MXN/)
+    expect(currencyButton.textContent).toBe("MXN");
   });
 });
