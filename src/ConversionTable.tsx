@@ -77,7 +77,7 @@ const ConversionTable = ({
                     {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
                     if I don't include it, it reads like "÷ 1USD per USD" */}
                     <td className="operator">{currencyExchangeFormula.operation}</td>
-                    <td className="operand">{Number(currencyExchangeFormula.rate).toFixed(7)} </td>
+                    <td className="operand">{currencyExchangeFormula.rate} </td>
                     <td className="operation-description">
                         {currencyExchangeFormula.operation === "÷" ? `${topCurrency} per ${bottomCurrency}` : `${bottomCurrency} per ${topCurrency}`}
                         <br />
