@@ -73,6 +73,8 @@ function App() {
           currencies={currencies}
         />
         <ConversionTable
+          topNumber={topNumber}
+          bottomNumber={bottomNumber}
           topUnit={topUnit}
           bottomUnit={bottomUnit}
           topCurrency={topCurrency}
