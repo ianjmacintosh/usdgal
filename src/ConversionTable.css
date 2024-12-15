@@ -1,6 +1,16 @@
 .operations {
     table-layout: fixed;
     width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5em;
+}
+
+.operations tr {
+    margin: 5px 0;
+}
+
+.operations td {
+    /* border: solid 1px; */
 }
 
 .operations caption {
@@ -16,6 +26,9 @@
 
 .operand {
     vertical-align: top;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    /* word-break: break-all; */
     width: 35%;
 }
 

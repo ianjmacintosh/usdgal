@@ -61,7 +61,10 @@ const ConversionTable = ({
                     {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
                     if I don't include it, it reads like "x 1gallons per gallon" */}
                     <td className="operator">= </td>
-                    <td className="operand">{topNumber} {topCurrency}</td>
+                    <td className="operand">{topNumber} </td>
+                    <td className="operation-description">
+                        {topCurrency}
+                    </td>
                 </tr>
                 <tr aria-label="Unit of measure conversion">
                     {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
@@ -88,7 +91,10 @@ const ConversionTable = ({
                     {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
                     if I don't include it, it reads like "x 1gallons per gallon" */}
                     <td className="operator">= </td>
-                    <td className="operand"><span style={{ textWrap: "nowrap", textOverflow: "ellipsis" }}>{bottomNumber}</span> {bottomCurrency}</td>
+                    <td className="operand">{bottomNumber} </td>
+                    <td className="operation-description">
+                        {bottomCurrency}
+                    </td>
                 </tr>
             </tbody>
         </table>
