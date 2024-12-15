@@ -2,78 +2,92 @@ import { describe, test, expect, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import ConversionTable from "./ConversionTable";
-import exchangeRateData from "./exchangeRateData.ts"
+import exchangeRateData from "./exchangeRateData.ts";
 
 describe("<ConversionTable />", () => {
-
     afterEach(() => {
         cleanup();
     });
 
-    test("displays the conversion table", async () => {
-        render(
+    const TestComponent = ({ ...props }) => {
+        return (
             <ConversionTable
-                sourceUnit="liter"
-                targetUnit="gallon"
-                sourceCurrency="BRL"
-                targetCurrency="USD"
+                topNumber={1.23456}
+                bottomNumber={5.6789}
+                topUnit="liter"
+                bottomUnit="gallon"
+                topCurrency="BRL"
+                bottomCurrency="USD"
                 exchangeRateData={exchangeRateData}
-            />,
+                {...props}
+            />
         );
+    };
 
+    test("displays the conversion table", async () => {
+        render(<TestComponent />);
         expect(screen.getByText("liters per gallon")).toBeInTheDocument();
         expect(screen.getByText("BRL per USD")).toBeInTheDocument();
     });
 
     test("shows correct conversion rates for equal units", async () => {
         render(
-            <ConversionTable
-                sourceUnit="gallon"
-                targetUnit="gallon"
-                sourceCurrency="BRL"
-                targetCurrency="USD"
-                exchangeRateData={exchangeRateData}
+            <TestComponent
+                topUnit="gallon"
             />,
         );
 
         expect(
             screen.getByLabelText("Unit of measure conversion").textContent,
-        ).toContain('gallons per gallon');
+        ).toContain("gallons per gallon");
     });
 
     test("shows correct conversion rates for equal currencies", async () => {
         render(
-            <ConversionTable
-                sourceUnit="gallon"
-                targetUnit="gallon"
-                sourceCurrency="USD"
-                targetCurrency="USD"
-                exchangeRateData={exchangeRateData}
+            <TestComponent
+                topUnit="gallon"
+                bottomUnit="gallon"
+                topCurrency="USD"
+                bottomCurrency="USD"
             />,
         );
 
-        expect(
-            screen.getByLabelText("Currency conversion").textContent,
-        ).toContain('USD per USD');
+        expect(screen.getByLabelText("Currency conversion").textContent).toContain(
+            "USD per USD",
+        );
     });
 
     test("changes operations to keep numbers positive", async () => {
         render(
-            <ConversionTable
-                sourceUnit="gallon"
-                targetUnit="liter"
-                sourceCurrency="USD"
-                targetCurrency="BRL"
-                exchangeRateData={exchangeRateData}
+            <TestComponent
+                topUnit="gallon"
+                bottomUnit="liter"
+                topCurrency="USD"
+                bottomCurrency="BRL"
             />,
         );
 
         expect(
             screen.getByLabelText("Unit of measure conversion").textContent,
-        ).toContain('liters per gallon');
+        ).toContain("liters per gallon");
 
-        expect(
-            screen.getByLabelText("Currency conversion").textContent,
-        ).toContain('BRL per USD');
+        expect(screen.getByLabelText("Currency conversion").textContent).toContain(
+            "BRL per USD",
+        );
+    });
+
+    test("shows exact currency values (input and output)", async () => {
+        render(
+            <TestComponent
+            />,
+        );
+
+        expect(screen.getByLabelText("Initial cost").textContent).toContain(
+            "= 1.23456 BRL",
+        );
+
+        expect(screen.getByLabelText("Converted cost").textContent).toContain(
+            "= 5.6789 USD",
+        );
     });
 });

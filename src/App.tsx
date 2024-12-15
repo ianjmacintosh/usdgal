@@ -73,10 +73,10 @@ function App() {
           currencies={currencies}
         />
         <ConversionTable
-          sourceUnit={topUnit}
-          targetUnit={bottomUnit}
-          sourceCurrency={topCurrency}
-          targetCurrency={bottomCurrency}
+          topUnit={topUnit}
+          bottomUnit={bottomUnit}
+          topCurrency={topCurrency}
+          bottomCurrency={bottomCurrency}
           exchangeRateData={exchangeRateData}
         />
         <GasPrice
