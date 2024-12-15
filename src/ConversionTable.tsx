@@ -60,12 +60,14 @@ const ConversionTable = ({
                 <tr aria-label="Initial cost">
                     {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
                     if I don't include it, it reads like "x 1gallons per gallon" */}
-                    <td className="operation">{`= ${topNumber} ${topCurrency}`}</td>
+                    <td className="operator">= </td>
+                    <td className="operand">{topNumber} {topCurrency}</td>
                 </tr>
                 <tr aria-label="Unit of measure conversion">
                     {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
                     if I don't include it, it reads like "x 1gallons per gallon" */}
-                    <td className="operation">{unitConversionFormula.operation} {unitConversionFormula.rate} </td>
+                    <td className="operator">{unitConversionFormula.operation} </td>
+                    <td className="operand">{unitConversionFormula.rate} </td>
                     {/* TODO: Use an Intl method to pluralize the source unit. Adding an "s" to pluralize the source unit is a bit of a hack */}
                     <td className="operation-description">
                         {unitConversionFormula.operation === "÷" ? `${bottomUnit}s per ${topUnit}` : `${topUnit}s per ${bottomUnit}`}
@@ -74,7 +76,8 @@ const ConversionTable = ({
                 <tr aria-label="Currency conversion">
                     {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
                     if I don't include it, it reads like "÷ 1USD per USD" */}
-                    <td className="operation">{currencyExchangeFormula.operation} {Number(currencyExchangeFormula.rate).toFixed(7)} </td>
+                    <td className="operator">{currencyExchangeFormula.operation}</td>
+                    <td className="operand">{Number(currencyExchangeFormula.rate).toFixed(7)} </td>
                     <td className="operation-description">
                         {currencyExchangeFormula.operation === "÷" ? `${topCurrency} per ${bottomCurrency}` : `${bottomCurrency} per ${topCurrency}`}
                         <br />
@@ -84,7 +87,8 @@ const ConversionTable = ({
                 <tr aria-label="Converted cost">
                     {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
                     if I don't include it, it reads like "x 1gallons per gallon" */}
-                    <td className="operation">{`= ${bottomNumber} ${bottomCurrency}`}</td>
+                    <td className="operator">= </td>
+                    <td className="operand"><span style={{ textWrap: "nowrap", textOverflow: "ellipsis" }}>{bottomNumber}</span> {bottomCurrency}</td>
                 </tr>
             </tbody>
         </table>

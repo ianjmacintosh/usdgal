@@ -1,4 +1,5 @@
 .operations {
+    table-layout: fixed;
     width: 100%;
 }
 
@@ -8,10 +9,17 @@
     text-align: left;
 }
 
-.operations td {
+.operator {
     vertical-align: top;
+    width: 5%;
+}
+
+.operand {
+    vertical-align: top;
+    width: 35%;
 }
 
 .operation-description {
     text-align: right;
+    width: 60%;
 }
