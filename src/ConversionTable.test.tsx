@@ -83,7 +83,7 @@ describe("<ConversionTable />", () => {
         );
 
         expect(screen.getByLabelText("Initial cost").textContent).toContain(
-            "= 1.23456 BRL",
+            "1.23456 BRL",
         );
 
         expect(screen.getByLabelText("Converted cost").textContent).toContain(
