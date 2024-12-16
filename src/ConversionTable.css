@@ -1,12 +1,11 @@
 .operations {
-    width: 600px;
 }
 
 .operations li {
     width: 100%;
     display: grid;
     margin-bottom: 5px;
-    grid-template-columns: 1fr;
+    grid-template-columns: 15px 1fr 2fr;
     column-gap: 10px;
 }
 

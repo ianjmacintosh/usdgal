@@ -57,20 +57,14 @@ const ConversionTable = ({
         <>
             <h2>Conversion Operations</h2>
             <ol className="operations">
-                <li aria-label="Currency conversion">
-                    <span>
-                        <strong>Convert from {topCurrency} to {bottomCurrency}</strong><br />
-                        {topNumber} {topCurrency} {currencyExchangeFormula.operation} {currencyExchangeFormula.rate} = {topNumber / currencyExchangeFormula.rate}
-                        ({currencyExchangeFormula.operation === "÷" ? `1 ${bottomCurrency} = ${currencyExchangeFormula.rate} ${topCurrency}` : `1 ${topCurrency} = ${currencyExchangeFormula.rate} ${bottomCurrency}`})
-                    </span>
-                </li>
                 <li aria-label="Initial cost">
-                    Convert from gallons to liters:<br />
-                    {topNumber} {topCurrency} {unitConversionFormula.operation} {unitConversionFormula.rate} {unitConversionFormula.operation === "÷" ? `${bottomUnit}s per ${topUnit}` : `${topUnit}s per ${bottomUnit}`}
-                    <span className="operator"></span> <span className="operand"></span> <span className="operation-description">Initial price</span>
+                    <span className="operator"></span> <span className="operand">{topNumber} {topCurrency}</span> <span className="operation-description">Initial price</span>
                 </li>
                 <li aria-label="Unit of measure conversion">
                     <span className="operator">{unitConversionFormula.operation}</span> <span className="operand">{unitConversionFormula.rate}</span> <span className="operation-description">{unitConversionFormula.operation === "÷" ? `${bottomUnit}s per ${topUnit}` : `${topUnit}s per ${bottomUnit}`}</span>
+                </li>
+                <li aria-label="Currency conversion">
+                    <span className="operator">{currencyExchangeFormula.operation}</span> <span className="operand">{currencyExchangeFormula.rate}</span> <span className="operation-description">{currencyExchangeFormula.operation === "÷" ? `${topCurrency} per ${bottomCurrency}` : `${bottomCurrency} per ${topCurrency}`}<br />(last updated: {bottomCurrencyUpdatedDate})</span>
                 </li>
                 <li aria-label="Converted cost">
                     <span className="operator">=</span> <span className="operand">{bottomNumber} {bottomCurrency}</span> <span className="operation-description">Converted price</span>
