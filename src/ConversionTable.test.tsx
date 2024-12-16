@@ -26,8 +26,8 @@ describe("<ConversionTable />", () => {
 
     test("displays the conversion table", async () => {
         render(<TestComponent />);
-        expect(screen.getByText("liters per gallon")).toBeInTheDocument();
-        expect(screen.getByText("BRL per USD")).toBeInTheDocument();
+        expect(screen.getByText("liters per gallon", { exact: false })).toBeInTheDocument();
+        expect(screen.getByText("BRL per USD", { exact: false })).toBeInTheDocument();
     });
 
     test("shows correct conversion rates for equal units", async () => {

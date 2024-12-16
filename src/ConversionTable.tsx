@@ -54,50 +54,29 @@ const ConversionTable = ({
 
 
     return (
-        <table className="operations">
-            <caption>Conversion Operations</caption>
-            <tbody>
-                <tr aria-label="Initial cost">
-                    {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
-                    if I don't include it, it reads like "x 1gallons per gallon" */}
-                    <td className="operator"></td>
-                    <td className="operand">{topNumber} </td>
-                    <td className="operation-description">
-                        {topCurrency}
-                    </td>
-                </tr>
-                <tr aria-label="Unit of measure conversion">
-                    {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
-                    if I don't include it, it reads like "x 1gallons per gallon" */}
-                    <td className="operator">{unitConversionFormula.operation} </td>
-                    <td className="operand">{unitConversionFormula.rate} </td>
-                    {/* TODO: Use an Intl method to pluralize the source unit. Adding an "s" to pluralize the source unit is a bit of a hack */}
-                    <td className="operation-description">
-                        {unitConversionFormula.operation === "÷" ? `${bottomUnit}s per ${topUnit}` : `${topUnit}s per ${bottomUnit}`}
-                    </td>
-                </tr>
-                <tr aria-label="Currency conversion">
-                    {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
-                    if I don't include it, it reads like "÷ 1USD per USD" */}
-                    <td className="operator">{currencyExchangeFormula.operation}</td>
-                    <td className="operand">{currencyExchangeFormula.rate} </td>
-                    <td className="operation-description">
-                        {currencyExchangeFormula.operation === "÷" ? `${topCurrency} per ${bottomCurrency}` : `${bottomCurrency} per ${topCurrency}`}
-                        <br />
-                        <em>(updated {bottomCurrencyUpdatedDate})</em>
-                    </td>
-                </tr>
-                <tr aria-label="Converted cost">
-                    {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
-                    if I don't include it, it reads like "x 1gallons per gallon" */}
-                    <td className="operator">= </td>
-                    <td className="operand">{bottomNumber} </td>
-                    <td className="operation-description">
-                        {bottomCurrency}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <>
+            <h2>Conversion Operations</h2>
+            <ol className="operations">
+                <li aria-label="Currency conversion">
+                    <span>
+                        <strong>Convert from {topCurrency} to {bottomCurrency}</strong><br />
+                        {topNumber} {topCurrency} {currencyExchangeFormula.operation} {currencyExchangeFormula.rate} = {topNumber / currencyExchangeFormula.rate}
+                        ({currencyExchangeFormula.operation === "÷" ? `1 ${bottomCurrency} = ${currencyExchangeFormula.rate} ${topCurrency}` : `1 ${topCurrency} = ${currencyExchangeFormula.rate} ${bottomCurrency}`})
+                    </span>
+                </li>
+                <li aria-label="Initial cost">
+                    Convert from gallons to liters:<br />
+                    {topNumber} {topCurrency} {unitConversionFormula.operation} {unitConversionFormula.rate} {unitConversionFormula.operation === "÷" ? `${bottomUnit}s per ${topUnit}` : `${topUnit}s per ${bottomUnit}`}
+                    <span className="operator"></span> <span className="operand"></span> <span className="operation-description">Initial price</span>
+                </li>
+                <li aria-label="Unit of measure conversion">
+                    <span className="operator">{unitConversionFormula.operation}</span> <span className="operand">{unitConversionFormula.rate}</span> <span className="operation-description">{unitConversionFormula.operation === "÷" ? `${bottomUnit}s per ${topUnit}` : `${topUnit}s per ${bottomUnit}`}</span>
+                </li>
+                <li aria-label="Converted cost">
+                    <span className="operator">=</span> <span className="operand">{bottomNumber} {bottomCurrency}</span> <span className="operation-description">Converted price</span>
+                </li>
+            </ol>
+        </>
     );
 };
 

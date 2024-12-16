@@ -1,27 +1,17 @@
 .operations {
-    table-layout: fixed;
+    width: 600px;
+}
+
+.operations li {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 0.5em;
-}
-
-.operations tr {
-    margin: 5px 0;
-}
-
-.operations td {
-    /* border: solid 1px; */
-}
-
-.operations caption {
-    font-weight: bold;
-    text-transform: capitalize;
-    text-align: left;
+    display: grid;
+    margin-bottom: 5px;
+    grid-template-columns: 1fr;
+    column-gap: 10px;
 }
 
 .operator {
     vertical-align: top;
-    width: 5%;
 }
 
 .operand {
@@ -29,10 +19,8 @@
     text-overflow: ellipsis;
     overflow: hidden;
     /* word-break: break-all; */
-    width: 35%;
 }
 
 .operation-description {
     text-align: right;
-    width: 60%;
 }
