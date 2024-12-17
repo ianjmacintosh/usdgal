@@ -31,7 +31,6 @@ const ConversionTable = ({
         timestamp: number,
     }
 }) => {
-    const detailsElement = useRef<HTMLUListElement>(null);
     const [showDetails, setShowDetails] = useState(false)
     const sourceCurrencyDollarCost = exchangeRateData.rates[topCurrency] ?? 1;
     const targetCurrencyDollarCost = exchangeRateData.rates[bottomCurrency] ?? 1;
@@ -61,7 +60,7 @@ const ConversionTable = ({
 
             setShowDetails(newValue)
         }}>{showDetails ? "Hide full conversion details..." : "Show full conversion details..."}</button>
-        <ul ref={detailsElement} className={`details ${showDetails ? "visible" : ""}`} aria-hidden={!showDetails}>
+        <ul className={`details ${showDetails ? "visible" : ""}`} aria-hidden={!showDetails} aria-label="Conversion Details">
             <li style={{ "--i": 0 } as React.CSSProperties}>
                 <label>Cost</label>
                 <span>{topNumber} {topCurrency} per {topUnit}</span>
@@ -72,8 +71,8 @@ const ConversionTable = ({
                 <em>(Last updated: {bottomCurrencyUpdatedDate})</em>
             </li>
             <li style={{ "--i": 2 } as React.CSSProperties}>
-                <label>Volume conversion rate</label>
-                <span>1 {topUnit} = {unitConversionFormula.rate} {bottomUnit}</span>
+                <label id="volume-conversion-rate">Volume conversion rate</label>
+                <span aria-labelledby="volume-conversion-rate">1 {topUnit} = {unitConversionFormula.rate} {bottomUnit}</span>
             </li>
             <li style={{ "--i": 3 } as React.CSSProperties}>
                 <label>Converted cost</label>

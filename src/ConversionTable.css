@@ -1,5 +1,14 @@
 .details {
+  display: none;
   transition: display 1s allow-discrete;
+}
+
+.details.visible {
+  display: block;
+}
+
+.details label {
+  display: none;
 }
 
 .details.visible li {
@@ -23,16 +32,13 @@
 
 .details label {
   font-weight: bold;
+  display: block;
 }
 
 @starting-style {
   .details.visible li {
     opacity: 0;
   }
-}
-
-.details label {
-  display: block;
 }
 
 .details-button {
