@@ -4,6 +4,7 @@ import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import exchangeRateData from "./exchangeRateData";
+import '@testing-library/jest-dom/vitest';
 
 
 describe("<GasPrice />", () => {
@@ -199,5 +200,22 @@ describe("<GasPrice />", () => {
 
     await selectItemFromCombobox(currencyButton, /MXN/)
     expect(currencyButton.textContent).toBe("MXN");
+  });
+
+  test("warns when a display value is 0 but the actual value is not", async () => {
+    cleanup();
+    render(<TestComponent />);
+
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
+
+    await user.click(input);
+    await user.keyboard('0.0001');
+    await user.tab();
+    expect(input.value).toBe('0.01');
+
+    const warning = screen.getByText("This amount is displayed as 0.01", { exact: false });
+    expect(warning).toBeVisible();
   });
 });
