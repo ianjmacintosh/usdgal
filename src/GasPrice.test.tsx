@@ -189,9 +189,7 @@ describe("<GasPrice />", () => {
     expect(currency.length).toBe(3);
   });
 
-
-
-  test("doesn't deselect currency", async () => {
+  test("doesn't \"unselect\" a currency when it's clicked once, then clicked again", async () => {
     cleanup();
     render(<TestComponent currencies={["BRL", "USD", "MXN"]} />);
 
