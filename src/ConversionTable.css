@@ -1,18 +1,34 @@
+.details {
+  transition: display 1s allow-discrete;
+}
+
+.details.visible li {
+  display: list-item;
+  opacity: 1;
+  transition:
+    opacity 200ms ease-out calc(var(--i) * 50ms),
+    display 1s allow-discrete;
+}
+
 .details li {
-  transition: all 200ms ease-out calc((4 - var(--i)) * 50ms);
+  transition:
+    opacity 200ms ease-out calc((4 - var(--i)) * 50ms),
+    display 350ms allow-discrete;
   opacity: 0;
   width: 100%;
   margin-bottom: 1em;
   font-size: 18px;
+  display: none;
 }
 
 .details label {
   font-weight: bold;
 }
 
-.details.visible li {
-  transition-delay: calc(var(--i) * 50ms);
-  opacity: 1;
+@starting-style {
+  .details.visible li {
+    opacity: 0;
+  }
 }
 
 .details label {

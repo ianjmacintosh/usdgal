@@ -61,14 +61,15 @@ const ConversionTable = ({
 
             setShowDetails(newValue)
         }}>{showDetails ? "Hide full conversion details..." : "Show full conversion details..."}</button>
-        <ul ref={detailsElement} className={`details ${showDetails ? "visible" : ""}`}>
+        <ul ref={detailsElement} className={`details ${showDetails ? "visible" : ""}`} aria-hidden={!showDetails}>
             <li style={{ "--i": 0 } as React.CSSProperties}>
                 <label>Cost</label>
                 <span>{topNumber} {topCurrency} per {topUnit}</span>
             </li>
             <li style={{ "--i": 1 } as React.CSSProperties}>
                 <label>Currency conversion rate</label>
-                <span>{currencyExchangeFormula.operation === "÷" ? `1 ${bottomCurrency} = ${currencyExchangeFormula.rate} ${topCurrency}` : `1 ${topCurrency} = ${currencyExchangeFormula.rate} ${bottomCurrency}`}</span>
+                <span>{currencyExchangeFormula.operation === "÷" ? `1 ${bottomCurrency} = ${currencyExchangeFormula.rate} ${topCurrency}` : `1 ${topCurrency} = ${currencyExchangeFormula.rate} ${bottomCurrency}`}</span><br />
+                <em>(Last updated: {bottomCurrencyUpdatedDate})</em>
             </li>
             <li style={{ "--i": 2 } as React.CSSProperties}>
                 <label>Volume conversion rate</label>
