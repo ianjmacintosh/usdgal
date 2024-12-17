@@ -45,7 +45,7 @@ describe("<ConversionTable />", () => {
 
         expect(
             screen.getByLabelText("Volume conversion rate").textContent,
-        ).toContain("1 gallon = 1 gallon");
+        ).toContain("1 gallon = 1 gallons");
 
         cleanup();
 
@@ -58,7 +58,7 @@ describe("<ConversionTable />", () => {
 
         expect(
             screen.getByLabelText("Volume conversion rate").textContent,
-        ).toContain("1 liter = 1 liter");
+        ).toContain("1 liter = 1 liters");
     });
 
     test("shows correct conversion rates for equal currencies (USD to USD)", async () => {
@@ -74,7 +74,7 @@ describe("<ConversionTable />", () => {
         );
     });
 
-    test.skip("changes operations to keep numbers positive", async () => {
+    test("shows top converted value first", async () => {
         render(
             <TestComponent
                 topUnit="gallon"
@@ -85,26 +85,45 @@ describe("<ConversionTable />", () => {
         );
 
         expect(
-            screen.getByLabelText("Unit of measure conversion").textContent,
-        ).toContain("liters per gallon");
+            screen.getByLabelText("Currency conversion rate").textContent,
+        ).toContain("USD = ");
 
-        expect(screen.getByLabelText("Currency conversion").textContent).toContain(
-            "BRL per USD",
+        expect(screen.getByLabelText("Volume conversion rate").textContent).toContain(
+            "gallon = ",
+        );
+
+        cleanup();
+
+        render(
+            <TestComponent
+                topUnit="liter"
+                bottomUnit="gallon"
+                topCurrency="BRL"
+                bottomCurrency="USD"
+            />,
+        );
+
+        expect(
+            screen.getByLabelText("Currency conversion rate").textContent,
+        ).toContain("BRL = ");
+
+        expect(screen.getByLabelText("Volume conversion rate").textContent).toContain(
+            "liters = ",
         );
     });
 
-    test.skip("shows exact currency values (input and output)", async () => {
+    test("shows exact currency values (input and output)", async () => {
         render(
             <TestComponent
             />,
         );
 
-        expect(screen.getByLabelText("Initial cost").textContent).toContain(
+        expect(screen.getByLabelText("Cost").textContent).toContain(
             "1.23456 BRL",
         );
 
         expect(screen.getByLabelText("Converted cost").textContent).toContain(
-            "= 5.6789 USD",
+            "5.6789 USD",
         );
     });
 });
