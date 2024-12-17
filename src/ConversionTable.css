@@ -1,20 +1,18 @@
-.details {
-  transition: opacity 200ms;
+.details li {
+  transition: all 200ms ease-out calc((4 - var(--i)) * 50ms);
   opacity: 0;
-}
-
-.details.visible {
-  opacity: 1;
+  width: 100%;
+  margin-bottom: 1em;
+  font-size: 18px;
 }
 
 .details label {
   font-weight: bold;
 }
 
-.details li {
-  width: 100%;
-  margin-bottom: 1em;
-  font-size: 18px;
+.details.visible li {
+  transition-delay: calc(var(--i) * 50ms);
+  opacity: 1;
 }
 
 .details label {

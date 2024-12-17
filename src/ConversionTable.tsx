@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import "./ConversionTable.css";
 
 type SupportedUnits = "liter" | "gallon";
@@ -62,18 +62,22 @@ const ConversionTable = ({
             setShowDetails(newValue)
         }}>{showDetails ? "Hide full conversion details..." : "Show full conversion details..."}</button>
         <ul ref={detailsElement} className={`details ${showDetails ? "visible" : ""}`}>
-            <li>
+            <li style={{ "--i": 0 } as React.CSSProperties}>
                 <label>Cost</label>
-                <span>{topNumber} {topCurrency} per {topUnit}</span></li>
-            <li>
+                <span>{topNumber} {topCurrency} per {topUnit}</span>
+            </li>
+            <li style={{ "--i": 1 } as React.CSSProperties}>
                 <label>Currency conversion rate</label>
                 <span>{currencyExchangeFormula.operation === "÷" ? `1 ${bottomCurrency} = ${currencyExchangeFormula.rate} ${topCurrency}` : `1 ${topCurrency} = ${currencyExchangeFormula.rate} ${bottomCurrency}`}</span>
             </li>
-            <li>
+            <li style={{ "--i": 2 } as React.CSSProperties}>
                 <label>Volume conversion rate</label>
-                <span>1 {topUnit} = {unitConversionFormula.rate} {bottomUnit}</span></li>
-            <li><label>Converted cost</label>
-                <span>{bottomNumber} {bottomCurrency} per {bottomUnit}</span></li>
+                <span>1 {topUnit} = {unitConversionFormula.rate} {bottomUnit}</span>
+            </li>
+            <li style={{ "--i": 3 } as React.CSSProperties}>
+                <label>Converted cost</label>
+                <span>{bottomNumber} {bottomCurrency} per {bottomUnit}</span>
+            </li>
         </ul>
     </>
     );
