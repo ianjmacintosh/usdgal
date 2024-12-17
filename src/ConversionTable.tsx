@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import "./ConversionTable.css";
 
 type SupportedUnits = "liter" | "gallon";
@@ -30,7 +31,8 @@ const ConversionTable = ({
         timestamp: number,
     }
 }) => {
-
+    const detailsElement = useRef<HTMLUListElement>(null);
+    const [showDetails, setShowDetails] = useState(false)
     const sourceCurrencyDollarCost = exchangeRateData.rates[topCurrency] ?? 1;
     const targetCurrencyDollarCost = exchangeRateData.rates[bottomCurrency] ?? 1;
     const bottomCurrencyUpdatedDate = exchangeRateData.date ?? "2024-11-17";
@@ -53,24 +55,27 @@ const ConversionTable = ({
     }
 
 
-    return (
-        <>
-            <h2>Conversion Operations</h2>
-            <ol className="operations">
-                <li aria-label="Initial cost">
-                    <span className="operator"></span> <span className="operand">{topNumber} {topCurrency}</span> <span className="operation-description">Initial price</span>
-                </li>
-                <li aria-label="Unit of measure conversion">
-                    <span className="operator">{unitConversionFormula.operation}</span> <span className="operand">{unitConversionFormula.rate}</span> <span className="operation-description">{unitConversionFormula.operation === "÷" ? `${bottomUnit}s per ${topUnit}` : `${topUnit}s per ${bottomUnit}`}</span>
-                </li>
-                <li aria-label="Currency conversion">
-                    <span className="operator">{currencyExchangeFormula.operation}</span> <span className="operand">{currencyExchangeFormula.rate}</span> <span className="operation-description">{currencyExchangeFormula.operation === "÷" ? `${topCurrency} per ${bottomCurrency}` : `${bottomCurrency} per ${topCurrency}`}<br />(last updated: {bottomCurrencyUpdatedDate})</span>
-                </li>
-                <li aria-label="Converted cost">
-                    <span className="operator">=</span> <span className="operand">{bottomNumber} {bottomCurrency}</span> <span className="operation-description">Converted price</span>
-                </li>
-            </ol>
-        </>
+    return (<>
+        <button className="details-button" onClick={() => {
+            const newValue = !showDetails
+
+            setShowDetails(newValue)
+        }}>{showDetails ? "Hide full conversion details..." : "Show full conversion details..."}</button>
+        <ul ref={detailsElement} className={`details ${showDetails ? "visible" : ""}`}>
+            <li>
+                <label>Cost</label>
+                <span>{topNumber} {topCurrency} per {topUnit}</span></li>
+            <li>
+                <label>Currency conversion rate</label>
+                <span>{currencyExchangeFormula.operation === "÷" ? `1 ${bottomCurrency} = ${currencyExchangeFormula.rate} ${topCurrency}` : `1 ${topCurrency} = ${currencyExchangeFormula.rate} ${bottomCurrency}`}</span>
+            </li>
+            <li>
+                <label>Volume conversion rate</label>
+                <span>1 {topUnit} = {unitConversionFormula.rate} {bottomUnit}</span></li>
+            <li><label>Converted cost</label>
+                <span>{bottomNumber} {bottomCurrency} per {bottomUnit}</span></li>
+        </ul>
+    </>
     );
 };
 

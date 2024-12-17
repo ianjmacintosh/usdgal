@@ -72,15 +72,7 @@ function App() {
           }}
           currencies={currencies}
         />
-        <ConversionTable
-          topNumber={topNumber}
-          bottomNumber={bottomNumber}
-          topUnit={topUnit}
-          bottomUnit={bottomUnit}
-          topCurrency={topCurrency}
-          bottomCurrency={bottomCurrency}
-          exchangeRateData={exchangeRateData}
-        />
+
         <GasPrice
           label="To"
           number={bottomNumber}
@@ -97,7 +89,16 @@ function App() {
             setBottomCurrency(newCurrency);
           }}
           currencies={currencies}
-        ></GasPrice>
+        />
+        <ConversionTable
+          topNumber={topNumber}
+          bottomNumber={bottomNumber}
+          topUnit={topUnit}
+          bottomUnit={bottomUnit}
+          topCurrency={topCurrency}
+          bottomCurrency={bottomCurrency}
+          exchangeRateData={exchangeRateData}
+        />
       </div>
       <footer>&copy; 2024 Ian J. MacIntosh</footer>
     </>

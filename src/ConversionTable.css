@@ -1,25 +1,27 @@
-.operations {
+.details {
+  transition: opacity 200ms;
+  opacity: 0;
 }
 
-.operations li {
-    width: 100%;
-    display: grid;
-    margin-bottom: 5px;
-    grid-template-columns: 15px 1fr 2fr;
-    column-gap: 10px;
+.details.visible {
+  opacity: 1;
 }
 
-.operator {
-    vertical-align: top;
+.details label {
+  font-weight: bold;
 }
 
-.operand {
-    vertical-align: top;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    /* word-break: break-all; */
+.details li {
+  width: 100%;
+  margin-bottom: 1em;
+  font-size: 18px;
 }
 
-.operation-description {
-    text-align: right;
+.details label {
+  display: block;
+}
+
+.details-button {
+  text-decoration: underline;
+  margin-bottom: 1em;
 }
