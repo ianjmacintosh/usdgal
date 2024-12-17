@@ -66,13 +66,13 @@ const ConversionTable = ({
                 <span>{topNumber} {topCurrency} per {topUnit}</span>
             </li>
             <li style={{ "--i": 1 } as React.CSSProperties}>
-                <label>Currency conversion rate</label>
-                <span>{currencyExchangeFormula.operation === "÷" ? `1 ${bottomCurrency} = ${currencyExchangeFormula.rate} ${topCurrency}` : `1 ${topCurrency} = ${currencyExchangeFormula.rate} ${bottomCurrency}`}</span><br />
+                <label id="currency-conversion-rate-label">Currency conversion rate</label>
+                <span aria-labelledby="currency-conversion-rate-label">{currencyExchangeFormula.operation === "÷" ? `1 ${bottomCurrency} = ${currencyExchangeFormula.rate} ${topCurrency}` : `1 ${topCurrency} = ${currencyExchangeFormula.rate} ${bottomCurrency}`}</span><br />
                 <em>(Last updated: {bottomCurrencyUpdatedDate})</em>
             </li>
             <li style={{ "--i": 2 } as React.CSSProperties}>
-                <label id="volume-conversion-rate">Volume conversion rate</label>
-                <span aria-labelledby="volume-conversion-rate">1 {topUnit} = {unitConversionFormula.rate} {bottomUnit}</span>
+                <label id="volume-conversion-rate-label">Volume conversion rate</label>
+                <span aria-labelledby="volume-conversion-rate-label">1 {topUnit} = {unitConversionFormula.rate} {bottomUnit}</span>
             </li>
             <li style={{ "--i": 3 } as React.CSSProperties}>
                 <label>Converted cost</label>

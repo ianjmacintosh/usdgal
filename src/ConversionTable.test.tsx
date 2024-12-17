@@ -61,18 +61,16 @@ describe("<ConversionTable />", () => {
         ).toContain("1 liter = 1 liter");
     });
 
-    test.skip("shows correct conversion rates for equal currencies", async () => {
+    test("shows correct conversion rates for equal currencies (USD to USD)", async () => {
         render(
             <TestComponent
-                topUnit="gallon"
-                bottomUnit="gallon"
                 topCurrency="USD"
                 bottomCurrency="USD"
             />,
         );
 
-        expect(screen.getByLabelText("Currency conversion").textContent).toContain(
-            "USD per USD",
+        expect(screen.getByLabelText("Currency conversion rate").textContent).toContain(
+            "1 USD = 1 USD",
         );
     });
 
