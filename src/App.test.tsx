@@ -88,7 +88,7 @@ describe("<App />", () => {
     await user.keyboard("1234");
     expect(topPriceInput.value).toBe("1234");
 
-    await selectItemFromCombobox(topCurrencyButton, "United States Dollar (USD)")
+    await selectItemFromCombobox(topCurrencyButton, "USD")
     expect(topCurrencyButton.textContent).toBe("USD");
 
     await user.selectOptions(topUnitInput, "per gallon");
@@ -101,7 +101,7 @@ describe("<App />", () => {
     // Perform the setup; 6.78, BRL, liters
     await user.click(topPriceInput);
     await user.keyboard("6.78");
-    await selectItemFromCombobox(topCurrencyButton, "Brazilian Real (BRL)")
+    await selectItemFromCombobox(topCurrencyButton, "BRL")
     await user.selectOptions(topUnitInput, "per liter");
 
     // Expect all the top values are as expected
@@ -113,7 +113,7 @@ describe("<App />", () => {
     expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "USD", "gallon"), "en-US", "USD"));
 
     // Expect the top input to stay the same while updating the bottom currency
-    await selectItemFromCombobox(bottomCurrencyButton, "Brazilian Real (BRL)")
+    await selectItemFromCombobox(bottomCurrencyButton, "BRL")
     expect(topPriceInput.value).toBe("6.78");
     expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "BRL", "gallon"), "en-US", "BRL"));
 
