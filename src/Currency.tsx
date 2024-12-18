@@ -30,20 +30,14 @@ const Currency = ({
     handleCurrencyChange: (newValue: string) => void,
     currencies: string[]
 }) => {
+    const detailedCurrencies = currencies.map((code) => {
+        return {
+            value: code as keyof typeof symbols,
+            label: `${symbols[code as keyof typeof symbols]} (${code})`
+        }
+    })
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState(currency)
-    /*
-            <select
-                id={`${label.toLowerCase()}_currency`}
-                defaultValue={currency}
-                onChange={(event) => handleCurrencyChange(event.target.value)}
-                aria-label={`Currency`}
-                disabled={disabled}
-                className="currency"
-            >
-                {currencies.map((currency) => <option key={currency} value={currency}>{currency}</option>)}
-            </select>
-    */
     return (<Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
             <Button
@@ -54,7 +48,7 @@ const Currency = ({
                 aria-label="Currency"
             >
                 {value
-                    ? currencies.find((currency: string) => currency === value)
+                    ? detailedCurrencies.find((currency) => currency.value === value)?.value
                     : "Select currency..."}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -65,23 +59,24 @@ const Currency = ({
                 <CommandList>
                     <CommandEmpty>No currencies found</CommandEmpty>
                     <CommandGroup>
-                        {currencies.map((currency) => (
+                        {detailedCurrencies.map((currency) => (
                             <CommandItem
-                                key={currency}
-                                value={currency}
+                                key={currency.value}
+                                value={currency.label}
                                 onSelect={(currentValue) => {
-                                    setValue(currentValue)
-                                    handleCurrencyChange(currentValue)
+                                    const newValue = detailedCurrencies.find((currency) => currency.label === currentValue)?.value || 'USD'
+                                    setValue(newValue)
+                                    handleCurrencyChange(newValue)
                                     setOpen(false)
                                 }}
                             >
+                                {currency.label}
                                 <Check
                                     className={cn(
                                         "mr-2 h-4 w-4",
-                                        value === currency ? "opacity-100" : "opacity-0"
+                                        value === currency.value ? "opacity-100" : "opacity-0"
                                     )}
                                 />
-                                {`${symbols[currency as keyof typeof symbols]} (${currency})`}
                             </CommandItem>
                         ))}
                     </CommandGroup>
