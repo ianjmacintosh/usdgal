@@ -59,7 +59,7 @@ const Currency = ({
     const select = Ariakit.useSelectStore({
         combobox,
         defaultItems,
-        defaultValue: "",
+        defaultValue: currency,
     });
 
     const selectValue = Ariakit.useStoreState(select, "value");
@@ -70,6 +70,10 @@ const Currency = ({
             setMatches(groupItems(items.map(getItem)));
         });
     }, [searchValue]);
+
+    useEffect(() => {
+        handleCurrencyChange(selectValue)
+    }, [selectValue])
 
     return (
         <>
