@@ -1,17 +1,47 @@
-.operations {
-    width: 100%;
+.details {
+  display: none;
+  transition: display 1s allow-discrete;
 }
 
-.operations caption {
-    font-weight: bold;
-    text-transform: capitalize;
-    text-align: left;
+.details.visible {
+  display: block;
 }
 
-.operations td {
-    vertical-align: top;
+.details label {
+  display: none;
 }
 
-.operation-description {
-    text-align: right;
+.details.visible li {
+  display: list-item;
+  opacity: 1;
+  transition:
+    opacity 200ms ease-out calc(var(--i) * 50ms),
+    display 1s allow-discrete;
+}
+
+.details li {
+  transition:
+    opacity 200ms ease-out calc((4 - var(--i)) * 50ms),
+    display 350ms allow-discrete;
+  opacity: 0;
+  width: 100%;
+  margin-bottom: 1em;
+  font-size: 18px;
+  display: none;
+}
+
+.details label {
+  font-weight: bold;
+  display: block;
+}
+
+@starting-style {
+  .details.visible li {
+    opacity: 0;
+  }
+}
+
+.details-button {
+  text-decoration: underline;
+  margin-bottom: 1em;
 }

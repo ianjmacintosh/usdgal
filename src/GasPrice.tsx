@@ -27,13 +27,13 @@ function GasPrice({
   disabled?: boolean;
   currencies: string[]
 }) {
-  const [displayNumber, setDisplayNumber] = useState(getFormattedPrice(number, "en-US", currency));
+  const [displayNumber, setDisplayNumber] = useState(getFormattedPrice(number >= 0.01 ? number : 0.01, "en-US", currency));
   const [isNumberFocused, setIsNumberFocused] = useState(false);
 
   useEffect(() => {
     if (isNumberFocused) return
 
-    setDisplayNumber(getFormattedPrice(number, "en-US", currency));
+    setDisplayNumber(getFormattedPrice(number > 0.01 || number === 0 ? number : 0.01, "en-US", currency));
   }, [number, currency, isNumberFocused]);
 
   const handleDisplayNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,49 +55,50 @@ function GasPrice({
   }
 
   return (
-    <fieldset className="my-8">
-      <legend>{label}</legend>
-      {/* <label htmlFor={`${label}_number`}>
-      </label> */}
-      <input
-        type="text"
-        value={displayNumber}
-        onFocus={() => {
-          if (displayNumber === "0.00") {
-            setDisplayNumber("")
-          }
-          setIsNumberFocused(true);
-        }}
-        onBlur={() => {
-          setDisplayNumber(getFormattedPrice(number, "en-US", currency));
-          setIsNumberFocused(false);
-        }}
-        onChange={handleDisplayNumberChange}
-        id={`${label.toLowerCase()}_number`}
-        disabled={disabled}
-        autoComplete="off"
-        inputMode="decimal"
-        pattern="^[0-9]*[.,]?[0-9]*$"
-        className="number"
-        aria-label={`Amount of ${currency} paid per ${unit} of gas`}
-      />
-      <Currency
-        currency={currency}
-        handleCurrencyChange={handleCurrencyChange}
-        currencies={currencies}
-      ></Currency>
-      <select
-        id={`${label.toLowerCase()}_unit`}
-        defaultValue={unit}
-        onChange={(event) => handleUnitChange(event.target.value as SupportedUnits)}
-        aria-label={`Unit of sale (liters or gallons)`}
-        disabled={disabled}
-        className="unit"
-      >
-        <option value="gallon">per gallon</option>
-        <option value="liter">per liter</option>
-      </select>
-    </fieldset>
+    <div className="my-8">
+      <fieldset>
+        <legend>{label}</legend>
+        <input
+          type="text"
+          value={displayNumber}
+          onFocus={() => {
+            if (displayNumber === "0.00") {
+              setDisplayNumber("")
+            }
+            setIsNumberFocused(true);
+          }}
+          onBlur={() => {
+            setDisplayNumber(getFormattedPrice(number, "en-US", currency));
+            setIsNumberFocused(false);
+          }}
+          onChange={handleDisplayNumberChange}
+          id={`${label.toLowerCase()}_number`}
+          disabled={disabled}
+          autoComplete="off"
+          inputMode="decimal"
+          pattern="^[0-9]*[.,]?[0-9]*$"
+          className="number"
+          aria-label={`Amount of ${currency} paid per ${unit} of gas`}
+        />
+        <Currency
+          currency={currency}
+          handleCurrencyChange={handleCurrencyChange}
+          currencies={currencies}
+        ></Currency>
+        <select
+          id={`${label.toLowerCase()}_unit`}
+          defaultValue={unit}
+          onChange={(event) => handleUnitChange(event.target.value as SupportedUnits)}
+          aria-label={`Unit of sale (liters or gallons)`}
+          disabled={disabled}
+          className="unit"
+        >
+          <option value="gallon">per gallon</option>
+          <option value="liter">per liter</option>
+        </select>
+      </fieldset>
+      {(displayNumber === "0.01" && number < 0.01) ? <p className="mt-4"><em>This amount is displayed as 0.01 {currency}, but the actual amount is less ({number} {currency})</em></p> : ''}
+    </div>
   );
 }
 

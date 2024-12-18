@@ -12,8 +12,7 @@ const getPriceInCurrency = (
   const targetCurrencyExchangeRate = exchangeRates[targetCurrency] ?? 1;
   let newValue = 0;
   // Get the price in the base currency, then convert from the base currency to target currency
-  newValue =
-    Number(price / sourceCurrencyExchangeRate) * targetCurrencyExchangeRate;
+  newValue = (price / sourceCurrencyExchangeRate) * targetCurrencyExchangeRate;
 
   if (Number.isNaN(newValue)) {
     newValue = 0;

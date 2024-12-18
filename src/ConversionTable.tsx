@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import "./ConversionTable.css";
 
 type SupportedUnits = "liter" | "gallon";
@@ -8,16 +9,20 @@ const volumesInLiters = {
 }
 
 const ConversionTable = ({
-    sourceUnit,
-    targetUnit,
-    sourceCurrency,
-    targetCurrency,
+    topNumber,
+    bottomNumber,
+    topUnit,
+    bottomUnit,
+    topCurrency,
+    bottomCurrency,
     exchangeRateData
 }: {
-    sourceUnit: SupportedUnits;
-    targetUnit: SupportedUnits;
-    sourceCurrency: string;
-    targetCurrency: string;
+    topNumber: number,
+    bottomNumber: number,
+    topUnit: SupportedUnits;
+    bottomUnit: SupportedUnits;
+    topCurrency: string;
+    bottomCurrency: string;
     exchangeRateData: {
         base: string,
         date: string,
@@ -26,54 +31,49 @@ const ConversionTable = ({
         timestamp: number,
     }
 }) => {
+    const [showDetails, setShowDetails] = useState(false)
+    const sourceCurrencyAbsoluteCost = exchangeRateData.rates[topCurrency] ?? 1;
+    const targetCurrencyAbsoluteCost = exchangeRateData.rates[bottomCurrency] ?? 1;
+    const bottomCurrencyUpdatedDate = exchangeRateData.date ?? "2024-11-17";
 
-    const sourceCurrencyDollarCost = exchangeRateData.rates[sourceCurrency] ?? 1;
-    const targetCurrencyDollarCost = exchangeRateData.rates[targetCurrency] ?? 1;
-    const targetCurrencyUpdatedDate = exchangeRateData.date ?? "2024-11-17";
-    const exchangeRate = sourceCurrencyDollarCost / targetCurrencyDollarCost;
-    const currencyExchangeFormula = {
-        "operation": exchangeRate > 1 ? "÷" : "×",
-        "rate": sourceCurrencyDollarCost < targetCurrencyDollarCost ?
-            targetCurrencyDollarCost / sourceCurrencyDollarCost :
-            sourceCurrencyDollarCost / targetCurrencyDollarCost
-    }
-
-    const sourceVolumeInLiters = volumesInLiters[sourceUnit];
-    const targetVolumeInLiters = volumesInLiters[targetUnit];
-    const unitExchangeRate = sourceVolumeInLiters / targetVolumeInLiters;
-    const unitConversionFormula = {
-        "operation": unitExchangeRate > 1 ? "÷" : "×",
-        "rate": sourceVolumeInLiters < targetVolumeInLiters ?
-            targetVolumeInLiters / sourceVolumeInLiters :
-            sourceVolumeInLiters / targetVolumeInLiters
-    }
+    const sourceVolumeInLiters = volumesInLiters[topUnit];
+    const targetVolumeInLiters = volumesInLiters[bottomUnit];
 
 
-    return (
-        <table className="operations">
-            <caption>Conversion Operations</caption>
-            <tbody>
-                <tr aria-label="Unit of measure conversion">
-                    {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
-                    if I don't include it, it reads like "x 1gallons per gallon" */}
-                    <td className="operation">{unitConversionFormula.operation} {unitConversionFormula.rate} </td>
-                    {/* TODO: Use an Intl method to pluralize the source unit. Adding an "s" to pluralize the source unit is a bit of a hack */}
-                    <td className="operation-description">
-                        {unitConversionFormula.operation === "÷" ? `${targetUnit}s per ${sourceUnit}` : `${sourceUnit}s per ${targetUnit}`}
-                    </td>
-                </tr>
-                <tr aria-label="Currency conversion">
-                    {/* TODO: Look up what the best practice is for displaying a string across mulitple table cells. This trailing space feels hacky, but
-                    if I don't include it, it reads like "÷ 1USD per USD" */}
-                    <td className="operation">{currencyExchangeFormula.operation} {Number(currencyExchangeFormula.rate).toFixed(7)} </td>
-                    <td className="operation-description">
-                        {currencyExchangeFormula.operation === "÷" ? `${sourceCurrency} per ${targetCurrency}` : `${targetCurrency} per ${sourceCurrency}`}
-                        <br />
-                        <em>(updated {targetCurrencyUpdatedDate})</em>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    return (<>
+        <button className="details-button" onClick={() => {
+            const newValue = !showDetails
+
+            setShowDetails(newValue)
+        }}>{showDetails ? "Hide full conversion details..." : "Show full conversion details..."}</button>
+        <ul className={`details ${showDetails ? "visible" : ""}`} aria-hidden={!showDetails} aria-label="Conversion Details">
+            <li style={{ "--i": 0 } as React.CSSProperties}>
+                <label id="cost-label">Cost</label>
+                <span aria-labelledby="cost-label">{topNumber} {topCurrency} per {topUnit}</span>
+            </li>
+            <li style={{ "--i": 1 } as React.CSSProperties}>
+                <label id="currency-conversion-rate-label">Currency conversion rate</label>
+                <span aria-labelledby="currency-conversion-rate-label">
+                    {sourceCurrencyAbsoluteCost > targetCurrencyAbsoluteCost ?
+                        `${sourceCurrencyAbsoluteCost / targetCurrencyAbsoluteCost} ${topCurrency} = 1 ${bottomCurrency}` :
+                        `1 ${topCurrency} = ${targetCurrencyAbsoluteCost / sourceCurrencyAbsoluteCost} ${bottomCurrency}`}
+                </span><br />
+                <em>(Last updated: {bottomCurrencyUpdatedDate})</em>
+            </li>
+            <li style={{ "--i": 2 } as React.CSSProperties}>
+                <label id="volume-conversion-rate-label">Volume conversion rate</label>
+                <span aria-labelledby="volume-conversion-rate-label">
+                    {targetVolumeInLiters > sourceVolumeInLiters ?
+                        `${targetVolumeInLiters / sourceVolumeInLiters} ${topUnit}s = 1 ${bottomUnit}` :
+                        `1 ${topUnit} = ${sourceVolumeInLiters / targetVolumeInLiters} ${bottomUnit}s`}
+                </span>
+            </li>
+            <li style={{ "--i": 3 } as React.CSSProperties}>
+                <label id="converted-cost-label">Converted cost</label>
+                <span aria-labelledby="converted-cost-label">{bottomNumber} {bottomCurrency} per {bottomUnit}</span>
+            </li>
+        </ul>
+    </>
     );
 };
 
