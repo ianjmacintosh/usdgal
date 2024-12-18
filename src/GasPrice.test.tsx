@@ -190,6 +190,17 @@ describe("<GasPrice />", () => {
     expect(currency.length).toBe(3);
   });
 
+  test("supports searching currency based on name instead of symbol", async () => {
+    cleanup();
+    render(<TestComponent currencies={["BTC", "USD", "MXN"]} />);
+
+    const currencyButton = screen.getByLabelText("Currency")
+    await user.click(currencyButton)
+    await user.click(screen.getByPlaceholderText('Search for a currency...'))
+    await user.keyboard("bit")
+    expect(screen.getByText("Bitcoin", { exact: false })).toBeVisible();
+  });
+
   test("doesn't \"unselect\" a currency when it's clicked once, then clicked again", async () => {
     cleanup();
     render(<TestComponent currencies={["BRL", "USD", "MXN"]} />);
