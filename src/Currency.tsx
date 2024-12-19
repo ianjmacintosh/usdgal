@@ -1,94 +1,92 @@
 "use client"
 
-import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-
-import { symbols } from "./exchangeRateData"
+import * as Ariakit from "@ariakit/react";
+import { SelectRenderer } from "@ariakit/react-core/select/select-renderer";
+import { matchSorter } from "match-sorter";
+import { startTransition, useEffect, useState } from "react";
+import "./Currency.css"
+import { symbols } from "./exchangeRateData";
 
 const Currency = ({
     currency,
     handleCurrencyChange,
-    currencies
+    currencies: countries
 }: {
     currency: string,
     handleCurrencyChange: (newValue: string) => void,
     currencies: string[]
 }) => {
-    const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState(currency)
-    /*
-            <select
-                id={`${label.toLowerCase()}_currency`}
-                defaultValue={currency}
-                onChange={(event) => handleCurrencyChange(event.target.value)}
-                aria-label={`Currency`}
-                disabled={disabled}
-                className="currency"
+    const verboseCurrencies = countries.map(code => {
+        const verboseString = `${symbols[code as keyof typeof symbols]} (${code})`
+        return { value: code, label: verboseString, children: verboseString, id: verboseString }
+    })
+    const defaultItems = verboseCurrencies;
+    const [searchValue, setSearchValue] = useState("");
+    const [matches, setMatches] = useState(() => defaultItems);
+
+    const combobox = Ariakit.useComboboxStore({
+        defaultItems,
+        resetValueOnHide: true,
+        value: searchValue,
+        setValue: setSearchValue,
+        placement: "bottom-end"
+    });
+    const select = Ariakit.useSelectStore({
+        combobox,
+        defaultItems,
+        defaultValue: currency,
+    });
+
+    const selectValue = Ariakit.useStoreState(select, "value");
+
+    useEffect(() => {
+        startTransition(() => {
+            const items = matchSorter(verboseCurrencies, searchValue, { keys: ['label'] });
+            setMatches(items);
+        });
+    }, [searchValue]);
+
+    useEffect(() => {
+        handleCurrencyChange(selectValue)
+    }, [handleCurrencyChange, selectValue])
+
+    return (
+        <>
+            <Ariakit.Select store={select} className="currency-button button" aria-label="Currency">
+                <span className="select-value">
+                    {selectValue || "Select a country"}
+                </span>
+                <Ariakit.SelectArrow />
+            </Ariakit.Select>
+            <Ariakit.SelectPopover
+                store={select}
+                gutter={4}
+                className="popover"
             >
-                {currencies.map((currency) => <option key={currency} value={currency}>{currency}</option>)}
-            </select>
-    */
-    return (<Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-            <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={open}
-                className="currency-button rounded-none rounded-tr-lg text-lg h-[60px] justify-end gap-0"
-                aria-label="Currency"
-            >
-                {value
-                    ? currencies.find((currency: string) => currency === value)
-                    : "Select currency..."}
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[320px] p-0" align="end">
-            <Command>
-                <CommandInput placeholder="Search for a currency..." />
-                <CommandList>
-                    <CommandEmpty>No currencies found</CommandEmpty>
-                    <CommandGroup>
-                        {currencies.map((currency) => (
-                            <CommandItem
-                                key={currency}
-                                value={currency}
-                                onSelect={(currentValue) => {
-                                    setValue(currentValue)
-                                    handleCurrencyChange(currentValue)
-                                    setOpen(false)
-                                }}
+                <div className="combobox-wrapper">
+                    <Ariakit.Combobox
+                        store={combobox}
+                        autoSelect
+                        placeholder="Search for a currency..."
+                        className="combobox"
+                    />
+                </div>
+                <Ariakit.ComboboxList store={combobox}>
+                    <SelectRenderer store={select} items={matches} gap={8} overscan={1}>
+                        {({ value, ...item }) => (
+                            <Ariakit.ComboboxItem
+                                key={item.id}
+                                {...item}
+                                className="select-item"
+                                render={<Ariakit.SelectItem value={value}>{selectValue === value ? "✓" : ""} {item.label}</Ariakit.SelectItem>}
                             >
-                                <Check
-                                    className={cn(
-                                        "mr-2 h-4 w-4",
-                                        value === currency ? "opacity-100" : "opacity-0"
-                                    )}
-                                />
-                                {`${symbols[currency as keyof typeof symbols]} (${currency})`}
-                            </CommandItem>
-                        ))}
-                    </CommandGroup>
-                </CommandList>
-            </Command>
-        </PopoverContent>
-    </Popover>
+                                <span className="select-item-value">{value}</span>
+                            </Ariakit.ComboboxItem>
+                        )}
+                    </SelectRenderer>
+                </Ariakit.ComboboxList>
+            </Ariakit.SelectPopover>
+        </>
     )
 }
 
