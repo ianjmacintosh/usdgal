@@ -29,6 +29,7 @@ const Currency = ({
         resetValueOnHide: true,
         value: searchValue,
         setValue: setSearchValue,
+        placement: "bottom-end"
     });
     const select = Ariakit.useSelectStore({
         combobox,
@@ -51,7 +52,7 @@ const Currency = ({
 
     return (
         <>
-            <Ariakit.Select store={select} className="button" aria-label="Currency">
+            <Ariakit.Select store={select} className="currency-button button" aria-label="Currency">
                 <span className="select-value">
                     {selectValue || "Select a country"}
                 </span>
@@ -60,7 +61,6 @@ const Currency = ({
             <Ariakit.SelectPopover
                 store={select}
                 gutter={4}
-                sameWidth
                 className="popover"
             >
                 <div className="combobox-wrapper">
