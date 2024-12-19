@@ -62,6 +62,7 @@ const Currency = ({
                 store={select}
                 gutter={4}
                 className="popover"
+                unmountOnHide={true}
             >
                 <div className="combobox-wrapper">
                     <Ariakit.Combobox

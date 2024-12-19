@@ -1,3 +1,7 @@
+import * as Ariakit from "@ariakit/react";
+import "./Currency.css"
+
+
 type SupportedUnits = "liter" | "gallon";
 const Unit = (({ id, unit, onUnitChange, disabled }: {
     id: string,
@@ -6,17 +10,15 @@ const Unit = (({ id, unit, onUnitChange, disabled }: {
     disabled?: boolean
 }) => {
     return (
-        <select
-            id={id}
-            defaultValue={unit}
-            onChange={(e) => { onUnitChange(e.target.value as SupportedUnits) }}
-            aria-label={`Unit of sale (liters or gallons)`}
-            disabled={disabled}
-            className="unit"
-        >
-            <option value="gallon">per gallon</option>
-            <option value="liter">per liter</option>
-        </select>
+        <>
+            <Ariakit.SelectProvider defaultValue={unit} setValue={(newValue: SupportedUnits) => { onUnitChange(newValue) }} id={id}>
+                <Ariakit.Select className="button" aria-label="Unit of sale (liters or gallons)" disabled={disabled}>{unit === "liter" ? "per liter" : "per gallon"}</Ariakit.Select>
+                <Ariakit.SelectPopover gutter={4} sameWidth className="popover" unmountOnHide={true}>
+                    <Ariakit.SelectItem className="select-item" value="gallon">per gallon</Ariakit.SelectItem>
+                    <Ariakit.SelectItem className="select-item" value="liter">per liter</Ariakit.SelectItem>
+                </Ariakit.SelectPopover>
+            </Ariakit.SelectProvider>
+        </>
     )
 });
 
