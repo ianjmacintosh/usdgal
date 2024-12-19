@@ -164,7 +164,7 @@ describe("<App />", () => {
       const PROJECT_REPO_URL = "https://www.github.com/ianjmacintosh/usdgal"
 
       expect(screen.getByRole("link", { name: "Ian J. MacIntosh" })).toHaveAttribute('href', PERSONAL_SITE_URL)
-      expect(screen.getByRole("link", { name: "Source code" })).toHaveAttribute('href', PROJECT_REPO_URL)
+      expect(screen.getByRole("link", { name: /Source code/ })).toHaveAttribute('href', PROJECT_REPO_URL)
     })
   })
 });
