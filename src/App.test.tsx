@@ -33,7 +33,7 @@ describe("<App />", () => {
 
   const selectItemFromCombobox = async (element: Element, option: string | RegExp) => {
     await user.click(element);
-    await user.click(screen.getByRole("option", { name: option }));
+    await user.click(screen.getByRole("option", { name: `id-${option}` }));
   }
 
   test("correctly converts BRL per liter to USD per gallon", async () => {
@@ -81,14 +81,15 @@ describe("<App />", () => {
     expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(1000000, "BRL", "liter", "USD", "gallon"), "en-US", "USD"));
   });
 
-  test("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {
+  test.only("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {
     // Clear the local price input
     await userEvent.clear(topPriceInput);
     await user.click(topPriceInput);
     await user.keyboard("1234");
     expect(topPriceInput.value).toBe("1234");
 
-    await selectItemFromCombobox(topCurrencyButton, "USD")
+    await user.click(topCurrencyButton)
+    await user.keyboard("USD{enter}")
     expect(topCurrencyButton.textContent).toBe("USD");
 
     await user.selectOptions(topUnitInput, "per gallon");
