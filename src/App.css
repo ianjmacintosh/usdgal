@@ -2,3 +2,31 @@ h1 {
   text-align: center;
   line-height: 2rem;
 }
+
+footer nav {
+  margin-bottom: 10px;
+}
+
+footer ul {
+  display: flex;
+  flex-direction: row;
+  align-content: stretch;
+  justify-content: center;
+}
+
+footer nav a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+footer a {
+  text-decoration: underline;
+}
+
+footer a:hover,
+footer a:hover svg {
+  color: #666;
+  fill: #666;
+}

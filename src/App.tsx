@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { GithubLogo } from "./assets/github.svg"
 import "./App.css";
 import getGasPrice from "./utils/getGasPrice";
 
@@ -100,7 +101,19 @@ function App() {
           exchangeRateData={exchangeRateData}
         />
       </div>
-      <footer>&copy; 2024 Ian J. MacIntosh</footer>
+      <footer>
+        <nav>
+          <ul>
+            <li>
+              <a href="https://www.github.com/ianjmacintosh/usdgal" target="_blank">
+                <GithubLogo />
+                <span>Source code</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        &copy; 2024 <a href="https://www.ianjmacintosh.com/" target="_blank">Ian J. MacIntosh</a>
+      </footer>
     </>
   );
 }

@@ -4,6 +4,7 @@ import App from "./App";
 import userEvent from "@testing-library/user-event";
 import getGasPrice from "./utils/getGasPrice";
 import { getFormattedPrice } from "./utils/numberFormat";
+import '@testing-library/jest-dom/vitest';
 
 describe("<App />", () => {
   const user = userEvent.setup();
@@ -156,4 +157,14 @@ describe("<App />", () => {
       expect(topPriceInput.value).toBe(getFormattedPrice(getGasPrice(4.43, "USD", "gallon", "BRL", "liter"), "en-US", "BRL"));
     })
   });
+
+  describe("Footer", () => {
+    test("has a link for my personal site and my GitHub project", () => {
+      const PERSONAL_SITE_URL = "https://www.ianjmacintosh.com/"
+      const PROJECT_REPO_URL = "https://www.github.com/ianjmacintosh/usdgal"
+
+      expect(screen.getByRole("link", { name: "Ian J. MacIntosh" })).toHaveAttribute('href', PERSONAL_SITE_URL)
+      expect(screen.getByRole("link", { name: "Source code" })).toHaveAttribute('href', PROJECT_REPO_URL)
+    })
+  })
 });
