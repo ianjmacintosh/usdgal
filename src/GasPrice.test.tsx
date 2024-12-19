@@ -187,7 +187,7 @@ describe("<GasPrice />", () => {
     expect(currencyOptions.length).toBe(2);
   });
 
-  test.skip("supports searching currency based on verbose name (i.e., Bitcoin) instead of ISO code (i.e., BTC)", async () => {
+  test("supports searching currency based on verbose name (i.e., Bitcoin) instead of ISO code (i.e., BTC)", async () => {
     cleanup();
     render(<TestComponent currencies={["BTC", "USD", "MXN"]} />);
 
@@ -205,12 +205,12 @@ describe("<GasPrice />", () => {
     const currencyButton = screen.getByLabelText("Currency")
     await user.click(currencyButton)
     const popover = document.querySelector(".popover") as HTMLElement
-    await user.click(getByText(popover, "BRL"))
+    await user.click(getByText(popover, "BRL", { exact: false }))
 
     expect(currencyButton.textContent).toBe("BRL");
 
     await user.click(currencyButton)
-    await user.click(getByText(popover, "BRL"))
+    await user.click(getByText(popover, "BRL", { exact: false }))
     expect(currencyButton.textContent).toBe("BRL");
   });
 
