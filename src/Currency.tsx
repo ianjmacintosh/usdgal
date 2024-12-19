@@ -10,16 +10,7 @@ import { startTransition, useEffect, useState } from "react";
 import "./Currency.css"
 import { symbols } from "./exchangeRateData";
 
-function getItem({ country }: { country: string }) {
-    return {
-        id: `item-${country}`,
-        value: country,
-        children: country,
-        label: `${symbols[country as keyof typeof symbols]} (${country})`
-    };
-}
-
-function groupItems(items: ReturnType<typeof getItem>[]) {
+function groupItems(items: { value: string; label: string; children: string; id: string; }[]) {
     const groups = groupBy(items, (item) => deburr(item.value?.at(0)));
     return Object.entries(groups).map(([label, items]) => {
         return {
