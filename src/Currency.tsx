@@ -8,12 +8,14 @@ import groupBy from "lodash-es/groupBy.js";
 import { matchSorter } from "match-sorter";
 import { startTransition, useEffect, useState } from "react";
 import "./Currency.css"
+import { symbols } from "./exchangeRateData";
 
-function getItem(country: string) {
+function getItem({ country }: { country: string }) {
     return {
         id: `item-${country}`,
         value: country,
         children: country,
+        label: `${symbols[country as keyof typeof symbols]} (${country})`
     };
 }
 
@@ -41,8 +43,11 @@ const Currency = ({
     handleCurrencyChange: (newValue: string) => void,
     currencies: string[]
 }) => {
-    // const countries = ["BRL", "MXN", "USD"]
-    const defaultItems = countries.map(getItem);
+    const verboseCurrencies = countries.map(code => {
+        const verboseString = `${symbols[code as keyof typeof symbols]} (${code})`
+        return { value: code, label: verboseString, children: verboseString, id: verboseString }
+    })
+    const defaultItems = verboseCurrencies;
     const [searchValue, setSearchValue] = useState("");
     const [matches, setMatches] = useState(() => groupItems(defaultItems));
 
@@ -62,8 +67,8 @@ const Currency = ({
 
     useEffect(() => {
         startTransition(() => {
-            const items = matchSorter(countries, searchValue);
-            setMatches(groupItems(items.map(getItem)));
+            const items = matchSorter(verboseCurrencies, searchValue, { keys: ['label'] });
+            setMatches(groupItems(items));
         });
     }, [searchValue]);
 
@@ -115,7 +120,7 @@ const Currency = ({
                                         key={item.id}
                                         {...item}
                                         className="select-item"
-                                        render={<Ariakit.SelectItem value={value} />}
+                                        render={<Ariakit.SelectItem value={value}>{item.label}</Ariakit.SelectItem>}
                                     >
                                         <span className="select-item-value">{value}</span>
                                     </Ariakit.ComboboxItem>
