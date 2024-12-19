@@ -16,10 +16,13 @@ const Currency = ({
     handleCurrencyChange: (newValue: string) => void,
     currencies: string[]
 }) => {
-    const verboseCurrencies = countries.map(code => {
+    const getMassiveCurrencyList = () => countries.map(code => {
         const verboseString = `${symbols[code as keyof typeof symbols]} (${code})`
         return { value: code, label: verboseString, children: verboseString, id: verboseString }
     })
+
+    const [verboseCurrencies] = useState(getMassiveCurrencyList)
+
     const defaultItems = verboseCurrencies;
     const [searchValue, setSearchValue] = useState("");
     const [matches, setMatches] = useState(() => defaultItems);
@@ -44,7 +47,7 @@ const Currency = ({
             const items = matchSorter(verboseCurrencies, searchValue, { keys: ['label'] });
             setMatches(items);
         });
-    }, [searchValue]);
+    }, [verboseCurrencies, searchValue]);
 
     useEffect(() => {
         handleCurrencyChange(selectValue)
