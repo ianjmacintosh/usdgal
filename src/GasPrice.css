@@ -22,7 +22,7 @@ fieldset input {
 
 fieldset .currency-button,
 fieldset input,
-fieldset select {
+fieldset .unit-button {
   width: auto;
   height: 60px;
   border-radius: 0;
@@ -33,14 +33,13 @@ fieldset select {
 
 fieldset .currency-button,
 fieldset button,
-fieldset select {
+fieldset .unit-button {
   background: #f9f9f9;
-  cursor: pointer;
 }
 
 fieldset .currency-button:hover,
 fieldset input:hover,
-fieldset select:hover {
+fieldset .unit-button:hover {
   background: #efefef;
   transition: all 200ms;
 }
@@ -62,12 +61,13 @@ fieldset .currency-button {
   text-align: center;
   font-size: 22px;
   border-left: solid 2px #e9e9e9;
-  display: flex;
-      align-items: center;
-      justify-content: space-evenly;
+  display: grid;
+  align-content: center;
+  align-items: center;
+  grid-template-columns: 1fr auto;
 }
 
-fieldset .unit {
+fieldset .unit-button {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   border: none;
@@ -75,4 +75,13 @@ fieldset .unit {
   grid-column: -1 / 1;
   text-align: center;
   font-size: 22px;
+  display: grid;
+  align-content: center;
+  align-items: center;
+  grid-template-columns: 1fr auto;
+}
+
+fieldset .unit-button .chevron {
+  display: flex;
+  justify-content: center;
 }

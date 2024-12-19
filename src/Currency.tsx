@@ -54,7 +54,7 @@ const Currency = ({
         <>
             <Ariakit.Select store={select} className="currency-button button" aria-label="Currency">
                 <span className="select-value">
-                    {selectValue || "Select a country"}
+                    {selectValue || currency}
                 </span>
                 <Ariakit.SelectArrow />
             </Ariakit.Select>
@@ -62,6 +62,7 @@ const Currency = ({
                 store={select}
                 gutter={4}
                 className="popover"
+                unmountOnHide={true}
             >
                 <div className="combobox-wrapper">
                     <Ariakit.Combobox
