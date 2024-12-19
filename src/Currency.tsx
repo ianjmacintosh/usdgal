@@ -78,7 +78,7 @@ const Currency = ({
                                 key={item.id}
                                 {...item}
                                 className="select-item"
-                                render={<Ariakit.SelectItem value={value}>{item.label}</Ariakit.SelectItem>}
+                                render={<Ariakit.SelectItem value={value}>{selectValue === value ? "✓" : ""} {item.label}</Ariakit.SelectItem>}
                             >
                                 <span className="select-item-value">{value}</span>
                             </Ariakit.ComboboxItem>
