@@ -1,5 +1,5 @@
 import { describe, test, expect, afterEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { getByPlaceholderText, getByText, render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 import getGasPrice from "./utils/getGasPrice";
@@ -31,9 +31,16 @@ describe("<App />", () => {
     user.clear(topPriceInput);
   });
 
-  const selectItemFromCombobox = async (element: Element, option: string | RegExp) => {
-    await user.click(element);
-    await user.click(screen.getByRole("option", { name: `id-${option}` }));
+  const selectItemFromCombobox = async (selectElement: Element, option: string) => {
+    await user.click(selectElement)
+    const popover = document.querySelector(".popover") as HTMLElement
+    await user.click(getByPlaceholderText(popover, 'Search for a currency...'))
+    await user.keyboard(option)
+    await user.click(getByText(popover, option, { exact: false }))
+
+    waitFor(() => {
+      expect(selectElement.textContent).toBe(option)
+    })
   }
 
   test("correctly converts BRL per liter to USD per gallon", async () => {
@@ -81,7 +88,7 @@ describe("<App />", () => {
     expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(1000000, "BRL", "liter", "USD", "gallon"), "en-US", "USD"));
   });
 
-  test.only("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {
+  test("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {
     // Clear the local price input
     await userEvent.clear(topPriceInput);
     await user.click(topPriceInput);
@@ -99,7 +106,7 @@ describe("<App />", () => {
   });
 
   test("updates bottom price (but not top price) when the user updates the bottom currency or units", async () => {
-    // Perform the setup; 6.78, BRL, liters
+    // Perform the top setup; 6.78, BRL, liters
     await user.click(topPriceInput);
     await user.keyboard("6.78");
     await selectItemFromCombobox(topCurrencyButton, "BRL")
@@ -114,24 +121,39 @@ describe("<App />", () => {
     expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "USD", "gallon"), "en-US", "USD"));
 
     // Expect the top input to stay the same while updating the bottom currency
+    // Perform the bottom setup; BRL, per gallon
     await selectItemFromCombobox(bottomCurrencyButton, "BRL")
-    expect(topPriceInput.value).toBe("6.78");
-    expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "BRL", "gallon"), "en-US", "BRL"));
+    await user.selectOptions(bottomUnitInput, "per gallon");
+
+    // Expect all the bottom and top values are as expected
+    waitFor(() => {
+      expect(bottomCurrencyButton.textContent).toBe("BRL");
+      expect(bottomUnitInput.options[bottomUnitInput.selectedIndex].text).toBe("per gallon");
+      expect(topPriceInput.value).toBe("6.78");
+      expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "BRL", "gallon"), "en-US", "BRL"));
+    })
 
     // Expect the top input to stay the same while updating the bottom volume measure
     await user.selectOptions(bottomUnitInput, "per liter");
-    expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "BRL", "liter"), "en-US", "BRL"));
+    waitFor(() => {
+      expect(bottomPriceInput.value).toBe(getFormattedPrice(getGasPrice(6.78, "BRL", "liter", "BRL", "liter"), "en-US", "BRL"));
+    })
 
     // Expect the top price to change when changing the bottom price
     await user.click(bottomPriceInput);
     await user.clear(bottomPriceInput);
     await user.keyboard("4.43");
     expect(bottomPriceInput.value).toBe("4.43");
-    expect(topPriceInput.value).toBe(getFormattedPrice(getGasPrice(4.43, "BRL", "liter", "BRL", "liter"), "en-US", "BRL"));
+
+    waitFor(() => {
+      expect(topPriceInput.value).toBe(getFormattedPrice(getGasPrice(4.43, "BRL", "liter", "BRL", "liter"), "en-US", "BRL"));
+    })
 
     // Expect the top price to change when updating the bottom currency
-    await selectItemFromCombobox(bottomCurrencyButton, /USD/)
+    await selectItemFromCombobox(bottomCurrencyButton, "USD")
     await user.selectOptions(bottomUnitInput, "per gallon")
-    expect(topPriceInput.value).toBe(getFormattedPrice(getGasPrice(4.43, "USD", "gallon", "BRL", "liter"), "en-US", "BRL"));
+    waitFor(() => {
+      expect(topPriceInput.value).toBe(getFormattedPrice(getGasPrice(4.43, "USD", "gallon", "BRL", "liter"), "en-US", "BRL"));
+    })
   });
 });
