@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./GasPrice.css";
 import { getFormattedPrice, getNumberFormatChar, isLegalPriceValue } from "./utils/numberFormat";
 import Currency from "./Currency";
+import Unit from "./Unit";
 
 type SupportedUnits = "liter" | "gallon";
 
@@ -85,20 +86,14 @@ function GasPrice({
           handleCurrencyChange={handleCurrencyChange}
           currencies={currencies}
         ></Currency>
-        <select
+        <Unit
           id={`${label.toLowerCase()}_unit`}
-          defaultValue={unit}
-          onChange={(event) => handleUnitChange(event.target.value as SupportedUnits)}
-          aria-label={`Unit of sale (liters or gallons)`}
-          disabled={disabled}
-          className="unit"
-        >
-          <option value="gallon">per gallon</option>
-          <option value="liter">per liter</option>
-        </select>
+          unit={unit}
+          onUnitChange={handleUnitChange}
+        />
       </fieldset>
       {(displayNumber === "0.01" && number < 0.01) ? <p className="mt-4"><em>This amount is displayed as 0.01 {currency}, but the actual amount is less ({number} {currency})</em></p> : ''}
-    </div>
+    </div >
   );
 }
 
