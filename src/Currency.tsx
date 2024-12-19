@@ -2,28 +2,10 @@
 
 import * as Ariakit from "@ariakit/react";
 import { SelectRenderer } from "@ariakit/react-core/select/select-renderer";
-import type { SelectRendererItem } from "@ariakit/react-core/select/select-renderer";
-import deburr from "lodash-es/deburr.js";
-import groupBy from "lodash-es/groupBy.js";
 import { matchSorter } from "match-sorter";
 import { startTransition, useEffect, useState } from "react";
 import "./Currency.css"
 import { symbols } from "./exchangeRateData";
-
-function groupItems(items: { value: string; label: string; children: string; id: string; }[]) {
-    const groups = groupBy(items, (item) => deburr(item.value?.at(0)));
-    return Object.entries(groups).map(([label, items]) => {
-        return {
-            id: `group-${label.toLowerCase()}`,
-            label,
-            itemSize: 40,
-            paddingStart: 44,
-            items,
-        } satisfies SelectRendererItem;
-    });
-}
-
-
 
 const Currency = ({
     currency,
@@ -40,7 +22,7 @@ const Currency = ({
     })
     const defaultItems = verboseCurrencies;
     const [searchValue, setSearchValue] = useState("");
-    const [matches, setMatches] = useState(() => groupItems(defaultItems));
+    const [matches, setMatches] = useState(() => defaultItems);
 
     const combobox = Ariakit.useComboboxStore({
         defaultItems,
@@ -59,7 +41,7 @@ const Currency = ({
     useEffect(() => {
         startTransition(() => {
             const items = matchSorter(verboseCurrencies, searchValue, { keys: ['label'] });
-            setMatches(groupItems(items));
+            setMatches(items);
         });
     }, [searchValue]);
 
@@ -91,32 +73,15 @@ const Currency = ({
                 </div>
                 <Ariakit.ComboboxList store={combobox}>
                     <SelectRenderer store={select} items={matches} gap={8} overscan={1}>
-                        {({ label, ...item }) => (
-                            <SelectRenderer
+                        {({ value, ...item }) => (
+                            <Ariakit.ComboboxItem
                                 key={item.id}
-                                className="group"
-                                overscan={1}
                                 {...item}
-                                render={(props) => (
-                                    <Ariakit.SelectGroup {...props}>
-                                        <Ariakit.SelectGroupLabel className="group-label">
-                                            {label}
-                                        </Ariakit.SelectGroupLabel>
-                                        {props.children}
-                                    </Ariakit.SelectGroup>
-                                )}
+                                className="select-item"
+                                render={<Ariakit.SelectItem value={value}>{item.label}</Ariakit.SelectItem>}
                             >
-                                {({ value, ...item }) => (
-                                    <Ariakit.ComboboxItem
-                                        key={item.id}
-                                        {...item}
-                                        className="select-item"
-                                        render={<Ariakit.SelectItem value={value}>{item.label}</Ariakit.SelectItem>}
-                                    >
-                                        <span className="select-item-value">{value}</span>
-                                    </Ariakit.ComboboxItem>
-                                )}
-                            </SelectRenderer>
+                                <span className="select-item-value">{value}</span>
+                            </Ariakit.ComboboxItem>
                         )}
                     </SelectRenderer>
                 </Ariakit.ComboboxList>
