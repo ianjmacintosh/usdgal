@@ -54,7 +54,7 @@ const Currency = ({
         <>
             <Ariakit.Select store={select} className="currency-button button" aria-label="Currency">
                 <span className="select-value">
-                    {selectValue || "Select a country"}
+                    {selectValue || currency}
                 </span>
                 <Ariakit.SelectArrow />
             </Ariakit.Select>
