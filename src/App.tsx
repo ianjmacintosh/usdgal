@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GithubLogo } from "./assets/github.svg"
+import GithubLogo from "./assets/github.svg?react"
 import "./App.css";
 import getGasPrice from "./utils/getGasPrice";
 
@@ -106,7 +106,7 @@ function App() {
           <ul>
             <li>
               <a href="https://www.github.com/ianjmacintosh/usdgal" target="_blank">
-                <GithubLogo />
+                <GithubLogo height={18} width={18} />
                 <span>Source code</span>
               </a>
             </li>
