@@ -4,11 +4,10 @@ import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import exchangeRateData from "./exchangeRateData";
-import '@testing-library/jest-dom/vitest';
-
+import "@testing-library/jest-dom/vitest";
 
 describe("<GasPrice />", () => {
-  const currencies = Object.keys(exchangeRateData.rates)
+  const currencies = Object.keys(exchangeRateData.rates);
   const user = userEvent.setup();
   const TestComponent = ({ ...props }) => {
     const [number, setNumber] = useState(0);
@@ -185,11 +184,13 @@ describe("<GasPrice />", () => {
     }) as HTMLInputElement;
 
     await user.click(input);
-    await user.keyboard('0.0001');
+    await user.keyboard("0.0001");
     await user.tab();
-    expect(input.value).toBe('0.01');
+    expect(input.value).toBe("0.01");
 
-    const warning = screen.getByText("This amount is displayed as 0.01", { exact: false });
+    const warning = screen.getByText("This amount is displayed as 0.01", {
+      exact: false,
+    });
     expect(warning).toBeVisible();
   });
 });
