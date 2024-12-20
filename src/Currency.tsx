@@ -25,7 +25,7 @@ export default function Currency({
     currencies: string[]
 }) {
 
-    const currencies = currencyCodes.map((code) => ({ code, name: `${symbols[code]} (${code})` }))
+    const currencies = currencyCodes.map((code) => ({ code, name: `${symbols[code as keyof typeof symbols]} (${code})` }))
     const defaultItems = currencies.map(getItem);
 
     const [searchValue, setSearchValue] = useState("");
