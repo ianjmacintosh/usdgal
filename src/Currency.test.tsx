@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach } from "vitest";
-import { cleanup, getAllByRole, getByText, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, getAllByRole, getByText, render, screen } from "@testing-library/react";
 import Currency from "./Currency";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
@@ -61,6 +61,19 @@ describe("<Currency />", () => {
         await user.click(screen.getByPlaceholderText('Search for a currency...'))
         await user.keyboard("bit")
         expect(screen.getByText("Bitcoin", { exact: false })).toBeVisible();
+    });
+
+    test("lets a user select a currency by focusing on the select and typing its code (no popover needed)", async () => {
+        cleanup();
+        render(<TestComponent currencies={["AED", "DJF", "USD"]} />);
+
+        const currencyButton = screen.getByLabelText("Currency")
+        await user.click(currencyButton)
+        expect(document.querySelector(".popover")).toBeVisible()
+        await user.click(currencyButton)
+        expect(document.querySelector(".popover")).not.toBeInTheDocument()
+        await user.keyboard("USD")
+        expect(currencyButton.textContent).toBe("USD");
     });
 
     test("doesn't \"unselect\" a currency when it's clicked once, then clicked again", async () => {
