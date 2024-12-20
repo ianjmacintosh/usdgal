@@ -29,7 +29,7 @@ describe("<Currency />", () => {
         render(<TestComponent />);
     });
 
-    test.only("dynamically renders currencies based on props", async () => {
+    test("dynamically renders currencies based on props", async () => {
         cleanup();
         render(<TestComponent currencies={["BRL", "MXN"]} />);
 
