@@ -36,7 +36,7 @@ const defaultItems = currencies.map(getItem);
 
 export default function Currency() {
     const [searchValue, setSearchValue] = useState("");
-    const [matches, setMatches] = useState(() => groupItems(defaultItems));
+    const [matches, setMatches] = useState(() => defaultItems);
 
     const combobox = Ariakit.useComboboxStore({
         defaultItems,
@@ -56,7 +56,7 @@ export default function Currency() {
     useEffect(() => {
         startTransition(() => {
             const items = matchSorter(currencies, searchValue);
-            setMatches(groupItems(items.map(getItem)));
+            setMatches(items.map(getItem));
         });
     }, [searchValue]);
 
@@ -85,32 +85,16 @@ export default function Currency() {
                 </div>
                 <Ariakit.ComboboxList store={combobox}>
                     <SelectRenderer store={select} items={matches} gap={8} overscan={1}>
-                        {({ label, ...item }) => (
-                            <SelectRenderer
+
+                        {({ value, ...item }) => (
+                            <Ariakit.ComboboxItem
                                 key={item.id}
-                                className="group"
-                                overscan={1}
                                 {...item}
-                                render={(props) => (
-                                    <Ariakit.SelectGroup {...props}>
-                                        <Ariakit.SelectGroupLabel className="group-label">
-                                            {label}
-                                        </Ariakit.SelectGroupLabel>
-                                        {props.children}
-                                    </Ariakit.SelectGroup>
-                                )}
+                                className="select-item"
+                                render={<Ariakit.SelectItem value={value} />}
                             >
-                                {({ value, ...item }) => (
-                                    <Ariakit.ComboboxItem
-                                        key={item.id}
-                                        {...item}
-                                        className="select-item"
-                                        render={<Ariakit.SelectItem value={value} />}
-                                    >
-                                        <span className="select-item-value">{value}</span>
-                                    </Ariakit.ComboboxItem>
-                                )}
-                            </SelectRenderer>
+                                <span className="select-item-value">{value}</span>
+                            </Ariakit.ComboboxItem>
                         )}
                     </SelectRenderer>
                 </Ariakit.ComboboxList>
