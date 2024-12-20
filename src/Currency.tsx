@@ -6,9 +6,6 @@ import { startTransition, useEffect, useState } from "react";
 import { symbols, } from "./exchangeRateData"
 import "./Currency.css";
 
-const currencyCodes = Object.keys(symbols)
-const currencies = currencyCodes.map((code) => ({ code, name: `${symbols[code]} (${code})` }))
-
 function getItem({ code: currencyCode, name: currencyName }: { code: string, name: string }) {
     return {
         id: `item-${kebabCase(currencyCode)}`,
@@ -17,15 +14,20 @@ function getItem({ code: currencyCode, name: currencyName }: { code: string, nam
     };
 }
 
-const defaultItems = currencies.map(getItem);
 
 export default function Currency({
     currency,
     onCurrencyChange,
+    currencies: currencyCodes
 }: {
     currency: string,
-    onCurrencyChange: (newValue: string) => void
+    onCurrencyChange: (newValue: string) => void,
+    currencies: string[]
 }) {
+
+    const currencies = currencyCodes.map((code) => ({ code, name: `${symbols[code]} (${code})` }))
+    const defaultItems = currencies.map(getItem);
+
     const [searchValue, setSearchValue] = useState("");
     const [matches, setMatches] = useState(() => defaultItems);
 
