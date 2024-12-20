@@ -100,7 +100,7 @@ export default function Currency({
                                 className="select-item"
                                 render={<Ariakit.SelectItem value={value} />}
                             >
-                                <span className="select-item-value">{children}</span>
+                                <span className="select-item-value">{(selectValue === value ? "✓" : "")} {children}</span>
                             </Ariakit.ComboboxItem>
                         )}
                     </SelectRenderer>

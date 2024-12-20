@@ -91,4 +91,20 @@ describe("<Currency />", () => {
         await user.click(getByText(popover, "BRL", { exact: false }))
         expect(currencyButton.textContent).toBe("BRL");
     });
+
+    test("shows a checkmark next to the selected currency", async () => {
+        cleanup();
+        render(<TestComponent currencies={["BRL", "USD", "MXN"]} />);
+
+        const currencyButton = screen.getByLabelText("Currency")
+        await user.click(currencyButton)
+        await user.click(screen.getByPlaceholderText('Search for a currency...'))
+        await user.keyboard("mxn{enter}")
+
+        expect(currencyButton.textContent).toBe("MXN");
+
+        await user.click(currencyButton)
+        expect(document.querySelector("#item-mxn")).toHaveAttribute("aria-selected", "true");
+        expect(document.querySelector("#item-mxn")).toHaveTextContent("✓");
+    });
 })
