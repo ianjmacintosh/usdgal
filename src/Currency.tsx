@@ -1,31 +1,42 @@
-"use client"
-
 import * as Ariakit from "@ariakit/react";
 import { SelectRenderer } from "@ariakit/react-core/select/select-renderer";
+import type { SelectRendererItem } from "@ariakit/react-core/select/select-renderer";
+import deburr from "lodash-es/deburr.js";
+import groupBy from "lodash-es/groupBy.js";
+import kebabCase from "lodash-es/kebabCase.js";
 import { matchSorter } from "match-sorter";
 import { startTransition, useEffect, useState } from "react";
-import "./Currency.css"
-import { symbols } from "./exchangeRateData";
+import { symbols, } from "./exchangeRateData"
+import "./Currency.css";
 
-const Currency = ({
-    currency,
-    handleCurrencyChange,
-    currencies: countries
-}: {
-    currency: string,
-    handleCurrencyChange: (newValue: string) => void,
-    currencies: string[]
-}) => {
-    const getMassiveCurrencyList = () => countries.map(code => {
-        const verboseString = `${symbols[code as keyof typeof symbols]} (${code})`
-        return { value: code, label: verboseString, children: verboseString, id: verboseString }
-    })
+const currencies = Object.keys(symbols)
 
-    const [verboseCurrencies] = useState(getMassiveCurrencyList)
+function getItem(country: string) {
+    return {
+        id: `item-${kebabCase(country)}`,
+        value: country,
+        children: country,
+    };
+}
 
-    const defaultItems = verboseCurrencies;
+function groupItems(items: ReturnType<typeof getItem>[]) {
+    const groups = groupBy(items, (item) => deburr(item.value?.at(0)));
+    return Object.entries(groups).map(([label, items]) => {
+        return {
+            id: `group-${label.toLowerCase()}`,
+            label,
+            itemSize: 40,
+            paddingStart: 44,
+            items,
+        } satisfies SelectRendererItem;
+    });
+}
+
+const defaultItems = currencies.map(getItem);
+
+export default function Currency() {
     const [searchValue, setSearchValue] = useState("");
-    const [matches, setMatches] = useState(() => defaultItems);
+    const [matches, setMatches] = useState(() => groupItems(defaultItems));
 
     const combobox = Ariakit.useComboboxStore({
         defaultItems,
@@ -37,27 +48,24 @@ const Currency = ({
     const select = Ariakit.useSelectStore({
         combobox,
         defaultItems,
-        defaultValue: currency,
+        defaultValue: "",
     });
 
     const selectValue = Ariakit.useStoreState(select, "value");
 
     useEffect(() => {
         startTransition(() => {
-            const items = matchSorter(verboseCurrencies, searchValue, { keys: ['label'] });
-            setMatches(items);
+            const items = matchSorter(currencies, searchValue);
+            setMatches(groupItems(items.map(getItem)));
         });
-    }, [verboseCurrencies, searchValue]);
-
-    useEffect(() => {
-        handleCurrencyChange(selectValue)
-    }, [handleCurrencyChange, selectValue])
+    }, [searchValue]);
 
     return (
         <>
-            <Ariakit.Select store={select} className="currency-button button" aria-label="Currency">
+            <Ariakit.SelectLabel store={select}>Country</Ariakit.SelectLabel>
+            <Ariakit.Select store={select} className="button">
                 <span className="select-value">
-                    {selectValue || currency}
+                    {selectValue || "Select a country"}
                 </span>
                 <Ariakit.SelectArrow />
             </Ariakit.Select>
@@ -65,33 +73,48 @@ const Currency = ({
                 store={select}
                 gutter={4}
                 className="popover"
-                unmountOnHide={true}
+
             >
                 <div className="combobox-wrapper">
                     <Ariakit.Combobox
                         store={combobox}
                         autoSelect
-                        placeholder="Search for a currency..."
+                        placeholder="Search..."
                         className="combobox"
                     />
                 </div>
                 <Ariakit.ComboboxList store={combobox}>
                     <SelectRenderer store={select} items={matches} gap={8} overscan={1}>
-                        {({ value, ...item }) => (
-                            <Ariakit.ComboboxItem
+                        {({ label, ...item }) => (
+                            <SelectRenderer
                                 key={item.id}
+                                className="group"
+                                overscan={1}
                                 {...item}
-                                className="select-item"
-                                render={<Ariakit.SelectItem value={value}>{selectValue === value ? "✓" : ""} {item.label}</Ariakit.SelectItem>}
+                                render={(props) => (
+                                    <Ariakit.SelectGroup {...props}>
+                                        <Ariakit.SelectGroupLabel className="group-label">
+                                            {label}
+                                        </Ariakit.SelectGroupLabel>
+                                        {props.children}
+                                    </Ariakit.SelectGroup>
+                                )}
                             >
-                                <span className="select-item-value">{value}</span>
-                            </Ariakit.ComboboxItem>
+                                {({ value, ...item }) => (
+                                    <Ariakit.ComboboxItem
+                                        key={item.id}
+                                        {...item}
+                                        className="select-item"
+                                        render={<Ariakit.SelectItem value={value} />}
+                                    >
+                                        <span className="select-item-value">{value}</span>
+                                    </Ariakit.ComboboxItem>
+                                )}
+                            </SelectRenderer>
                         )}
                     </SelectRenderer>
                 </Ariakit.ComboboxList>
             </Ariakit.SelectPopover>
         </>
-    )
+    );
 }
-
-export default Currency;
