@@ -19,7 +19,13 @@ function getItem({ code: currencyCode, name: currencyName }: { code: string, nam
 
 const defaultItems = currencies.map(getItem);
 
-export default function Currency() {
+export default function Currency({
+    currency,
+    onCurrencyChange,
+}: {
+    currency: string,
+    onCurrencyChange: (newValue: string) => void
+}) {
     const [searchValue, setSearchValue] = useState("");
     const [matches, setMatches] = useState(() => defaultItems);
 
@@ -33,7 +39,7 @@ export default function Currency() {
     const select = Ariakit.useSelectStore({
         combobox,
         defaultItems,
-        defaultValue: "",
+        defaultValue: currency,
     });
 
     const selectValue = Ariakit.useStoreState(select, "value");
@@ -45,9 +51,13 @@ export default function Currency() {
         });
     }, [searchValue]);
 
+    useEffect(() => {
+        onCurrencyChange(selectValue)
+    }, [onCurrencyChange, selectValue])
+
     return (
         <>
-            <Ariakit.Select store={select} className="currency-button button">
+            <Ariakit.Select store={select} className="currency-button button" aria-label="Currency">
                 <span className="select-value">
                     {selectValue}
                 </span>
