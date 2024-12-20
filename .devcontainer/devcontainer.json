@@ -5,9 +5,7 @@
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [
-    5173
-  ],
+  "forwardPorts": [5173],
   // Use 'postCreateCommand' to run commands after the container is created.
   // "post": "yarn install",
   "postCreateCommand": "npm install",
@@ -19,13 +17,25 @@
     "vscode": {
       "editor.formatOnSave": true,
       "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
+      "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
+      "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
+      "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
       "extensions": [
         "mattpocock.ts-error-translator",
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint"
       ]
     }
-  },
+  }
   // Configure tool-specific properties.
   // "customizations": {}
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

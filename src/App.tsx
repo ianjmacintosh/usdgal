@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import GithubLogo from "./assets/github.svg?react"
+import GithubLogo from "./assets/github.svg?react";
 import "./App.css";
 import getGasPrice from "./utils/getGasPrice";
 
@@ -11,14 +11,13 @@ type SupportedUnits = "liter" | "gallon";
 
 function App() {
   // const userLocale = "en-US";
-  const currencies = Object.keys(exchangeRateData.rates)
+  const currencies = Object.keys(exchangeRateData.rates);
 
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] = useState<string>("BRL");
   const [topUnit, setTopUnit] = useState<SupportedUnits>("liter");
   const [bottomNumber, setBottomNumber] = useState(0);
-  const [bottomCurrency, setBottomCurrency] =
-    useState<string>("USD");
+  const [bottomCurrency, setBottomCurrency] = useState<string>("USD");
   const [bottomUnit, setBottomUnit] = useState<SupportedUnits>("gallon");
   const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
 
@@ -49,7 +48,7 @@ function App() {
     topUnit,
     bottomCurrency,
     bottomUnit,
-    bottomNumber
+    bottomNumber,
   ]);
 
   return (
@@ -105,14 +104,20 @@ function App() {
         <nav>
           <ul>
             <li>
-              <a href="https://www.github.com/ianjmacintosh/usdgal" target="_blank">
+              <a
+                href="https://www.github.com/ianjmacintosh/usdgal"
+                target="_blank"
+              >
                 <GithubLogo height={18} width={18} />
                 <span>Source code</span>
               </a>
             </li>
           </ul>
         </nav>
-        &copy; 2024 <a href="https://www.ianjmacintosh.com/" target="_blank">Ian J. MacIntosh</a>
+        &copy; 2024{" "}
+        <a href="https://www.ianjmacintosh.com/" target="_blank">
+          Ian J. MacIntosh
+        </a>
       </footer>
     </>
   );
