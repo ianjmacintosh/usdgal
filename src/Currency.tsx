@@ -6,20 +6,6 @@ import { startTransition, useEffect, useState } from "react";
 import { symbols } from "./exchangeRateData";
 import "./Currency.css";
 
-function getItem({
-  code: currencyCode,
-  displayName: currencyDisplayName,
-}: {
-  code: string;
-  displayName: string;
-}) {
-  return {
-    id: `item-${kebabCase(currencyCode)}`,
-    value: currencyCode,
-    children: currencyDisplayName,
-  };
-}
-
 export default function Currency({
   currency,
   onCurrencyChange,
@@ -31,12 +17,13 @@ export default function Currency({
 }) {
   const getCurrencies = () =>
     currencyCodes.map((code) => ({
-      code,
+      id: `item-${kebabCase(code)}`,
+      value: code,
       name: symbols[code as keyof typeof symbols],
-      displayName: `${code}: ${symbols[code as keyof typeof symbols]}`,
+      children: `${code}: ${symbols[code as keyof typeof symbols]}`,
     }));
   const [currencies] = useState(getCurrencies);
-  const defaultItems = currencies.map(getItem);
+  const defaultItems = [...currencies];
 
   const [searchValue, setSearchValue] = useState("");
   const [matches, setMatches] = useState(() => defaultItems);
@@ -59,9 +46,9 @@ export default function Currency({
   useEffect(() => {
     startTransition(() => {
       const items = matchSorter(currencies, searchValue, {
-        keys: ["displayName"],
+        keys: ["children"],
       });
-      setMatches(items.map(getItem));
+      setMatches(items);
     });
   }, [searchValue]);
 
@@ -94,7 +81,7 @@ export default function Currency({
           />
         </div>
         <Ariakit.ComboboxList store={combobox}>
-          <SelectRenderer store={select} items={matches} gap={8} overscan={1}>
+          <SelectRenderer store={select} items={matches} gap={8}>
             {({ value, children, ...item }) => (
               <Ariakit.ComboboxItem
                 key={item.id}
