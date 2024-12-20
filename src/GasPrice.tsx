@@ -83,7 +83,7 @@ function GasPrice({
         />
         <Currency
           currency={currency}
-          handleCurrencyChange={handleCurrencyChange}
+          onCurrencyChange={handleCurrencyChange}
           currencies={currencies}
         ></Currency>
         <Unit

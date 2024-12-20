@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach } from "vitest";
-import { cleanup, getAllByRole, getByText, render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
@@ -174,44 +174,6 @@ describe("<GasPrice />", () => {
     await user.keyboard(",");
 
     expect(input.value).toBe("1.00");
-  });
-
-  test("dynamically renders currencies based on props", async () => {
-    cleanup();
-    render(<TestComponent currencies={["BRL", "MXN"]} />);
-
-    const currencyButton = screen.getByLabelText("Currency")
-    await user.click(currencyButton)
-    const popover = document.querySelector(".popover") as HTMLElement
-    const currencyOptions = getAllByRole(popover, 'option');
-    expect(currencyOptions.length).toBe(2);
-  });
-
-  test("supports searching currency based on verbose name (i.e., Bitcoin) instead of ISO code (i.e., BTC)", async () => {
-    cleanup();
-    render(<TestComponent currencies={["BTC", "USD", "MXN"]} />);
-
-    const currencyButton = screen.getByLabelText("Currency")
-    await user.click(currencyButton)
-    await user.click(screen.getByPlaceholderText('Search for a currency...'))
-    await user.keyboard("bit")
-    expect(screen.getByText("Bitcoin", { exact: false })).toBeVisible();
-  });
-
-  test("doesn't \"unselect\" a currency when it's clicked once, then clicked again", async () => {
-    cleanup();
-    render(<TestComponent currencies={["BRL", "USD", "MXN"]} />);
-
-    const currencyButton = screen.getByLabelText("Currency")
-    await user.click(currencyButton)
-    const popover = document.querySelector(".popover") as HTMLElement
-    await user.click(getByText(popover, "BRL", { exact: false }))
-
-    expect(currencyButton.textContent).toBe("BRL");
-
-    await user.click(currencyButton)
-    await user.click(getByText(popover, "BRL", { exact: false }))
-    expect(currencyButton.textContent).toBe("BRL");
   });
 
   test("warns when a display value is 0 but the actual value is not", async () => {

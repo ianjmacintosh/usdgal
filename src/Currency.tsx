@@ -1,26 +1,43 @@
-"use client"
-
 import * as Ariakit from "@ariakit/react";
 import { SelectRenderer } from "@ariakit/react-core/select/select-renderer";
+import kebabCase from "lodash-es/kebabCase.js";
 import { matchSorter } from "match-sorter";
 import { startTransition, useEffect, useState } from "react";
-import "./Currency.css"
 import { symbols } from "./exchangeRateData";
+import "./Currency.css";
 
-const Currency = ({
-    currency,
-    handleCurrencyChange,
-    currencies: countries
+function getItem({
+    code: currencyCode,
+    displayName: currencyDisplayName,
 }: {
-    currency: string,
-    handleCurrencyChange: (newValue: string) => void,
-    currencies: string[]
-}) => {
-    const verboseCurrencies = countries.map(code => {
-        const verboseString = `${symbols[code as keyof typeof symbols]} (${code})`
-        return { value: code, label: verboseString, children: verboseString, id: verboseString }
-    })
-    const defaultItems = verboseCurrencies;
+    code: string;
+    displayName: string;
+}) {
+    return {
+        id: `item-${kebabCase(currencyCode)}`,
+        value: currencyCode,
+        children: currencyDisplayName,
+    };
+}
+
+export default function Currency({
+    currency,
+    onCurrencyChange,
+    currencies: currencyCodes,
+}: {
+    currency: string;
+    onCurrencyChange: (newValue: string) => void;
+    currencies: string[];
+}) {
+    const getCurrencies = () =>
+        currencyCodes.map((code) => ({
+            code,
+            name: symbols[code as keyof typeof symbols],
+            displayName: `${code}: ${symbols[code as keyof typeof symbols]}`,
+        }));
+    const [currencies] = useState(getCurrencies);
+    const defaultItems = currencies.map(getItem);
+
     const [searchValue, setSearchValue] = useState("");
     const [matches, setMatches] = useState(() => defaultItems);
 
@@ -29,7 +46,7 @@ const Currency = ({
         resetValueOnHide: true,
         value: searchValue,
         setValue: setSearchValue,
-        placement: "bottom-end"
+        placement: "bottom-end",
     });
     const select = Ariakit.useSelectStore({
         combobox,
@@ -41,27 +58,29 @@ const Currency = ({
 
     useEffect(() => {
         startTransition(() => {
-            const items = matchSorter(verboseCurrencies, searchValue, { keys: ['label'] });
-            setMatches(items);
+            const items = matchSorter(currencies, searchValue, { keys: ["displayName"] });
+            setMatches(items.map(getItem));
         });
     }, [searchValue]);
 
     useEffect(() => {
-        handleCurrencyChange(selectValue)
-    }, [handleCurrencyChange, selectValue])
+        onCurrencyChange(selectValue);
+    }, [onCurrencyChange, selectValue]);
 
     return (
         <>
-            <Ariakit.Select store={select} className="currency-button button" aria-label="Currency">
-                <span className="select-value">
-                    {selectValue || currency}
-                </span>
+            <Ariakit.Select
+                store={select}
+                className="currency-button button"
+                aria-label="Currency"
+            >
+                <span className="select-value">{selectValue}</span>
                 <Ariakit.SelectArrow />
             </Ariakit.Select>
             <Ariakit.SelectPopover
                 store={select}
                 gutter={4}
-                className="popover"
+                className="currency-popover popover"
                 unmountOnHide={true}
             >
                 <div className="combobox-wrapper">
@@ -74,21 +93,19 @@ const Currency = ({
                 </div>
                 <Ariakit.ComboboxList store={combobox}>
                     <SelectRenderer store={select} items={matches} gap={8} overscan={1}>
-                        {({ value, ...item }) => (
+                        {({ value, children, ...item }) => (
                             <Ariakit.ComboboxItem
                                 key={item.id}
                                 {...item}
                                 className="select-item"
-                                render={<Ariakit.SelectItem value={value}>{selectValue === value ? "✓" : ""} {item.label}</Ariakit.SelectItem>}
+                                render={<Ariakit.SelectItem value={value} />}
                             >
-                                <span className="select-item-value">{value}</span>
+                                <span className="select-item-value">{(selectValue === value ? "✓" : "")} {children}</span>
                             </Ariakit.ComboboxItem>
                         )}
                     </SelectRenderer>
                 </Ariakit.ComboboxList>
             </Ariakit.SelectPopover>
         </>
-    )
+    );
 }
-
-export default Currency;
