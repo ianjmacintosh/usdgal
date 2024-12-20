@@ -11,25 +11,13 @@ import "./Currency.css";
 
 const currencies = Object.keys(symbols)
 
-function getItem(country: string) {
+function getItem(currency: string) {
     return {
-        id: `item-${kebabCase(country)}`,
-        value: country,
-        children: country,
+        id: `item-${kebabCase(currency)}`,
+        value: currency,
+        label: `(${symbols[currency]}) (${currency})`,
+        children: currency,
     };
-}
-
-function groupItems(items: ReturnType<typeof getItem>[]) {
-    const groups = groupBy(items, (item) => deburr(item.value?.at(0)));
-    return Object.entries(groups).map(([label, items]) => {
-        return {
-            id: `group-${label.toLowerCase()}`,
-            label,
-            itemSize: 40,
-            paddingStart: 44,
-            items,
-        } satisfies SelectRendererItem;
-    });
 }
 
 const defaultItems = currencies.map(getItem);
@@ -62,10 +50,9 @@ export default function Currency() {
 
     return (
         <>
-            <Ariakit.SelectLabel store={select}>Country</Ariakit.SelectLabel>
-            <Ariakit.Select store={select} className="button">
+            <Ariakit.Select store={select} className="currency-button button">
                 <span className="select-value">
-                    {selectValue || "Select a country"}
+                    {selectValue}
                 </span>
                 <Ariakit.SelectArrow />
             </Ariakit.Select>
@@ -79,7 +66,7 @@ export default function Currency() {
                     <Ariakit.Combobox
                         store={combobox}
                         autoSelect
-                        placeholder="Search..."
+                        placeholder="Search for a currency..."
                         className="combobox"
                     />
                 </div>
