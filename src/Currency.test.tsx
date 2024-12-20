@@ -37,9 +37,6 @@ describe("<Currency />", () => {
         await user.click(currencyButton)
         const popover = document.querySelector(".popover") as HTMLElement
         const currencyOptions = getAllByRole(popover, 'option');
-        currencyOptions.forEach((option) => {
-            console.log(option.id)
-        })
         expect(currencyOptions.length).toBe(2);
     });
 
