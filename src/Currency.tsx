@@ -2,7 +2,7 @@ import * as Ariakit from "@ariakit/react";
 import { SelectRenderer } from "@ariakit/react-core/select/select-renderer";
 import kebabCase from "lodash-es/kebabCase.js";
 import { matchSorter } from "match-sorter";
-import { startTransition, useDeferredValue, useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { symbols } from "./exchangeRateData";
 import "./Currency.css";
 
@@ -39,13 +39,12 @@ export default function Currency({
   const defaultItems = currencies.map(getItem);
 
   const [searchValue, setSearchValue] = useState("");
-  const deferredSearchValue = useDeferredValue(searchValue)
   const [matches, setMatches] = useState(() => defaultItems);
 
   const combobox = Ariakit.useComboboxStore({
     defaultItems,
     resetValueOnHide: true,
-    value: deferredSearchValue,
+    value: searchValue,
     setValue: setSearchValue,
     placement: "bottom-end",
   });
@@ -59,12 +58,12 @@ export default function Currency({
 
   useEffect(() => {
     startTransition(() => {
-      const items = matchSorter(currencies, deferredSearchValue, {
+      const items = matchSorter(currencies, searchValue, {
         keys: ["displayName"],
       });
       setMatches(items.map(getItem));
     });
-  }, [deferredSearchValue]);
+  }, [searchValue]);
 
   useEffect(() => {
     onCurrencyChange(selectValue);
