@@ -40,14 +40,16 @@ describe("<Currency />", () => {
         expect(currencyOptions.length).toBe(2);
     });
 
-    test("doesn't leave the popover in the DOM when it's not in use", () => {
+    test("doesn't leave the popover in the DOM when it's not in use", async () => {
         cleanup();
         render(<TestComponent currencies={["BRL", "MXN"]} />);
 
         const currencyButton = screen.getByLabelText("Currency")
-        waitFor(() => expect(document.querySelector(".popover")).toBeVisible());
-        user.click(currencyButton)
-        waitFor(() => expect(document.querySelector(".popover")).not.toBeInTheDocument());
+        expect(document.querySelector(".currency-popover")).not.toBeInTheDocument()
+        await user.click(currencyButton)
+        expect(document.querySelector(".currency-popover")).toBeVisible()
+        await user.click(currencyButton)
+        expect(document.querySelector(".currency-popover")).not.toBeInTheDocument()
     })
 
     test("supports searching currency based on verbose name (i.e., Bitcoin) instead of ISO code (i.e., BTC)", async () => {
