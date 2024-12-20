@@ -51,23 +51,31 @@ const ConversionTable = ({
                 <label id="cost-label">Cost</label>
                 <span aria-labelledby="cost-label">{topNumber} {topCurrency} per {topUnit}</span>
             </li>
-            <li style={{ "--i": 1 } as React.CSSProperties}>
-                <label id="currency-conversion-rate-label">Currency conversion rate</label>
-                <span aria-labelledby="currency-conversion-rate-label">
-                    {sourceCurrencyAbsoluteCost > targetCurrencyAbsoluteCost ?
-                        `${sourceCurrencyAbsoluteCost / targetCurrencyAbsoluteCost} ${topCurrency} = 1 ${bottomCurrency}` :
-                        `1 ${topCurrency} = ${targetCurrencyAbsoluteCost / sourceCurrencyAbsoluteCost} ${bottomCurrency}`}
-                </span><br />
-                <em>(Last updated: {bottomCurrencyUpdatedDate})</em>
-            </li>
-            <li style={{ "--i": 2 } as React.CSSProperties}>
-                <label id="volume-conversion-rate-label">Volume conversion rate</label>
-                <span aria-labelledby="volume-conversion-rate-label">
-                    {targetVolumeInLiters > sourceVolumeInLiters ?
-                        `${targetVolumeInLiters / sourceVolumeInLiters} ${topUnit}s = 1 ${bottomUnit}` :
-                        `1 ${topUnit} = ${sourceVolumeInLiters / targetVolumeInLiters} ${bottomUnit}s`}
-                </span>
-            </li>
+
+            {/* Only show conversion rates if the currencies are different */}
+            {topCurrency !== bottomCurrency && (
+                <li style={{ "--i": 1 } as React.CSSProperties}>
+                    <label id="currency-conversion-rate-label">Currency conversion rate</label>
+                    <span aria-labelledby="currency-conversion-rate-label">
+                        {sourceCurrencyAbsoluteCost > targetCurrencyAbsoluteCost ?
+                            `${sourceCurrencyAbsoluteCost / targetCurrencyAbsoluteCost} ${topCurrency} = 1 ${bottomCurrency}` :
+                            `1 ${topCurrency} = ${targetCurrencyAbsoluteCost / sourceCurrencyAbsoluteCost} ${bottomCurrency}`}
+                    </span><br />
+                    <em>(Last updated: {bottomCurrencyUpdatedDate})</em>
+                </li>
+            )}
+
+            {/* Only show volume conversion rates if the units are different */}
+            {topUnit !== bottomUnit && (
+                <li style={{ "--i": 2 } as React.CSSProperties}>
+                    <label id="volume-conversion-rate-label">Volume conversion rate</label>
+                    <span aria-labelledby="volume-conversion-rate-label">
+                        {targetVolumeInLiters > sourceVolumeInLiters ?
+                            `${targetVolumeInLiters / sourceVolumeInLiters} ${topUnit}s = 1 ${bottomUnit}` :
+                            `1 ${topUnit} = ${sourceVolumeInLiters / targetVolumeInLiters} ${bottomUnit}s`}
+                    </span>
+                </li>
+            )}
             <li style={{ "--i": 3 } as React.CSSProperties}>
                 <label id="converted-cost-label">Converted cost</label>
                 <span aria-labelledby="converted-cost-label">{bottomNumber} {bottomCurrency} per {bottomUnit}</span>

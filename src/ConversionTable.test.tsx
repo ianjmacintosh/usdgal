@@ -35,45 +35,6 @@ describe("<ConversionTable />", () => {
         expect(screen.getByLabelText("Conversion Details")).toHaveClass('visible');
     });
 
-    test("shows correct conversion rates for equal units (gallons to gallons, liters to liters)", async () => {
-        render(
-            <TestComponent
-                topUnit="gallon"
-                bottomUnit="gallon"
-            />,
-        );
-
-        expect(
-            screen.getByLabelText("Volume conversion rate").textContent,
-        ).toContain("1 gallon = 1 gallons");
-
-        cleanup();
-
-        render(
-            <TestComponent
-                topUnit="liter"
-                bottomUnit="liter"
-            />,
-        );
-
-        expect(
-            screen.getByLabelText("Volume conversion rate").textContent,
-        ).toContain("1 liter = 1 liters");
-    });
-
-    test("shows correct conversion rates for equal currencies (USD to USD)", async () => {
-        render(
-            <TestComponent
-                topCurrency="USD"
-                bottomCurrency="USD"
-            />,
-        );
-
-        expect(screen.getByLabelText("Currency conversion rate").textContent).toContain(
-            "1 USD = 1 USD",
-        );
-    });
-
     test("shows top converted value first", async () => {
         render(
             <TestComponent
@@ -125,5 +86,19 @@ describe("<ConversionTable />", () => {
         expect(screen.getByLabelText("Converted cost").textContent).toContain(
             "5.6789 USD",
         );
+    });
+
+    test("doesn't show conversion rates when units and currencies are equal", async () => {
+        render(
+            <TestComponent
+                topCurrency="BRL"
+                topUnit="liters"
+                bottomCurrency="BRL"
+                bottomUnit="liters"
+            />,
+        );
+
+        expect(screen.queryByLabelText("Currency conversion rate")).toBeNull();
+        expect(screen.queryByLabelText("Volume conversion rate")).toBeNull();
     });
 });
