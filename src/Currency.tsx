@@ -41,7 +41,7 @@ export default function Currency({
   const defaultItems = [...currencies];
 
   const [searchValue, setSearchValue] = useState("");
-  const debouncedSearchValue = useDebounce(searchValue, 200)
+  const debouncedSearchValue = useDebounce(searchValue, 500)
   const [matches, setMatches] = useState(() => defaultItems);
 
   const combobox = Ariakit.useComboboxStore({
