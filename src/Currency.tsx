@@ -1,25 +1,10 @@
 import * as Ariakit from "@ariakit/react";
 import { SelectRenderer } from "@ariakit/react-core/select/select-renderer";
 import kebabCase from "lodash-es/kebabCase.js";
-import { matchSorter } from "match-sorter";
-import { startTransition, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { symbols } from "./exchangeRateData";
 import "./Currency.css";
 
-const useDebounce = (value: string, delay = 500) => {
-  const [debouncedValue, setDebouncedValue] = useState("");
-  const timerRef = useRef<ReturnType<typeof setTimeout>>()
-
-  useEffect(() => {
-    timerRef.current = setTimeout(() => setDebouncedValue(value), delay);
-
-    return () => {
-      clearTimeout(timerRef.current);
-    };
-  }, [value, delay]);
-
-  return debouncedValue;
-};
 
 export default function Currency({
   currency,
@@ -41,8 +26,7 @@ export default function Currency({
   const defaultItems = [...currencies];
 
   const [searchValue, setSearchValue] = useState("");
-  const debouncedSearchValue = searchValue
-  const [matches, setMatches] = useState(() => defaultItems);
+  const [matches, ] = useState(() => defaultItems);
 
   const combobox = Ariakit.useComboboxStore({
     defaultItems,
