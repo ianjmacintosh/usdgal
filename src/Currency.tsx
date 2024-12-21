@@ -39,8 +39,7 @@ export default function Currency({
   }, [onCurrencyChange, selectValue]);
 
   return (
-    <>
-       <Ariakit.ComboboxProvider
+      <Ariakit.ComboboxProvider
         resetValueOnHide
         setValue={(value) => {
           startTransition(() => {
@@ -48,12 +47,9 @@ export default function Currency({
           });
         }}
       >
-        <Ariakit.SelectProvider defaultValue={currency} placement="bottom-end"
-        setValue={setSelectValue} items={matches}
-        >
-          <Ariakit.Select className="currency-button button" aria-label="Currency" />
-          <Ariakit.SelectPopover gutter={4} className="currency-popover popover" 
-        unmountOnHide={true}>
+        <Ariakit.SelectProvider defaultValue={currency} defaultItems={matches} setValue={setSelectValue}>
+          <Ariakit.Select className="currency-button button" aria-label="Currency"/>
+          <Ariakit.SelectPopover gutter={4} className="currency-popover popover">
             <div className="combobox-wrapper">
               <Ariakit.Combobox
                 autoSelect
@@ -62,18 +58,17 @@ export default function Currency({
               />
             </div>
             <Ariakit.ComboboxList>
-              {matches.map(({ value, children, id}) => (
+              {matches.map(({value, children}) => (
                 <Ariakit.SelectItem
                   key={value}
                   value={value}
                   className="select-item"
-                  render={<Ariakit.ComboboxItem children={`${selectValue === value ? "✓" : ""} ${children}`} id={id} />}
+                  render={<Ariakit.ComboboxItem>{children}</Ariakit.ComboboxItem>}
                 />
               ))}
             </Ariakit.ComboboxList>
           </Ariakit.SelectPopover>
         </Ariakit.SelectProvider>
       </Ariakit.ComboboxProvider>
-    </>
   );
 }
