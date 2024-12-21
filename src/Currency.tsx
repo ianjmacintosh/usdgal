@@ -58,12 +58,13 @@ export default function Currency({
               />
             </div>
             <Ariakit.ComboboxList>
-              {matches.map(({value, children}) => (
+              {matches.map(({value, children, id}) => (
                 <Ariakit.SelectItem
                   key={value}
                   value={value}
+                  id={id}
                   className="select-item"
-                  render={<Ariakit.ComboboxItem>{children}</Ariakit.ComboboxItem>}
+                  render={<Ariakit.ComboboxItem>{selectValue === value ? "✓" : ""} {children}</Ariakit.ComboboxItem>}
                 />
               ))}
             </Ariakit.ComboboxList>
