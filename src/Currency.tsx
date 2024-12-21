@@ -41,7 +41,7 @@ export default function Currency({
   const defaultItems = [...currencies];
 
   const [searchValue, setSearchValue] = useState("");
-  const debouncedSearchValue = useDebounce(searchValue, 500)
+  const debouncedSearchValue = searchValue
   const [matches, setMatches] = useState(() => defaultItems);
 
   const combobox = Ariakit.useComboboxStore({
@@ -59,14 +59,14 @@ export default function Currency({
 
   const selectValue = Ariakit.useStoreState(select, "value");
 
-  useEffect(() => {
-    startTransition(() => {
-      const items = matchSorter(currencies, debouncedSearchValue, {
-        keys: ["children"],
-      });
-      setMatches(items);
-    });
-  }, [debouncedSearchValue]);
+  // useEffect(() => {
+  //   startTransition(() => {
+  //     const items = matchSorter(currencies, debouncedSearchValue, {
+  //       keys: ["children"],
+  //     });
+  //     setMatches(items);
+  //   });
+  // }, [debouncedSearchValue]);
 
   useEffect(() => {
     onCurrencyChange(selectValue);
