@@ -108,8 +108,8 @@ function App() {
                 href="https://www.github.com/ianjmacintosh/usdgal"
                 target="_blank"
               >
-                <GithubLogo height={18} width={18} />
                 <span>Source code</span>
+                <GithubLogo height={18} width={18} />
               </a>
             </li>
           </ul>
