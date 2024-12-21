@@ -5,7 +5,6 @@ import { symbols } from "./exchangeRateData";
 import "./Currency.css";
 import { matchSorter } from "match-sorter";
 
-
 export default function Currency({
   currency,
   onCurrencyChange,
@@ -25,12 +24,12 @@ export default function Currency({
   const [currencies] = useState(getCurrencies);
 
   const [searchValue, setSearchValue] = useState("");
-  const [selectValue, setSelectValue] = useState(currency)
+  const [selectValue, setSelectValue] = useState(currency);
 
   const matches = useMemo(() => {
     return matchSorter(currencies, searchValue, {
       baseSort: (a, b) => (a.index < b.index ? -1 : 1),
-      keys: ["children"]
+      keys: ["children"],
     });
   }, [searchValue]);
 
@@ -39,37 +38,53 @@ export default function Currency({
   }, [onCurrencyChange, selectValue]);
 
   return (
-      <Ariakit.ComboboxProvider
-        resetValueOnHide
-        setValue={(value) => {
-          startTransition(() => {
-            setSearchValue(value);
-          });
-        }}
+    <Ariakit.ComboboxProvider
+      resetValueOnHide
+      setValue={(value) => {
+        startTransition(() => {
+          setSearchValue(value);
+        });
+      }}
+    >
+      <Ariakit.SelectProvider
+        defaultValue={currency}
+        items={matches}
+        setValue={setSelectValue}
+        placement="bottom-end"
       >
-        <Ariakit.SelectProvider defaultValue={currency} items={matches} setValue={setSelectValue} placement="bottom-end">
-          <Ariakit.Select className="currency-button button" aria-label="Currency"/>
-          <Ariakit.SelectPopover gutter={4} className="currency-popover popover" unmountOnHide={true}>
-            <div className="combobox-wrapper">
-              <Ariakit.Combobox
-                autoSelect
-                placeholder="Search for a currency..."
-                className="combobox"
+        <Ariakit.Select
+          className="currency-button button"
+          aria-label="Currency"
+        />
+        <Ariakit.SelectPopover
+          gutter={4}
+          className="currency-popover popover"
+          unmountOnHide={true}
+        >
+          <div className="combobox-wrapper">
+            <Ariakit.Combobox
+              autoSelect
+              placeholder="Search for a currency..."
+              className="combobox"
+            />
+          </div>
+          <Ariakit.ComboboxList>
+            {matches.map(({ value, children, id }) => (
+              <Ariakit.SelectItem
+                key={value}
+                value={value}
+                id={id}
+                className="select-item"
+                render={
+                  <Ariakit.ComboboxItem>
+                    {selectValue === value ? "✓" : ""} {children}
+                  </Ariakit.ComboboxItem>
+                }
               />
-            </div>
-            <Ariakit.ComboboxList>
-              {matches.map(({value, children, id}) => (
-                <Ariakit.SelectItem
-                  key={value}
-                  value={value}
-                  id={id}
-                  className="select-item"
-                  render={<Ariakit.ComboboxItem>{selectValue === value ? "✓" : ""} {children}</Ariakit.ComboboxItem>}
-                />
-              ))}
-            </Ariakit.ComboboxList>
-          </Ariakit.SelectPopover>
-        </Ariakit.SelectProvider>
-      </Ariakit.ComboboxProvider>
+            ))}
+          </Ariakit.ComboboxList>
+        </Ariakit.SelectPopover>
+      </Ariakit.SelectProvider>
+    </Ariakit.ComboboxProvider>
   );
 }
