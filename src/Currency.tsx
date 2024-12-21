@@ -49,7 +49,7 @@ export default function Currency({
       >
         <Ariakit.SelectProvider defaultValue={currency} defaultItems={matches} setValue={setSelectValue}>
           <Ariakit.Select className="currency-button button" aria-label="Currency"/>
-          <Ariakit.SelectPopover gutter={4} className="currency-popover popover">
+          <Ariakit.SelectPopover gutter={4} className="currency-popover popover" unmountOnHide={true}>
             <div className="combobox-wrapper">
               <Ariakit.Combobox
                 autoSelect
