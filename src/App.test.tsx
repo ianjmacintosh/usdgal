@@ -11,6 +11,7 @@ import userEvent from "@testing-library/user-event";
 import getGasPrice from "./utils/getGasPrice";
 import { getFormattedPrice } from "./utils/numberFormat";
 import "@testing-library/jest-dom/vitest";
+import { selectItemFromFancySelect } from "./utils/testUtils";
 
 describe("<App />", () => {
   const user = userEvent.setup();
@@ -50,19 +51,6 @@ describe("<App />", () => {
     const popover = document.querySelector(".popover") as HTMLElement;
     await user.click(getByPlaceholderText(popover, "Search for a currency..."));
     await user.keyboard(option);
-    await user.click(getByText(popover, option, { exact: false }));
-
-    waitFor(() => {
-      expect(selectElement.textContent).toBe(option);
-    });
-  };
-
-  const selectItemFromFancySelect = async (
-    selectElement: Element,
-    option: string,
-  ) => {
-    await user.click(selectElement);
-    const popover = document.querySelector(".popover") as HTMLElement;
     await user.click(getByText(popover, option, { exact: false }));
 
     waitFor(() => {
@@ -140,8 +128,7 @@ describe("<App />", () => {
     await user.keyboard("1234");
     expect(topPriceInput.value).toBe("1234");
 
-    await user.click(topCurrencyButton);
-    await user.keyboard("USD{enter}");
+    await selectItemFromCombobox(topCurrencyButton, "USD");
     expect(topCurrencyButton.textContent).toBe("USD");
 
     await selectItemFromFancySelect(topUnitButton, "per gallon");

@@ -3,11 +3,9 @@ import { cleanup, render, screen } from "@testing-library/react";
 import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
-import exchangeRateData from "./exchangeRateData";
 import "@testing-library/jest-dom/vitest";
 
 describe("<GasPrice />", () => {
-  const currencies = Object.keys(exchangeRateData.rates);
   const user = userEvent.setup();
   const TestComponent = ({ ...props }) => {
     const [number, setNumber] = useState(0);
@@ -29,7 +27,6 @@ describe("<GasPrice />", () => {
         onUnitChange={(newValue) => {
           setUnit(newValue);
         }}
-        currencies={currencies}
         {...props}
       />
     );

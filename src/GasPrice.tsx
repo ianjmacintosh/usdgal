@@ -19,7 +19,6 @@ function GasPrice({
   disabled,
   currency,
   unit,
-  currencies,
 }: {
   label: string;
   number: number;
@@ -34,7 +33,6 @@ function GasPrice({
       | React.ChangeEvent<HTMLSelectElement>,
   ) => void;
   disabled?: boolean;
-  currencies: string[];
 }) {
   const [displayNumber, setDisplayNumber] = useState(
     getFormattedPrice(number >= 0.01 ? number : 0.01, "en-US", currency),
@@ -101,7 +99,6 @@ function GasPrice({
         <Currency
           currency={currency}
           onCurrencyChange={handleCurrencyChange}
-          currencies={currencies}
         ></Currency>
         <Unit
           id={`${label.toLowerCase()}_unit`}

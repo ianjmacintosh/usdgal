@@ -1,34 +1,22 @@
 import * as Ariakit from "@ariakit/react";
-import kebabCase from "lodash-es/kebabCase.js";
 import { startTransition, useEffect, useMemo, useState } from "react";
-import { symbols } from "./exchangeRateData";
 import "./Currency.css";
 import { matchSorter } from "match-sorter";
 import { debounce } from "lodash-es";
+import { currenciesSelectStoreItems } from "./exchangeRateData";
 
 export default function Currency({
   currency,
   onCurrencyChange,
-  currencies: currencyCodes,
 }: {
   currency: string;
   onCurrencyChange: (newValue: string) => void;
-  currencies: string[];
 }) {
-  const getCurrencies = () =>
-    currencyCodes.map((code) => ({
-      id: `item-${kebabCase(code)}`,
-      value: code,
-      name: symbols[code as keyof typeof symbols],
-      children: `${code}: ${symbols[code as keyof typeof symbols]}`,
-    }));
-  const [currencies] = useState(getCurrencies);
-
   const [searchValue, setSearchValue] = useState("");
   const [selectValue, setSelectValue] = useState(currency);
 
   const matches = useMemo(() => {
-    return matchSorter(currencies, searchValue, {
+    return matchSorter(currenciesSelectStoreItems, searchValue, {
       baseSort: (a, b) => (a.index < b.index ? -1 : 1),
       keys: ["children"],
     });
