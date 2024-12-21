@@ -1,15 +1,10 @@
 import * as Ariakit from "@ariakit/react";
 import kebabCase from "lodash-es/kebabCase.js";
-import {
-  startTransition,
-  useDeferredValue,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { startTransition, useEffect, useMemo, useState } from "react";
 import { symbols } from "./exchangeRateData";
 import "./Currency.css";
 import { matchSorter } from "match-sorter";
+import { debounce } from "lodash-es";
 
 export default function Currency({
   currency,
@@ -30,15 +25,14 @@ export default function Currency({
   const [currencies] = useState(getCurrencies);
 
   const [searchValue, setSearchValue] = useState("");
-  const deferredSearchValue = useDeferredValue(searchValue);
   const [selectValue, setSelectValue] = useState(currency);
 
   const matches = useMemo(() => {
-    return matchSorter(currencies, deferredSearchValue, {
+    return matchSorter(currencies, searchValue, {
       baseSort: (a, b) => (a.index < b.index ? -1 : 1),
       keys: ["children"],
     });
-  }, [deferredSearchValue]);
+  }, [searchValue]);
 
   useEffect(() => {
     onCurrencyChange(selectValue);
@@ -47,18 +41,16 @@ export default function Currency({
   return (
     <Ariakit.ComboboxProvider
       resetValueOnHide
-      setValue={(value) => {
+      setValue={debounce((value) => {
         startTransition(() => {
           setSearchValue(value);
         });
-      }}
+      }, 250)}
     >
       <Ariakit.SelectProvider
         defaultValue={currency}
         items={matches}
-        setValue={(value) => {
-          setSelectValue(value);
-        }}
+        setValue={setSelectValue}
         placement="bottom-end"
       >
         <Ariakit.Select
