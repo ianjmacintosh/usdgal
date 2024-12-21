@@ -33,7 +33,7 @@ export default function Currency({
         startTransition(() => {
           setSearchValue(value);
         });
-      }, 250)}
+      }, 150)}
     >
       <Ariakit.SelectProvider
         defaultValue={currency}
