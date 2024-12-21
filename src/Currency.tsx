@@ -1,6 +1,12 @@
 import * as Ariakit from "@ariakit/react";
 import kebabCase from "lodash-es/kebabCase.js";
-import { startTransition, useEffect, useMemo, useState } from "react";
+import {
+  startTransition,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { symbols } from "./exchangeRateData";
 import "./Currency.css";
 import { matchSorter } from "match-sorter";
@@ -24,14 +30,15 @@ export default function Currency({
   const [currencies] = useState(getCurrencies);
 
   const [searchValue, setSearchValue] = useState("");
+  const deferredSearchValue = useDeferredValue(searchValue);
   const [selectValue, setSelectValue] = useState(currency);
 
   const matches = useMemo(() => {
-    return matchSorter(currencies, searchValue, {
+    return matchSorter(currencies, deferredSearchValue, {
       baseSort: (a, b) => (a.index < b.index ? -1 : 1),
       keys: ["children"],
     });
-  }, [searchValue]);
+  }, [deferredSearchValue]);
 
   useEffect(() => {
     onCurrencyChange(selectValue);
@@ -49,7 +56,9 @@ export default function Currency({
       <Ariakit.SelectProvider
         defaultValue={currency}
         items={matches}
-        setValue={setSelectValue}
+        setValue={(value) => {
+          setSelectValue(value);
+        }}
         placement="bottom-end"
       >
         <Ariakit.Select
