@@ -71,7 +71,7 @@ function GasPrice({
   };
 
   return (
-    <div className="my-8">
+    <div className="mt-4 mb-8">
       <fieldset>
         <legend>{label}</legend>
         <input
