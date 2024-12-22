@@ -15,12 +15,12 @@ if (typeof API_KEY === "undefined") {
 
 const isExchangeRateDataOld = true;
 
-// if (!isExchangeRateDataOld) {
-//   console.log(
-//     `No need to update the exchange rate data, no changes made to saved data (${SAVED_DATA_PATH})`,
-//   );
-//   process.exit(0);
-// }
+if (!isExchangeRateDataOld) {
+  console.log(
+    `No need to update the exchange rate data, no changes made to saved data (${SAVED_DATA_PATH})`,
+  );
+  process.exit(0);
+}
 
 const options = {
   hostname: API_HOSTNAME,
@@ -30,26 +30,40 @@ const options = {
 };
 
 const req = request(options, (res) => {
-    res.on("data", (chunk) => {
-      rawData += chunk;
-    });
-    res.on("end", () => {
-      if (JSON.parse(rawData)?.success !== true) {
-        console.err(
-          `Endpoint did not respond with an explicit success, no changes made to saved data (${SAVED_DATA_PATH})`,
-        );
-        req.end();
-        process.exit(1);
-      }
-      try {
-        fs.writeFile(SAVED_DATA_PATH, rawData, (err) => {
-          console.error(err);
-        });
-      } catch (e) {
-        console.error(e.message);
-      }
-    });
-  }
+  console.log(res.statusCode);
+  let rawData;
+  res.on("data", (chunk) => {
+    rawData += chunk;
+  });
+  res.on("end", () => {
+    try {
+      JSON.parse(rawData);
+    } catch (error) {
+      console.error("Response from endpoint is not valid JSON");
+      req.end();
+      process.exit(1);
+    }
+    if (JSON.parse(rawData)?.success !== true) {
+      console.err(
+        `Endpoint JSON data did not include expected \`"success": true\`, no changes made to saved data (${SAVED_DATA_PATH})`,
+      );
+      req.end();
+      process.exit(1);
+    }
+    try {
+      fs.writeFile(SAVED_DATA_PATH, rawData, (err) => {
+        console.error(err);
+        if (err) throw err;
+        console.log("### Successfully updated exchange rate data ###");
+        console.log("### START ###");
+        console.log(rawData);
+        console.log("### END ###");
+      });
+      console.log();
+    } catch (e) {
+      console.error(e.message);
+    }
+  });
 });
 
 req.on("error", (e) => {
@@ -57,4 +71,3 @@ req.on("error", (e) => {
 });
 
 req.end();
-process.exit(0);
