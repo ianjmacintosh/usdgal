@@ -13,9 +13,26 @@ if (typeof API_KEY === "undefined") {
   process.exit(1);
 }
 
+// Read the saved data file's JSON and store its "timestamp" property in a variable
+const savedData = JSON.parse(fs.readFileSync(SAVED_DATA_PATH));
+const savedDataTimestamp = savedData.timestamp * 1000; // Convert to milliseconds
+
 // Only update if the saved data is older than 24 hours
 const isExchangeRateDataOld =
-  Date.now() > fs.statSync(SAVED_DATA_PATH).mtime + 24 * 60 * 60 * 1000;
+  Date.now() > savedDataTimestamp + 24 * 60 * 60 * 1000;
+
+// Show difference in timestamps in hours, minutes, and seconds
+const hours = Math.floor((Date.now() - savedDataTimestamp) / 1000 / 60 / 60);
+const minutes = Math.floor(
+  (Date.now() - savedDataTimestamp) / 1000 / 60 - hours * 60,
+);
+const seconds = Math.floor(
+  (Date.now() - savedDataTimestamp) / 1000 - hours * 60 * 60 - minutes * 60,
+);
+
+console.log(
+  `Saved data is ${hours} hours, ${minutes} minutes, and ${seconds} seconds old`,
+);
 
 if (!isExchangeRateDataOld) {
   console.log(
