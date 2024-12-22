@@ -1,3 +1,4 @@
+import kebabCase from "lodash-es/kebabCase.js";
 const exchangeRateData = {
   success: true,
   timestamp: 1734103154,
@@ -351,6 +352,16 @@ const symbols = {
   ZWL: "Zimbabwean Dollar",
 };
 
+const getCurrencies = () =>
+    Object.keys(exchangeRateData.rates).map((code) => ({
+      id: `item-${kebabCase(code)}`,
+      value: code,
+      name: symbols[code as keyof typeof symbols],
+      children: `${code}: ${symbols[code as keyof typeof symbols]}`,
+    }));
+
+const currenciesSelectStoreItems = getCurrencies()
+
 export default exchangeRateData;
 
-export { symbols };
+export { currenciesSelectStoreItems, symbols };

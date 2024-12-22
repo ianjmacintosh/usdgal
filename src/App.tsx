@@ -11,8 +11,6 @@ type SupportedUnits = "liter" | "gallon";
 
 function App() {
   // const userLocale = "en-US";
-  const currencies = Object.keys(exchangeRateData.rates);
-
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] = useState<string>("BRL");
   const [topUnit, setTopUnit] = useState<SupportedUnits>("liter");
@@ -70,7 +68,6 @@ function App() {
           onCurrencyChange={(newCurrency: string) => {
             setTopCurrency(newCurrency);
           }}
-          currencies={currencies}
         />
 
         <GasPrice
@@ -88,7 +85,6 @@ function App() {
           onCurrencyChange={(newCurrency: string) => {
             setBottomCurrency(newCurrency);
           }}
-          currencies={currencies}
         />
         <ConversionTable
           topNumber={topNumber}
@@ -108,8 +104,8 @@ function App() {
                 href="https://www.github.com/ianjmacintosh/usdgal"
                 target="_blank"
               >
-                <GithubLogo height={18} width={18} />
                 <span>Source code</span>
+                <GithubLogo height={18} width={18} />
               </a>
             </li>
           </ul>

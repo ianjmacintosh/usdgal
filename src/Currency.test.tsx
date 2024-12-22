@@ -1,19 +1,12 @@
 import { describe, test, expect, beforeEach } from "vitest";
-import {
-  cleanup,
-  getAllByRole,
-  getByText,
-  render,
-  screen,
-} from "@testing-library/react";
+import { cleanup, getByText, render, screen } from "@testing-library/react";
 import Currency from "./Currency";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
-import exchangeRateData from "./exchangeRateData";
 import "@testing-library/jest-dom/vitest";
+import { selectItemFromFancySelect } from "./utils/testUtils";
 
 describe("<Currency />", () => {
-  const currencies = Object.keys(exchangeRateData.rates);
   const user = userEvent.setup();
   const TestComponent = ({ ...props }) => {
     const [currency, setCurrency] = useState<string>("BRL");
@@ -24,7 +17,6 @@ describe("<Currency />", () => {
         onCurrencyChange={(newValue) => {
           setCurrency(newValue);
         }}
-        currencies={currencies}
         {...props}
       />
     );
@@ -35,20 +27,9 @@ describe("<Currency />", () => {
     render(<TestComponent />);
   });
 
-  test("dynamically renders currencies based on props", async () => {
-    cleanup();
-    render(<TestComponent currencies={["BRL", "MXN"]} />);
-
-    const currencyButton = screen.getByLabelText("Currency");
-    await user.click(currencyButton);
-    const popover = document.querySelector(".popover") as HTMLElement;
-    const currencyOptions = getAllByRole(popover, "option");
-    expect(currencyOptions.length).toBe(2);
-  });
-
   test("doesn't leave the popover in the DOM when it's not in use", async () => {
     cleanup();
-    render(<TestComponent currencies={["BRL", "MXN"]} />);
+    render(<TestComponent />);
 
     const currencyButton = screen.getByLabelText("Currency");
     expect(document.querySelector(".currency-popover")).not.toBeInTheDocument();
@@ -60,7 +41,7 @@ describe("<Currency />", () => {
 
   test("supports searching currency based on verbose name (i.e., Bitcoin) instead of ISO code (i.e., BTC)", async () => {
     cleanup();
-    render(<TestComponent currencies={["BTC", "USD", "MXN"]} />);
+    render(<TestComponent />);
 
     const currencyButton = screen.getByLabelText("Currency");
     await user.click(currencyButton);
@@ -71,7 +52,7 @@ describe("<Currency />", () => {
 
   test("lets a user select a currency by focusing on the select and typing its code (no popover needed)", async () => {
     cleanup();
-    render(<TestComponent currencies={["AED", "DJF", "USD"]} />);
+    render(<TestComponent />);
 
     const currencyButton = screen.getByLabelText("Currency");
     await user.click(currencyButton);
@@ -84,7 +65,7 @@ describe("<Currency />", () => {
 
   test("doesn't \"unselect\" a currency when it's clicked once, then clicked again", async () => {
     cleanup();
-    render(<TestComponent currencies={["BRL", "USD", "MXN"]} />);
+    render(<TestComponent />);
 
     const currencyButton = screen.getByLabelText("Currency");
     await user.click(currencyButton);
@@ -100,13 +81,10 @@ describe("<Currency />", () => {
 
   test("shows a checkmark next to the selected currency", async () => {
     cleanup();
-    render(<TestComponent currencies={["BRL", "USD", "MXN"]} />);
+    render(<TestComponent />);
 
     const currencyButton = screen.getByLabelText("Currency");
-    await user.click(currencyButton);
-    await user.click(screen.getByPlaceholderText("Search for a currency..."));
-    await user.keyboard("mxn{enter}");
-
+    await selectItemFromFancySelect(currencyButton, "MXN");
     expect(currencyButton.textContent).toBe("MXN");
 
     await user.click(currencyButton);
