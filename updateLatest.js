@@ -3,8 +3,8 @@ import * as fs from "fs";
 
 const API_KEY = process.env.EXCHANGERATESAPI_KEY;
 const SAVED_DATA_PATH = "./src/latest.json";
-const API_HOSTNAME = "www.ianjmacintosh.com";
-const API_PATH = "/index.html";
+const API_HOSTNAME = "api.exchangeratesapi.io";
+const API_PATH = `/v1/latest?access_key=${API_KEY}`;
 
 if (typeof API_KEY === "undefined") {
   console.error(
@@ -13,11 +13,13 @@ if (typeof API_KEY === "undefined") {
   process.exit(1);
 }
 
-const isExchangeRateDataOld = true;
+// Only update if the saved data is older than 24 hours
+const isExchangeRateDataOld =
+  Date.now() > fs.statSync(SAVED_DATA_PATH).mtime + 24 * 60 * 60 * 1000;
 
 if (!isExchangeRateDataOld) {
   console.log(
-    `No need to update the exchange rate data, no changes made to saved data (${SAVED_DATA_PATH})`,
+    `No need to update the exchange rate data because it is less than 24 hours old, no changes made to saved data (${SAVED_DATA_PATH})`,
   );
   process.exit(0);
 }
@@ -52,8 +54,10 @@ const req = request(options, (res) => {
     }
     try {
       fs.writeFile(SAVED_DATA_PATH, rawData, (err) => {
-        console.error(err);
-        if (err) throw err;
+        if (err) {
+          console.error(err);
+          process.exit(1);
+        }
         console.log("### Successfully updated exchange rate data ###");
         console.log("### START ###");
         console.log(rawData);
