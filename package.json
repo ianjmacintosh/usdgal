@@ -11,7 +11,8 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "rates:update": "node updateLatest"
   },
   "dependencies": {
     "@ariakit/react": "^0.4.15",

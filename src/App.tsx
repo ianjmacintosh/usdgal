@@ -10,7 +10,7 @@ import exchangeRateData from "./exchangeRateData";
 type SupportedUnits = "liter" | "gallon";
 
 function App() {
-  // const userLocale = "en-US";
+  const userLocale = "en-US";
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] = useState<string>("BRL");
   const [topUnit, setTopUnit] = useState<SupportedUnits>("liter");
@@ -94,6 +94,7 @@ function App() {
           topCurrency={topCurrency}
           bottomCurrency={bottomCurrency}
           exchangeRateData={exchangeRateData}
+          userLocale={userLocale}
         />
       </div>
       <footer>

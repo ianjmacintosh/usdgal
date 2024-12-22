@@ -16,6 +16,7 @@ const ConversionTable = ({
   topCurrency,
   bottomCurrency,
   exchangeRateData,
+  userLocale = "en-US",
 }: {
   topNumber: number;
   bottomNumber: number;
@@ -30,12 +31,16 @@ const ConversionTable = ({
     success: boolean;
     timestamp: number;
   };
+  userLocale: string;
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const sourceCurrencyAbsoluteCost = exchangeRateData.rates[topCurrency] ?? 1;
   const targetCurrencyAbsoluteCost =
     exchangeRateData.rates[bottomCurrency] ?? 1;
-  const bottomCurrencyUpdatedDate = exchangeRateData.date ?? "2024-11-17";
+  const bottomCurrencyUpdatedDate =
+    Intl.DateTimeFormat(userLocale, { dateStyle: "medium" }).format(
+      exchangeRateData.timestamp * 1000,
+    ) ?? "Unknown";
 
   const sourceVolumeInLiters = volumesInLiters[topUnit];
   const targetVolumeInLiters = volumesInLiters[bottomUnit];
