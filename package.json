@@ -6,12 +6,13 @@
   "scripts": {
     "dev": "vite --host",
     "dev:local": "vite",
-    "build": "tsc -b && (node updateLatest || true) && vite build",
+    "build": "tsc -b && vite build",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "rates:update": "node updateLatest"
   },
   "dependencies": {
     "@ariakit/react": "^0.4.15",
