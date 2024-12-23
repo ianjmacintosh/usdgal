@@ -38,18 +38,17 @@ function GasPrice({
     getFormattedPrice(number >= 0.01 ? number : 0.01, "en-US", currency),
   );
   const [isNumberFocused, setIsNumberFocused] = useState(false);
-  const isTinyNumber =
-    Number(getFormattedPrice(number, "en-US", currency)) === 0 && number !== 0;
 
   useEffect(() => {
     if (isNumberFocused) return;
 
-    let newDisplayNumber = getFormattedPrice(number, "en-US", currency);
-    // Never show a non-0 value as 0; show it as the smallest value that can be shown
-    if (Number(Number(newDisplayNumber) === 0 && number !== 0)) {
-      newDisplayNumber = "0.01";
-    }
-    setDisplayNumber(newDisplayNumber);
+    setDisplayNumber(
+      getFormattedPrice(
+        number > 0.01 || number === 0 ? number : 0.01,
+        "en-US",
+        currency,
+      ),
+    );
   }, [number, currency, isNumberFocused]);
 
   const handleDisplayNumberChange = (
@@ -107,12 +106,11 @@ function GasPrice({
           onUnitChange={handleUnitChange}
         />
       </fieldset>
-
-      {isTinyNumber ? (
+      {displayNumber === "0.01" && number < 0.01 ? (
         <p className="mt-4">
           <em>
-            This amount is displayed as {displayNumber} {currency}, but the
-            actual amount is less ({number} {currency})
+            This amount is displayed as 0.01 {currency}, but the actual amount
+            is less ({number} {currency})
           </em>
         </p>
       ) : (
