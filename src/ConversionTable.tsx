@@ -55,9 +55,7 @@ const ConversionTable = ({
           setShowDetails(newValue);
         }}
       >
-        {showDetails
-          ? "Hide full conversion details..."
-          : "Show full conversion details..."}
+        {showDetails ? "Hide details" : "Show details"}
       </button>
       <ul
         className={`details ${showDetails ? "visible" : ""}`}
