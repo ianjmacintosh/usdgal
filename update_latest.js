@@ -53,19 +53,25 @@ const options = {
 
 const req = request(options, (res) => {
   console.log(res.statusCode);
-  let rawData;
+  let rawData = "";
+  let parsedData = {};
   res.on("data", (chunk) => {
-    rawData += chunk;
+    if (typeof chunk !== "undefined") {
+      rawData += chunk;
+    }
   });
   res.on("end", () => {
     try {
-      JSON.parse(rawData);
+      parsedData = JSON.parse(rawData);
     } catch (error) {
       console.error("Response from endpoint is not valid JSON");
+      console.log("### START ###");
+      console.log(rawData);
+      console.log("### END ###");
       req.end();
       process.exit(1);
     }
-    if (JSON.parse(rawData)?.success !== true) {
+    if (parsedData.success !== true) {
       console.err(
         `Endpoint JSON data did not include expected \`"success": true\`, no changes made to saved data (${SAVED_DATA_PATH})`,
       );

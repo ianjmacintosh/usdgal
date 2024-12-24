@@ -1,6 +1,6 @@
 import kebabCase from "lodash-es/kebabCase.js";
 import latest from "./latest.json";
-const exchangeRateData = latest
+const exchangeRateData = latest;
 
 const symbols = {
   AED: "United Arab Emirates Dirham",
@@ -177,14 +177,14 @@ const symbols = {
 };
 
 const getCurrencies = () =>
-    Object.keys(exchangeRateData.rates).map((code) => ({
-      id: `item-${kebabCase(code)}`,
-      value: code,
-      name: symbols[code as keyof typeof symbols],
-      children: `${code}: ${symbols[code as keyof typeof symbols]}`,
-    }));
+  Object.keys(exchangeRateData.rates).map((code) => ({
+    id: `item-${kebabCase(code)}`,
+    value: code,
+    name: symbols[code as keyof typeof symbols],
+    children: `${code}: ${symbols[code as keyof typeof symbols]}`,
+  }));
 
-const currenciesSelectStoreItems = getCurrencies()
+const currenciesSelectStoreItems = getCurrencies();
 
 export default exchangeRateData;
 

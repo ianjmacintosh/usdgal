@@ -20,7 +20,12 @@ jobs:
       - name: Update source code
         env:
           EXCHANGERATESAPI_KEY: ${{ secrets.EXCHANGERATESAPI_KEY }}
-        run: npm run rates:update
+        run: |
+          npm run rates:update # Update the exchange rate data
+          npx prettier --write ./src/latest.json # Format the updated data
+
+      - name: Test changes
+        run: npm run test
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9.1.4
