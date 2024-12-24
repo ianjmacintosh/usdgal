@@ -28,9 +28,6 @@ describe("<Currency />", () => {
   });
 
   test("doesn't leave the popover in the DOM when it's not in use", async () => {
-    cleanup();
-    render(<TestComponent />);
-
     const currencyButton = screen.getByLabelText("Currency");
     expect(document.querySelector(".currency-popover")).not.toBeInTheDocument();
     await user.click(currencyButton);
@@ -40,9 +37,6 @@ describe("<Currency />", () => {
   });
 
   test("supports searching currency based on verbose name (i.e., Bitcoin) instead of ISO code (i.e., BTC)", async () => {
-    cleanup();
-    render(<TestComponent />);
-
     const currencyButton = screen.getByLabelText("Currency");
     await user.click(currencyButton);
     await user.click(screen.getByPlaceholderText("Search for a currency..."));
@@ -51,9 +45,6 @@ describe("<Currency />", () => {
   });
 
   test("lets a user select a currency by focusing on the select and typing its code (no popover needed)", async () => {
-    cleanup();
-    render(<TestComponent />);
-
     const currencyButton = screen.getByLabelText("Currency");
     await user.click(currencyButton);
     expect(document.querySelector(".popover")).toBeVisible();
@@ -64,9 +55,6 @@ describe("<Currency />", () => {
   });
 
   test("doesn't \"unselect\" a currency when it's clicked once, then clicked again", async () => {
-    cleanup();
-    render(<TestComponent />);
-
     const currencyButton = screen.getByLabelText("Currency");
     await user.click(currencyButton);
     const popover = document.querySelector(".popover") as HTMLElement;
@@ -80,9 +68,6 @@ describe("<Currency />", () => {
   });
 
   test("shows a checkmark next to the selected currency", async () => {
-    cleanup();
-    render(<TestComponent />);
-
     const currencyButton = screen.getByLabelText("Currency");
     await selectItemFromFancySelect(currencyButton, "MXN");
     expect(currencyButton.textContent).toBe("MXN");

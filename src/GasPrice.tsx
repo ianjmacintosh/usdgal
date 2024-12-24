@@ -71,14 +71,14 @@ function GasPrice({
   };
 
   return (
-    <div className="my-8">
+    <div className="mt-2 mb-8">
       <fieldset>
         <legend>{label}</legend>
         <input
           type="text"
           value={displayNumber}
           onFocus={() => {
-            if (displayNumber === "0.00") {
+            if (number === 0) {
               setDisplayNumber("");
             }
             setIsNumberFocused(true);

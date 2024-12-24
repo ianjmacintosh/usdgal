@@ -17,9 +17,12 @@ if (typeof API_KEY === "undefined") {
 const savedData = JSON.parse(fs.readFileSync(SAVED_DATA_PATH));
 const savedDataTimestamp = savedData.timestamp * 1000; // Convert to milliseconds
 
-// Only update if the saved data is older than 24 hours
+// Only update if the saved data is older than 23 hours
+//   - This script is schedule to run at the same time every night
+//   - If it was stale only after exactly 24 hours, the script would be flaky; it might
+//     run a millisecond early and miss the update
 const isExchangeRateDataOld =
-  Date.now() > savedDataTimestamp + 24 * 60 * 60 * 1000;
+  Date.now() > savedDataTimestamp + 23 * 60 * 60 * 1000;
 
 // Show difference in timestamps in hours, minutes, and seconds
 const hours = Math.floor((Date.now() - savedDataTimestamp) / 1000 / 60 / 60);

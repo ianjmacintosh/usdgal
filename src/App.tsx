@@ -52,7 +52,7 @@ function App() {
   return (
     <>
       <div className="container">
-        <h1 className="text-3xl font-bold my-8">Convert Foreign Gas Price</h1>
+        <h2 className="text-3xl font-bold my-4">Gas Cost</h2>
         <GasPrice
           label="From"
           number={topNumber}
@@ -70,6 +70,7 @@ function App() {
           }}
         />
 
+        <h2 className="text-3xl font-bold my-4">Converted Gas Cost</h2>
         <GasPrice
           label="To"
           number={bottomNumber}
@@ -86,6 +87,14 @@ function App() {
             setBottomCurrency(newCurrency);
           }}
         />
+        <p className="my-2 text-sm">
+          <em>
+            Exchange rates last updated:{" "}
+            {Intl.DateTimeFormat(userLocale, { dateStyle: "medium" }).format(
+              exchangeRateData.timestamp * 1000,
+            ) ?? "Unknown"}
+          </em>
+        </p>
         <ConversionTable
           topNumber={topNumber}
           bottomNumber={bottomNumber}
