@@ -57,14 +57,9 @@ fieldset .number {
 fieldset .currency-button {
   border-top-right-radius: 10px;
   border: none;
-  border-left: none;
   text-align: center;
   font-size: 22px;
   border-left: solid 2px #e9e9e9;
-  display: grid;
-  align-content: center;
-  align-items: center;
-  grid-template-columns: 1fr auto;
 }
 
 fieldset .unit-button {
@@ -75,13 +70,19 @@ fieldset .unit-button {
   grid-column: -1 / 1;
   text-align: center;
   font-size: 22px;
-  display: grid;
-  align-content: center;
-  align-items: center;
-  grid-template-columns: 1fr auto;
 }
 
-fieldset .unit-button .chevron {
-  display: flex;
-  justify-content: center;
+fieldset .button {
+  display: grid;
+  grid-template-areas: "stack";
+}
+
+fieldset .button .current-value {
+  grid-area: stack;
+  text-align: center;
+}
+
+fieldset .button .chevron {
+  grid-area: stack;
+  justify-self: end;
 }
