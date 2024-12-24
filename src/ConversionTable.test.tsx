@@ -34,7 +34,7 @@ describe("<ConversionTable />", () => {
       "visible",
     );
 
-    await user.click(screen.getByText("Show full conversion details..."));
+    await user.click(screen.getByText(/details/i));
     expect(screen.getByLabelText("Conversion Details")).toHaveClass("visible");
   });
 

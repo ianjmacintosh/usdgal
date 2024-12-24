@@ -16,7 +16,6 @@ const ConversionTable = ({
   topCurrency,
   bottomCurrency,
   exchangeRateData,
-  userLocale = "en-US",
 }: {
   topNumber: number;
   bottomNumber: number;
@@ -37,10 +36,6 @@ const ConversionTable = ({
   const sourceCurrencyAbsoluteCost = exchangeRateData.rates[topCurrency] ?? 1;
   const targetCurrencyAbsoluteCost =
     exchangeRateData.rates[bottomCurrency] ?? 1;
-  const bottomCurrencyUpdatedDate =
-    Intl.DateTimeFormat(userLocale, { dateStyle: "medium" }).format(
-      exchangeRateData.timestamp * 1000,
-    ) ?? "Unknown";
 
   const sourceVolumeInLiters = volumesInLiters[topUnit];
   const targetVolumeInLiters = volumesInLiters[bottomUnit];
@@ -80,8 +75,6 @@ const ConversionTable = ({
                 ? `${sourceCurrencyAbsoluteCost / targetCurrencyAbsoluteCost} ${topCurrency} = 1 ${bottomCurrency}`
                 : `1 ${topCurrency} = ${targetCurrencyAbsoluteCost / sourceCurrencyAbsoluteCost} ${bottomCurrency}`}
             </span>
-            <br />
-            <em>(Last updated: {bottomCurrencyUpdatedDate})</em>
           </li>
         )}
 
