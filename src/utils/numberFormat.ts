@@ -18,14 +18,24 @@ const getFormattedPrice = (
   userLocale = "en-US",
   currency = "USD",
 ) => {
-  return Intl.NumberFormat(userLocale, {
+  let formattedNumber = String(price);
+  
+  formattedNumber = Intl.NumberFormat(userLocale, {
     style: "currency",
     currency: currency,
     currencyDisplay: "code",
   })
-    .format(price)
-    .replace(currency, "")
-    .trim();
+  .format(price)
+  .replace(currency, "")
+  .trim();
+
+  // If we're formatting the number to look like 0 but the value isn't 0,
+  //  replace the last 0 with a 1
+  if (Number(formattedNumber) === 0 && price !== 0) {
+    formattedNumber = formattedNumber.replace(/0$/, "1");
+  }
+
+  return formattedNumber
 };
 
 const isLegalPriceValue = (price: string) => {
