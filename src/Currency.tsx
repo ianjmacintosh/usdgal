@@ -44,7 +44,10 @@ export default function Currency({
         <Ariakit.Select
           className="currency-button button"
           aria-label="Currency"
-        />
+        >
+          <span className="current-value">{selectValue}</span>
+          <Ariakit.SelectArrow className="chevron" />
+        </Ariakit.Select>
         <Ariakit.SelectPopover
           gutter={4}
           className="currency-popover popover"
