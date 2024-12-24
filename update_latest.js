@@ -53,10 +53,12 @@ const options = {
 
 const req = request(options, (res) => {
   console.log(res.statusCode);
-  let rawData;
-  let parsedData;
+  let rawData = "";
+  let parsedData = {};
   res.on("data", (chunk) => {
-    rawData += chunk;
+    if (typeof chunk !== "undefined") {
+      rawData += chunk;
+    }
   });
   res.on("end", () => {
     try {

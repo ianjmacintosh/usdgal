@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "rates:update": "node updateLatest"
+    "rates:update": "node update_latest"
   },
   "dependencies": {
     "@ariakit/react": "^0.4.15",
