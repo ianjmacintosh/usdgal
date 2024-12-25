@@ -63,7 +63,7 @@ const getFormattedPrice = (
   return formattedNumber;
 };
 
-const isLegalPriceValue = (price: string, userLocale = "en-US") => {
+const isLegalPriceValue = (price: string, userLocale: string) => {
   const decimalSeparatorChar = getNumberFormatChar(
     "decimalSeparatorChar",
     userLocale,

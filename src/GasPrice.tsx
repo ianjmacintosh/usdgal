@@ -52,7 +52,7 @@ function GasPrice({
   ) => {
     const displayNumber = event.target.value;
 
-    if (!isLegalPriceValue(displayNumber)) return;
+    if (!isLegalPriceValue(displayNumber, userLocale)) return;
 
     setDisplayNumber(displayNumber);
 
