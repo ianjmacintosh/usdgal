@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach } from "vitest";
+import { describe, test, expect } from "vitest";
 import { getFormattedPrice, isTinyNumber } from "./numberFormat";
 
 describe("getFormattedPrice method", () => {
@@ -36,7 +36,7 @@ describe("getFormattedPrice method", () => {
 
 describe("isTinyNumber method", () => {
     let tinyValue = 0.00001
-    let userLocale = "en-US"
+    const userLocale = "en-US"
     let userCurrency = "USD"
 
   test("returns true for 0.00001 USD in en-US", () => {
