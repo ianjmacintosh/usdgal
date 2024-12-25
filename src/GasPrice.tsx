@@ -35,20 +35,14 @@ function GasPrice({
   disabled?: boolean;
 }) {
   const [displayNumber, setDisplayNumber] = useState(
-    getFormattedPrice(number >= 0.01 ? number : 0.01, "en-US", currency),
+    getFormattedPrice(number, "en-US", currency),
   );
   const [isNumberFocused, setIsNumberFocused] = useState(false);
 
   useEffect(() => {
     if (isNumberFocused) return;
 
-    setDisplayNumber(
-      getFormattedPrice(
-        number > 0.01 || number === 0 ? number : 0.01,
-        "en-US",
-        currency,
-      ),
-    );
+    setDisplayNumber(getFormattedPrice(number, "en-US", currency));
   }, [number, currency, isNumberFocused]);
 
   const handleDisplayNumberChange = (
@@ -106,11 +100,11 @@ function GasPrice({
           onUnitChange={handleUnitChange}
         />
       </fieldset>
-      {displayNumber === "0.01" && number < 0.01 ? (
+      {Number(displayNumber) > number ? (
         <p className="mt-4">
           <em>
-            This amount is displayed as 0.01 {currency}, but the actual amount
-            is less ({number} {currency})
+            This amount is displayed as {displayNumber} {currency}, but the
+            actual amount is less ({number} {currency})
           </em>
         </p>
       ) : (

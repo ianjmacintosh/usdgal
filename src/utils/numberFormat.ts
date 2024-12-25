@@ -13,19 +13,51 @@ const getNumberFormatChar = (
   return chars[char];
 };
 
+const isTinyNumber = (number: number, userLocale = "en-US", currency = "USD") => {
+  if (number === 0 || number >= 1) {
+    return false
+  }
+
+  const formattedNumber = 
+  Intl.NumberFormat(userLocale, {
+    style: "currency",
+    currency: currency,
+    currencyDisplay: "code",
+  })
+  .format(number)
+  .replace(currency, "")
+  .trim()
+
+  if (Number(formattedNumber) === 0) {
+    return true
+  }
+
+  return false
+}
+
 const getFormattedPrice = (
   price: number,
   userLocale = "en-US",
   currency = "USD",
 ) => {
-  return Intl.NumberFormat(userLocale, {
+  let formattedNumber = String(price);
+  
+  formattedNumber = Intl.NumberFormat(userLocale, {
     style: "currency",
     currency: currency,
     currencyDisplay: "code",
   })
-    .format(price)
-    .replace(currency, "")
-    .trim();
+  .format(price)
+  .replace(currency, "")
+  .trim();
+
+  // If we're formatting the number to look like 0 but the value isn't 0,
+  //  replace the last 0 with a 1
+  if (isTinyNumber(price, userLocale, currency)) {
+    formattedNumber = formattedNumber.replace(/0$/, "1");
+  }
+
+  return formattedNumber
 };
 
 const isLegalPriceValue = (price: string) => {
@@ -70,4 +102,4 @@ const getUnits = (
   return price;
 };
 
-export { getUnits, getNumberFormatChar, getFormattedPrice, isLegalPriceValue };
+export { getUnits, getNumberFormatChar, getFormattedPrice, isLegalPriceValue, isTinyNumber };

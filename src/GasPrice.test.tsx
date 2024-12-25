@@ -4,6 +4,7 @@ import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
+import { selectItemFromFancySelect } from "./utils/testUtils";
 
 describe("<GasPrice />", () => {
   const user = userEvent.setup();
@@ -55,7 +56,24 @@ describe("<GasPrice />", () => {
       exact: false,
     }) as HTMLInputElement;
 
+    const currencyDropdown = screen.getByRole("combobox", {
+      name: "Currency",
+    }) as HTMLSelectElement;
+
+    // Supports 2 decimal places
     expect(input.value).toBe("0.00");
+    await user.click(input);
+    expect(input.value).toBe("");
+
+    // Supports 3 decimal places
+    await selectItemFromFancySelect(currencyDropdown, "TND");
+    expect(input.value).toBe("0.000");
+    await user.click(input);
+    expect(input.value).toBe("");
+
+    // Supports 0 decimal places
+    await selectItemFromFancySelect(currencyDropdown, "JPY");
+    expect(input.value).toBe("0");
     await user.click(input);
     expect(input.value).toBe("");
   });
