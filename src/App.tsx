@@ -80,6 +80,7 @@ function App() {
           onCurrencyChange={(newCurrency: string) => {
             setTopCurrency(newCurrency);
           }}
+          userLocale={userLocale}
         />
 
         <h2 className="text-3xl font-bold my-4">Converted Gas Cost</h2>
@@ -98,6 +99,7 @@ function App() {
           onCurrencyChange={(newCurrency: string) => {
             setBottomCurrency(newCurrency);
           }}
+          userLocale={userLocale}
         />
         <p className="my-2 text-sm">
           <em>
