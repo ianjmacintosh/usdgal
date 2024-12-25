@@ -10,8 +10,8 @@ import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
 
 type SupportedUnits = "liter" | "gallon";
 
-function App() {
-  const userLocale = navigator.language || "en-US";
+function App({ userLocale: userLocaleProp }: { userLocale?: string }) {
+  const userLocale = userLocaleProp || navigator.language || "en-US";
   const userLocaleCountry = userLocale.split("-")[1];
 
   // Gas price values (price, currency, units)
