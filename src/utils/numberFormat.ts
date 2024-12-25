@@ -73,12 +73,14 @@ const isLegalPriceValue = (price: string, userLocale = "en-US") => {
     userLocale,
   );
 
-  // Generate a regular expression that confirms a character is legal for systems of writing that use commas and periods
-  const isLegalPriceChar = new RegExp(/[0-9\\.\\,]/);
+  // Empty string is OK!
+  if (price === "") return true;
 
-  const newChar = price?.slice(-1);
+  // Generate a regular expression that confirms a character is legal for systems of writing that use commas and periods
+  const isOnlyLegalChars = new RegExp(/^([0-9\\,\\.]*)$/);
+
   // If the new value is not "" and the new char is not a number, return
-  if (price && isLegalPriceChar.test(newChar) === false) return false;
+  if (isOnlyLegalChars.test(price) === false) return false;
 
   // Is this something that someone logically type if they were writing a number out one character at a time?
   // Only one decimal separator is allowed

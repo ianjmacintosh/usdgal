@@ -1,5 +1,9 @@
 import { describe, test, expect } from "vitest";
-import { getFormattedPrice, isTinyNumber } from "./numberFormat";
+import {
+  getFormattedPrice,
+  isLegalPriceValue,
+  isTinyNumber,
+} from "./numberFormat";
 
 describe("getFormattedPrice method", () => {
   test("formats tiny non-0 prices as the smallest practical value possible for the currency", () => {
@@ -40,5 +44,39 @@ describe("isTinyNumber method", () => {
     tinyValue = 0.001;
     userCurrency = "TND";
     expect(isTinyNumber(tinyValue, userLocale, userCurrency)).toBe(false);
+  });
+});
+
+describe("isLegalPriceValue method", () => {
+  const letters = "1234a58";
+  const multiple_commas = "1,000,000";
+  const multiple_periods = "1.000.000";
+  const period_right_of_comma = "1,000.00";
+  const period_left_of_comma = "1.000,00";
+  const starts_with_period = ".123";
+  const starts_with_comma = ",123";
+
+  test("supports obvious tests for 123,456.89 type systems (en-US)", () => {
+    const locale = "en-US";
+
+    expect(isLegalPriceValue(letters, locale)).toBe(false);
+    expect(isLegalPriceValue(multiple_commas, locale)).toBe(true);
+    expect(isLegalPriceValue(multiple_periods, locale)).toBe(false);
+    expect(isLegalPriceValue(period_right_of_comma, locale)).toBe(true);
+    expect(isLegalPriceValue(period_left_of_comma, locale)).toBe(false);
+    expect(isLegalPriceValue(starts_with_period, locale)).toBe(true);
+    expect(isLegalPriceValue(starts_with_comma, locale)).toBe(true);
+  });
+
+  test("supports obvious tests for 123.456,89 type systems (pt-BR)", () => {
+    const locale = "pt-BR";
+
+    expect(isLegalPriceValue(letters, locale)).toBe(false);
+    expect(isLegalPriceValue(multiple_commas, locale)).toBe(false);
+    expect(isLegalPriceValue(multiple_periods, locale)).toBe(true);
+    expect(isLegalPriceValue(period_right_of_comma, locale)).toBe(false);
+    expect(isLegalPriceValue(period_left_of_comma, locale)).toBe(true);
+    expect(isLegalPriceValue(starts_with_period, locale)).toBe(true);
+    expect(isLegalPriceValue(starts_with_comma, locale)).toBe(true);
   });
 });
