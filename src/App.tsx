@@ -6,17 +6,29 @@ import getGasPrice from "./utils/getGasPrice";
 import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
 import exchangeRateData from "./exchangeRateData";
+import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
 
 type SupportedUnits = "liter" | "gallon";
 
 function App() {
-  const userLocale = "en-US";
+  const userLocale = navigator.language || "en-US";
+  const userLocaleCountry = userLocale.split("-")[1];
+
+  // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] = useState<string>("BRL");
   const [topUnit, setTopUnit] = useState<SupportedUnits>("liter");
+
+  // Converted gas price values (price, currency, units)
   const [bottomNumber, setBottomNumber] = useState(0);
-  const [bottomCurrency, setBottomCurrency] = useState<string>("USD");
-  const [bottomUnit, setBottomUnit] = useState<SupportedUnits>("gallon");
+  const [bottomCurrency, setBottomCurrency] = useState<string>(
+    getCurrencyByCountry(userLocaleCountry),
+  );
+  const [bottomUnit, setBottomUnit] = useState<SupportedUnits>(
+    getUnitsByCountry(userLocaleCountry) as SupportedUnits,
+  );
+
+  // Whether we're updating the top or bottom number
   const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
 
   useEffect(() => {
