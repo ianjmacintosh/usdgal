@@ -18,9 +18,9 @@ describe("getUnitsByCountry method", () => {
     let result = "liter";
 
     result = getUnitsByCountry("US");
-    expect(result).toBe("gallons");
+    expect(result).toBe("gallon");
 
     result = getUnitsByCountry("BR");
-    expect(result).toBe("liters");
+    expect(result).toBe("liter");
   });
 });

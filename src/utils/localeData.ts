@@ -1319,10 +1319,10 @@ const getCurrencyByCountry = (countryCode: string) => {
 };
 
 const getUnitsByCountry = (countryCode: string) => {
-  let units = "liters";
+  let units = "liter";
 
   if (countriesUsingGallons.includes(countryCode)) {
-    units = "gallons";
+    units = "gallon";
   }
 
   return units;
