@@ -13,6 +13,28 @@ const getNumberFormatChar = (
   return chars[char];
 };
 
+const isTinyNumber = (number: number, userLocale = "en-US", currency = "USD") => {
+  if (number === 0 || number >= 1) {
+    return false
+  }
+
+  const formattedNumber = 
+  Intl.NumberFormat(userLocale, {
+    style: "currency",
+    currency: currency,
+    currencyDisplay: "code",
+  })
+  .format(number)
+  .replace(currency, "")
+  .trim()
+
+  if (Number(formattedNumber) === 0) {
+    return true
+  }
+
+  return false
+}
+
 const getFormattedPrice = (
   price: number,
   userLocale = "en-US",
@@ -80,4 +102,4 @@ const getUnits = (
   return price;
 };
 
-export { getUnits, getNumberFormatChar, getFormattedPrice, isLegalPriceValue };
+export { getUnits, getNumberFormatChar, getFormattedPrice, isLegalPriceValue, isTinyNumber };

@@ -1,5 +1,5 @@
-import { describe, test, expect } from "vitest";
-import { getFormattedPrice } from "./numberFormat";
+import { describe, test, expect, beforeEach } from "vitest";
+import { getFormattedPrice, isTinyNumber } from "./numberFormat";
 
 describe("getFormattedPrice method", () => {
   test("formats tiny non-0 prices as the smallest practical value possible for the currency", () => {
@@ -33,3 +33,24 @@ describe("getFormattedPrice method", () => {
       expect(result).toBe("0.001");
   });
 });
+
+describe("isTinyNumber method", () => {
+    let tinyValue = 0.00001
+    let userLocale = "en-US"
+    let userCurrency = "USD"
+
+  test("returns true for 0.00001 USD in en-US", () => {
+    expect(isTinyNumber(tinyValue, userLocale, userCurrency)).toBe(true)
+  })
+
+  test("returns false for 0", () => {
+    tinyValue = 0
+    expect(isTinyNumber(tinyValue, userLocale, userCurrency)).toBe(false)
+  })
+
+  test("returns false for numbers that can be expressed with the currency's decimal places", () => {
+    tinyValue = 0.001
+    userCurrency = "TND"
+    expect(isTinyNumber(tinyValue, userLocale, userCurrency)).toBe(false)
+})
+})
