@@ -4,6 +4,7 @@ import {
   getFormattedPrice,
   getParsedNumber,
   isLegalPriceValue,
+  isTinyNumber,
 } from "./utils/numberFormat";
 import Currency from "./Currency";
 import Unit from "./Unit";
@@ -95,9 +96,9 @@ function GasPrice({
           onUnitChange={handleUnitChange}
         />
       </fieldset>
-      {Number(displayNumber) > number ? (
+      {isTinyNumber(number, userLocale, currency) ? (
         <p className="mt-4">
-          <em>
+          <em role="status">
             This amount is displayed as {displayNumber} {currency}, but the
             actual amount is less ({number} {currency})
           </em>
