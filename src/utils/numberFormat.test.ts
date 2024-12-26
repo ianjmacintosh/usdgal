@@ -1,9 +1,24 @@
 import { describe, test, expect } from "vitest";
 import {
   getFormattedPrice,
+  getParsedNumber,
   isLegalPriceValue,
   isTinyNumber,
 } from "./numberFormat";
+
+describe.only("getParsedNumber method", () => {
+  test("parses '1,000.00' in en-US as 1000", () => {
+    const displayNumber = "1,000.00";
+    const result = getParsedNumber(displayNumber, "en-US");
+    expect(result).toBe(1000);
+  });
+
+  test("parses '1.000,00' in pt-BR as 1000", () => {
+    const displayNumber = "1.000,00";
+    const result = getParsedNumber(displayNumber, "pt-BR");
+    expect(result).toBe(1000);
+  });
+});
 
 describe("getFormattedPrice method", () => {
   test("formats tiny non-0 prices as the smallest practical value possible for the currency", () => {

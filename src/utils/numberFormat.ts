@@ -14,14 +14,22 @@ const getNumberFormatChar = (
 };
 
 const getParsedNumber = (displayNumber: string, userLocale = "en-US") => {
-  const number = Number(
-    displayNumber.replace(
-      new RegExp(getNumberFormatChar("groupingSeparatorChar", userLocale), "g"),
-      "",
-    ),
+  const decimalSeparatorChar = getNumberFormatChar(
+    "decimalSeparatorChar",
+    userLocale,
+  );
+  const groupingSeparatorChar = getNumberFormatChar(
+    "groupingSeparatorChar",
+    userLocale,
   );
 
-  return number;
+  let americanizedNumber = displayNumber;
+
+  americanizedNumber = americanizedNumber.replaceAll(groupingSeparatorChar, "");
+
+  americanizedNumber = americanizedNumber.replace(decimalSeparatorChar, ".");
+
+  return Number(americanizedNumber);
 };
 
 const isTinyNumber = (
