@@ -1,50 +1,50 @@
-# React + TypeScript + Vite
+# Gas Co.st ([website](https://www.gasco.st/))
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Instantly convert gasoline prices listed in foreign units and currencies
 
-Currently, two official plugins are available:
+## Why
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+During a long road trip through the Americas, when I wanted to know what I was paying for gas (in USD per US gallon) I'd have to look up the conversion rate for liters per gallon, remember that number, then check the conversion rate from the local currency to USD, then enter it all into a calculator.
 
-## Expanding the ESLint configuration
+I made this app to give myself and other folks an easier alternative.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## How it works
 
-- Configure the top-level `parserOptions` property like this:
+I built this solution as a statically generated app using React and Vite.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+The app guesses the user wants to...
+
+- Convert a gas price expressed in units and currency common in their physical location, as determined by a Cloudflare Worker I built to provide IP-based geolocation
+- See a gas price expressed in language, units, and currency most likely based on their browser settings
+
+The user can update any of these assumptions using controls on the page, which I implemented using [Ariakit](https://www.ariakit.org/), an accessibility-first library of components built on Radix UI.
+
+I scheduled a nightly GitHub Action to update the repo with the latest exchange rates from [Exchangerate API](https://exchangeratesapi.io/), and I configured Cloudflare Pages to automatically redeploy any repo updates to [https://gasco.st/](https://gasco.st/)
+
+## Getting Started
+
+### Use a Development Container
+
+Open this project's `main` branch using your IDE's local development container extension, or with your favorite cloud development environment service like [GitHub Codespaces](https://docs.github.com/en/codespaces/overview), [Gitpod](https://gitpod.io/), or [CodeSandbox](https://codesandbox.io/).
+
+Any of these services can use the `.devcontainer/devcontainer.json` file I've provided to build a shiny new development environment in minutes (if not seconds). Destroy it and start over from scratch whenever you feel like.
+
+### Use Your Local System
+
+You can also set up this project locally, installing its dependencies alongside your other apps.
+
+```bash
+npm install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Start the Development Server
 
-```js
-// eslint.config.js
-import react from "eslint-plugin-react";
+```bash
+npm run dev
+```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules,
-  },
-});
+### Run the Tests
+
+```bash
+npm test
 ```
