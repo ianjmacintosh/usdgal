@@ -6,7 +6,7 @@ import {
   isTinyNumber,
 } from "./numberFormat";
 
-describe.only("getParsedNumber method", () => {
+describe("getParsedNumber method", () => {
   test("parses '1,000.00' in en-US as 1000", () => {
     const displayNumber = "1,000.00";
     const result = getParsedNumber(displayNumber, "en-US");
