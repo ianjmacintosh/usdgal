@@ -13,27 +13,49 @@ const getNumberFormatChar = (
   return chars[char];
 };
 
-const isTinyNumber = (number: number, userLocale = "en-US", currency = "USD") => {
+const getParsedNumber = (displayNumber: string, userLocale = "en-US") => {
+  const decimalSeparatorChar = getNumberFormatChar(
+    "decimalSeparatorChar",
+    userLocale,
+  );
+  const groupingSeparatorChar = getNumberFormatChar(
+    "groupingSeparatorChar",
+    userLocale,
+  );
+
+  let americanizedNumber = displayNumber;
+
+  americanizedNumber = americanizedNumber.replaceAll(groupingSeparatorChar, "");
+
+  americanizedNumber = americanizedNumber.replace(decimalSeparatorChar, ".");
+
+  return Number(americanizedNumber);
+};
+
+const isTinyNumber = (
+  number: number,
+  userLocale = "en-US",
+  currency = "USD",
+) => {
   if (number === 0 || number >= 1) {
-    return false
+    return false;
   }
 
-  const formattedNumber = 
-  Intl.NumberFormat(userLocale, {
+  const formattedNumber = Intl.NumberFormat(userLocale, {
     style: "currency",
     currency: currency,
     currencyDisplay: "code",
   })
-  .format(number)
-  .replace(currency, "")
-  .trim()
+    .format(number)
+    .replace(currency, "")
+    .trim();
 
   if (Number(formattedNumber) === 0) {
-    return true
+    return true;
   }
 
-  return false
-}
+  return false;
+};
 
 const getFormattedPrice = (
   price: number,
@@ -41,15 +63,15 @@ const getFormattedPrice = (
   currency = "USD",
 ) => {
   let formattedNumber = String(price);
-  
+
   formattedNumber = Intl.NumberFormat(userLocale, {
     style: "currency",
     currency: currency,
     currencyDisplay: "code",
   })
-  .format(price)
-  .replace(currency, "")
-  .trim();
+    .format(price)
+    .replace(currency, "")
+    .trim();
 
   // If we're formatting the number to look like 0 but the value isn't 0,
   //  replace the last 0 with a 1
@@ -57,28 +79,38 @@ const getFormattedPrice = (
     formattedNumber = formattedNumber.replace(/0$/, "1");
   }
 
-  return formattedNumber
+  return formattedNumber;
 };
 
-const isLegalPriceValue = (price: string) => {
-  // Generate a regular expression that confirms a character is legal for en-US formatting
-  const isLegalPriceChar = new RegExp(/[0-9\\.\\,]/);
+const isLegalPriceValue = (price: string, userLocale: string) => {
+  const decimalSeparatorChar = getNumberFormatChar(
+    "decimalSeparatorChar",
+    userLocale,
+  );
+  const groupingSeparatorChar = getNumberFormatChar(
+    "groupingSeparatorChar",
+    userLocale,
+  );
+
+  // Empty string is OK!
+  if (price === "") return true;
+
+  // Generate a regular expression that confirms a character is legal for systems of writing that use commas and periods
+  const isOnlyLegalChars = new RegExp(/^([0-9\\,\\.]*)$/);
+
+  // If the new value is not "" and the new char is not a number, return
+  if (isOnlyLegalChars.test(price) === false) return false;
 
   // Is this something that someone logically type if they were writing a number out one character at a time?
-  // RegExp should allow values:
-  // - Any number of digits (including after the decimal point)
-  // - Any number of commas
-  // - Could start or end with a decimal point
-  // - Optionally, one decimal point
-  // - No commas allowed after the decimal point
-  const isLegalPrice = new RegExp(/^(\d{0,}(,\d{0,})*|\d*)?(\.\d*)?$/);
-
-  const newChar = price?.slice(-1);
-  // If the new value is not "" and the new char is not a number, return
-  if (price && isLegalPriceChar.test(newChar) === false) return false;
-
-  // If the new value is not a number, return
-  if (isLegalPrice.test(price) === false) return false;
+  // Only one decimal separator is allowed
+  if (
+    price.split(decimalSeparatorChar).length > 2 ||
+    // No grouping separators allowed after the decimal separator
+    price.split(decimalSeparatorChar)[1]?.split(groupingSeparatorChar).length >
+      1
+  ) {
+    return false;
+  }
 
   return true;
 };
@@ -102,4 +134,11 @@ const getUnits = (
   return price;
 };
 
-export { getUnits, getNumberFormatChar, getFormattedPrice, isLegalPriceValue, isTinyNumber };
+export {
+  getUnits,
+  getNumberFormatChar,
+  getFormattedPrice,
+  getParsedNumber,
+  isLegalPriceValue,
+  isTinyNumber,
+};

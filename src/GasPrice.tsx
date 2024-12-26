@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./GasPrice.css";
 import {
   getFormattedPrice,
-  getNumberFormatChar,
+  getParsedNumber,
   isLegalPriceValue,
 } from "./utils/numberFormat";
 import Currency from "./Currency";
@@ -19,6 +19,7 @@ function GasPrice({
   disabled,
   currency,
   unit,
+  userLocale = "en-US",
 }: {
   label: string;
   number: number;
@@ -33,16 +34,17 @@ function GasPrice({
       | React.ChangeEvent<HTMLSelectElement>,
   ) => void;
   disabled?: boolean;
+  userLocale?: string;
 }) {
   const [displayNumber, setDisplayNumber] = useState(
-    getFormattedPrice(number, "en-US", currency),
+    getFormattedPrice(number, userLocale, currency),
   );
   const [isNumberFocused, setIsNumberFocused] = useState(false);
 
   useEffect(() => {
     if (isNumberFocused) return;
 
-    setDisplayNumber(getFormattedPrice(number, "en-US", currency));
+    setDisplayNumber(getFormattedPrice(number, userLocale, currency));
   }, [number, currency, isNumberFocused]);
 
   const handleDisplayNumberChange = (
@@ -50,18 +52,11 @@ function GasPrice({
   ) => {
     const displayNumber = event.target.value;
 
-    if (!isLegalPriceValue(displayNumber)) return;
+    if (!isLegalPriceValue(displayNumber, userLocale)) return;
 
     setDisplayNumber(displayNumber);
 
-    const number = Number(
-      displayNumber.replace(
-        new RegExp(getNumberFormatChar("groupingSeparatorChar", "en-US"), "g"),
-        "",
-      ),
-    );
-
-    handleNumberChange(number);
+    handleNumberChange(getParsedNumber(displayNumber, userLocale));
   };
 
   return (
@@ -78,7 +73,7 @@ function GasPrice({
             setIsNumberFocused(true);
           }}
           onBlur={() => {
-            setDisplayNumber(getFormattedPrice(number, "en-US", currency));
+            setDisplayNumber(getFormattedPrice(number, userLocale, currency));
             setIsNumberFocused(false);
           }}
           onChange={handleDisplayNumberChange}
