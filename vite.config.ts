@@ -9,6 +9,9 @@ export default defineConfig({
   plugins: [react(), svgr()],
   test: {
     environment: "happy-dom",
+    globals: true,
+    root: __dirname,
+    setupFiles: ["./vitest.setup.ts"],
   },
   resolve: {
     alias: {
