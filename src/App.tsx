@@ -12,20 +12,26 @@ type SupportedUnits = "liter" | "gallon";
 
 function App({ userLocale: userLocaleProp }: { userLocale?: string }) {
   const userLocale = userLocaleProp || navigator.language || "en-US";
-  const userLocaleCountry = userLocale.split("-")[1];
+
+  const userCurrentCountry = "BR";
+  const userHomeCountry = userLocale.split("-")[1] || "US";
 
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
-  const [topCurrency, setTopCurrency] = useState<string>("BRL");
-  const [topUnit, setTopUnit] = useState<SupportedUnits>("liter");
+  const [topCurrency, setTopCurrency] = useState<string>(
+    getCurrencyByCountry(userCurrentCountry),
+  );
+  const [topUnit, setTopUnit] = useState<SupportedUnits>(
+    getUnitsByCountry(userCurrentCountry) as SupportedUnits,
+  );
 
   // Converted gas price values (price, currency, units)
   const [bottomNumber, setBottomNumber] = useState(0);
   const [bottomCurrency, setBottomCurrency] = useState<string>(
-    getCurrencyByCountry(userLocaleCountry),
+    getCurrencyByCountry(userHomeCountry),
   );
   const [bottomUnit, setBottomUnit] = useState<SupportedUnits>(
-    getUnitsByCountry(userLocaleCountry) as SupportedUnits,
+    getUnitsByCountry(userHomeCountry) as SupportedUnits,
   );
 
   // Whether we're updating the top or bottom number
