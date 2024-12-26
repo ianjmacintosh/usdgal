@@ -13,6 +13,17 @@ const getNumberFormatChar = (
   return chars[char];
 };
 
+const getParsedNumber = (displayNumber: string, userLocale = "en-US") => {
+  const number = Number(
+    displayNumber.replace(
+      new RegExp(getNumberFormatChar("groupingSeparatorChar", userLocale), "g"),
+      "",
+    ),
+  );
+
+  return number;
+};
+
 const isTinyNumber = (
   number: number,
   userLocale = "en-US",
@@ -119,6 +130,7 @@ export {
   getUnits,
   getNumberFormatChar,
   getFormattedPrice,
+  getParsedNumber,
   isLegalPriceValue,
   isTinyNumber,
 };

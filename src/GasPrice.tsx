@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./GasPrice.css";
 import {
   getFormattedPrice,
-  getNumberFormatChar,
+  getParsedNumber,
   isLegalPriceValue,
 } from "./utils/numberFormat";
 import Currency from "./Currency";
@@ -56,17 +56,7 @@ function GasPrice({
 
     setDisplayNumber(displayNumber);
 
-    const number = Number(
-      displayNumber.replace(
-        new RegExp(
-          getNumberFormatChar("groupingSeparatorChar", userLocale),
-          "g",
-        ),
-        "",
-      ),
-    );
-
-    handleNumberChange(number);
+    handleNumberChange(getParsedNumber(displayNumber, userLocale));
   };
 
   return (
