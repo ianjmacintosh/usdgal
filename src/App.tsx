@@ -10,15 +10,11 @@ import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
 
 type SupportedUnits = "liter" | "gallon";
 
-function App({
-  userHomeCountry: userHomeCountryProp,
-}: {
-  userHomeCountry?: string;
-}) {
-  const userLocale = userHomeCountryProp || navigator.language || "en-US";
+function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
+  const userLanguage = userLanguageProp || navigator.language || "en-US";
 
   const userCurrentCountry = "BR";
-  const userHomeCountry = userLocale.split("-")[1] || "US";
+  const userHomeCountry = userLanguage.split("-")[1] || "US";
 
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
@@ -90,7 +86,7 @@ function App({
           onCurrencyChange={(newCurrency: string) => {
             setTopCurrency(newCurrency);
           }}
-          userLocale={userLocale}
+          userLanguage={userLanguage}
         />
 
         <h2 className="text-3xl font-bold my-4">Converted Gas Cost</h2>
@@ -109,12 +105,12 @@ function App({
           onCurrencyChange={(newCurrency: string) => {
             setBottomCurrency(newCurrency);
           }}
-          userLocale={userLocale}
+          userLanguage={userLanguage}
         />
         <p className="my-2 text-sm">
           <em>
             Exchange rates last updated:{" "}
-            {Intl.DateTimeFormat(userLocale, { dateStyle: "medium" }).format(
+            {Intl.DateTimeFormat(userLanguage, { dateStyle: "medium" }).format(
               exchangeRateData.timestamp * 1000,
             ) ?? "Unknown"}
           </em>
@@ -127,7 +123,6 @@ function App({
           topCurrency={topCurrency}
           bottomCurrency={bottomCurrency}
           exchangeRateData={exchangeRateData}
-          userLocale={userLocale}
         />
       </div>
       <footer>

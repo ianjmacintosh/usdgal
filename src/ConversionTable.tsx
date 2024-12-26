@@ -30,7 +30,6 @@ const ConversionTable = ({
     success: boolean;
     timestamp: number;
   };
-  userLocale: string;
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const sourceCurrencyAbsoluteCost = exchangeRateData.rates[topCurrency] ?? 1;

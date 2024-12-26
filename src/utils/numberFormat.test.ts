@@ -43,22 +43,22 @@ describe("getFormattedPrice method", () => {
 
 describe("isTinyNumber method", () => {
   let tinyValue = 0.00001;
-  const userLocale = "en-US";
+  const userLanguage = "en-US";
   let userCurrency = "USD";
 
   test("returns true for 0.00001 USD in en-US", () => {
-    expect(isTinyNumber(tinyValue, userLocale, userCurrency)).toBe(true);
+    expect(isTinyNumber(tinyValue, userLanguage, userCurrency)).toBe(true);
   });
 
   test("returns false for 0", () => {
     tinyValue = 0;
-    expect(isTinyNumber(tinyValue, userLocale, userCurrency)).toBe(false);
+    expect(isTinyNumber(tinyValue, userLanguage, userCurrency)).toBe(false);
   });
 
   test("returns false for numbers that can be expressed with the currency's decimal places", () => {
     tinyValue = 0.001;
     userCurrency = "TND";
-    expect(isTinyNumber(tinyValue, userLocale, userCurrency)).toBe(false);
+    expect(isTinyNumber(tinyValue, userLanguage, userCurrency)).toBe(false);
   });
 });
 

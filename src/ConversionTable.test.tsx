@@ -22,7 +22,6 @@ describe("<ConversionTable />", () => {
         topCurrency="BRL"
         bottomCurrency="USD"
         exchangeRateData={exchangeRateData}
-        userLocale="en-US"
         {...props}
       />
     );

@@ -20,7 +20,7 @@ function GasPrice({
   disabled,
   currency,
   unit,
-  userLocale = "en-US",
+  userLanguage = "en-US",
 }: {
   label: string;
   number: number;
@@ -35,17 +35,17 @@ function GasPrice({
       | React.ChangeEvent<HTMLSelectElement>,
   ) => void;
   disabled?: boolean;
-  userLocale?: string;
+  userLanguage?: string;
 }) {
   const [displayNumber, setDisplayNumber] = useState(
-    getFormattedPrice(number, userLocale, currency),
+    getFormattedPrice(number, userLanguage, currency),
   );
   const [isNumberFocused, setIsNumberFocused] = useState(false);
 
   useEffect(() => {
     if (isNumberFocused) return;
 
-    setDisplayNumber(getFormattedPrice(number, userLocale, currency));
+    setDisplayNumber(getFormattedPrice(number, userLanguage, currency));
   }, [number, currency, isNumberFocused]);
 
   const handleDisplayNumberChange = (
@@ -53,11 +53,11 @@ function GasPrice({
   ) => {
     const displayNumber = event.target.value;
 
-    if (!isLegalPriceValue(displayNumber, userLocale)) return;
+    if (!isLegalPriceValue(displayNumber, userLanguage)) return;
 
     setDisplayNumber(displayNumber);
 
-    handleNumberChange(getParsedNumber(displayNumber, userLocale));
+    handleNumberChange(getParsedNumber(displayNumber, userLanguage));
   };
 
   return (
@@ -74,7 +74,7 @@ function GasPrice({
             setIsNumberFocused(true);
           }}
           onBlur={() => {
-            setDisplayNumber(getFormattedPrice(number, userLocale, currency));
+            setDisplayNumber(getFormattedPrice(number, userLanguage, currency));
             setIsNumberFocused(false);
           }}
           onChange={handleDisplayNumberChange}
@@ -96,7 +96,7 @@ function GasPrice({
           onUnitChange={handleUnitChange}
         />
       </fieldset>
-      {isTinyNumber(number, userLocale, currency) ? (
+      {isTinyNumber(number, userLanguage, currency) ? (
         <p className="mt-4">
           <em role="status">
             This amount is displayed as {displayNumber} {currency}, but the
