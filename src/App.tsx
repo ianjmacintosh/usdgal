@@ -7,22 +7,22 @@ import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
 import exchangeRateData from "./exchangeRateData";
 import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
+// import { getCountryCode } from "./utils/api";
 
 type SupportedUnits = "liter" | "gallon";
 
 function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
   const userLanguage = userLanguageProp || navigator.language || "en-US";
-
-  const userCurrentCountry = "BR";
   const userHomeCountry = userLanguage.split("-")[1] || "US";
+  const defaultUserLocation = userHomeCountry === "US" ? "MX" : "US";
 
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] = useState<string>(
-    getCurrencyByCountry(userCurrentCountry),
+    getCurrencyByCountry(defaultUserLocation),
   );
   const [topUnit, setTopUnit] = useState<SupportedUnits>(
-    getUnitsByCountry(userCurrentCountry) as SupportedUnits,
+    getUnitsByCountry(defaultUserLocation) as SupportedUnits,
   );
 
   // Converted gas price values (price, currency, units)
