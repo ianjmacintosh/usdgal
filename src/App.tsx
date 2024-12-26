@@ -68,7 +68,19 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
   ]);
 
   useEffect(() => {
-    setTopCurrency("BRL");
+    async function startFetching() {
+      const countryCode = await fetchCountryCode();
+      if (!ignore) {
+        const currency = getCurrencyByCountry(countryCode);
+        setTopCurrency(currency);
+      }
+    }
+
+    let ignore = false;
+    startFetching();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   return (
