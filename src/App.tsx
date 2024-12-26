@@ -10,8 +10,12 @@ import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
 
 type SupportedUnits = "liter" | "gallon";
 
-function App({ userLocale: userLocaleProp }: { userLocale?: string }) {
-  const userLocale = userLocaleProp || navigator.language || "en-US";
+function App({
+  userHomeCountry: userHomeCountryProp,
+}: {
+  userHomeCountry?: string;
+}) {
+  const userLocale = userHomeCountryProp || navigator.language || "en-US";
 
   const userCurrentCountry = "BR";
   const userHomeCountry = userLocale.split("-")[1] || "US";
