@@ -13,7 +13,7 @@ export default function Currency({
   onCurrencyChange: (newValue: string) => void;
 }) {
   const [searchValue, setSearchValue] = useState("");
-  const [selectValue, setSelectValue] = useState(currency);
+  const selectValue = currency;
 
   const matches = useMemo(() => {
     return matchSorter(currenciesSelectStoreItems, searchValue, {
@@ -24,7 +24,7 @@ export default function Currency({
 
   useEffect(() => {
     onCurrencyChange(selectValue);
-  }, [onCurrencyChange, selectValue]);
+  }, [currency, onCurrencyChange, selectValue]);
 
   return (
     <Ariakit.ComboboxProvider
@@ -38,7 +38,7 @@ export default function Currency({
       <Ariakit.SelectProvider
         defaultValue={currency}
         items={matches}
-        setValue={setSelectValue}
+        setValue={onCurrencyChange}
         placement="bottom-end"
       >
         <Ariakit.Select

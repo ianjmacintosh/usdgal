@@ -7,7 +7,7 @@ import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
 import exchangeRateData from "./exchangeRateData";
 import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
-// import { getCountryCode } from "./utils/api";
+import { fetchCountryCode } from "./utils/api";
 
 type SupportedUnits = "liter" | "gallon";
 
@@ -18,9 +18,9 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
 
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
-  const [topCurrency, setTopCurrency] = useState<string>(
-    getCurrencyByCountry(defaultUserLocation),
-  );
+  const [topCurrency, setTopCurrency] = useState(() => {
+    return getCurrencyByCountry(defaultUserLocation);
+  });
   const [topUnit, setTopUnit] = useState<SupportedUnits>(
     getUnitsByCountry(defaultUserLocation) as SupportedUnits,
   );
@@ -66,6 +66,10 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
     bottomUnit,
     bottomNumber,
   ]);
+
+  useEffect(() => {
+    setTopCurrency("BRL");
+  }, []);
 
   return (
     <>
