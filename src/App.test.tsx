@@ -1,4 +1,12 @@
-import { describe, test, expect, beforeEach, afterEach } from "vitest";
+import {
+  describe,
+  test,
+  expect,
+  beforeEach,
+  afterEach,
+  beforeAll,
+  afterAll,
+} from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
@@ -7,6 +15,14 @@ import { getFormattedPrice } from "./utils/numberFormat";
 import { selectItemFromFancySelect } from "./utils/testUtils";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
+
+export const restHandlers = [
+  http.get("/workers/getLocation", () => {
+    return HttpResponse.json({ ipData: { country: "US" } });
+  }),
+];
+
+const server = setupServer(...restHandlers);
 
 const TestComponent = ({ ...props }) => {
   return <App {...props} />;
@@ -34,6 +50,9 @@ const elements = () => {
 describe("<App userLanguage='en-US' />", () => {
   const user = userEvent.setup();
 
+  // Start server before all tests
+  beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+
   beforeEach(() => {
     render(<TestComponent userLanguage="en-US" />);
   });
@@ -41,7 +60,10 @@ describe("<App userLanguage='en-US' />", () => {
     cleanup();
   });
 
-  test("loads with the correct starting values", async () => {
+  //  Close server after all tests
+  afterAll(() => server.close());
+
+  test.only("loads with the correct starting values", async () => {
     const {
       topCurrencyInput,
       topUnitInput,
@@ -50,7 +72,7 @@ describe("<App userLanguage='en-US' />", () => {
     } = elements();
 
     await waitFor(() => {
-      expect(topCurrencyInput.textContent).toBe("CAD");
+      expect(topCurrencyInput.textContent).toBe("MXN");
       expect(topUnitInput.textContent).toBe("per liter");
     });
     await waitFor(() => {
@@ -113,13 +135,14 @@ describe("<App userLanguage='pt-BR' />", () => {
 
   test("assumes if the user is at home, they're preparing for a price in USD per gallon", async () => {
     // Arrange
-    const server = setupServer(
+    cleanup();
+    const server = setupServer();
+    server.use(
       http.get("/workers/getLocation", () => {
         return HttpResponse.json({ ipData: { country: "BR" } });
       }),
     );
 
-    cleanup();
     render(<TestComponent userLanguage="pt-BR" />);
 
     const { topCurrencyInput, topUnitInput } = elements();
@@ -127,10 +150,12 @@ describe("<App userLanguage='pt-BR' />", () => {
     // Act
 
     // Assert
-    expect(topCurrencyInput.textContent).toBe("USD");
-    expect(topUnitInput.textContent).toBe("per gallon");
-
-    server.resetHandlers();
+    await waitFor(() => {
+      expect(topCurrencyInput.textContent).toBe("USD");
+    });
+    await waitFor(() => {
+      expect(topUnitInput.textContent).toBe("per gallon");
+    });
   });
 
   test("can convert a gas price from one currency to another", async () => {

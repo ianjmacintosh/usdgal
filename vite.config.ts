@@ -12,7 +12,6 @@ export default defineConfig({
     environment: "happy-dom",
     globals: true,
     root: __dirname,
-    setupFiles: ["./vitest.setup.ts"],
     exclude: [
       ...configDefaults.exclude,
       "*.quarantine.ts",
