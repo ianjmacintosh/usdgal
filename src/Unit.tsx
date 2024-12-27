@@ -1,5 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import "./Unit.css";
+import { useEffect } from "react";
 
 type SupportedUnits = "liter" | "gallon";
 const Unit = ({
@@ -13,12 +14,22 @@ const Unit = ({
   onUnitChange: (newValue: SupportedUnits) => void;
   disabled?: boolean;
 }) => {
+  const displayUnit = {
+    "": "",
+    liter: "per liter",
+    gallon: "per gallon",
+  };
+  useEffect(() => {
+    onUnitChange(unit as SupportedUnits);
+  }, [unit, onUnitChange]);
+
   return (
     <Ariakit.SelectProvider
       defaultValue={unit}
       setValue={(newValue: SupportedUnits) => {
         onUnitChange(newValue);
       }}
+      value={unit}
       id={id}
     >
       <Ariakit.Select
@@ -27,7 +38,7 @@ const Unit = ({
         disabled={disabled}
       >
         <span className="current-value">
-          {unit === "liter" ? "per liter" : "per gallon"}
+          {displayUnit[unit as keyof typeof displayUnit]}
         </span>
         <Ariakit.SelectArrow className="chevron" />
       </Ariakit.Select>

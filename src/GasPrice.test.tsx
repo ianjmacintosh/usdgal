@@ -227,4 +227,13 @@ describe("<GasPrice />", () => {
     });
     expect(warning).not.toBeInTheDocument();
   });
+
+  test("can handle missing currency prop", async () => {
+    cleanup();
+    render(<TestComponent currency="" />);
+
+    expect(
+      screen.queryByRole("combobox", { name: "Currency" })?.textContent,
+    ).toBe("");
+  });
 });

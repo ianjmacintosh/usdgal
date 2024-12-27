@@ -11,26 +11,14 @@ import { fetchCountryCode } from "./utils/api";
 
 type SupportedUnits = "liter" | "gallon";
 
-function App({
-  userLanguage: userLanguageProp,
-  defaultUserLocation: defaultUserLocationProp,
-}: {
-  userLanguage?: string;
-  defaultUserLocation?: string;
-}) {
+function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
   const userLanguage = userLanguageProp || navigator.language || "en-US";
   const userHomeCountry = userLanguage.split("-")[1] || "US";
-  const defaultUserLocation =
-    defaultUserLocationProp || userHomeCountry === "US" ? "MX" : "US";
 
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
-  const [topCurrency, setTopCurrency] = useState(() => {
-    return getCurrencyByCountry(defaultUserLocation);
-  });
-  const [topUnit, setTopUnit] = useState<SupportedUnits>(
-    getUnitsByCountry(defaultUserLocation) as SupportedUnits,
-  );
+  const [topCurrency, setTopCurrency] = useState<string>("");
+  const [topUnit, setTopUnit] = useState<SupportedUnits | "">("");
 
   // Converted gas price values (price, currency, units)
   const [bottomNumber, setBottomNumber] = useState(0);
@@ -76,10 +64,16 @@ function App({
 
   useEffect(() => {
     async function startFetching() {
-      const countryCode = await fetchCountryCode();
+      let countryCode = await fetchCountryCode();
       if (!ignore) {
+        // If the user is in their home country, let's guess where they want to go
+        if (countryCode === userHomeCountry) {
+          countryCode = userHomeCountry === "US" ? "MX" : "US";
+        }
         const currency = getCurrencyByCountry(countryCode);
+        const units = getUnitsByCountry(countryCode);
         setTopCurrency(currency);
+        setTopUnit(units as SupportedUnits);
       }
     }
 

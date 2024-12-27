@@ -39,6 +39,7 @@ export default function Currency({
         defaultValue={currency}
         items={matches}
         setValue={onCurrencyChange}
+        value={currency}
         placement="bottom-end"
       >
         <Ariakit.Select

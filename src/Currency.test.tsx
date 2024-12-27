@@ -67,7 +67,7 @@ describe("<Currency />", () => {
     expect(currencyButton.textContent).toBe("BRL");
   });
 
-  test("shows a checkmark next to the selected currency", async () => {
+  test("shows a checkmark and a highlight for the selected currency", async () => {
     const currencyButton = screen.getByLabelText("Currency");
     await selectItemFromFancySelect(currencyButton, "MXN");
     expect(currencyButton.textContent).toBe("MXN");
@@ -78,5 +78,31 @@ describe("<Currency />", () => {
       "true",
     );
     expect(document.querySelector("#item-mxn")).toHaveTextContent("✓");
+  });
+
+  test("shows a checkmark and a highlight for the selected currency when updated via parent prop", async () => {
+    cleanup();
+
+    // Render the component with no currency
+    const { rerender } = render(<TestComponent currency="" />);
+
+    const currencyButton = screen.getByLabelText("Currency");
+    expect(currencyButton.textContent).toBe("");
+
+    await user.click(currencyButton);
+    expect(document.querySelector("#item-mxn")).not.toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    expect(document.querySelector("#item-mxn")).not.toHaveTextContent("✓");
+
+    // Re-render the component with a new currency
+    rerender(<TestComponent currency="MXN" />);
+
+    expect(document.querySelector("#item-mxn")).toHaveTextContent("✓");
+    expect(document.querySelector("#item-mxn")).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
   });
 });
