@@ -60,3 +60,39 @@ describe("<App />", () => {
     expect(bottomPriceInput.value).toBe(formattedPrice);
   });
 });
+
+describe("<App userLanguage='pt-BR' />", () => {
+  const user = userEvent.setup();
+
+  beforeEach(() => {
+    render(<TestComponent userLanguage="pt-BR" />);
+  });
+  afterEach(() => {
+    cleanup();
+  });
+  test("can convert a gas price from one currency to another", async () => {
+    // Arrange
+    const {
+      topPriceInput,
+      bottomPriceInput,
+      topCurrencyInput,
+      topUnitInput,
+      bottomCurrencyInput,
+      bottomUnitInput,
+    } = elements();
+
+    const convertedPrice = getGasPrice(1, "BRL", "liter", "USD", "gallon");
+    const formattedPrice = getFormattedPrice(convertedPrice, "pt-BR", "BRL");
+
+    // Act
+    await selectItemFromFancySelect(topCurrencyInput, "BRL");
+    await selectItemFromFancySelect(topUnitInput, "per liter");
+    await selectItemFromFancySelect(bottomCurrencyInput, "USD");
+    await selectItemFromFancySelect(bottomUnitInput, "per gallon");
+    await user.click(topPriceInput);
+    await user.keyboard("1");
+
+    // Assert
+    expect(bottomPriceInput.value).toBe(formattedPrice);
+  });
+});
