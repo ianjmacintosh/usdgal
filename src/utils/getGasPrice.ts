@@ -22,13 +22,23 @@ const getPriceInCurrency = (
 };
 
 const getGasPrice = (
-  sourceNumber: number,
-  sourceCurrency: string,
-  sourceUnit: SupportedUnits,
-  targetCurrency: string,
-  targetUnit: SupportedUnits,
+  sourceNumber: number | null,
+  sourceCurrency: string | null,
+  sourceUnit: SupportedUnits | null,
+  targetCurrency: string | null,
+  targetUnit: SupportedUnits | null,
   exchangeRates?: { [key: string]: number },
 ) => {
+  // Return 0 if we're missing info
+  if (
+    sourceCurrency === null ||
+    sourceNumber === null ||
+    sourceUnit === null ||
+    targetCurrency === null ||
+    targetUnit === null
+  ) {
+    return 0;
+  }
   // Convert that number from using source units to target units
   let result = getUnits(sourceNumber, sourceUnit, targetUnit);
 

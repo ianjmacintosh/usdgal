@@ -124,4 +124,17 @@ describe("getGasPrice method", () => {
 
     expect(result).toBe(1);
   });
+
+  test("can handle a missing source currency", () => {
+    const result = getGasPrice(
+      100,
+      null,
+      "gallon",
+      "BRL",
+      "gallon",
+      fakeExchangeRates,
+    );
+
+    expect(result).toBe(0);
+  });
 });
