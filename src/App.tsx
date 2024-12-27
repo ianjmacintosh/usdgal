@@ -120,7 +120,11 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
 
   return (
     <>
-      <IntlProvider locale={userLanguage} messages={i18nMessages}>
+      <IntlProvider
+        locale={userLanguage}
+        messages={i18nMessages}
+        defaultLocale="en"
+      >
         <div className="container">
           <h2 className="text-3xl font-bold my-4">
             <FormattedMessage id="gasCost" />
@@ -187,7 +191,9 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
                   href="https://www.github.com/ianjmacintosh/usdgal"
                   target="_blank"
                 >
-                  <span>Source code</span>
+                  <span>
+                    <FormattedMessage id="sourceCode" />
+                  </span>
                   <GithubLogo height={18} width={18} />
                 </a>
               </li>
