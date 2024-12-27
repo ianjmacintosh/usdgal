@@ -20,13 +20,30 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
   const userHomeCountry = userLanguage.split("-")[1] || "US";
 
   const getMessages = (language: string) => {
-    switch (language) {
-      case "en":
-        return en;
-      case "es":
-        return es;
-      default:
-        return en;
+    // Why does FormatJS want consumers handling this logic? RFC-5646 is complicated:
+    // https://datatracker.ietf.org/doc/html/rfc5646
+
+    // Language without region; 2 chars as defined in ISO 639-1
+    const languageAsTwoChars = userLanguage.split("-")[0];
+
+    const messageFiles = {
+      en: en,
+      es: es,
+    };
+
+    // TODO: An more elegant way to do this would maybe use matchSorter
+
+    // First, if we've got an exact language match, use it
+    if (Object.keys(messageFiles).includes(language)) {
+      return messageFiles[language as keyof typeof messageFiles];
+
+      // But if we don't have an exact match, try to use the language by itself
+    } else if (Object.keys(messageFiles).includes(languageAsTwoChars)) {
+      return messageFiles[languageAsTwoChars as keyof typeof messageFiles];
+
+      // If that doesn't work, default to English
+    } else {
+      return messageFiles["en"];
     }
   };
 
