@@ -53,7 +53,7 @@ describe("<App />", () => {
     await user.keyboard(option);
     await user.click(getByText(popover, option, { exact: false }));
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(selectElement.textContent).toBe(option);
     });
   };
@@ -164,7 +164,7 @@ describe("<App />", () => {
     await selectItemFromFancySelect(bottomUnitButton, "per gallon");
 
     // Expect all the bottom and top values are as expected
-    waitFor(() => {
+    await waitFor(() => {
       expect(bottomCurrencyButton.textContent).toBe("BRL");
       expect(bottomUnitButton.textContent).toBe("per gallon");
       expect(topPriceInput.value).toBe("6.78");
@@ -179,7 +179,7 @@ describe("<App />", () => {
 
     // Expect the top input to stay the same while updating the bottom volume measure
     await selectItemFromFancySelect(bottomUnitButton, "per liter");
-    waitFor(() => {
+    await waitFor(() => {
       expect(bottomPriceInput.value).toBe(
         getFormattedPrice(
           getGasPrice(6.78, "BRL", "liter", "BRL", "liter"),
@@ -195,7 +195,7 @@ describe("<App />", () => {
     await user.keyboard("4.43");
     expect(bottomPriceInput.value).toBe("4.43");
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(topPriceInput.value).toBe(
         getFormattedPrice(
           getGasPrice(4.43, "BRL", "liter", "BRL", "liter"),
@@ -208,7 +208,7 @@ describe("<App />", () => {
     // Expect the top price to change when updating the bottom currency
     await selectItemFromCombobox(bottomCurrencyButton, "USD");
     await selectItemFromFancySelect(bottomUnitButton, "per gallon");
-    waitFor(() => {
+    await waitFor(() => {
       expect(topPriceInput.value).toBe(
         getFormattedPrice(
           getGasPrice(4.43, "USD", "gallon", "BRL", "liter"),
