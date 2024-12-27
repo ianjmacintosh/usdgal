@@ -18,13 +18,13 @@ function GasPrice({
   onUnitChange: handleUnitChange = () => {},
   onCurrencyChange: handleCurrencyChange = () => {},
   disabled,
-  currency,
+  currency = "",
   unit,
   userLanguage = "en-US",
 }: {
   label: string;
   number: number;
-  currency: string | null;
+  currency: string;
   unit: string;
   onNumberChange: (newValue: number) => void;
   onCurrencyChange: (newValue: string) => void;
@@ -77,7 +77,9 @@ function GasPrice({
             setDisplayNumber(getFormattedPrice(number, userLanguage, currency));
             setIsNumberFocused(false);
           }}
-          onChange={handleDisplayNumberChange}
+          onChange={(value) => {
+            handleDisplayNumberChange(value);
+          }}
           id={`${label.toLowerCase()}_number`}
           disabled={disabled}
           autoComplete="off"

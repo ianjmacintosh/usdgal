@@ -64,7 +64,7 @@ const getFormattedPrice = (
 ) => {
   let formattedNumber = String(price);
 
-  if (currency === null) {
+  if (currency === "") {
     currency = "USD";
   }
   formattedNumber = Intl.NumberFormat(userLanguage, {

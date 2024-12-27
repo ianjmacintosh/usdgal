@@ -13,7 +13,7 @@ const ConversionTable = ({
   bottomNumber,
   topUnit,
   bottomUnit,
-  topCurrency,
+  topCurrency = "",
   bottomCurrency,
   exchangeRateData,
 }: {
@@ -21,7 +21,7 @@ const ConversionTable = ({
   bottomNumber: number;
   topUnit: SupportedUnits;
   bottomUnit: SupportedUnits;
-  topCurrency: string | null;
+  topCurrency: string;
   bottomCurrency: string;
   exchangeRateData: {
     base: string;
@@ -31,17 +31,18 @@ const ConversionTable = ({
     timestamp: number;
   };
 }) => {
-  if (topCurrency === null) {
-    return null;
-  }
-
   const [showDetails, setShowDetails] = useState(false);
-  const sourceCurrencyAbsoluteCost = exchangeRateData.rates[topCurrency] ?? 1;
+  const sourceCurrencyAbsoluteCost =
+    exchangeRateData.rates[topCurrency === "" ? "USD" : topCurrency] ?? 1;
   const targetCurrencyAbsoluteCost =
     exchangeRateData.rates[bottomCurrency] ?? 1;
 
   const sourceVolumeInLiters = volumesInLiters[topUnit];
   const targetVolumeInLiters = volumesInLiters[bottomUnit];
+
+  if (topCurrency === null) {
+    return null;
+  }
 
   return (
     <>

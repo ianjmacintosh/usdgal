@@ -22,20 +22,19 @@ const getPriceInCurrency = (
 };
 
 const getGasPrice = (
-  sourceNumber: number | null,
-  sourceCurrency: string | null,
-  sourceUnit: SupportedUnits | null,
-  targetCurrency: string | null,
-  targetUnit: SupportedUnits | null,
+  sourceNumber: number,
+  sourceCurrency: string,
+  sourceUnit: SupportedUnits | "",
+  targetCurrency: string,
+  targetUnit: SupportedUnits | "",
   exchangeRates?: { [key: string]: number },
 ) => {
   // Return 0 if we're missing info
   if (
-    sourceCurrency === null ||
-    sourceNumber === null ||
-    sourceUnit === null ||
-    targetCurrency === null ||
-    targetUnit === null
+    sourceCurrency === "" ||
+    sourceUnit === "" ||
+    targetCurrency === "" ||
+    targetUnit === ""
   ) {
     return 0;
   }

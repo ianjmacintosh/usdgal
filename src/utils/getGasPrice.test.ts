@@ -128,7 +128,7 @@ describe("getGasPrice method", () => {
   test("can handle a missing source currency", () => {
     const result = getGasPrice(
       100,
-      null,
+      "",
       "gallon",
       "BRL",
       "gallon",

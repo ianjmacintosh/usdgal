@@ -230,7 +230,7 @@ describe("<GasPrice />", () => {
 
   test("can handle missing currency prop", async () => {
     cleanup();
-    render(<TestComponent currency={null} />);
+    render(<TestComponent currency="" />);
 
     expect(
       screen.queryByRole("combobox", { name: "Currency" })?.textContent,
