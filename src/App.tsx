@@ -20,6 +20,10 @@ function App({
 }) {
   const userLanguage = userLanguageProp || navigator.language || "en-US";
   const userHomeCountry = userLanguage.split("-")[1] || "US";
+
+  // If we can't geolocate the user, we can guess what they're trying to do based on their language
+  // If their language is US-based, maybe they're planning a trip to Mexico and want to convert Mexican gas prices
+  // If their language isn't US-based, maybe they're in the US (or planning a trip to the US) and want to convert US gas prices
   const defaultUserLocation =
     defaultUserLocationProp || userHomeCountry === "US" ? "MX" : "US";
 
