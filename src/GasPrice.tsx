@@ -24,7 +24,7 @@ function GasPrice({
 }: {
   label: string;
   number: number;
-  currency: string;
+  currency: string | null;
   unit: string;
   onNumberChange: (newValue: number) => void;
   onCurrencyChange: (newValue: string) => void;

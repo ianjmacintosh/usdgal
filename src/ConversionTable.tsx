@@ -21,7 +21,7 @@ const ConversionTable = ({
   bottomNumber: number;
   topUnit: SupportedUnits;
   bottomUnit: SupportedUnits;
-  topCurrency: string;
+  topCurrency: string | null;
   bottomCurrency: string;
   exchangeRateData: {
     base: string;
@@ -31,6 +31,10 @@ const ConversionTable = ({
     timestamp: number;
   };
 }) => {
+  if (topCurrency === null) {
+    return null;
+  }
+
   const [showDetails, setShowDetails] = useState(false);
   const sourceCurrencyAbsoluteCost = exchangeRateData.rates[topCurrency] ?? 1;
   const targetCurrencyAbsoluteCost =

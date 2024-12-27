@@ -29,9 +29,7 @@ function App({
 
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
-  const [topCurrency, setTopCurrency] = useState(() => {
-    return getCurrencyByCountry(defaultUserLocation);
-  });
+  const [topCurrency, setTopCurrency] = useState<string | null>(null);
   const [topUnit, setTopUnit] = useState<SupportedUnits>(
     getUnitsByCountry(defaultUserLocation) as SupportedUnits,
   );
