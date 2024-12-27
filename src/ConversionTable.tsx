@@ -4,6 +4,8 @@ import "./ConversionTable.css";
 type SupportedUnits = "liter" | "gallon";
 
 const volumesInLiters = {
+  // TODO: This "" key is because we may get "" when the parent is initializing
+  "": 0,
   liter: 1,
   gallon: 3.78541,
 };
@@ -19,8 +21,8 @@ const ConversionTable = ({
 }: {
   topNumber: number;
   bottomNumber: number;
-  topUnit: SupportedUnits;
-  bottomUnit: SupportedUnits;
+  topUnit: SupportedUnits | "";
+  bottomUnit: SupportedUnits | "";
   topCurrency: string;
   bottomCurrency: string;
   exchangeRateData: {
@@ -40,7 +42,12 @@ const ConversionTable = ({
   const sourceVolumeInLiters = volumesInLiters[topUnit];
   const targetVolumeInLiters = volumesInLiters[bottomUnit];
 
-  if (topCurrency === null) {
+  if (
+    topCurrency === "" ||
+    bottomCurrency === "" ||
+    topUnit === "" ||
+    bottomUnit === ""
+  ) {
     return null;
   }
 

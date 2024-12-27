@@ -116,7 +116,7 @@ describe("<App userLanguage='pt-BR' />", () => {
 
   beforeEach(() => {
     // This "defaultUserLocation" thing is kind of a hack -- I'm using it to test when we geolocate the Brazilian user as being in Brazil
-    render(<TestComponent userLanguage="pt-BR" defaultUserLocation="MX" />);
+    render(<TestComponent userLanguage="pt-BR" />);
   });
   afterEach(() => {
     cleanup();
@@ -165,7 +165,7 @@ describe("<App userLanguage='pt-BR' />", () => {
     });
   });
 
-  test.skip("can convert a gas price from one currency to another", async () => {
+  test("can convert a gas price from one currency to another", async () => {
     // Arrange
     const {
       topPriceInput,

@@ -11,28 +11,14 @@ import { fetchCountryCode } from "./utils/api";
 
 type SupportedUnits = "liter" | "gallon";
 
-function App({
-  userLanguage: userLanguageProp,
-  defaultUserLocation: defaultUserLocationProp,
-}: {
-  userLanguage?: string;
-  defaultUserLocation?: string;
-}) {
+function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
   const userLanguage = userLanguageProp || navigator.language || "en-US";
   const userHomeCountry = userLanguage.split("-")[1] || "US";
-
-  // If we can't geolocate the user, we can guess what they're trying to do based on their language
-  // If their language is US-based, maybe they're planning a trip to Mexico and want to convert Mexican gas prices
-  // If their language isn't US-based, maybe they're in the US (or planning a trip to the US) and want to convert US gas prices
-  const defaultUserLocation =
-    defaultUserLocationProp || userHomeCountry === "US" ? "MX" : "US";
 
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] = useState<string>("");
-  const [topUnit, setTopUnit] = useState<SupportedUnits>(
-    getUnitsByCountry(defaultUserLocation) as SupportedUnits,
-  );
+  const [topUnit, setTopUnit] = useState<SupportedUnits | "">("");
 
   // Converted gas price values (price, currency, units)
   const [bottomNumber, setBottomNumber] = useState(0);
@@ -87,7 +73,6 @@ function App({
         const currency = getCurrencyByCountry(countryCode);
         const units = getUnitsByCountry(countryCode);
         setTopCurrency(currency);
-        console.log(`Setting top unit to ${units}`);
         setTopUnit(units as SupportedUnits);
       }
     }

@@ -14,6 +14,11 @@ const Unit = ({
   onUnitChange: (newValue: SupportedUnits) => void;
   disabled?: boolean;
 }) => {
+  const displayUnit = {
+    "": "",
+    liter: "per liter",
+    gallon: "per gallon",
+  };
   useEffect(() => {
     onUnitChange(unit as SupportedUnits);
   }, [unit, onUnitChange]);
@@ -32,7 +37,7 @@ const Unit = ({
         disabled={disabled}
       >
         <span className="current-value">
-          {unit === "liter" ? "per liter" : "per gallon"}
+          {displayUnit[unit as keyof typeof displayUnit]}
         </span>
         <Ariakit.SelectArrow className="chevron" />
       </Ariakit.Select>
