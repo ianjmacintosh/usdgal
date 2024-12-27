@@ -78,10 +78,17 @@ function App({
 
   useEffect(() => {
     async function startFetching() {
-      const countryCode = await fetchCountryCode();
+      let countryCode = await fetchCountryCode();
       if (!ignore) {
+        // If the user is in their home country, let's guess where they want to go
+        if (countryCode === userHomeCountry) {
+          countryCode = userHomeCountry === "US" ? "MX" : "US";
+        }
         const currency = getCurrencyByCountry(countryCode);
+        const units = getUnitsByCountry(countryCode);
         setTopCurrency(currency);
+        console.log(`Setting top unit to ${units}`);
+        setTopUnit(units as SupportedUnits);
       }
     }
 

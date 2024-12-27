@@ -1,5 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import "./Unit.css";
+import { useEffect } from "react";
 
 type SupportedUnits = "liter" | "gallon";
 const Unit = ({
@@ -13,6 +14,10 @@ const Unit = ({
   onUnitChange: (newValue: SupportedUnits) => void;
   disabled?: boolean;
 }) => {
+  useEffect(() => {
+    onUnitChange(unit as SupportedUnits);
+  }, [unit, onUnitChange]);
+
   return (
     <Ariakit.SelectProvider
       defaultValue={unit}

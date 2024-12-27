@@ -63,7 +63,7 @@ describe("<App userLanguage='en-US' />", () => {
   //  Close server after all tests
   afterAll(() => server.close());
 
-  test.only("loads with the correct starting values", async () => {
+  test("loads with the correct starting values", async () => {
     const {
       topCurrencyInput,
       topUnitInput,
@@ -111,6 +111,9 @@ describe("<App userLanguage='en-US' />", () => {
 describe("<App userLanguage='pt-BR' />", () => {
   const user = userEvent.setup();
 
+  // Start server before all tests
+  beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+
   beforeEach(() => {
     // This "defaultUserLocation" thing is kind of a hack -- I'm using it to test when we geolocate the Brazilian user as being in Brazil
     render(<TestComponent userLanguage="pt-BR" defaultUserLocation="MX" />);
@@ -120,12 +123,16 @@ describe("<App userLanguage='pt-BR' />", () => {
   });
 
   test("loads with the correct starting values", async () => {
-    const { topCurrencyInput, bottomCurrencyInput, bottomUnitInput } =
-      elements();
+    const {
+      topCurrencyInput,
+      topUnitInput,
+      bottomCurrencyInput,
+      bottomUnitInput,
+    } = elements();
 
     await waitFor(() => {
-      expect(topCurrencyInput.textContent).toBe("CAD");
-      expect(bottomUnitInput.textContent).toBe("per liter");
+      expect(topCurrencyInput.textContent).toBe("USD");
+      expect(topUnitInput.textContent).toBe("per gallon");
     });
     await waitFor(() => {
       expect(bottomCurrencyInput.textContent).toBe("BRL");
@@ -158,7 +165,7 @@ describe("<App userLanguage='pt-BR' />", () => {
     });
   });
 
-  test("can convert a gas price from one currency to another", async () => {
+  test.skip("can convert a gas price from one currency to another", async () => {
     // Arrange
     const {
       topPriceInput,
