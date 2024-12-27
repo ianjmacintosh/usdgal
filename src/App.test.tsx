@@ -22,6 +22,12 @@ export const restHandlers = [
   }),
 ];
 
+// Start server before all tests
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+
+//  Close server after all tests
+afterAll(() => server.close());
+
 const server = setupServer(...restHandlers);
 
 const TestComponent = ({ ...props }) => {
@@ -50,18 +56,12 @@ const elements = () => {
 describe("<App userLanguage='en-US' />", () => {
   const user = userEvent.setup();
 
-  // Start server before all tests
-  beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
-
   beforeEach(() => {
     render(<TestComponent userLanguage="en-US" />);
   });
   afterEach(() => {
     cleanup();
   });
-
-  //  Close server after all tests
-  afterAll(() => server.close());
 
   test("loads with the correct starting values", async () => {
     const {
@@ -110,9 +110,6 @@ describe("<App userLanguage='en-US' />", () => {
 
 describe("<App userLanguage='pt-BR' />", () => {
   const user = userEvent.setup();
-
-  // Start server before all tests
-  beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
   beforeEach(() => {
     // This "defaultUserLocation" thing is kind of a hack -- I'm using it to test when we geolocate the Brazilian user as being in Brazil
