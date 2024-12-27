@@ -7,25 +7,38 @@ import GasPrice from "./GasPrice";
 import ConversionTable from "./ConversionTable";
 import exchangeRateData from "./exchangeRateData";
 import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
+import { fetchCountryCode } from "./utils/api";
 
 type SupportedUnits = "liter" | "gallon";
 
-function App({ userLocale: userLocaleProp }: { userLocale?: string }) {
-  const userLocale = userLocaleProp || navigator.language || "en-US";
-  const userLocaleCountry = userLocale.split("-")[1];
+function App({
+  userLanguage: userLanguageProp,
+  defaultUserLocation: defaultUserLocationProp,
+}: {
+  userLanguage?: string;
+  defaultUserLocation?: string;
+}) {
+  const userLanguage = userLanguageProp || navigator.language || "en-US";
+  const userHomeCountry = userLanguage.split("-")[1] || "US";
+  const defaultUserLocation =
+    defaultUserLocationProp || userHomeCountry === "US" ? "MX" : "US";
 
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
-  const [topCurrency, setTopCurrency] = useState<string>("BRL");
-  const [topUnit, setTopUnit] = useState<SupportedUnits>("liter");
+  const [topCurrency, setTopCurrency] = useState(() => {
+    return getCurrencyByCountry(defaultUserLocation);
+  });
+  const [topUnit, setTopUnit] = useState<SupportedUnits>(
+    getUnitsByCountry(defaultUserLocation) as SupportedUnits,
+  );
 
   // Converted gas price values (price, currency, units)
   const [bottomNumber, setBottomNumber] = useState(0);
   const [bottomCurrency, setBottomCurrency] = useState<string>(
-    getCurrencyByCountry(userLocaleCountry),
+    getCurrencyByCountry(userHomeCountry),
   );
   const [bottomUnit, setBottomUnit] = useState<SupportedUnits>(
-    getUnitsByCountry(userLocaleCountry) as SupportedUnits,
+    getUnitsByCountry(userHomeCountry) as SupportedUnits,
   );
 
   // Whether we're updating the top or bottom number
@@ -61,6 +74,22 @@ function App({ userLocale: userLocaleProp }: { userLocale?: string }) {
     bottomNumber,
   ]);
 
+  useEffect(() => {
+    async function startFetching() {
+      const countryCode = await fetchCountryCode();
+      if (!ignore) {
+        const currency = getCurrencyByCountry(countryCode);
+        setTopCurrency(currency);
+      }
+    }
+
+    let ignore = false;
+    startFetching();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
   return (
     <>
       <div className="container">
@@ -80,7 +109,7 @@ function App({ userLocale: userLocaleProp }: { userLocale?: string }) {
           onCurrencyChange={(newCurrency: string) => {
             setTopCurrency(newCurrency);
           }}
-          userLocale={userLocale}
+          userLanguage={userLanguage}
         />
 
         <h2 className="text-3xl font-bold my-4">Converted Gas Cost</h2>
@@ -99,12 +128,12 @@ function App({ userLocale: userLocaleProp }: { userLocale?: string }) {
           onCurrencyChange={(newCurrency: string) => {
             setBottomCurrency(newCurrency);
           }}
-          userLocale={userLocale}
+          userLanguage={userLanguage}
         />
         <p className="my-2 text-sm">
           <em>
             Exchange rates last updated:{" "}
-            {Intl.DateTimeFormat(userLocale, { dateStyle: "medium" }).format(
+            {Intl.DateTimeFormat(userLanguage, { dateStyle: "medium" }).format(
               exchangeRateData.timestamp * 1000,
             ) ?? "Unknown"}
           </em>
@@ -117,7 +146,6 @@ function App({ userLocale: userLocaleProp }: { userLocale?: string }) {
           topCurrency={topCurrency}
           bottomCurrency={bottomCurrency}
           exchangeRateData={exchangeRateData}
-          userLocale={userLocale}
         />
       </div>
       <footer>

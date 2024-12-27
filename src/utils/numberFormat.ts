@@ -13,14 +13,14 @@ const getNumberFormatChar = (
   return chars[char];
 };
 
-const getParsedNumber = (displayNumber: string, userLocale = "en-US") => {
+const getParsedNumber = (displayNumber: string, userLanguage = "en-US") => {
   const decimalSeparatorChar = getNumberFormatChar(
     "decimalSeparatorChar",
-    userLocale,
+    userLanguage,
   );
   const groupingSeparatorChar = getNumberFormatChar(
     "groupingSeparatorChar",
-    userLocale,
+    userLanguage,
   );
 
   let americanizedNumber = displayNumber;
@@ -34,14 +34,14 @@ const getParsedNumber = (displayNumber: string, userLocale = "en-US") => {
 
 const isTinyNumber = (
   number: number,
-  userLocale = "en-US",
+  userLanguage = "en-US",
   currency = "USD",
 ) => {
   if (number === 0 || number >= 1) {
     return false;
   }
 
-  const formattedNumber = Intl.NumberFormat(userLocale, {
+  const formattedNumber = Intl.NumberFormat(userLanguage, {
     style: "currency",
     currency: currency,
     currencyDisplay: "code",
@@ -59,12 +59,12 @@ const isTinyNumber = (
 
 const getFormattedPrice = (
   price: number,
-  userLocale = "en-US",
+  userLanguage = "en-US",
   currency = "USD",
 ) => {
   let formattedNumber = String(price);
 
-  formattedNumber = Intl.NumberFormat(userLocale, {
+  formattedNumber = Intl.NumberFormat(userLanguage, {
     style: "currency",
     currency: currency,
     currencyDisplay: "code",
@@ -75,21 +75,21 @@ const getFormattedPrice = (
 
   // If we're formatting the number to look like 0 but the value isn't 0,
   //  replace the last 0 with a 1
-  if (isTinyNumber(price, userLocale, currency)) {
+  if (isTinyNumber(price, userLanguage, currency)) {
     formattedNumber = formattedNumber.replace(/0$/, "1");
   }
 
   return formattedNumber;
 };
 
-const isLegalPriceValue = (price: string, userLocale: string) => {
+const isLegalPriceValue = (price: string, userLanguage: string) => {
   const decimalSeparatorChar = getNumberFormatChar(
     "decimalSeparatorChar",
-    userLocale,
+    userLanguage,
   );
   const groupingSeparatorChar = getNumberFormatChar(
     "groupingSeparatorChar",
-    userLocale,
+    userLanguage,
   );
 
   // Empty string is OK!

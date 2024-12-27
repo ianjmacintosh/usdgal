@@ -3,8 +3,8 @@ import { render, screen } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 
-describe('<App userLocale="pt-BR" />', () => {
-  render(<App userLocale="pt-BR" />);
+describe('<App userLanguage="pt-BR" />', () => {
+  render(<App userLanguage="pt-BR" />);
 
   const topPriceInput = screen.getAllByLabelText("Amount", {
     selector: "input",
