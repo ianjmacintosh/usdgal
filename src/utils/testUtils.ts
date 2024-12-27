@@ -11,7 +11,7 @@ const selectItemFromFancySelect = async (
   const popover = document.querySelector(".popover") as HTMLElement;
   await user.click(getByText(popover, option, { exact: false }));
 
-  waitFor(() => {
+  await waitFor(() => {
     expect(selectElement.textContent).toBe(option);
   });
 };
