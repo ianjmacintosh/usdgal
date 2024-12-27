@@ -15,6 +15,7 @@ import { getFormattedPrice } from "./utils/numberFormat";
 import { selectItemFromFancySelect } from "./utils/testUtils";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
+import "@testing-library/jest-dom/vitest";
 
 export const restHandlers = [
   http.get("/workers/getLocation", () => {
@@ -63,7 +64,7 @@ describe("<App userLanguage='es-MX' />", () => {
   });
 
   test("headline to be in Spanish", () => {
-    expect(screen.getByText("Precio de la Gasolina")).toBeInTheDocument();
+    expect(screen.getByText("Precio de la Gasolina")).toBeVisible();
   });
 });
 
