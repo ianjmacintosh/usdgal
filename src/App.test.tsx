@@ -10,24 +10,23 @@ const TestComponent = ({ ...props }) => {
   return <App {...props} />;
 };
 
+const elements = () => {
+  return {
+    topPriceInput: screen.getAllByLabelText(/Amount/)[0],
+    bottomPriceInput: screen.getAllByLabelText(/Amount/)[1] as HTMLInputElement,
+    topCurrencyInput: screen.getAllByLabelText("Currency")[0],
+    topUnitInput: screen.getAllByLabelText("Unit of sale", {
+      exact: false,
+    })[0],
+    bottomCurrencyInput: screen.getAllByLabelText("Currency")[1],
+    bottomUnitInput: screen.getAllByLabelText("Unit of sale", {
+      exact: false,
+    })[1],
+  };
+};
+
 describe("<App />", () => {
   const user = userEvent.setup();
-  const elements = () => {
-    return {
-      topPriceInput: screen.getAllByLabelText(/Amount/)[0],
-      bottomPriceInput: screen.getAllByLabelText(
-        /Amount/,
-      )[1] as HTMLInputElement,
-      topCurrencyInput: screen.getAllByLabelText("Currency")[0],
-      topUnitInput: screen.getAllByLabelText("Unit of sale", {
-        exact: false,
-      })[0],
-      bottomCurrencyInput: screen.getAllByLabelText("Currency")[1],
-      bottomUnitInput: screen.getAllByLabelText("Unit of sale", {
-        exact: false,
-      })[1],
-    };
-  };
 
   beforeEach(() => {
     render(<TestComponent />);
