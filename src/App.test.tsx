@@ -16,6 +16,9 @@ import { selectItemFromFancySelect } from "./utils/testUtils";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import "@testing-library/jest-dom/vitest";
+import { IntlProvider } from "react-intl";
+import en from "./languages/en.ts";
+import es from "./languages/es.ts";
 
 export const restHandlers = [
   http.get("/workers/getLocation", () => {
@@ -35,8 +38,12 @@ afterEach(() => {
 
 const server = setupServer(...restHandlers);
 
-const TestComponent = ({ ...props }) => {
-  return <App {...props} />;
+const TestComponent = ({ messages = en, ...props }) => {
+  return (
+    <IntlProvider locale="en-US" messages={messages}>
+      <App {...props} />
+    </IntlProvider>
+  );
 };
 
 const elements = () => {
@@ -60,7 +67,7 @@ const elements = () => {
 
 describe("<App userLanguage='es-MX' />", () => {
   beforeAll(() => {
-    render(<TestComponent userLanguage="es-MX" />);
+    render(<TestComponent messages={es} userLanguage="es-MX" />);
   });
 
   test("headline to be in Spanish", () => {

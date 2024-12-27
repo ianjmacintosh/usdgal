@@ -8,46 +8,13 @@ import ConversionTable from "./ConversionTable";
 import exchangeRateData from "./exchangeRateData";
 import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
 import { fetchCountryCode } from "./utils/api";
-import { IntlProvider, FormattedMessage } from "react-intl";
-import en from "./languages/en";
-import es from "./languages/es";
+import { FormattedMessage } from "react-intl";
 
 type SupportedUnits = "liter" | "gallon";
 
 function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
   const userLanguage = userLanguageProp || navigator.language || "en-US";
-  const userLanguageWithoutRegion = userLanguage.split("-")[0];
   const userHomeCountry = userLanguage.split("-")[1] || "US";
-
-  const getMessages = (language: string) => {
-    // Why does FormatJS want consumers handling this logic? RFC-5646 is complicated:
-    // https://datatracker.ietf.org/doc/html/rfc5646
-
-    // Language without region; 2 chars as defined in ISO 639-1
-    const languageAsTwoChars = userLanguage.split("-")[0];
-
-    const messageFiles = {
-      en: en,
-      es: es,
-    };
-
-    // TODO: An more elegant way to do this would maybe use matchSorter
-
-    // First, if we've got an exact language match, use it
-    if (Object.keys(messageFiles).includes(language)) {
-      return messageFiles[language as keyof typeof messageFiles];
-
-      // But if we don't have an exact match, try to use the language by itself
-    } else if (Object.keys(messageFiles).includes(languageAsTwoChars)) {
-      return messageFiles[languageAsTwoChars as keyof typeof messageFiles];
-
-      // If that doesn't work, default to English
-    } else {
-      return messageFiles["en"];
-    }
-  };
-
-  const [i18nMessages] = useState(getMessages(userLanguageWithoutRegion));
 
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
@@ -120,91 +87,85 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
 
   return (
     <>
-      <IntlProvider
-        locale={userLanguage}
-        messages={i18nMessages}
-        defaultLocale="en"
-      >
-        <div className="container">
-          <h2 className="text-3xl font-bold my-4">
-            <FormattedMessage id="gasCost" />
-          </h2>
-          <GasPrice
-            label="From"
-            number={topNumber}
-            currency={topCurrency}
-            unit={topUnit}
-            onNumberChange={(newNumber: number) => {
-              setIsUpdatingBottomNumber(true);
-              setTopNumber(newNumber);
-            }}
-            onUnitChange={(newUnit: SupportedUnits) => {
-              setTopUnit(newUnit);
-            }}
-            onCurrencyChange={(newCurrency: string) => {
-              setTopCurrency(newCurrency);
-            }}
-            userLanguage={userLanguage}
-          />
+      <div className="container">
+        <h2 className="text-3xl font-bold my-4">
+          <FormattedMessage id="gasCost" />
+        </h2>
+        <GasPrice
+          label="From"
+          number={topNumber}
+          currency={topCurrency}
+          unit={topUnit}
+          onNumberChange={(newNumber: number) => {
+            setIsUpdatingBottomNumber(true);
+            setTopNumber(newNumber);
+          }}
+          onUnitChange={(newUnit: SupportedUnits) => {
+            setTopUnit(newUnit);
+          }}
+          onCurrencyChange={(newCurrency: string) => {
+            setTopCurrency(newCurrency);
+          }}
+          userLanguage={userLanguage}
+        />
 
-          <h2 className="text-3xl font-bold my-4">Converted Gas Cost</h2>
-          <GasPrice
-            label="To"
-            number={bottomNumber}
-            currency={bottomCurrency}
-            onNumberChange={(newValue: number) => {
-              setIsUpdatingBottomNumber(false);
-              setBottomNumber(newValue);
-            }}
-            unit={bottomUnit}
-            onUnitChange={(newUnit: SupportedUnits) => {
-              setBottomUnit(newUnit);
-            }}
-            onCurrencyChange={(newCurrency: string) => {
-              setBottomCurrency(newCurrency);
-            }}
-            userLanguage={userLanguage}
-          />
-          <p className="my-2 text-sm">
-            <em>
-              Exchange rates last updated:{" "}
-              {Intl.DateTimeFormat(userLanguage, {
-                dateStyle: "medium",
-              }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}
-            </em>
-          </p>
-          <ConversionTable
-            topNumber={topNumber}
-            bottomNumber={bottomNumber}
-            topUnit={topUnit}
-            bottomUnit={bottomUnit}
-            topCurrency={topCurrency}
-            bottomCurrency={bottomCurrency}
-            exchangeRateData={exchangeRateData}
-          />
-        </div>
-        <footer>
-          <nav>
-            <ul>
-              <li>
-                <a
-                  href="https://www.github.com/ianjmacintosh/usdgal"
-                  target="_blank"
-                >
-                  <span>
-                    <FormattedMessage id="sourceCode" />
-                  </span>
-                  <GithubLogo height={18} width={18} />
-                </a>
-              </li>
-            </ul>
-          </nav>
-          &copy; 2024{" "}
-          <a href="https://www.ianjmacintosh.com/" target="_blank">
-            Ian J. MacIntosh
-          </a>
-        </footer>
-      </IntlProvider>
+        <h2 className="text-3xl font-bold my-4">Converted Gas Cost</h2>
+        <GasPrice
+          label="To"
+          number={bottomNumber}
+          currency={bottomCurrency}
+          onNumberChange={(newValue: number) => {
+            setIsUpdatingBottomNumber(false);
+            setBottomNumber(newValue);
+          }}
+          unit={bottomUnit}
+          onUnitChange={(newUnit: SupportedUnits) => {
+            setBottomUnit(newUnit);
+          }}
+          onCurrencyChange={(newCurrency: string) => {
+            setBottomCurrency(newCurrency);
+          }}
+          userLanguage={userLanguage}
+        />
+        <p className="my-2 text-sm">
+          <em>
+            Exchange rates last updated:{" "}
+            {Intl.DateTimeFormat(userLanguage, {
+              dateStyle: "medium",
+            }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}
+          </em>
+        </p>
+        <ConversionTable
+          topNumber={topNumber}
+          bottomNumber={bottomNumber}
+          topUnit={topUnit}
+          bottomUnit={bottomUnit}
+          topCurrency={topCurrency}
+          bottomCurrency={bottomCurrency}
+          exchangeRateData={exchangeRateData}
+        />
+      </div>
+      <footer>
+        <nav>
+          <ul>
+            <li>
+              <a
+                href="https://www.github.com/ianjmacintosh/usdgal"
+                target="_blank"
+              >
+                <span>
+                  <FormattedMessage id="sourceCode" />
+                </span>
+                <GithubLogo height={18} width={18} />
+              </a>
+            </li>
+          </ul>
+        </nav>
+        &copy; 2024{" "}
+        <a href="https://www.ianjmacintosh.com/" target="_blank">
+          Ian J. MacIntosh
+        </a>
+      </footer>
     </>
   );
 }

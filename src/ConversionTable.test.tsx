@@ -4,6 +4,8 @@ import "@testing-library/jest-dom/vitest";
 import ConversionTable from "./ConversionTable";
 import exchangeRateData from "./exchangeRateData.ts";
 import userEvent from "@testing-library/user-event";
+import { IntlProvider } from "react-intl";
+import en from "./languages/en.ts";
 
 describe("<ConversionTable />", () => {
   const user = userEvent.setup();
@@ -14,16 +16,18 @@ describe("<ConversionTable />", () => {
 
   const TestComponent = ({ ...props }) => {
     return (
-      <ConversionTable
-        topNumber={1.23456}
-        bottomNumber={5.6789}
-        topUnit="liter"
-        bottomUnit="gallon"
-        topCurrency="BRL"
-        bottomCurrency="USD"
-        exchangeRateData={exchangeRateData}
-        {...props}
-      />
+      <IntlProvider locale="en-US" messages={en}>
+        <ConversionTable
+          topNumber={1.23456}
+          bottomNumber={5.6789}
+          topUnit="liter"
+          bottomUnit="gallon"
+          topCurrency="BRL"
+          bottomCurrency="USD"
+          exchangeRateData={exchangeRateData}
+          {...props}
+        />
+      </IntlProvider>
     );
   };
 

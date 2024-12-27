@@ -5,6 +5,8 @@ import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 import { selectItemFromFancySelect } from "./utils/testUtils";
+import { IntlProvider } from "react-intl";
+import en from "./languages/en.ts";
 
 describe("<Currency />", () => {
   const user = userEvent.setup();
@@ -12,13 +14,15 @@ describe("<Currency />", () => {
     const [currency, setCurrency] = useState<string>("BRL");
 
     return (
-      <Currency
-        currency={currency}
-        onCurrencyChange={(newValue) => {
-          setCurrency(newValue);
-        }}
-        {...props}
-      />
+      <IntlProvider locale="en-US" messages={en}>
+        <Currency
+          currency={currency}
+          onCurrencyChange={(newValue) => {
+            setCurrency(newValue);
+          }}
+          {...props}
+        />
+      </IntlProvider>
     );
   };
 
