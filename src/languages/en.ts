@@ -8,4 +8,8 @@ export default {
   // ConversionTable.tsx
   showDetails: "Show Details",
   hideDetails: "Hide Details",
+  cost: "Cost",
+  currencyConversionRate: "Currency conversion rate",
+  volumeConversionRate: "Volume conversion rate",
+  convertedCost: "Converted cost",
 };
