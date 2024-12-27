@@ -57,6 +57,16 @@ const elements = () => {
   };
 };
 
+describe("<App userLanguage='es-MX' />", () => {
+  beforeAll(() => {
+    render(<TestComponent userLanguage="es-MX" />);
+  });
+
+  test("headline to be in Spanish", () => {
+    expect(screen.getByText("Precio de la Gasolina")).toBeInTheDocument();
+  });
+});
+
 describe("<App userLanguage='en-US' />", () => {
   const user = userEvent.setup();
 
