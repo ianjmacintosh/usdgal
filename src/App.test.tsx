@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, afterEach } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 import getGasPrice from "./utils/getGasPrice";
@@ -12,8 +12,12 @@ const TestComponent = ({ ...props }) => {
 
 const elements = () => {
   return {
-    topPriceInput: screen.getAllByLabelText(/Amount/)[0],
-    bottomPriceInput: screen.getAllByLabelText(/Amount/)[1] as HTMLInputElement,
+    topPriceInput: screen.getAllByLabelText(/Amount/, {
+      selector: "input",
+    })[0] as HTMLInputElement,
+    bottomPriceInput: screen.getAllByLabelText(/Amount/, {
+      selector: "input",
+    })[1] as HTMLInputElement,
     topCurrencyInput: screen.getAllByLabelText("Currency")[0],
     topUnitInput: screen.getAllByLabelText("Unit of sale", {
       exact: false,
@@ -25,15 +29,34 @@ const elements = () => {
   };
 };
 
-describe("<App />", () => {
+describe("<App userLanguage='en-US' />", () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
-    render(<TestComponent />);
+    render(<TestComponent userLanguage="en-US" />);
   });
   afterEach(() => {
     cleanup();
   });
+
+  test("loads with the correct starting values", async () => {
+    const {
+      topCurrencyInput,
+      topUnitInput,
+      bottomCurrencyInput,
+      bottomUnitInput,
+    } = elements();
+
+    await waitFor(() => {
+      expect(topCurrencyInput.textContent).toBe("CAD");
+      expect(topUnitInput.textContent).toBe("per liter");
+    });
+    await waitFor(() => {
+      expect(bottomCurrencyInput.textContent).toBe("USD");
+      expect(bottomUnitInput.textContent).toBe("per gallon");
+    });
+  });
+
   test("can convert a gas price from one currency to another", async () => {
     // Arrange
     const {
@@ -70,6 +93,21 @@ describe("<App userLanguage='pt-BR' />", () => {
   afterEach(() => {
     cleanup();
   });
+
+  test("loads with the correct starting values", async () => {
+    const { topCurrencyInput, bottomCurrencyInput, bottomUnitInput } =
+      elements();
+
+    await waitFor(() => {
+      expect(topCurrencyInput.textContent).toBe("CAD");
+      expect(bottomUnitInput.textContent).toBe("per liter");
+    });
+    await waitFor(() => {
+      expect(bottomCurrencyInput.textContent).toBe("BRL");
+      expect(bottomUnitInput.textContent).toBe("per liter");
+    });
+  });
+
   test("can convert a gas price from one currency to another", async () => {
     // Arrange
     const {
