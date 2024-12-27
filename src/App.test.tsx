@@ -5,6 +5,8 @@ import userEvent from "@testing-library/user-event";
 import getGasPrice from "./utils/getGasPrice";
 import { getFormattedPrice } from "./utils/numberFormat";
 import { selectItemFromFancySelect } from "./utils/testUtils";
+import { http, HttpResponse } from "msw";
+import { setupServer } from "msw/node";
 
 const TestComponent = ({ ...props }) => {
   return <App {...props} />;
@@ -88,7 +90,8 @@ describe("<App userLanguage='pt-BR' />", () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
-    render(<TestComponent userLanguage="pt-BR" />);
+    // This "defaultUserLocation" thing is kind of a hack -- I'm using it to test when we geolocate the Brazilian user as being in Brazil
+    render(<TestComponent userLanguage="pt-BR" defaultUserLocation="MX" />);
   });
   afterEach(() => {
     cleanup();
@@ -106,6 +109,28 @@ describe("<App userLanguage='pt-BR' />", () => {
       expect(bottomCurrencyInput.textContent).toBe("BRL");
       expect(bottomUnitInput.textContent).toBe("per liter");
     });
+  });
+
+  test("assumes if the user is at home, they're preparing for a price in USD per gallon", async () => {
+    // Arrange
+    const server = setupServer(
+      http.get("/workers/getLocation", () => {
+        return HttpResponse.json({ ipData: { country: "BR" } });
+      }),
+    );
+
+    cleanup();
+    render(<TestComponent userLanguage="pt-BR" />);
+
+    const { topCurrencyInput, topUnitInput } = elements();
+
+    // Act
+
+    // Assert
+    expect(topCurrencyInput.textContent).toBe("USD");
+    expect(topUnitInput.textContent).toBe("per gallon");
+
+    server.resetHandlers();
   });
 
   test("can convert a gas price from one currency to another", async () => {

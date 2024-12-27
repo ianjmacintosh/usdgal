@@ -11,10 +11,17 @@ import { fetchCountryCode } from "./utils/api";
 
 type SupportedUnits = "liter" | "gallon";
 
-function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
+function App({
+  userLanguage: userLanguageProp,
+  defaultUserLocation: defaultUserLocationProp,
+}: {
+  userLanguage?: string;
+  defaultUserLocation?: string;
+}) {
   const userLanguage = userLanguageProp || navigator.language || "en-US";
   const userHomeCountry = userLanguage.split("-")[1] || "US";
-  const defaultUserLocation = userHomeCountry === "US" ? "MX" : "US";
+  const defaultUserLocation =
+    defaultUserLocationProp || userHomeCountry === "US" ? "MX" : "US";
 
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
