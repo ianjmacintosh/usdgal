@@ -29,6 +29,7 @@ const Unit = ({
       setValue={(newValue: SupportedUnits) => {
         onUnitChange(newValue);
       }}
+      value={unit}
       id={id}
     >
       <Ariakit.Select
