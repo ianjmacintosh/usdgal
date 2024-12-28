@@ -7,6 +7,7 @@ import en from "./languages/en.ts";
 import es from "./languages/es.ts";
 import pt from "./languages/pt.ts";
 import hi from "./languages/hi.ts";
+import de from "./languages/de.ts";
 
 const userLanguage = navigator.language || "en-US";
 
@@ -22,6 +23,7 @@ const getMessages = (language: string) => {
     es: es,
     pt: pt,
     hi: hi,
+    de: de,
   };
 
   // TODO: An more elegant way to do this would maybe use matchSorter
