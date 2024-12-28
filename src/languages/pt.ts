@@ -1,7 +1,7 @@
 export default {
   // App.tsx
-  gasCost: "Custo da gasolina",
-  convertedGasCost: "Custo da gasolina convertida",
+  gasCost: "Preço da Gasolina",
+  convertedGasCost: "Preço da Gasolina Convertida",
   exchangeRatesLastUpdated: "Última atualização das taxas de câmbio:",
   sourceCode: "Código-fonte",
   language: "Idioma:",

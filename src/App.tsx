@@ -163,6 +163,7 @@ function App({
               const newLanguage = event.target.value;
               handleLanguageChange(newLanguage);
             }}
+            id="language"
           >
             <option value="en-US">English (United States)</option>
             <option value="es-MX">Español (México)</option>

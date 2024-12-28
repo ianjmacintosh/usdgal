@@ -19,6 +19,7 @@ import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
 import en from "./languages/en.ts";
 import es from "./languages/es.ts";
+import { useState } from "react";
 
 export const restHandlers = [
   http.get("/workers/getLocation", () => {
@@ -45,9 +46,16 @@ const TestComponent = ({
   messages?: Record<string, string>;
   [key: string]: unknown;
 }) => {
+  const [userLanguage, setUserLanguage] = useState(
+    navigator.language || "en-US",
+  );
   return (
     <IntlProvider locale="en-US" messages={messages}>
-      <App {...props} />
+      <App
+        userLanguage={userLanguage}
+        handleLanguageChange={setUserLanguage}
+        {...props}
+      />
     </IntlProvider>
   );
 };
@@ -208,5 +216,18 @@ describe("<App userLanguage='pt-BR' />", () => {
 
     // Assert
     expect(bottomPriceInput.value).toBe(formattedPrice);
+  });
+
+  test.skip("lets users change language with a dropdown", async () => {
+    expect(
+      screen.getByRole("combobox", { name: /Language/ }),
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("combobox", { name: /Language/ }));
+    await user.click(screen.getByRole("option", { name: /English/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Gas Cost/)).toBeVisible();
+    });
   });
 });
