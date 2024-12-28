@@ -4,6 +4,7 @@ export default {
   convertedGasCost: "Converted Gas Cost",
   exchangeRatesLastUpdated: "Exchange rates last updated:",
   sourceCode: "Source code",
+  language: "Language:",
 
   // ConversionTable.tsx
   showDetails: "Show Details",

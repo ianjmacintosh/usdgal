@@ -4,6 +4,7 @@ export default {
   convertedGasCost: "Umgerechnete Gaskosten",
   exchangeRatesLastUpdated: "Zuletzt aktualisierte Wechselkurse:",
   sourceCode: "Quellcode",
+  language: "Sprache:",
 
   // ConversionTable.tsx
   showDetails: "Details anzeigen",
@@ -12,7 +13,7 @@ export default {
   cost: "Kosten",
   currencyConversionRate: "Währungsumrechnungskurs",
   volumeConversionRate: "Volumenumrechnungskurs",
-  convertCost: "Umgerechnete Kosten",
+  convertedCost: "Umgerechnete Kosten",
   volumeFormulaPerBottomUnit: "{topUnitCount} {topUnit}s = 1 {bottomUnit}",
   volumeFormulaPerTopUnit: "1 {topUnit} = {bottomUnitCount} {bottomUnit}s",
   gasPriceFormula: "{number} {currency} pro {unit}",

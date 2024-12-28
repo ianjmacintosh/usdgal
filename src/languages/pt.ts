@@ -4,6 +4,7 @@ export default {
   convertedGasCost: "Custo da gasolina convertida",
   exchangeRatesLastUpdated: "Última atualização das taxas de câmbio:",
   sourceCode: "Código-fonte",
+  language: "Idioma:",
 
   // ConversionTable.tsx
   showDetails: "Mostrar detalhes",

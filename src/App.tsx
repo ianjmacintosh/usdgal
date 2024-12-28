@@ -12,8 +12,14 @@ import { FormattedMessage } from "react-intl";
 
 type SupportedUnits = "liter" | "gallon";
 
-function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
-  const userLanguage = userLanguageProp || navigator.language || "en-US";
+function App({
+  userLanguage: userLanguageProp,
+  handleLanguageChange,
+}: {
+  userLanguage: string;
+  handleLanguageChange: (newLanguage: string) => void;
+}) {
+  const userLanguage = userLanguageProp;
   const userHomeCountry = userLanguage.split("-")[1] || "US";
 
   // Gas price values (price, currency, units)
@@ -148,6 +154,23 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
         />
       </div>
       <footer>
+        <form className="my-2">
+          <label htmlFor="language">
+            <FormattedMessage id="language" />{" "}
+          </label>
+          <select
+            onChange={(event) => {
+              const newLanguage = event.target.value;
+              handleLanguageChange(newLanguage);
+            }}
+          >
+            <option value="en-US">English (United States)</option>
+            <option value="es-MX">Español (México)</option>
+            <option value="pt-BR">Português (Brasil)</option>
+            <option value="de-DE">Deutsch (Deutschland)</option>
+            <option value="hi-IN">हिन्दी (भारत)</option>
+          </select>
+        </form>
         <nav>
           <ul>
             <li>
