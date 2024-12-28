@@ -1,6 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import "./Unit.css";
 import { useEffect } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 
 type SupportedUnits = "liter" | "gallon";
 const Unit = ({
@@ -14,10 +15,11 @@ const Unit = ({
   onUnitChange: (newValue: SupportedUnits) => void;
   disabled?: boolean;
 }) => {
+  const intl = useIntl();
   const displayUnit = {
     "": "",
-    liter: "per liter",
-    gallon: "per gallon",
+    liter: intl.formatMessage({ id: "perLiter" }),
+    gallon: intl.formatMessage({ id: "perGallon" }),
   };
   useEffect(() => {
     onUnitChange(unit as SupportedUnits);
@@ -34,7 +36,7 @@ const Unit = ({
     >
       <Ariakit.Select
         className="unit-button button"
-        aria-label="Unit of sale (liters or gallons)"
+        aria-label={intl.formatMessage({ id: "unitOfSale" })}
         disabled={disabled}
       >
         <span className="current-value">
@@ -49,10 +51,10 @@ const Unit = ({
         unmountOnHide={true}
       >
         <Ariakit.SelectItem className="select-item" value="gallon">
-          {unit === "gallon" ? "✓" : ""} per gallon
+          {unit === "gallon" ? "✓" : ""} <FormattedMessage id="perGallon" />
         </Ariakit.SelectItem>
         <Ariakit.SelectItem className="select-item" value="liter">
-          {unit === "liter" ? "✓" : ""} per liter
+          {unit === "liter" ? "✓" : ""} <FormattedMessage id="perLiter" />
         </Ariakit.SelectItem>
       </Ariakit.SelectPopover>
     </Ariakit.SelectProvider>

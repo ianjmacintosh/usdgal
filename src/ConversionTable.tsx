@@ -71,7 +71,7 @@ const ConversionTable = ({
       <ul
         className={`details ${showDetails ? "visible" : ""}`}
         aria-hidden={!showDetails}
-        aria-label="Conversion Details"
+        aria-label={intl.formatMessage({ id: "conversionDetails" })}
       >
         <li style={{ "--i": 0 } as React.CSSProperties}>
           <label id="cost-label">

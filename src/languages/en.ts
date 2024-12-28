@@ -8,8 +8,19 @@ export default {
   // ConversionTable.tsx
   showDetails: "Show Details",
   hideDetails: "Hide Details",
+  conversionDetails: "Conversion Details",
   cost: "Cost",
   currencyConversionRate: "Currency conversion rate",
   volumeConversionRate: "Volume conversion rate",
   convertedCost: "Converted cost",
+
+  // GasPrice.tsx
+  tinyNumber:
+    "This amount is displayed as {displayNumber} {currency}, but the actual amount is less ({number} {currency})",
+  amountPaidPerUnit: "Amount of {currency} paid per {unit} of gas",
+
+  // Unit.tsx
+  perLiter: "per liter",
+  perGallon: "per gallon",
+  unitOfSale: "Unit of sale (liters or gallons)",
 };
