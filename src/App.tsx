@@ -109,7 +109,9 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
           userLanguage={userLanguage}
         />
 
-        <h2 className="text-3xl font-bold my-4">Converted Gas Cost</h2>
+        <h2 className="text-3xl font-bold my-4">
+          <FormattedMessage id="convertedGasCost" />
+        </h2>
         <GasPrice
           label="To"
           number={bottomNumber}
@@ -129,7 +131,7 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
         />
         <p className="my-2 text-sm">
           <em>
-            Exchange rates last updated:{" "}
+            <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
             {Intl.DateTimeFormat(userLanguage, {
               dateStyle: "medium",
             }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}

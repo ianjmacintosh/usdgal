@@ -38,7 +38,13 @@ afterEach(() => {
 
 const server = setupServer(...restHandlers);
 
-const TestComponent = ({ messages = en, ...props }) => {
+const TestComponent = ({
+  messages = en,
+  ...props
+}: {
+  messages?: Record<string, string>;
+  [key: string]: unknown;
+}) => {
   return (
     <IntlProvider locale="en-US" messages={messages}>
       <App {...props} />

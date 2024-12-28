@@ -104,8 +104,23 @@ const ConversionTable = ({
             </label>
             <span aria-labelledby="volume-conversion-rate-label">
               {targetVolumeInLiters > sourceVolumeInLiters
-                ? `${targetVolumeInLiters / sourceVolumeInLiters} ${topUnit}s = 1 ${bottomUnit}`
-                : `1 ${topUnit} = ${sourceVolumeInLiters / targetVolumeInLiters} ${bottomUnit}s`}
+                ? intl.formatMessage(
+                    { id: "volumeFormulaPerBottomUnit" },
+                    {
+                      topUnitCount: targetVolumeInLiters / sourceVolumeInLiters,
+                      topUnit,
+                      bottomUnit,
+                    },
+                  )
+                : intl.formatMessage(
+                    { id: "volumeFormulaPerTopUnit" },
+                    {
+                      topUnit,
+                      bottomUnitCount:
+                        sourceVolumeInLiters / targetVolumeInLiters,
+                      bottomUnit,
+                    },
+                  )}
             </span>
           </li>
         )}
