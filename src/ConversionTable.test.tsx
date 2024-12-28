@@ -6,6 +6,7 @@ import exchangeRateData from "./exchangeRateData.ts";
 import userEvent from "@testing-library/user-event";
 import { IntlProvider } from "react-intl";
 import en from "./languages/en.ts";
+import es from "./languages/es.ts";
 
 describe("<ConversionTable />", () => {
   const user = userEvent.setup();
@@ -14,9 +15,15 @@ describe("<ConversionTable />", () => {
     cleanup();
   });
 
-  const TestComponent = ({ ...props }) => {
+  const TestComponent = ({
+    messages,
+    ...props
+  }: {
+    messages?: Record<string, string>;
+    [key: string]: unknown;
+  }) => {
     return (
-      <IntlProvider locale="en-US" messages={en}>
+      <IntlProvider locale="en-US" messages={messages || en}>
         <ConversionTable
           topNumber={1.23456}
           bottomNumber={5.6789}
@@ -101,5 +108,17 @@ describe("<ConversionTable />", () => {
 
     expect(screen.queryByLabelText("Currency conversion rate")).toBeNull();
     expect(screen.queryByLabelText("Volume conversion rate")).toBeNull();
+  });
+
+  test("translates liters and gallons", async () => {
+    render(<TestComponent messages={es} />);
+
+    expect(
+      screen.getByLabelText("Detalles de conversión").textContent,
+    ).not.toContain("gallon");
+
+    expect(
+      screen.getByLabelText("Detalles de conversión").textContent,
+    ).toContain("galón");
   });
 });
