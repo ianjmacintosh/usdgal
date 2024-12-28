@@ -5,6 +5,8 @@ import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 import { selectItemFromFancySelect } from "./utils/testUtils";
+import { IntlProvider } from "react-intl";
+import en from "./languages/en";
 
 describe("<GasPrice />", () => {
   const user = userEvent.setup();
@@ -14,22 +16,24 @@ describe("<GasPrice />", () => {
     const [unit, setUnit] = useState("liter");
 
     return (
-      <GasPrice
-        label="SimpleTest"
-        number={number}
-        currency={currency}
-        unit={unit}
-        onNumberChange={(newValue) => {
-          setNumber(newValue);
-        }}
-        onCurrencyChange={(newValue) => {
-          setCurrency(newValue);
-        }}
-        onUnitChange={(newValue) => {
-          setUnit(newValue);
-        }}
-        {...props}
-      />
+      <IntlProvider locale="en-US" messages={en}>
+        <GasPrice
+          label="SimpleTest"
+          number={number}
+          currency={currency}
+          unit={unit}
+          onNumberChange={(newValue) => {
+            setNumber(newValue);
+          }}
+          onCurrencyChange={(newValue) => {
+            setCurrency(newValue);
+          }}
+          onUnitChange={(newValue) => {
+            setUnit(newValue);
+          }}
+          {...props}
+        />
+      </IntlProvider>
     );
   };
 

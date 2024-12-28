@@ -15,6 +15,11 @@ import { getFormattedPrice } from "./utils/numberFormat";
 import { selectItemFromFancySelect } from "./utils/testUtils";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
+import "@testing-library/jest-dom/vitest";
+import { IntlProvider } from "react-intl";
+import en from "./languages/en.ts";
+import es from "./languages/es.ts";
+import { useState } from "react";
 
 export const restHandlers = [
   http.get("/workers/getLocation", () => {
@@ -22,10 +27,37 @@ export const restHandlers = [
   }),
 ];
 
+// Start server before all tests
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+
+//  Close server after all tests
+afterAll(() => server.close());
+
+afterEach(() => {
+  cleanup();
+});
+
 const server = setupServer(...restHandlers);
 
-const TestComponent = ({ ...props }) => {
-  return <App {...props} />;
+const TestComponent = ({
+  messages = en,
+  ...props
+}: {
+  messages?: Record<string, string>;
+  [key: string]: unknown;
+}) => {
+  const [userLanguage, setUserLanguage] = useState(
+    navigator.language || "en-US",
+  );
+  return (
+    <IntlProvider locale="en-US" messages={messages}>
+      <App
+        userLanguage={userLanguage}
+        handleLanguageChange={setUserLanguage}
+        {...props}
+      />
+    </IntlProvider>
+  );
 };
 
 const elements = () => {
@@ -47,21 +79,22 @@ const elements = () => {
   };
 };
 
+describe("<App userLanguage='es-MX' />", () => {
+  beforeAll(() => {
+    render(<TestComponent messages={es} userLanguage="es-MX" />);
+  });
+
+  test("headline to be in Spanish", () => {
+    expect(screen.getByText("Precio de la Gasolina")).toBeVisible();
+  });
+});
+
 describe("<App userLanguage='en-US' />", () => {
   const user = userEvent.setup();
-
-  // Start server before all tests
-  beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
   beforeEach(() => {
     render(<TestComponent userLanguage="en-US" />);
   });
-  afterEach(() => {
-    cleanup();
-  });
-
-  //  Close server after all tests
-  afterAll(() => server.close());
 
   test("loads with the correct starting values", async () => {
     const {
@@ -111,15 +144,9 @@ describe("<App userLanguage='en-US' />", () => {
 describe("<App userLanguage='pt-BR' />", () => {
   const user = userEvent.setup();
 
-  // Start server before all tests
-  beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
-
   beforeEach(() => {
     // This "defaultUserLocation" thing is kind of a hack -- I'm using it to test when we geolocate the Brazilian user as being in Brazil
     render(<TestComponent userLanguage="pt-BR" />);
-  });
-  afterEach(() => {
-    cleanup();
   });
 
   test("loads with the correct starting values", async () => {
@@ -189,5 +216,18 @@ describe("<App userLanguage='pt-BR' />", () => {
 
     // Assert
     expect(bottomPriceInput.value).toBe(formattedPrice);
+  });
+
+  test.skip("lets users change language with a dropdown", async () => {
+    expect(
+      screen.getByRole("combobox", { name: /Language/ }),
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("combobox", { name: /Language/ }));
+    await user.click(screen.getByRole("option", { name: /English/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Gas Cost/)).toBeVisible();
+    });
   });
 });

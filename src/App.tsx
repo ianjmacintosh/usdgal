@@ -8,11 +8,18 @@ import ConversionTable from "./ConversionTable";
 import exchangeRateData from "./exchangeRateData";
 import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
 import { fetchCountryCode } from "./utils/api";
+import { FormattedMessage } from "react-intl";
 
 type SupportedUnits = "liter" | "gallon";
 
-function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
-  const userLanguage = userLanguageProp || navigator.language || "en-US";
+function App({
+  userLanguage: userLanguageProp,
+  handleLanguageChange,
+}: {
+  userLanguage: string;
+  handleLanguageChange: (newLanguage: string) => void;
+}) {
+  const userLanguage = userLanguageProp;
   const userHomeCountry = userLanguage.split("-")[1] || "US";
 
   // Gas price values (price, currency, units)
@@ -87,7 +94,9 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
   return (
     <>
       <div className="container">
-        <h2 className="text-3xl font-bold my-4">Gas Cost</h2>
+        <h2 className="text-3xl font-bold my-4">
+          <FormattedMessage id="gasCost" />
+        </h2>
         <GasPrice
           label="From"
           number={topNumber}
@@ -106,7 +115,9 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
           userLanguage={userLanguage}
         />
 
-        <h2 className="text-3xl font-bold my-4">Converted Gas Cost</h2>
+        <h2 className="text-3xl font-bold my-4">
+          <FormattedMessage id="convertedGasCost" />
+        </h2>
         <GasPrice
           label="To"
           number={bottomNumber}
@@ -126,10 +137,10 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
         />
         <p className="my-2 text-sm">
           <em>
-            Exchange rates last updated:{" "}
-            {Intl.DateTimeFormat(userLanguage, { dateStyle: "medium" }).format(
-              exchangeRateData.timestamp * 1000,
-            ) ?? "Unknown"}
+            <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
+            {Intl.DateTimeFormat(userLanguage, {
+              dateStyle: "medium",
+            }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}
           </em>
         </p>
         <ConversionTable
@@ -143,6 +154,24 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
         />
       </div>
       <footer>
+        <form className="my-2">
+          <label htmlFor="language">
+            <FormattedMessage id="language" />{" "}
+          </label>
+          <select
+            onChange={(event) => {
+              const newLanguage = event.target.value;
+              handleLanguageChange(newLanguage);
+            }}
+            id="language"
+          >
+            <option value="en-US">English (United States)</option>
+            <option value="es-MX">Español (México)</option>
+            <option value="pt-BR">Português (Brasil)</option>
+            <option value="de-DE">Deutsch (Deutschland)</option>
+            <option value="hi-IN">हिन्दी (भारत)</option>
+          </select>
+        </form>
         <nav>
           <ul>
             <li>
@@ -150,7 +179,9 @@ function App({ userLanguage: userLanguageProp }: { userLanguage?: string }) {
                 href="https://www.github.com/ianjmacintosh/usdgal"
                 target="_blank"
               >
-                <span>Source code</span>
+                <span>
+                  <FormattedMessage id="sourceCode" />
+                </span>
                 <GithubLogo height={18} width={18} />
               </a>
             </li>

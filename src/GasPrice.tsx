@@ -8,6 +8,7 @@ import {
 } from "./utils/numberFormat";
 import Currency from "./Currency";
 import Unit from "./Unit";
+import { FormattedMessage, useIntl } from "react-intl";
 
 type SupportedUnits = "liter" | "gallon";
 
@@ -37,6 +38,7 @@ function GasPrice({
   disabled?: boolean;
   userLanguage?: string;
 }) {
+  const intl = useIntl();
   const [displayNumber, setDisplayNumber] = useState(
     getFormattedPrice(number, userLanguage, currency),
   );
@@ -86,7 +88,10 @@ function GasPrice({
           inputMode="decimal"
           pattern="^[0-9]*[.,]?[0-9]*$"
           className="number"
-          aria-label={`Amount of ${currency} paid per ${unit} of gas`}
+          aria-label={intl.formatMessage(
+            { id: "amountPaidPerUnit" },
+            { unit, currency },
+          )}
         />
         <Currency
           currency={currency}
@@ -101,8 +106,10 @@ function GasPrice({
       {isTinyNumber(number, userLanguage, currency) ? (
         <p className="mt-4">
           <em role="status">
-            This amount is displayed as {displayNumber} {currency}, but the
-            actual amount is less ({number} {currency})
+            <FormattedMessage
+              id="tinyNumber"
+              values={{ displayNumber, currency, number }}
+            />
           </em>
         </p>
       ) : (
