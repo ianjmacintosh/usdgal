@@ -15,6 +15,7 @@ export default {
   convertedCost: "Converted cost",
   volumeFormulaPerBottomUnit: "{topUnitCount} {topUnit}s = 1 {bottomUnit}",
   volumeFormulaPerTopUnit: "1 {topUnit} = {bottomUnitCount} {bottomUnit}s",
+  gasPriceFormula: "{number} {currency} por {unit}",
 
   // GasPrice.tsx
   tinyNumber:

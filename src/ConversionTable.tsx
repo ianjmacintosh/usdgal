@@ -78,7 +78,14 @@ const ConversionTable = ({
             <FormattedMessage id="cost" />
           </label>
           <span aria-labelledby="cost-label">
-            {topNumber} {topCurrency} per {topUnit}
+            <FormattedMessage
+              id="gasPriceFormula"
+              values={{
+                number: topNumber,
+                currency: topCurrency,
+                unit: topUnit,
+              }}
+            />
           </span>
         </li>
 
@@ -129,7 +136,14 @@ const ConversionTable = ({
             <FormattedMessage id="convertedCost" />
           </label>
           <span aria-labelledby="converted-cost-label">
-            {bottomNumber} {bottomCurrency} per {bottomUnit}
+            <FormattedMessage
+              id="gasPriceFormula"
+              values={{
+                number: bottomNumber,
+                currency: bottomCurrency,
+                unit: bottomUnit,
+              }}
+            />
           </span>
         </li>
       </ul>
