@@ -9,7 +9,13 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
 
-const TestComponent = ({ ...props }) => {
+const TestComponent = ({
+  messages = en,
+  ...props
+}: {
+  messages?: Record<string, string>;
+  [key: string]: unknown;
+}) => {
   const [currency, setCurrency] = useState<string>("BRL");
 
   return (
