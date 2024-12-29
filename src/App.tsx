@@ -11,6 +11,8 @@ import { fetchCountryCode } from "./utils/api";
 import { FormattedMessage } from "react-intl";
 import Flag from "react-flagpack";
 
+import * as Flags from "country-flag-icons/react/3x2";
+
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 type SupportedUnits = "liter" | "gallon";
 
@@ -164,6 +166,8 @@ function App({
           <Flag code="NL" />
           {/* Flag-icons */}
           <span className="fi fi-us"></span>
+          {/* Country flag icons */}
+          <Flags.US title="United States" className="..." />;
           <select
             onChange={(event) => {
               const newLanguage = event.target.value;
