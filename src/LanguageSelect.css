@@ -1,0 +1,51 @@
+.language-form {
+  font-weight: normal;
+  text-align: center;
+}
+
+.select-button {
+  margin: 0 auto;
+  width: auto;
+  border-radius: 0;
+  border: none;
+  padding: 10px;
+  color: #333;
+  border: none;
+  background: #f9f9f9;
+  font-weight: normal;
+}
+
+.select-button:hover {
+  background: #efefef;
+  transition: all 200ms;
+}
+
+.select-button {
+  display: grid;
+  grid-template-areas: "stack";
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: rgba(36, 36, 36, 0.2) 0 0 10px;
+}
+
+.select-button .current-value {
+  grid-area: stack;
+  text-align: center;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 5px;
+  padding-right: 22px;
+}
+
+.select-button .chevron {
+  grid-area: stack;
+  justify-self: end;
+}
+
+.language-select {
+  box-shadow: none;
+  border: solid 1px #333;
+  background: none;
+  padding: 5px 10px;
+}

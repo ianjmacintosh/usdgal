@@ -154,15 +154,10 @@ function App({
         />
       </div>
       <footer>
-        <form className="my-2">
-          <label htmlFor="language">
-            <FormattedMessage id="language" />{" "}
-          </label>
-          <LanguageSelect
-            userLanguage={userLanguage}
-            onLanguageChange={handleLanguageChange}
-          />
-        </form>
+        <LanguageSelect
+          userLanguage={userLanguage}
+          onLanguageChange={handleLanguageChange}
+        />
         <nav>
           <ul>
             <li>

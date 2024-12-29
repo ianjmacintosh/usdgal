@@ -1,20 +1,21 @@
 import * as Ariakit from "@ariakit/react";
 import * as Flag from "country-flag-icons/react/3x2";
+import "./LanguageSelect.css";
 
 const getFlagIcon = (country: string) => {
   switch (country) {
     case "US":
-      return <Flag.US height={17} />;
+      return <Flag.US height={14} />;
     case "DE":
-      return <Flag.DE height={17} />;
+      return <Flag.DE height={14} />;
     case "IN":
-      return <Flag.IN height={17} />;
+      return <Flag.IN height={14} />;
     case "BR":
-      return <Flag.BR height={17} />;
+      return <Flag.BR height={14} />;
     case "MX":
-      return <Flag.MX height={17} />;
+      return <Flag.MX height={14} />;
     default:
-      return <Flag.EU height={17} />;
+      return <Flag.EU height={14} />;
   }
 };
 
@@ -70,38 +71,40 @@ const LanguageSelect = ({
       return language.id === userLanguage;
     }) ?? defaultLanguage;
   return (
-    <Ariakit.SelectProvider
-      defaultValue={userLanguage}
-      setValue={(newValue) => {
-        handleLanguageChange(String(newValue));
-      }}
-      value={currentLanguage.id}
-    >
-      <Ariakit.Select className="select-button button">
-        <span className="current-value">
-          {currentLanguage.flagElement} {currentLanguage.languageName}
-        </span>
-        <Ariakit.SelectArrow className="chevron" />
-      </Ariakit.Select>
-      <Ariakit.SelectPopover
-        gutter={4}
-        className="popover unit-popover"
-        unmountOnHide={true}
+    <form className="my-4 language-form">
+      <Ariakit.SelectProvider
+        defaultValue={userLanguage}
+        setValue={(newValue) => {
+          handleLanguageChange(String(newValue));
+        }}
+        value={currentLanguage.id}
       >
-        {supportedLanguages.map((language) => {
-          return (
-            <Ariakit.SelectItem
-              className="select-item"
-              key={language.id}
-              value={language.id}
-            >
-              {language.flagElement}
-              {language.languageName} ({language.countryName})
-            </Ariakit.SelectItem>
-          );
-        })}
-      </Ariakit.SelectPopover>
-    </Ariakit.SelectProvider>
+        <Ariakit.Select className="language-select select-button button">
+          <span className="current-value">
+            {currentLanguage.flagElement} {currentLanguage.languageName}
+          </span>
+          <Ariakit.SelectArrow className="chevron" />
+        </Ariakit.Select>
+        <Ariakit.SelectPopover
+          gutter={4}
+          className="popover unit-popover"
+          unmountOnHide={true}
+        >
+          {supportedLanguages.map((language) => {
+            return (
+              <Ariakit.SelectItem
+                className="select-item"
+                key={language.id}
+                value={language.id}
+              >
+                {language.flagElement}
+                {language.languageName} ({language.countryName})
+              </Ariakit.SelectItem>
+            );
+          })}
+        </Ariakit.SelectPopover>
+      </Ariakit.SelectProvider>
+    </form>
   );
 };
 
