@@ -9,13 +9,6 @@ import exchangeRateData from "./exchangeRateData";
 import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
 import { fetchCountryCode } from "./utils/api";
 import { FormattedMessage } from "react-intl";
-import Flag from "react-flagpack";
-
-import * as Flags from "country-flag-icons/react/3x2";
-
-import "/node_modules/flag-icons/css/flag-icons.min.css";
-
-import { CircleFlag } from "react-circle-flags";
 import LanguageSelect from "./LanguageSelect";
 type SupportedUnits = "liter" | "gallon";
 
@@ -165,15 +158,10 @@ function App({
           <label htmlFor="language">
             <FormattedMessage id="language" />{" "}
           </label>
-          {/* Flagpack */}
-          <Flag code="NL" />
-          {/* Flag-icons */}
-          <span className="fi fi-us"></span>
-          {/* Country flag icons */}
-          <Flags.BR title="Brazil" className="..." />
-          {/* React circle flags */}
-          <CircleFlag countryCode="es" height="35" />
-          <LanguageSelect onLanguageChange={handleLanguageChange} />
+          <LanguageSelect
+            userLanguage={userLanguage}
+            onLanguageChange={handleLanguageChange}
+          />
         </form>
         <nav>
           <ul>

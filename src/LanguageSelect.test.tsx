@@ -16,6 +16,7 @@ const TestComponent = ({
   return (
     <IntlProvider locale="en-US" messages={messages} {...props}>
       <LanguageSelect
+        userLanguage="en-US"
         onLanguageChange={(newLang) => {
           console.log(`Language changed to ${newLang}`);
         }}
