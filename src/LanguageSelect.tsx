@@ -97,6 +97,7 @@ const LanguageSelect = ({
                 key={language.id}
                 value={language.id}
               >
+                {currentLanguage.id === language.id ? "✓" : ""}
                 {language.flagElement}
                 {language.languageName} ({language.countryName})
               </Ariakit.SelectItem>
