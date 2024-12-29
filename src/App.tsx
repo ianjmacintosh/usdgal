@@ -14,6 +14,8 @@ import Flag from "react-flagpack";
 import * as Flags from "country-flag-icons/react/3x2";
 
 import "/node_modules/flag-icons/css/flag-icons.min.css";
+
+import { CircleFlag } from "react-circle-flags";
 type SupportedUnits = "liter" | "gallon";
 
 function App({
@@ -168,6 +170,8 @@ function App({
           <span className="fi fi-us"></span>
           {/* Country flag icons */}
           <Flags.US title="United States" className="..." />;
+          {/* React circle flags */}
+          <CircleFlag countryCode="es" height="35" />
           <select
             onChange={(event) => {
               const newLanguage = event.target.value;
