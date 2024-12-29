@@ -81,7 +81,8 @@ const LanguageSelect = ({
       >
         <Ariakit.Select className="language-select select-button button">
           <span className="current-value">
-            {currentLanguage.flagElement} {currentLanguage.languageName}
+            {currentLanguage.flagElement}
+            {currentLanguage.languageName}
           </span>
           <Ariakit.SelectArrow className="chevron" />
         </Ariakit.Select>
@@ -96,6 +97,7 @@ const LanguageSelect = ({
                 className="select-item"
                 key={language.id}
                 value={language.id}
+                id={language.id}
               >
                 {currentLanguage.id === language.id ? "✓" : ""}
                 {language.flagElement}
