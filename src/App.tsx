@@ -9,6 +9,7 @@ import exchangeRateData from "./exchangeRateData";
 import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
 import { fetchCountryCode } from "./utils/api";
 import { FormattedMessage } from "react-intl";
+import Flag from "react-flagpack";
 
 type SupportedUnits = "liter" | "gallon";
 
@@ -158,6 +159,8 @@ function App({
           <label htmlFor="language">
             <FormattedMessage id="language" />{" "}
           </label>
+          <Flag code="NL" />
+
           <select
             onChange={(event) => {
               const newLanguage = event.target.value;
