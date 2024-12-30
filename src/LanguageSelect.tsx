@@ -1,5 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import * as Flag from "country-flag-icons/react/3x2";
+import { FormattedMessage } from "react-intl";
 import "./LanguageSelect.css";
 
 const getFlagIcon = (country: string) => {
@@ -72,6 +73,9 @@ const LanguageSelect = ({
     }) ?? defaultLanguage;
   return (
     <form className="my-4 language-form">
+      <label htmlFor="language-select" className="font-bold">
+        <FormattedMessage defaultMessage="Language" id="language" />
+      </label>
       <Ariakit.SelectProvider
         defaultValue={userLanguage}
         setValue={(newValue) => {
@@ -80,7 +84,10 @@ const LanguageSelect = ({
         placement="bottom"
         value={currentLanguage.id}
       >
-        <Ariakit.Select className="language-select select-button button">
+        <Ariakit.Select
+          className="language-select select-button button"
+          id="language-select"
+        >
           <span className="current-value">
             {currentLanguage.flagElement}
             {currentLanguage.languageName}

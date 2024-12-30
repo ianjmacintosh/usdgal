@@ -4,7 +4,6 @@ export default {
   convertedGasCost: "Converted Gas Cost",
   exchangeRatesLastUpdated: "Exchange rates last updated:",
   sourceCode: "Source code",
-  language: "Language:",
 
   // ConversionTable.tsx
   showDetails: "Show Details",
@@ -22,6 +21,9 @@ export default {
   tinyNumber:
     "This amount is displayed as {displayNumber} {currency}, but the actual amount is less ({number} {currency})",
   amountPaidPerUnit: "Amount of {currency} paid per {unit} of gas",
+
+  // LanguageSelect.tsx
+  language: "Language: ",
 
   // Unit.tsx
   perLiter: "per liter",

@@ -1,10 +1,13 @@
 .language-form {
   font-weight: normal;
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
 }
 
 .select-button {
-  margin: 0 auto;
   width: auto;
   border-radius: 0;
   border: none;
