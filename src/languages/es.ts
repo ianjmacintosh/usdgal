@@ -14,25 +14,13 @@ export default {
   currencyConversionRate: "Tasa de conversión de moneda",
   volumeConversionRate: "Tasa de conversión de volumen",
   convertedCost: "Costo convertido",
-  volumeFormulaPerBottomUnit: `{topUnitCount} {topUnit, select,
-    liter {litros}
-    gallon {galones}
-    other {{topUnit}}
- } = 1
-  {bottomUnit, select,
-  liter {litro}
-  gallon {galón}
-  other {{bottomUnit}}
+  liter: `{quantity, plural,
+    one {litro}
+    other {litros}
   }`,
-  volumeFormulaPerTopUnit: `1 {topUnit, select,
-    liter {litro}
-    gallon {galón}
-    other {{topUnit}}
- } = {bottomUnitCount}
-  {bottomUnit, select,
-  liter {litros}
-  gallon {galones}
-  other {{bottomUnit}}
+  gallon: `{quantity, plural,
+    one {galón}
+    other {galones}
   }`,
   gasPriceFormula: `{number} {currency} por {unit, select,
     liter {litro}

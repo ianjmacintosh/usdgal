@@ -14,8 +14,14 @@ export default {
   currencyConversionRate: "Währungsumrechnungskurs",
   volumeConversionRate: "Volumenumrechnungskurs",
   convertedCost: "Umgerechnete Kosten",
-  volumeFormulaPerBottomUnit: "{topUnitCount} {topUnit}s = 1 {bottomUnit}",
-  volumeFormulaPerTopUnit: "1 {topUnit} = {bottomUnitCount} {bottomUnit}s",
+  liter: `{quantity, plural,
+  one {litro}
+  other {litros}
+}`,
+  gallon: `{quantity, plural,
+  one {galón}
+  other {galones}
+}`,
   gasPriceFormula: "{number} {currency} pro {unit}",
 
   // GasPrice.tsx
