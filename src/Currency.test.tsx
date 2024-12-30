@@ -109,4 +109,14 @@ describe("<Currency />", () => {
       "true",
     );
   });
+
+  test("translates currency names", async () => {
+    cleanup();
+    render(<TestComponent userLanguage="pt-BR" />);
+
+    const currencyButton = screen.getByRole("combobox");
+    await user.click(currencyButton);
+
+    expect(screen.getByText("Real brasileiro", { exact: false })).toBeVisible();
+  });
 });
