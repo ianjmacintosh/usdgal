@@ -15,16 +15,16 @@ export default {
   volumeConversionRate: "Volumenumrechnungskurs",
   convertedCost: "Umgerechnete Kosten",
   liter: `{quantity, plural,
-  one {litro}
-  other {litros}
+  one {Liter}
+  other {Litern}
 }`,
   gallon: `{quantity, plural,
-  one {galón}
-  other {galones}
+  one {Gallone}
+  other {Gallonen}
 }`,
-  gasPriceFormula: `{number} {currency} por {unit, select,
-liter {litro}
-gallon {galão}
+  gasPriceFormula: `{number} {currency} pro {unit, select,
+liter {Liter}
+gallon {Gallone}
 other {{unit}}
 }`,
 
