@@ -14,9 +14,20 @@ export default {
   currencyConversionRate: "Taxa de conversão de moeda",
   volumeConversionRate: "Taxa de conversão de volume",
   convertedCost: "Custo convertido",
-  volumeFormulaPerBottomUnit: "{topUnitCount} {topUnit}s = 1 {bottomUnit}",
-  volumeFormulaPerTopUnit: "1 {topUnit} = {bottomUnitCount} {bottomUnit}s",
-  gasPriceFormula: "{number} {currency} por {unit}",
+  liter: `{quantity, plural,
+  one {litro}
+  other {litros}
+}`,
+  gallon: `{quantity, plural,
+  one {galão}
+  other {galões}
+}`,
+
+  gasPriceFormula: `{number} {currency} por {unit, select,
+liter {litro}
+gallon {galão}
+other {{unit}}
+}`,
 
   // GasPrice.tsx
   tinyNumber:

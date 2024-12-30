@@ -14,9 +14,13 @@ export default {
   currencyConversionRate: "मुद्रा रूपांतरण दर",
   volumeConversionRate: "मात्रा रूपांतरण दर",
   convertedCost: "रूपांतरित लागत",
-  volumeFormulaPerBottomUnit: "{topUnitCount} {topUnit}s = 1 {bottomUnit}",
-  volumeFormulaPerTopUnit: "1 {topUnit} = {bottomUnitCount} {bottomUnit}s",
-  gasPriceFormula: "{number} {currency} por {unit}",
+  liter: `लीटर`,
+  gallon: `गैलन`,
+  gasPriceFormula: `{number} {currency} प्रति {unit, select,
+liter {लीटर}
+gallon {गैलन}
+other {{unit}}
+}`,
 
   // GasPrice.tsx
   tinyNumber:

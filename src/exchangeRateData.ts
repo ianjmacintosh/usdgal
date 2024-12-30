@@ -176,15 +176,30 @@ const symbols = {
   ZWL: "Zimbabwean Dollar",
 };
 
-const getCurrencies = () =>
-  Object.keys(exchangeRateData.rates).map((code) => ({
-    id: `item-${kebabCase(code)}`,
-    value: code,
-    name: symbols[code as keyof typeof symbols],
-    children: `${code}: ${symbols[code as keyof typeof symbols]}`,
-  }));
+const getCurrencies = (language = "en-US") =>
+  Object.keys(exchangeRateData.rates).map((code) => {
+    let currencyName = symbols[code as keyof typeof symbols];
 
-const currenciesSelectStoreItems = getCurrencies();
+    if (language !== "en-US") {
+      currencyName = Intl.NumberFormat(language, {
+        currency: code,
+        style: "currency",
+        currencyDisplay: "name",
+      })
+        .format(1)
+        .split(" ")
+        .slice(1)
+        .join(" ");
+    }
+    return {
+      id: `item-${kebabCase(code)}`,
+      value: code,
+      name: currencyName,
+      children: `${code}: ${currencyName}`,
+    };
+  });
+
+const currenciesSelectStoreItems = getCurrencies;
 
 export default exchangeRateData;
 
