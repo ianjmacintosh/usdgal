@@ -177,12 +177,15 @@ const symbols = {
 };
 
 const getCurrencies = () =>
-  Object.keys(exchangeRateData.rates).map((code) => ({
-    id: `item-${kebabCase(code)}`,
-    value: code,
-    name: symbols[code as keyof typeof symbols],
-    children: `${code}: ${symbols[code as keyof typeof symbols]}`,
-  }));
+  Object.keys(exchangeRateData.rates).map((code) => {
+    const currencyName = symbols[code as keyof typeof symbols];
+    return {
+      id: `item-${kebabCase(code)}`,
+      value: code,
+      name: currencyName,
+      children: `${code}: ${currencyName}`,
+    };
+  });
 
 const currenciesSelectStoreItems = getCurrencies();
 
