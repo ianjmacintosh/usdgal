@@ -15,16 +15,16 @@ export default {
   volumeConversionRate: "मात्रा रूपांतरण दर",
   convertedCost: "रूपांतरित लागत",
   liter: `{quantity, plural,
-  one {litro}
-  other {litros}
+  one {लीटर}
+  other {लीटर}
 }`,
   gallon: `{quantity, plural,
-  one {galón}
-  other {galones}
+  one {गैलन}
+  other {गैलन}
 }`,
-  gasPriceFormula: `{number} {currency} por {unit, select,
-liter {litro}
-gallon {galão}
+  gasPriceFormula: `{number} {currency} प्रति {unit, select,
+liter {लीटर}
+gallon {गैलन}
 other {{unit}}
 }`,
 
