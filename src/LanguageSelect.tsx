@@ -22,39 +22,35 @@ const getFlagIcon = (country: string) => {
 
 const supportedLanguages = [
   {
-    id: "en-US",
+    id: "en",
     languageName: "English",
     countryName: "United States",
     flagElement: getFlagIcon("US"),
   },
   {
-    id: "es-MX",
-    languageName: "Español",
-    countryName: "México",
-    flagElement: getFlagIcon("MX"),
-  },
-  {
-    id: "pt-BR",
-    languageName: "Português",
-    countryName: "Brasil",
-    flagElement: getFlagIcon("BR"),
-  },
-  {
-    id: "de-DE",
+    id: "de",
     languageName: "Deutsch",
-    countryName: "Deutschland",
     flagElement: getFlagIcon("DE"),
   },
   {
-    id: "hi-IN",
+    id: "es",
+    languageName: "Español",
+    flagElement: getFlagIcon("MX"),
+  },
+  {
+    id: "hi",
     languageName: "हिन्दी",
-    countryName: "भारत",
     flagElement: getFlagIcon("IN"),
+  },
+  {
+    id: "pt",
+    languageName: "Português",
+    flagElement: getFlagIcon("BR"),
   },
 ];
 
 const defaultLanguage = {
-  id: "en-US",
+  id: "en",
   languageName: "English",
   countryName: "United States",
   flagElement: getFlagIcon("US"),
@@ -109,7 +105,8 @@ const LanguageSelect = ({
               >
                 {currentLanguage.id === language.id ? "✓" : ""}
                 {language.flagElement}
-                {language.languageName} ({language.countryName})
+                {language.languageName}{" "}
+                {language.countryName ? `(${language.countryName})` : ""}
               </Ariakit.SelectItem>
             );
           })}

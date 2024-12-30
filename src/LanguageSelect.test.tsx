@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach } from "vitest";
+import { describe, test, expect, beforeEach, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
@@ -6,6 +6,8 @@ import en from "./languages/en";
 
 import LanguageSelect from "./LanguageSelect";
 import userEvent from "@testing-library/user-event";
+
+const mockLanguageChangeHandler = vi.fn();
 
 const TestComponent = ({
   messages = en,
@@ -15,12 +17,10 @@ const TestComponent = ({
   [key: string]: unknown;
 }) => {
   return (
-    <IntlProvider locale="en-US" messages={messages} {...props}>
+    <IntlProvider locale="en" messages={messages} {...props}>
       <LanguageSelect
-        userLanguage="pt-BR"
-        onLanguageChange={(newLang) => {
-          console.log(`Language changed to ${newLang}`);
-        }}
+        userLanguage="pt"
+        onLanguageChange={mockLanguageChangeHandler}
       />
     </IntlProvider>
   );
@@ -44,9 +44,22 @@ describe("<LanguageSelect />", () => {
 
     await user.click(selectButton);
 
-    const portuguesOption = document.querySelector("#pt-BR");
+    const portuguesOption = document.querySelector("#pt");
 
     expect(portuguesOption).toHaveAttribute("aria-selected", "true");
     expect(portuguesOption).toHaveTextContent("✓");
+  });
+
+  test("asks to update the language when the user changes its value", async () => {
+    const selectButton = screen.getByRole("combobox");
+    expect(selectButton.textContent).toBe("Português");
+
+    await user.click(selectButton);
+
+    const germanOption = document.querySelector("#de") as HTMLElement;
+
+    await user.click(germanOption);
+
+    expect(mockLanguageChangeHandler).toHaveBeenCalledWith("de");
   });
 });

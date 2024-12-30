@@ -1,4 +1,3 @@
-import { useState } from "react";
 import App from "./App.tsx";
 import "./index.css";
 import { IntlProvider } from "react-intl";
@@ -7,6 +6,7 @@ import es from "./languages/es.ts";
 import pt from "./languages/pt.ts";
 import hi from "./languages/hi.ts";
 import de from "./languages/de.ts";
+import { useNavigate } from "react-router";
 
 const getMessages = (language: string) => {
   // Why does FormatJS want consumers handling this logic? RFC-5646 is complicated:
@@ -39,21 +39,24 @@ const getMessages = (language: string) => {
   }
 };
 
-export function I18nWrapper() {
-  const [userLanguage, setUserLanguage] = useState(
-    navigator.language || "en-US",
-  );
-
+export function I18nWrapper({ language }: { language: string }) {
+  const navigate = useNavigate();
   return (
     <>
       <IntlProvider
-        locale={userLanguage}
-        messages={getMessages(userLanguage)}
+        locale={language}
+        messages={getMessages(language)}
         defaultLocale="en"
       >
         <App
-          userLanguage={userLanguage}
-          handleLanguageChange={setUserLanguage}
+          userLanguage={language}
+          handleLanguageChange={(newLanguage) => {
+            if (newLanguage !== "en") {
+              navigate(`/${newLanguage}`);
+            } else {
+              navigate(`/`);
+            }
+          }}
         />
       </IntlProvider>
     </>
