@@ -14,14 +14,8 @@ export default {
   currencyConversionRate: "मुद्रा रूपांतरण दर",
   volumeConversionRate: "मात्रा रूपांतरण दर",
   convertedCost: "रूपांतरित लागत",
-  liter: `{quantity, plural,
-  one {लीटर}
-  other {लीटर}
-}`,
-  gallon: `{quantity, plural,
-  one {गैलन}
-  other {गैलन}
-}`,
+  liter: `लीटर`,
+  gallon: `गैलन`,
   gasPriceFormula: `{number} {currency} प्रति {unit, select,
 liter {लीटर}
 gallon {गैलन}
