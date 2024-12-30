@@ -9,7 +9,7 @@ import exchangeRateData from "./exchangeRateData";
 import { getCurrencyByCountry, getUnitsByCountry } from "./utils/localeData";
 import { fetchCountryCode } from "./utils/api";
 import { FormattedMessage } from "react-intl";
-
+import LanguageSelect from "./LanguageSelect";
 type SupportedUnits = "liter" | "gallon";
 
 function App({
@@ -154,24 +154,10 @@ function App({
         />
       </div>
       <footer>
-        <form className="my-2">
-          <label htmlFor="language">
-            <FormattedMessage id="language" />{" "}
-          </label>
-          <select
-            onChange={(event) => {
-              const newLanguage = event.target.value;
-              handleLanguageChange(newLanguage);
-            }}
-            id="language"
-          >
-            <option value="en-US">English (United States)</option>
-            <option value="es-MX">Español (México)</option>
-            <option value="pt-BR">Português (Brasil)</option>
-            <option value="de-DE">Deutsch (Deutschland)</option>
-            <option value="hi-IN">हिन्दी (भारत)</option>
-          </select>
-        </form>
+        <LanguageSelect
+          userLanguage={userLanguage}
+          onLanguageChange={handleLanguageChange}
+        />
         <nav>
           <ul>
             <li>
