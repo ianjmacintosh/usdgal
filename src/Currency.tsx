@@ -8,19 +8,27 @@ import { currenciesSelectStoreItems } from "./exchangeRateData";
 export default function Currency({
   currency,
   onCurrencyChange,
+  userLanguage = "en-US",
 }: {
   currency: string;
   onCurrencyChange: (newValue: string) => void;
+  userLanguage?: string;
 }) {
   const [searchValue, setSearchValue] = useState("");
   const selectValue = currency;
+  const [listItems, setListItems] = useState(
+    currenciesSelectStoreItems(userLanguage),
+  );
+  useEffect(() => {
+    setListItems(currenciesSelectStoreItems(userLanguage));
+  }, [userLanguage]);
 
   const matches = useMemo(() => {
-    return matchSorter(currenciesSelectStoreItems, searchValue, {
+    return matchSorter(listItems, searchValue, {
       baseSort: (a, b) => (a.index < b.index ? -1 : 1),
       keys: ["children"],
     });
-  }, [searchValue]);
+  }, [listItems, searchValue]);
 
   useEffect(() => {
     onCurrencyChange(selectValue);

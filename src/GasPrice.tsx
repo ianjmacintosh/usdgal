@@ -96,6 +96,7 @@ function GasPrice({
         <Currency
           currency={currency}
           onCurrencyChange={handleCurrencyChange}
+          userLanguage={userLanguage}
         ></Currency>
         <Unit
           id={`${label.toLowerCase()}_unit`}
