@@ -22,7 +22,11 @@ export default {
   one {galón}
   other {galones}
 }`,
-  gasPriceFormula: "{number} {currency} por {unit}",
+  gasPriceFormula: `{number} {currency} por {unit, select,
+liter {litro}
+gallon {galão}
+other {{unit}}
+}`,
 
   // GasPrice.tsx
   tinyNumber:

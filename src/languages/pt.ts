@@ -19,10 +19,15 @@ export default {
   other {litros}
 }`,
   gallon: `{quantity, plural,
-  one {galón}
-  other {galones}
+  one {galão}
+  other {galões}
 }`,
-  gasPriceFormula: "{number} {currency} por {unit}",
+
+  gasPriceFormula: `{number} {currency} por {unit, select,
+liter {litro}
+gallon {galão}
+other {{unit}}
+}`,
 
   // GasPrice.tsx
   tinyNumber:
