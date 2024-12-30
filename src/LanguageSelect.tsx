@@ -77,6 +77,7 @@ const LanguageSelect = ({
         setValue={(newValue) => {
           handleLanguageChange(String(newValue));
         }}
+        placement="bottom"
         value={currentLanguage.id}
       >
         <Ariakit.Select className="language-select select-button button">
