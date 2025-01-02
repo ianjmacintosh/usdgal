@@ -8,7 +8,7 @@ import {
   afterAll,
 } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import App from "./App";
+import App from "./components/Converter";
 import userEvent from "@testing-library/user-event";
 import getGasPrice from "./utils/getGasPrice";
 import { getFormattedPrice } from "./utils/numberFormat";
