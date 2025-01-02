@@ -25,3 +25,4 @@ dist-ssr
 
 # React Router generated assets
 .react-router/
+build/
