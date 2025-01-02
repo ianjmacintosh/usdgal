@@ -9,11 +9,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           name="viewport"
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
-        <title>Gas Cost Converter</title>
-        <meta
-          name="description"
-          content="Instantly convert gasoline prices listed in foreign units and currencies"
-        />
         <Meta />
         <Links />
       </head>
