@@ -1,5 +1,5 @@
-import { I18nWrapper } from "./I18nWrapper.tsx";
+import { redirect } from "react-router";
 
-export default function Component() {
-  return <I18nWrapper language="en" />;
+export async function loader() {
+  return redirect("/");
 }
