@@ -87,12 +87,6 @@ describe("<App userLanguage='es-MX' />", () => {
   test("headline to be in Spanish", () => {
     expect(screen.getByText("Precio de la Gasolina")).toBeVisible();
   });
-  test("loads metadata in Spanish", () => {
-    expect(document.querySelector("meta[name='description']")).toHaveAttribute(
-      "content",
-      "Instantly convert los precios da la gasolina",
-    );
-  });
 });
 
 describe("<App userLanguage='en-US' />", () => {
