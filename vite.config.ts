@@ -7,7 +7,7 @@ import { configDefaults } from "vitest/config";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [reactRouter(), svgr()],
+  plugins: [!process.env.VITEST && reactRouter(), svgr()],
   test: {
     environment: "happy-dom",
     globals: true,
