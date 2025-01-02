@@ -1,4 +1,4 @@
-import App from "./App.tsx";
+import App from "./components/Converter.tsx";
 import "./index.css";
 import { IntlProvider } from "react-intl";
 import en from "./languages/en.ts";
