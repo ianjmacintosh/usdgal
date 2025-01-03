@@ -1,5 +1,6 @@
 import { I18nWrapper } from "@/I18nWrapper";
 import { createIntl } from "react-intl";
+export { links } from "./home-defaults.ts";
 import pt from "../languages/pt.ts";
 
 const language = "pt";
