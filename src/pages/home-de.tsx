@@ -1,6 +1,6 @@
 import { I18nWrapper } from "@/I18nWrapper";
 import { createIntl } from "react-intl";
-import { links as defaultLinks } from "./home-defaults.ts";
+import { defaultLinks } from "./home-defaults.ts";
 import de from "../languages/de.ts";
 
 const language = "de";
