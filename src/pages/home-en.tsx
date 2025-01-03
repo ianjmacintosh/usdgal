@@ -1,6 +1,6 @@
 import { I18nWrapper } from "@/I18nWrapper";
 import { createIntl } from "react-intl";
-export { links } from "./home-defaults.ts";
+import { links as defaultLinks } from "./home-defaults.ts";
 import en from "../languages/en.ts";
 
 const language = "en";
@@ -9,6 +9,10 @@ const intl = createIntl({
   locale: language,
   messages: en,
 });
+
+export const links = () => {
+  return [...defaultLinks(), { rel: "canonical", href: "https://gasco.st/" }];
+};
 
 export function meta() {
   return [
