@@ -1,4 +1,9 @@
 export default {
+  // Meta Data
+  meta_title: "Gas Price Converter",
+  meta_description:
+    "Instantly convert gasoline prices listed in foreign units and currencies",
+
   // App.tsx
   gasCost: "Gas Cost",
   convertedGasCost: "Converted Gas Cost",

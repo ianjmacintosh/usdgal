@@ -1,4 +1,9 @@
 export default {
+  // Meta Data
+  meta_title: "Gaspreis-Umrechner",
+  meta_description:
+    "Sofortige Umrechnung der in ausländischen Einheiten und Währungen angegebenen Benzinpreise",
+
   // App.tsx
   gasCost: "Gaskosten",
   convertedGasCost: "Umgerechnete Gaskosten",

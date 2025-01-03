@@ -1,4 +1,9 @@
 export default {
+  // Meta Data
+  meta_title: "गैस मूल्य परिवर्तक",
+  meta_description:
+    "विदेशी इकाइयों और मुद्राओं में सूचीबद्ध गैसोलीन की कीमतों को तुरंत परिवर्तित करें",
+
   // App.tsx
   gasCost: "गैस लागत",
   convertedGasCost: "रूपांतरित गैस लागत",
