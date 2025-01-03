@@ -1,8 +1,8 @@
 export default {
   // Meta Data
-  meta_title: "Conversor de preço de gás",
+  meta_title: "Conversor de preço de combustível",
   meta_description:
-    "Converta instantaneamente os preços da gasolina listados em unidades e moedas estrangeiras",
+    "Converta preços de combustível listados em litros ou galões, vendidos em dólares, euros, e outras moedas estrangeiras",
 
   // App.tsx
   gasCost: "Preço da Gasolina",
