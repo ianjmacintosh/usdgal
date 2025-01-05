@@ -4,9 +4,9 @@ import Currency from "./Currency";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
-import { selectItemFromFancySelect } from "./utils/testUtils";
+import { selectItemFromFancySelect } from "../utils/testUtils.ts";
 import { IntlProvider } from "react-intl";
-import en from "./languages/en.ts";
+import en from "../languages/en.ts";
 
 describe("<Currency />", () => {
   const user = userEvent.setup();

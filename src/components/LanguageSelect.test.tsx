@@ -2,7 +2,7 @@ import { describe, test, expect, beforeEach, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
-import en from "./languages/en";
+import en from "../languages/en";
 
 import LanguageSelect from "./LanguageSelect";
 import userEvent from "@testing-library/user-event";

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import GithubLogo from "../assets/github.svg?react";
-import "../App.css";
+import "./App.css";
 import getGasPrice from "../utils/getGasPrice";
 
-import GasPrice from "../GasPrice";
-import ConversionTable from "../ConversionTable";
+import GasPrice from "./GasPrice";
+import ConversionTable from "./ConversionTable";
 import exchangeRateData from "../exchangeRateData";
 import { getCurrencyByCountry, getUnitsByCountry } from "../utils/localeData";
 import { fetchCountryCode } from "../utils/api";
 import { FormattedMessage } from "react-intl";
-import LanguageSelect from "../LanguageSelect";
+import LanguageSelect from "./LanguageSelect";
 type SupportedUnits = "liter" | "gallon";
 
 function App({

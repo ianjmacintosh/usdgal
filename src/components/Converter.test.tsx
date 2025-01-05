@@ -8,17 +8,17 @@ import {
   afterAll,
 } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import App from "./components/Converter";
+import App from "./Converter.tsx";
 import userEvent from "@testing-library/user-event";
-import getGasPrice from "./utils/getGasPrice";
-import { getFormattedPrice } from "./utils/numberFormat";
-import { selectItemFromFancySelect } from "./utils/testUtils";
+import getGasPrice from "../utils/getGasPrice.ts";
+import { getFormattedPrice } from "../utils/numberFormat.ts";
+import { selectItemFromFancySelect } from "../utils/testUtils.ts";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
-import en from "./languages/en.ts";
-import es from "./languages/es.ts";
+import en from "../languages/en.ts";
+import es from "../languages/es.ts";
 import { useState } from "react";
 
 export const restHandlers = [
