@@ -3,7 +3,7 @@ import { startTransition, useEffect, useMemo, useState } from "react";
 import "./currency.css";
 import { matchSorter } from "match-sorter";
 import { debounce } from "lodash-es";
-import { currenciesSelectStoreItems } from "../../exchange-rate-data";
+import { currenciesSelectStoreItems } from "@/exchange-rate-data";
 
 type CurrencyProps = {
   currency: string;

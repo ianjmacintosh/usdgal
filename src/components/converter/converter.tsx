@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import GithubLogo from "../../assets/github.svg?react";
-import "./Converter.css";
-import getGasPrice from "../../utils/get-gas-price";
+import GithubLogo from "@/assets/github.svg?react";
+import "./converter.css";
+import getGasPrice from "@/utils/get-gas-price";
 
-import GasPrice from "../gasprice/gas-price";
-import ConversionTable from "../conversion-table/conversion-table";
-import exchangeRateData from "../../exchange-rate-data";
-import {
-  getCurrencyByCountry,
-  getUnitsByCountry,
-} from "../../utils/locale-data";
-import { fetchCountryCode } from "../../utils/api";
+import GasPrice from "@/components/gas-price/gas-price";
+import ConversionTable from "@/components/conversion-table/conversion-table";
+import exchangeRateData from "@/exchange-rate-data";
+import { getCurrencyByCountry, getUnitsByCountry } from "@/utils/locale-data";
+import { fetchCountryCode } from "@/utils/api";
 import { FormattedMessage } from "react-intl";
-import LanguageSelect from "../language-select/language-select";
+import LanguageSelect from "@/components/language-select/language-select";
 import { Units } from "@/components/unit/unit";
 
 type ConverterProps = {

@@ -5,8 +5,8 @@ import {
   getParsedNumber,
   isLegalPriceValue,
   isTinyNumber,
-} from "../../utils/number-format";
-import Currency from "../currency/currency";
+} from "@/utils/number-format";
+import Currency from "@/components/currency/currency";
 import { FormattedMessage, useIntl } from "react-intl";
 import Unit, { Units } from "@/components/unit/unit";
 
