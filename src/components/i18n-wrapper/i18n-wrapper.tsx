@@ -8,6 +8,8 @@ import hi from "../../languages/hi.ts";
 import de from "../../languages/de.ts";
 import { useNavigate } from "react-router";
 
+type I18nWrapperProps = { language: string };
+
 const getMessages = (language: string) => {
   // Why does FormatJS want consumers handling this logic? RFC-5646 is complicated:
   // https://datatracker.ietf.org/doc/html/rfc5646
@@ -39,7 +41,7 @@ const getMessages = (language: string) => {
   }
 };
 
-export function I18nWrapper({ language }: { language: string }) {
+export function I18nWrapper({ language }: I18nWrapperProps) {
   const navigate = useNavigate();
   return (
     <>

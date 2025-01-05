@@ -3,18 +3,16 @@ import "./Unit.css";
 import { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-type SupportedUnits = "liter" | "gallon";
-const Unit = ({
-  id,
-  unit,
-  onUnitChange,
-  disabled,
-}: {
+type UnitProps = {
   id: string;
   unit: string;
   onUnitChange: (newValue: SupportedUnits) => void;
   disabled?: boolean;
-}) => {
+};
+
+type SupportedUnits = "liter" | "gallon";
+
+const Unit = ({ id, unit, onUnitChange, disabled }: UnitProps) => {
   const intl = useIntl();
   const displayUnit = {
     "": "",

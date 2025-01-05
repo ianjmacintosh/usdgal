@@ -3,6 +3,11 @@ import * as Flag from "country-flag-icons/react/3x2";
 import { FormattedMessage } from "react-intl";
 import "./language-select.css";
 
+type LanguageSelectProps = {
+  onLanguageChange: (newValue: string) => void;
+  userLanguage: string;
+};
+
 const getFlagIcon = (country: string) => {
   switch (country) {
     case "US":
@@ -59,10 +64,7 @@ const defaultLanguage = {
 const LanguageSelect = ({
   onLanguageChange: handleLanguageChange,
   userLanguage,
-}: {
-  onLanguageChange: (newValue: string) => void;
-  userLanguage: string;
-}) => {
+}: LanguageSelectProps) => {
   const currentLanguage =
     supportedLanguages.find((language) => {
       return language.id === userLanguage;
