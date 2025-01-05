@@ -1,5 +1,5 @@
 import App from "../converter/Converter.tsx";
-import "./index.css";
+import "../../pages/home.css";
 import { IntlProvider } from "react-intl";
 import en from "../../languages/en.ts";
 import es from "../../languages/es.ts";
