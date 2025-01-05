@@ -1,4 +1,4 @@
-import App from "../converter/converter.tsx";
+import Converter from "../converter/converter.tsx";
 import "../../pages/home.css";
 import { IntlProvider } from "react-intl";
 import en from "../../languages/en.ts";
@@ -48,7 +48,7 @@ export function I18nWrapper({ language }: { language: string }) {
         messages={getMessages(language)}
         defaultLocale="en"
       >
-        <App
+        <Converter
           userLanguage={language}
           handleLanguageChange={(newLanguage) => {
             if (newLanguage !== "en") {

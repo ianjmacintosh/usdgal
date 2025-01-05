@@ -8,7 +8,7 @@ import {
   afterAll,
 } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import App from "./converter.tsx";
+import Converter from "./converter.tsx";
 import userEvent from "@testing-library/user-event";
 import getGasPrice from "../../utils/get-gas-price.ts";
 import { getFormattedPrice } from "../../utils/number-format.ts";
@@ -51,7 +51,7 @@ const TestComponent = ({
   );
   return (
     <IntlProvider locale="en-US" messages={messages}>
-      <App
+      <Converter
         userLanguage={userLanguage}
         handleLanguageChange={setUserLanguage}
         {...props}
@@ -79,7 +79,7 @@ const elements = () => {
   };
 };
 
-describe("<App userLanguage='es-MX' />", () => {
+describe("<Converter userLanguage='es-MX' />", () => {
   beforeAll(() => {
     render(<TestComponent messages={es} userLanguage="es-MX" />);
   });
@@ -89,7 +89,7 @@ describe("<App userLanguage='es-MX' />", () => {
   });
 });
 
-describe("<App userLanguage='en-US' />", () => {
+describe("<Converter userLanguage='en-US' />", () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
@@ -149,7 +149,7 @@ describe("<App userLanguage='en-US' />", () => {
   test.skip("has a link for my personal site and my GitHub project", () => {});
 });
 
-describe("<App userLanguage='pt-BR' />", () => {
+describe("<Converter userLanguage='pt-BR' />", () => {
   const user = userEvent.setup();
 
   beforeEach(() => {

@@ -15,13 +15,15 @@ import { FormattedMessage } from "react-intl";
 import LanguageSelect from "../language-select/language-select";
 type SupportedUnits = "liter" | "gallon";
 
-function App({
-  userLanguage: userLanguageProp,
-  handleLanguageChange,
-}: {
+type ConverterProps = {
   userLanguage: string;
   handleLanguageChange: (newLanguage: string) => void;
-}) {
+};
+
+function Converter({
+  userLanguage: userLanguageProp,
+  handleLanguageChange,
+}: ConverterProps) {
   const userLanguage = userLanguageProp;
   const userHomeCountry = userLanguage.split("-")[1] || "US";
 
@@ -185,4 +187,4 @@ function App({
   );
 }
 
-export default App;
+export default Converter;
