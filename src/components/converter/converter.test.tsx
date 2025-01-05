@@ -8,11 +8,11 @@ import {
   afterAll,
 } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import App from "./Converter.tsx";
+import App from './converter.tsx';
 import userEvent from "@testing-library/user-event";
-import getGasPrice from "../../utils/getGasPrice.ts";
-import { getFormattedPrice } from "../../utils/numberFormat.ts";
-import { selectItemFromFancySelect } from "../../utils/testUtils.ts";
+import getGasPrice from '../../utils/get-gas-price.ts';
+import { getFormattedPrice } from '../../utils/number-format.ts';
+import { selectItemFromFancySelect } from '../../utils/test-utils.ts';
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import "@testing-library/jest-dom/vitest";

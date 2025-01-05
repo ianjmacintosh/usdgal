@@ -6,12 +6,12 @@
 //   screen,
 //   waitFor,
 // } from "@testing-library/react";
-// import App from "./App";
+// import App from './app';
 // import userEvent from "@testing-library/user-event";
-// import getGasPrice from "./utils/getGasPrice";
-// import { getFormattedPrice } from "./utils/numberFormat";
+// import getGasPrice from './utils/get-gas-price';
+// import { getFormattedPrice } from './utils/number-format';
 // import "@testing-library/jest-dom/vitest";
-// import { selectItemFromFancySelect } from "./utils/testUtils";
+// import { selectItemFromFancySelect } from './utils/test-utils';
 
 // describe("<App />", () => {
 //   const user = userEvent.setup();

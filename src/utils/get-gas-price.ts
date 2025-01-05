@@ -1,5 +1,5 @@
-import exchangeRateData from "../exchangeRateData";
-import { getUnits } from "./numberFormat";
+import exchangeRateData from '../exchange-rate-data';
+import { getUnits } from './number-format';
 type SupportedUnits = "liter" | "gallon";
 
 const getPriceInCurrency = (

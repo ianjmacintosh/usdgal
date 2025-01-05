@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import "./ConversionTable.css";
+import "./conversion-table.css";
 
 type SupportedUnits = "liter" | "gallon";
 

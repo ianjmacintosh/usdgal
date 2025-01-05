@@ -1,7 +1,7 @@
 import * as Ariakit from "@ariakit/react";
 import * as Flag from "country-flag-icons/react/3x2";
 import { FormattedMessage } from "react-intl";
-import "./LanguageSelect.css";
+import "./language-select.css";
 
 const getFlagIcon = (country: string) => {
   switch (country) {

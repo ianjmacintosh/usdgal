@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import "./GasPrice.css";
+import "./gas-price.css";
 import {
   getFormattedPrice,
   getParsedNumber,
   isLegalPriceValue,
   isTinyNumber,
-} from "../../utils/numberFormat";
-import Currency from "../currency/Currency";
-import Unit from "../unit/Unit";
+} from "../../utils/number-format";
+import Currency from "../currency/currency";
 import { FormattedMessage, useIntl } from "react-intl";
+import Unit from "../unit/unit";
 
 type SupportedUnits = "liter" | "gallon";
 

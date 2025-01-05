@@ -4,7 +4,7 @@ import {
   getParsedNumber,
   isLegalPriceValue,
   isTinyNumber,
-} from "./numberFormat";
+} from './number-format';
 
 describe("getParsedNumber method", () => {
   test("parses '1,000.00' in en-US as 1000", () => {

@@ -1,4 +1,4 @@
-import kebabCase from "lodash-es/kebabCase.js";
+import kebabCase from "lodash/kebabCase";
 import latest from "./latest.json";
 const exchangeRateData = latest;
 

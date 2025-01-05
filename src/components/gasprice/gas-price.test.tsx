@@ -1,10 +1,10 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import GasPrice from "./GasPrice";
+import GasPrice from './gas-price';
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
-import { selectItemFromFancySelect } from "../../utils/testUtils";
+import { selectItemFromFancySelect } from '../../utils/test-utils';
 import { IntlProvider } from "react-intl";
 import en from "../../languages/en";
 
