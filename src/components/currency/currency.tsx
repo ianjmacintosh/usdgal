@@ -5,15 +5,17 @@ import { matchSorter } from "match-sorter";
 import { debounce } from "lodash-es";
 import { currenciesSelectStoreItems } from "../../exchange-rate-data";
 
+type CurrencyProps = {
+  currency: string;
+  onCurrencyChange: (newValue: string) => void;
+  userLanguage: string;
+};
+
 export default function Currency({
   currency,
   onCurrencyChange,
-  userLanguage = "en-US",
-}: {
-  currency: string;
-  onCurrencyChange: (newValue: string) => void;
-  userLanguage?: string;
-}) {
+  userLanguage,
+}: CurrencyProps) {
   const [searchValue, setSearchValue] = useState("");
   const selectValue = currency;
   const [listItems, setListItems] = useState(
