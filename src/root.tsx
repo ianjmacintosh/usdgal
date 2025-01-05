@@ -1,5 +1,23 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 
+/*
+
+(via https://reactrouter.com/upgrading/component-routes#5-shuffle-stuff-around):
+
+In general:
+* `root.tsx` contains any rendering things like context providers, 
+  layouts, styles, etc.
+* `entry.client.tsx` should be as minimal as possible
+* Remember to not try to render your existing `<App/>` component yet, 
+  we'll do that in a later step
+
+Note that your `root.tsx` file will be statically generated and served 
+as the entry point of your app, so just that module will need to be 
+compatible with server rendering. This is where most of your trouble 
+will come.
+
+*/
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html>
