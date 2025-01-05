@@ -1,6 +1,6 @@
 import exchangeRateData from "../exchange-rate-data";
 import { getUnits } from "./number-format";
-type SupportedUnits = "liter" | "gallon";
+import { Units } from "@/components/unit/unit";
 
 const getPriceInCurrency = (
   price: number,
@@ -24,9 +24,9 @@ const getPriceInCurrency = (
 const getGasPrice = (
   sourceNumber: number,
   sourceCurrency: string,
-  sourceUnit: SupportedUnits | "",
+  sourceUnit: Units | "",
   targetCurrency: string,
-  targetUnit: SupportedUnits | "",
+  targetUnit: Units | "",
   exchangeRates?: { [key: string]: number },
 ) => {
   // Return 0 if we're missing info

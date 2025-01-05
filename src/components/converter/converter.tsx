@@ -13,7 +13,7 @@ import {
 import { fetchCountryCode } from "../../utils/api";
 import { FormattedMessage } from "react-intl";
 import LanguageSelect from "../language-select/language-select";
-type SupportedUnits = "liter" | "gallon";
+import { Units } from "@/components/unit/unit";
 
 type ConverterProps = {
   userLanguage: string;
@@ -30,15 +30,15 @@ function Converter({
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] = useState<string>("");
-  const [topUnit, setTopUnit] = useState<SupportedUnits | "">("");
+  const [topUnit, setTopUnit] = useState<Units | "">("");
 
   // Converted gas price values (price, currency, units)
   const [bottomNumber, setBottomNumber] = useState(0);
   const [bottomCurrency, setBottomCurrency] = useState<string>(
     getCurrencyByCountry(userHomeCountry),
   );
-  const [bottomUnit, setBottomUnit] = useState<SupportedUnits>(
-    getUnitsByCountry(userHomeCountry) as SupportedUnits,
+  const [bottomUnit, setBottomUnit] = useState<Units>(
+    getUnitsByCountry(userHomeCountry) as Units,
   );
 
   // Whether we're updating the top or bottom number
@@ -85,7 +85,7 @@ function Converter({
         const currency = getCurrencyByCountry(countryCode);
         const units = getUnitsByCountry(countryCode);
         setTopCurrency(currency);
-        setTopUnit(units as SupportedUnits);
+        setTopUnit(units as Units);
       }
     }
 
@@ -111,7 +111,7 @@ function Converter({
             setIsUpdatingBottomNumber(true);
             setTopNumber(newNumber);
           }}
-          onUnitChange={(newUnit: SupportedUnits) => {
+          onUnitChange={(newUnit: Units) => {
             setTopUnit(newUnit);
           }}
           onCurrencyChange={(newCurrency: string) => {
@@ -132,7 +132,7 @@ function Converter({
             setBottomNumber(newValue);
           }}
           unit={bottomUnit}
-          onUnitChange={(newUnit: SupportedUnits) => {
+          onUnitChange={(newUnit: Units) => {
             setBottomUnit(newUnit);
           }}
           onCurrencyChange={(newCurrency: string) => {

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import "./conversion-table.css";
+import { Units } from "@/components/unit/unit";
 
 type ConversionTableProps = {
   topNumber: number;
   bottomNumber: number;
-  topUnit: SupportedUnits | "";
-  bottomUnit: SupportedUnits | "";
+  topUnit: Units | "";
+  bottomUnit: Units | "";
   topCurrency: string;
   bottomCurrency: string;
   exchangeRateData: {
@@ -17,8 +18,6 @@ type ConversionTableProps = {
     timestamp: number;
   };
 };
-
-type SupportedUnits = "liter" | "gallon";
 
 const volumesInLiters = {
   // TODO: This "" key is because we may get "" when the parent is initializing

@@ -1,4 +1,4 @@
-type SupportedUnits = "liter" | "gallon";
+import { Units } from "@/components/unit/unit";
 
 // https://raw.githubusercontent.com/SirCen/country-currencies/refs/heads/main/countryCurrencyInfo.ts
 
@@ -1327,7 +1327,7 @@ const getUnitsByCountry = (countryCode: string) => {
     units = "gallon";
   }
 
-  return <SupportedUnits>units;
+  return <Units>units;
 };
 
 export { getCurrencyByCountry, getUnitsByCountry };

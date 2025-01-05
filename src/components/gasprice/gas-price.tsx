@@ -8,16 +8,16 @@ import {
 } from "../../utils/number-format";
 import Currency from "../currency/currency";
 import { FormattedMessage, useIntl } from "react-intl";
-import Unit from "../unit/unit";
+import Unit, { Units } from "@/components/unit/unit";
 
-type SupportedUnitsProps = {
+type GasPriceProps = {
   label: string;
   number: number;
   currency: string;
   unit: string;
   onNumberChange: (newValue: number) => void;
   onCurrencyChange: (newValue: string) => void;
-  onUnitChange: (newUnit: SupportedUnits) => void;
+  onUnitChange: (newUnit: Units) => void;
   onChange?: (
     event:
       | React.ChangeEvent<HTMLInputElement>
@@ -26,8 +26,6 @@ type SupportedUnitsProps = {
   disabled?: boolean;
   userLanguage?: string;
 };
-
-type SupportedUnits = "liter" | "gallon";
 
 function GasPrice({
   label,
@@ -39,7 +37,7 @@ function GasPrice({
   currency = "",
   unit,
   userLanguage = "en-US",
-}: SupportedUnitsProps) {
+}: GasPriceProps) {
   const intl = useIntl();
   const [displayNumber, setDisplayNumber] = useState(
     getFormattedPrice(number, userLanguage, currency),

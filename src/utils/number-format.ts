@@ -1,4 +1,4 @@
-type SupportedUnits = "liter" | "gallon";
+import { Units } from "@/components/unit/unit";
 
 const getNumberFormatChar = (
   char: "decimalSeparatorChar" | "groupingSeparatorChar",
@@ -122,11 +122,7 @@ const isLegalPriceValue = (price: string, userLanguage: string) => {
  * Convert the new price from the source currency to the target currency
  * Multiply by LITERS_PER_GALLON if the source currency is the local currency, divide by LITERS_PER_GALLON if it is the home currency
  */
-const getUnits = (
-  price: number,
-  fromUnit: SupportedUnits,
-  toUnit: SupportedUnits,
-) => {
+const getUnits = (price: number, fromUnit: Units, toUnit: Units) => {
   const LITERS_PER_GALLON = 3.78541;
   if (fromUnit === "liter" && toUnit === "gallon") {
     return price * LITERS_PER_GALLON;

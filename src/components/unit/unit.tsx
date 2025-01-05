@@ -3,14 +3,14 @@ import "./Unit.css";
 import { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
+export type Units = "liter" | "gallon";
+
 type UnitProps = {
   id: string;
   unit: string;
-  onUnitChange: (newValue: SupportedUnits) => void;
+  onUnitChange: (newValue: Units) => void;
   disabled?: boolean;
 };
-
-type SupportedUnits = "liter" | "gallon";
 
 const Unit = ({ id, unit, onUnitChange, disabled }: UnitProps) => {
   const intl = useIntl();
@@ -20,13 +20,13 @@ const Unit = ({ id, unit, onUnitChange, disabled }: UnitProps) => {
     gallon: intl.formatMessage({ id: "perGallon" }),
   };
   useEffect(() => {
-    onUnitChange(unit as SupportedUnits);
+    onUnitChange(unit as Units);
   }, [unit, onUnitChange]);
 
   return (
     <Ariakit.SelectProvider
       defaultValue={unit}
-      setValue={(newValue: SupportedUnits) => {
+      setValue={(newValue: Units) => {
         onUnitChange(newValue);
       }}
       value={unit}
