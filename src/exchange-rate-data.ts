@@ -180,7 +180,7 @@ const getCurrencies = (language = "en-US") =>
   Object.keys(exchangeRateData.rates).map((code) => {
     let currencyName = symbols[code as keyof typeof symbols];
 
-    if (language !== "en-US") {
+    if (language.substring(0, 2) !== "en") {
       currencyName = Intl.NumberFormat(language, {
         currency: code,
         style: "currency",
