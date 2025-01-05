@@ -4,9 +4,9 @@ import GasPrice from "./GasPrice";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
-import { selectItemFromFancySelect } from "../utils/testUtils";
+import { selectItemFromFancySelect } from "../../utils/testUtils";
 import { IntlProvider } from "react-intl";
-import en from "../languages/en";
+import en from "../../languages/en";
 
 describe("<GasPrice />", () => {
   const user = userEvent.setup();

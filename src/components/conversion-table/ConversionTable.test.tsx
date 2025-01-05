@@ -1,12 +1,12 @@
 import { describe, test, expect, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
-import ConversionTable from "./ConversionTable";
-import exchangeRateData from "../exchangeRateData.ts";
+import ConversionTable from "./ConversionTable.tsx";
+import exchangeRateData from "../../exchangeRateData.ts";
 import userEvent from "@testing-library/user-event";
 import { IntlProvider } from "react-intl";
-import en from "../languages/en.ts";
-import es from "../languages/es.ts";
+import en from "../../languages/en.ts";
+import es from "../../languages/es.ts";
 
 describe("<ConversionTable />", () => {
   const user = userEvent.setup();

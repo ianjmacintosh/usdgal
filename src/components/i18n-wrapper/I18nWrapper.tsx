@@ -1,11 +1,11 @@
-import App from "./Converter.tsx";
+import App from "../converter/Converter.tsx";
 import "./index.css";
 import { IntlProvider } from "react-intl";
-import en from "../languages/en.ts";
-import es from "../languages/es.ts";
-import pt from "../languages/pt.ts";
-import hi from "../languages/hi.ts";
-import de from "../languages/de.ts";
+import en from "../../languages/en.ts";
+import es from "../../languages/es.ts";
+import pt from "../../languages/pt.ts";
+import hi from "../../languages/hi.ts";
+import de from "../../languages/de.ts";
 import { useNavigate } from "react-router";
 
 const getMessages = (language: string) => {

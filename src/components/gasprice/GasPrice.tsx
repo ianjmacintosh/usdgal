@@ -5,9 +5,9 @@ import {
   getParsedNumber,
   isLegalPriceValue,
   isTinyNumber,
-} from "../utils/numberFormat";
-import Currency from "./Currency";
-import Unit from "./Unit";
+} from "../../utils/numberFormat";
+import Currency from "../currency/Currency";
+import Unit from "../unit/Unit";
 import { FormattedMessage, useIntl } from "react-intl";
 
 type SupportedUnits = "liter" | "gallon";
