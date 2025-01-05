@@ -7,5 +7,5 @@ export default [
   route("/pt", "./pages/home-pt.tsx"),
   route("/hi", "./pages/home-hi.tsx"),
   // * matches all URLs
-  route("/*", "./catchall.tsx"),
+  route("/*", "./pages/catchall.tsx"),
 ] satisfies RouteConfig;
