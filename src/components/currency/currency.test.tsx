@@ -16,6 +16,7 @@ describe("<Currency />", () => {
     return (
       <IntlProvider locale="en-US" messages={en}>
         <Currency
+          userLanguage="en"
           currency={currency}
           onCurrencyChange={(newValue) => {
             setCurrency(newValue);
