@@ -8,11 +8,11 @@ import {
   afterAll,
 } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import App from './converter.tsx';
+import App from "./converter.tsx";
 import userEvent from "@testing-library/user-event";
-import getGasPrice from '../../utils/get-gas-price.ts';
-import { getFormattedPrice } from '../../utils/number-format.ts';
-import { selectItemFromFancySelect } from '../../utils/test-utils.ts';
+import getGasPrice from "../../utils/get-gas-price.ts";
+import { getFormattedPrice } from "../../utils/number-format.ts";
+import { selectItemFromFancySelect } from "../../utils/test-utils.ts";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import "@testing-library/jest-dom/vitest";
@@ -139,6 +139,14 @@ describe("<App userLanguage='en-US' />", () => {
     // Assert
     expect(bottomPriceInput.value).toBe(formattedPrice);
   });
+
+  test.skip("correctly converts BRL per liter to USD per gallon", async () => {});
+  test.skip("rounds prices correctly (to 2 decimal places)", async () => {});
+  test.skip("doesn't throw NaN errors when the user provides incomplete numbers", async () => {});
+  test.skip("converts prices with commas from local to home", async () => {});
+  test.skip("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {});
+  test.skip("updates bottom price (but not top price) when the user updates the bottom currency or units", async () => {});
+  test.skip("has a link for my personal site and my GitHub project", () => {});
 });
 
 describe("<App userLanguage='pt-BR' />", () => {
@@ -230,4 +238,8 @@ describe("<App userLanguage='pt-BR' />", () => {
       expect(screen.getByText(/Gas Cost/)).toBeVisible();
     });
   });
+
+  test.skip("converts units to BRL and liters", () => {});
+  test.skip("renders 0 like '0,00' (with a comma, not a period)", () => {});
+  test.skip("allows the user to update the number field", async () => {});
 });
