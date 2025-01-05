@@ -5,7 +5,7 @@ import getGasPrice from "@/utils/get-gas-price";
 
 import GasPrice from "@/components/gas-price/gas-price";
 import ConversionTable from "@/components/conversion-table/conversion-table";
-import exchangeRateData from "@/exchange-rate-data";
+import exchangeRateData from "@/utils/exchange-rate-data";
 import { getCurrencyByCountry, getUnitsByCountry } from "@/utils/locale-data";
 import { fetchCountryCode } from "@/utils/api";
 import { FormattedMessage } from "react-intl";

@@ -1,4 +1,4 @@
-import exchangeRateData from "../exchange-rate-data";
+import exchangeRateData from "./exchange-rate-data";
 import { getUnits } from "./number-format";
 import { Units } from "@/components/unit/unit";
 

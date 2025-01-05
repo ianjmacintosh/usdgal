@@ -1,5 +1,5 @@
 import kebabCase from "lodash/kebabCase";
-import latest from "./latest.json";
+import latest from "../latest.json";
 const exchangeRateData = latest;
 
 const symbols = {
