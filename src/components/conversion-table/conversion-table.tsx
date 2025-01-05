@@ -2,6 +2,22 @@ import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import "./conversion-table.css";
 
+type ConversionTableProps = {
+  topNumber: number;
+  bottomNumber: number;
+  topUnit: SupportedUnits | "";
+  bottomUnit: SupportedUnits | "";
+  topCurrency: string;
+  bottomCurrency: string;
+  exchangeRateData: {
+    base: string;
+    date: string;
+    rates: { [key: string]: number };
+    success: boolean;
+    timestamp: number;
+  };
+};
+
 type SupportedUnits = "liter" | "gallon";
 
 const volumesInLiters = {
@@ -19,21 +35,7 @@ const ConversionTable = ({
   topCurrency = "",
   bottomCurrency,
   exchangeRateData,
-}: {
-  topNumber: number;
-  bottomNumber: number;
-  topUnit: SupportedUnits | "";
-  bottomUnit: SupportedUnits | "";
-  topCurrency: string;
-  bottomCurrency: string;
-  exchangeRateData: {
-    base: string;
-    date: string;
-    rates: { [key: string]: number };
-    success: boolean;
-    timestamp: number;
-  };
-}) => {
+}: ConversionTableProps) => {
   const intl = useIntl();
 
   const [showDetails, setShowDetails] = useState(false);
