@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import GithubLogo from "../../assets/github.svg?react";
 import "./Converter.css";
-import getGasPrice from '../../utils/get-gas-price';
+import getGasPrice from "../../utils/get-gas-price";
 
-import GasPrice from '../gasprice/gas-price';
-import ConversionTable from '../conversion-table/conversion-table';
-import exchangeRateData from '../../exchange-rate-data';
+import GasPrice from "../gasprice/gas-price";
+import ConversionTable from "../conversion-table/conversion-table";
+import exchangeRateData from "../../exchange-rate-data";
 import {
   getCurrencyByCountry,
   getUnitsByCountry,
-} from '../../utils/locale-data';
+} from "../../utils/locale-data";
 import { fetchCountryCode } from "../../utils/api";
 import { FormattedMessage } from "react-intl";
-import LanguageSelect from '../language-select/language-select';
+import LanguageSelect from "../language-select/language-select";
 type SupportedUnits = "liter" | "gallon";
 
 function App({

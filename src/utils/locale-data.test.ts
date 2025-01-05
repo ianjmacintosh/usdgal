@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { getCurrencyByCountry, getUnitsByCountry } from './locale-data';
+import { getCurrencyByCountry, getUnitsByCountry } from "./locale-data";
 
 describe("getCurrencyByCountry method", () => {
   test("returns the currency for a given country", () => {

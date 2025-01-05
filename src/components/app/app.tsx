@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router";
-import { I18nWrapper } from '../i18n-wrapper/i18n-wrapper';
+import { I18nWrapper } from "../i18n-wrapper/i18n-wrapper";
 
 export default function App() {
   return (

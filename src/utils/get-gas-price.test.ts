@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import getGasPrice from './get-gas-price';
+import getGasPrice from "./get-gas-price";
 
 describe("getGasPrice method", () => {
   const fakeExchangeRates = {

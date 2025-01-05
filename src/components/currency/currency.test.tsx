@@ -1,10 +1,10 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, getByText, render, screen } from "@testing-library/react";
-import Currency from './currency';
+import Currency from "./currency";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
-import { selectItemFromFancySelect } from '../../utils/test-utils';
+import { selectItemFromFancySelect } from "../../utils/test-utils";
 import { IntlProvider } from "react-intl";
 import en from "../../languages/en";
 

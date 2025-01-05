@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
 import en from "../../languages/en";
 
-import LanguageSelect from './language-select';
+import LanguageSelect from "./language-select";
 import userEvent from "@testing-library/user-event";
 
 const mockLanguageChangeHandler = vi.fn();
