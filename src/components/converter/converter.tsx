@@ -12,6 +12,7 @@ import { FormattedMessage } from "react-intl";
 import LanguageSelect from "@/components/language-select/language-select";
 import Unit, { Units } from "@/components/unit/unit";
 import Currency from "@/components/currency/currency";
+import Number from "../number/number";
 
 type ConverterProps = {
   userLanguage: string;
@@ -36,7 +37,7 @@ function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
   );
 
   // Whether we're updating the top or bottom number
-  const [isUpdatingBottomNumber, setIsUpdatingBottomNumber] = useState(true);
+  const [isUpdatingBottomNumber] = useState(true);
 
   useEffect(() => {
     if (isUpdatingBottomNumber) {
@@ -96,17 +97,15 @@ function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
         <h2 className="text-3xl font-bold my-4">
           <FormattedMessage id="gasCost" />
         </h2>
-        <GasPrice
-          label="From"
-          number={topNumber}
-          currency={topCurrency}
-          unit={topUnit}
-          onNumberChange={(newNumber: number) => {
-            setIsUpdatingBottomNumber(true);
-            setTopNumber(newNumber);
-          }}
-          userLanguage={userLanguage}
-        >
+        <GasPrice label="From">
+          <Number
+            currency={topCurrency}
+            label="Amount"
+            onChange={setTopNumber}
+            unit={topUnit}
+            userLanguage={userLanguage}
+            number={topNumber}
+          />
           <Currency
             currency={topCurrency}
             onChange={(newCurrency: string) => {
@@ -126,17 +125,15 @@ function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
         <h2 className="text-3xl font-bold my-4">
           <FormattedMessage id="convertedGasCost" />
         </h2>
-        <GasPrice
-          label="To"
-          number={bottomNumber}
-          currency={bottomCurrency}
-          onNumberChange={(newValue: number) => {
-            setIsUpdatingBottomNumber(false);
-            setBottomNumber(newValue);
-          }}
-          unit={bottomUnit}
-          userLanguage={userLanguage}
-        >
+        <GasPrice label="To">
+          <Number
+            currency={bottomCurrency}
+            label="Amount"
+            onChange={setBottomNumber}
+            unit={bottomUnit}
+            userLanguage={userLanguage}
+            number={bottomNumber}
+          />
           <Currency
             currency={bottomCurrency}
             onChange={(newCurrency: string) => {

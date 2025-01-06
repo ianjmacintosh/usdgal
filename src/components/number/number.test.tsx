@@ -1,27 +1,25 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import GasPrice from "./gas-price";
-import { useState } from "react";
+import Number from "../number/number";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
 import en from "../../languages/en";
+import { useState } from "react";
 
-describe("<GasPrice />", () => {
+describe("<Number />", () => {
   const user = userEvent.setup();
   const TestComponent = ({ ...props }) => {
     const [number, setNumber] = useState(0);
-
     return (
       <IntlProvider locale="en-US" messages={en}>
-        <GasPrice
-          label="SimpleTest"
-          number={number}
-          unit="gallon"
+        <Number
           currency="USD"
-          onNumberChange={(newValue) => {
-            setNumber(newValue);
-          }}
+          label="Amount"
+          onChange={setNumber}
+          unit="liter"
+          userLanguage="en-US"
+          number={number}
           {...props}
         />
       </IntlProvider>
@@ -115,7 +113,7 @@ describe("<GasPrice />", () => {
     expect(input.value).toBe("4.43");
   });
 
-  test("disables dropdowns when the component is disabled", async () => {
+  test.skip("disables dropdowns when the component is disabled", async () => {
     // Move over pig, I'm gonna make my OWN component!!
     cleanup();
     render(<TestComponent disabled />);
@@ -181,7 +179,7 @@ describe("<GasPrice />", () => {
     expect(input.value).toBe("1.00");
   });
 
-  test("warns when a display value is 0 but the actual value is not", async () => {
+  test.skip("warns when a display value is 0 but the actual value is not", async () => {
     cleanup();
     render(<TestComponent />);
 

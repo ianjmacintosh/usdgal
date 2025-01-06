@@ -169,6 +169,19 @@ describe("<Converter userLanguage='en-US' />", () => {
     expect(bottomPriceInput.value).toBe(formattedPrice);
   });
 
+  test("updates top price when the user changes the bottom price", async () => {
+    const { topPriceInput, bottomPriceInput } = elements();
+
+    // Arrange
+    await user.click(topPriceInput);
+    await user.keyboard("1");
+    // Confirm we're not doing a 1:1 conversion
+    expect(bottomPriceInput.value).not.toBe("1.00");
+
+    await user.click(bottomPriceInput);
+    await user.keyboard("1");
+    expect(topPriceInput.value).not.toBe("1.00");
+  });
   test.skip("correctly converts BRL per liter to USD per gallon", async () => {});
   test.skip("rounds prices correctly (to 2 decimal places)", async () => {});
   test.skip("doesn't throw NaN errors when the user provides incomplete numbers", async () => {});
