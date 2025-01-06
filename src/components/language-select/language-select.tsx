@@ -1,10 +1,10 @@
 import * as Ariakit from "@ariakit/react";
 import * as Flag from "country-flag-icons/react/3x2";
 import { FormattedMessage } from "react-intl";
+import { useNavigate } from "react-router";
 import "./language-select.css";
 
 type LanguageSelectProps = {
-  onLanguageChange: (newValue: string) => void;
   userLanguage: string;
 };
 
@@ -61,10 +61,15 @@ const defaultLanguage = {
   flagElement: getFlagIcon("US"),
 };
 
-const LanguageSelect = ({
-  onLanguageChange: handleLanguageChange,
-  userLanguage,
-}: LanguageSelectProps) => {
+const LanguageSelect = ({ userLanguage }: LanguageSelectProps) => {
+  const navigate = useNavigate();
+  const handleLanguageChange = (newLanguage: string) => {
+    if (newLanguage !== "en") {
+      navigate(`/${newLanguage}`);
+    } else {
+      navigate(`/`);
+    }
+  };
   const currentLanguage =
     supportedLanguages.find((language) => {
       return language.id === userLanguage;

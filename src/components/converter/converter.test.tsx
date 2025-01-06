@@ -19,7 +19,8 @@ import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
 import en from "../../languages/en.ts";
 import es from "../../languages/es.ts";
-import { useState } from "react";
+import pt from "../../languages/pt.ts";
+import { createRoutesStub } from "react-router";
 
 export const restHandlers = [
   http.get("/workers/getLocation", () => {
@@ -39,49 +40,77 @@ afterEach(() => {
 
 const server = setupServer(...restHandlers);
 
-const TestComponent = ({
+const englishTestComponent = ({
   messages = en,
   ...props
 }: {
   messages?: Record<string, string>;
   [key: string]: unknown;
 }) => {
-  const [userLanguage, setUserLanguage] = useState(
-    navigator.language || "en-US",
-  );
   return (
     <IntlProvider locale="en-US" messages={messages}>
-      <Converter
-        userLanguage={userLanguage}
-        handleLanguageChange={setUserLanguage}
-        {...props}
-      />
+      <Converter userLanguage="en-US" {...props} />
     </IntlProvider>
   );
 };
 
+const spanishTestComponent = ({
+  messages = es,
+  ...props
+}: {
+  messages?: Record<string, string>;
+  [key: string]: unknown;
+}) => {
+  return (
+    <IntlProvider locale="es-MX" messages={messages}>
+      <Converter userLanguage="es-MX" {...props} />
+    </IntlProvider>
+  );
+};
+
+const PortugueseTestComponent = ({
+  messages = pt,
+  ...props
+}: {
+  messages?: Record<string, string>;
+  [key: string]: unknown;
+}) => {
+  return (
+    <IntlProvider locale="pt-BR" messages={messages}>
+      <Converter userLanguage="pt-BR" {...props} />
+    </IntlProvider>
+  );
+};
+
+const Stub = createRoutesStub([
+  {
+    path: "/",
+    Component: englishTestComponent,
+  },
+  {
+    path: "/es",
+    Component: spanishTestComponent,
+  },
+  {
+    path: "/pt",
+    Component: PortugueseTestComponent,
+  },
+]);
+
 const elements = () => {
   return {
-    topPriceInput: screen.getAllByLabelText(/Amount/, {
-      selector: "input",
-    })[0] as HTMLInputElement,
-    bottomPriceInput: screen.getAllByLabelText(/Amount/, {
-      selector: "input",
-    })[1] as HTMLInputElement,
-    topCurrencyInput: screen.getAllByLabelText("Currency")[0],
-    topUnitInput: screen.getAllByLabelText("Unit of sale", {
-      exact: false,
-    })[0],
-    bottomCurrencyInput: screen.getAllByLabelText("Currency")[1],
-    bottomUnitInput: screen.getAllByLabelText("Unit of sale", {
-      exact: false,
-    })[1],
+    topPriceInput: screen.getAllByRole("textbox")[0] as HTMLInputElement,
+    bottomPriceInput: screen.getAllByRole("textbox")[1] as HTMLInputElement,
+    topCurrencyInput: screen.getAllByRole("combobox")[0],
+    topUnitInput: screen.getAllByRole("combobox")[1],
+    bottomCurrencyInput: screen.getAllByRole("combobox")[2],
+    bottomUnitInput: screen.getAllByRole("combobox")[3],
   };
 };
 
 describe("<Converter userLanguage='es-MX' />", () => {
-  beforeAll(() => {
-    render(<TestComponent messages={es} userLanguage="es-MX" />);
+  beforeEach(() => {
+    render(<Stub initialEntries={["/es"]} />);
   });
 
   test("headline to be in Spanish", () => {
@@ -93,7 +122,7 @@ describe("<Converter userLanguage='en-US' />", () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
-    render(<TestComponent userLanguage="en-US" />);
+    render(<Stub initialEntries={["/"]} />);
   });
 
   test("loads with the correct starting values", async () => {
@@ -154,7 +183,7 @@ describe("<Converter userLanguage='pt-BR' />", () => {
 
   beforeEach(() => {
     // This "defaultUserLocation" thing is kind of a hack -- I'm using it to test when we geolocate the Brazilian user as being in Brazil
-    render(<TestComponent userLanguage="pt-BR" />);
+    render(<Stub initialEntries={["/pt"]} />);
   });
 
   test("loads with the correct starting values", async () => {
@@ -167,11 +196,11 @@ describe("<Converter userLanguage='pt-BR' />", () => {
 
     await waitFor(() => {
       expect(topCurrencyInput.textContent).toBe("USD");
-      expect(topUnitInput.textContent).toBe("per gallon");
+      expect(topUnitInput.textContent).toBe("por galão");
     });
     await waitFor(() => {
       expect(bottomCurrencyInput.textContent).toBe("BRL");
-      expect(bottomUnitInput.textContent).toBe("per liter");
+      expect(bottomUnitInput.textContent).toBe("por litro");
     });
   });
 
@@ -185,7 +214,7 @@ describe("<Converter userLanguage='pt-BR' />", () => {
       }),
     );
 
-    render(<TestComponent userLanguage="pt-BR" />);
+    render(<Stub initialEntries={["/pt"]} />);
 
     const { topCurrencyInput, topUnitInput } = elements();
 
@@ -196,7 +225,7 @@ describe("<Converter userLanguage='pt-BR' />", () => {
       expect(topCurrencyInput.textContent).toBe("USD");
     });
     await waitFor(() => {
-      expect(topUnitInput.textContent).toBe("per gallon");
+      expect(topUnitInput.textContent).toBe("por galão");
     });
   });
 
@@ -216,9 +245,9 @@ describe("<Converter userLanguage='pt-BR' />", () => {
 
     // Act
     await selectItemFromFancySelect(topCurrencyInput, "BRL");
-    await selectItemFromFancySelect(topUnitInput, "per liter");
+    await selectItemFromFancySelect(topUnitInput, "por litro");
     await selectItemFromFancySelect(bottomCurrencyInput, "USD");
-    await selectItemFromFancySelect(bottomUnitInput, "per gallon");
+    await selectItemFromFancySelect(bottomUnitInput, "por galão");
     await user.click(topPriceInput);
     await user.keyboard("1");
 

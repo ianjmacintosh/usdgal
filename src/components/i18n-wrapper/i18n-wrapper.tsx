@@ -6,7 +6,6 @@ import es from "@/languages/es.ts";
 import pt from "@/languages/pt.ts";
 import hi from "@/languages/hi.ts";
 import de from "@/languages/de.ts";
-import { useNavigate } from "react-router";
 
 type I18nWrapperProps = { language: string };
 
@@ -42,7 +41,6 @@ const getMessages = (language: string) => {
 };
 
 export function I18nWrapper({ language }: I18nWrapperProps) {
-  const navigate = useNavigate();
   return (
     <>
       <IntlProvider
@@ -50,16 +48,7 @@ export function I18nWrapper({ language }: I18nWrapperProps) {
         messages={getMessages(language)}
         defaultLocale="en"
       >
-        <Converter
-          userLanguage={language}
-          handleLanguageChange={(newLanguage) => {
-            if (newLanguage !== "en") {
-              navigate(`/${newLanguage}`);
-            } else {
-              navigate(`/`);
-            }
-          }}
-        />
+        <Converter userLanguage={language} />
       </IntlProvider>
     </>
   );

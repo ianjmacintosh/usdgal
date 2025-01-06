@@ -14,13 +14,9 @@ import { Units } from "@/components/unit/unit";
 
 type ConverterProps = {
   userLanguage: string;
-  handleLanguageChange: (newLanguage: string) => void;
 };
 
-function Converter({
-  userLanguage: userLanguageProp,
-  handleLanguageChange,
-}: ConverterProps) {
+function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
   const userLanguage = userLanguageProp;
   const userHomeCountry = userLanguage.split("-")[1] || "US";
 
@@ -156,10 +152,7 @@ function Converter({
         />
       </div>
       <footer>
-        <LanguageSelect
-          userLanguage={userLanguage}
-          onLanguageChange={handleLanguageChange}
-        />
+        <LanguageSelect userLanguage={userLanguage} />
         <nav>
           <ul>
             <li>
