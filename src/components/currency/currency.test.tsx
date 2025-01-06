@@ -18,7 +18,7 @@ describe("<Currency />", () => {
         <Currency
           userLanguage="en"
           currency={currency}
-          onCurrencyChange={(newValue) => {
+          onChange={(newValue) => {
             setCurrency(newValue);
           }}
           {...props}

@@ -6,9 +6,7 @@ import {
   isLegalPriceValue,
   isTinyNumber,
 } from "@/utils/number-format";
-import Currency from "@/components/currency/currency";
 import { FormattedMessage, useIntl } from "react-intl";
-import Unit, { Units } from "@/components/unit/unit";
 
 type GasPriceProps = {
   label: string;
@@ -16,8 +14,6 @@ type GasPriceProps = {
   currency: string;
   unit: string;
   onNumberChange: (newValue: number) => void;
-  onCurrencyChange: (newValue: string) => void;
-  onUnitChange: (newUnit: Units) => void;
   onChange?: (
     event:
       | React.ChangeEvent<HTMLInputElement>
@@ -25,18 +21,18 @@ type GasPriceProps = {
   ) => void;
   disabled?: boolean;
   userLanguage?: string;
+  children?: React.ReactNode;
 };
 
 function GasPrice({
   label,
   number,
   onNumberChange: handleNumberChange = () => {},
-  onUnitChange: handleUnitChange = () => {},
-  onCurrencyChange: handleCurrencyChange = () => {},
   disabled,
   currency = "",
   unit,
   userLanguage = "en-US",
+  children,
 }: GasPriceProps) {
   const intl = useIntl();
   const [displayNumber, setDisplayNumber] = useState(
@@ -93,16 +89,7 @@ function GasPrice({
             { unit, currency },
           )}
         />
-        <Currency
-          currency={currency}
-          onCurrencyChange={handleCurrencyChange}
-          userLanguage={userLanguage}
-        ></Currency>
-        <Unit
-          id={`${label.toLowerCase()}_unit`}
-          unit={unit}
-          onUnitChange={handleUnitChange}
-        />
+        {children}
       </fieldset>
       {isTinyNumber(number, userLanguage, currency) ? (
         <p className="mt-4">

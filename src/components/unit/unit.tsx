@@ -8,11 +8,11 @@ export type Units = "liter" | "gallon";
 type UnitProps = {
   id: string;
   unit: string;
-  onUnitChange: (newValue: Units) => void;
+  onChange: (newValue: Units) => void;
   disabled?: boolean;
 };
 
-const Unit = ({ id, unit, onUnitChange, disabled }: UnitProps) => {
+const Unit = ({ id, unit, onChange, disabled }: UnitProps) => {
   const intl = useIntl();
   const displayUnit = {
     "": "",
@@ -20,14 +20,14 @@ const Unit = ({ id, unit, onUnitChange, disabled }: UnitProps) => {
     gallon: intl.formatMessage({ id: "perGallon" }),
   };
   useEffect(() => {
-    onUnitChange(unit as Units);
-  }, [unit, onUnitChange]);
+    onChange(unit as Units);
+  }, [unit, onChange]);
 
   return (
     <Ariakit.SelectProvider
       defaultValue={unit}
       setValue={(newValue: Units) => {
-        onUnitChange(newValue);
+        onChange(newValue);
       }}
       value={unit}
       id={id}

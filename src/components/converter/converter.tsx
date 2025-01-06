@@ -10,7 +10,8 @@ import { getCurrencyByCountry, getUnitsByCountry } from "@/utils/locale-data";
 import { fetchCountryCode } from "@/utils/api";
 import { FormattedMessage } from "react-intl";
 import LanguageSelect from "@/components/language-select/language-select";
-import { Units } from "@/components/unit/unit";
+import Unit, { Units } from "@/components/unit/unit";
+import Currency from "@/components/currency/currency";
 
 type ConverterProps = {
   userLanguage: string;
@@ -104,14 +105,23 @@ function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
             setIsUpdatingBottomNumber(true);
             setTopNumber(newNumber);
           }}
-          onUnitChange={(newUnit: Units) => {
-            setTopUnit(newUnit);
-          }}
-          onCurrencyChange={(newCurrency: string) => {
-            setTopCurrency(newCurrency);
-          }}
           userLanguage={userLanguage}
-        />
+        >
+          <Currency
+            currency={topCurrency}
+            onChange={(newCurrency: string) => {
+              setTopCurrency(newCurrency);
+            }}
+            userLanguage={userLanguage}
+          />
+          <Unit
+            id="top_unit"
+            unit={topUnit}
+            onChange={(newUnit: Units) => {
+              setTopUnit(newUnit);
+            }}
+          />
+        </GasPrice>
 
         <h2 className="text-3xl font-bold my-4">
           <FormattedMessage id="convertedGasCost" />
@@ -125,14 +135,23 @@ function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
             setBottomNumber(newValue);
           }}
           unit={bottomUnit}
-          onUnitChange={(newUnit: Units) => {
-            setBottomUnit(newUnit);
-          }}
-          onCurrencyChange={(newCurrency: string) => {
-            setBottomCurrency(newCurrency);
-          }}
           userLanguage={userLanguage}
-        />
+        >
+          <Currency
+            currency={bottomCurrency}
+            onChange={(newCurrency: string) => {
+              setBottomCurrency(newCurrency);
+            }}
+            userLanguage={userLanguage}
+          />
+          <Unit
+            id="bottom_unit"
+            unit={bottomUnit}
+            onChange={(newUnit: Units) => {
+              setBottomUnit(newUnit);
+            }}
+          />
+        </GasPrice>
         <p className="my-2 text-sm">
           <em>
             <FormattedMessage id="exchangeRatesLastUpdated" />{" "}

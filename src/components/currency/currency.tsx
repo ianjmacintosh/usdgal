@@ -7,13 +7,13 @@ import { currenciesSelectStoreItems } from "@/utils/exchange-rate-data";
 
 type CurrencyProps = {
   currency: string;
-  onCurrencyChange: (newValue: string) => void;
+  onChange: (newValue: string) => void;
   userLanguage: string;
 };
 
 export default function Currency({
   currency,
-  onCurrencyChange,
+  onChange,
   userLanguage,
 }: CurrencyProps) {
   const [searchValue, setSearchValue] = useState("");
@@ -33,8 +33,8 @@ export default function Currency({
   }, [listItems, searchValue]);
 
   useEffect(() => {
-    onCurrencyChange(selectValue);
-  }, [currency, onCurrencyChange, selectValue]);
+    onChange(selectValue);
+  }, [currency, onChange, selectValue]);
 
   return (
     <Ariakit.ComboboxProvider
@@ -48,7 +48,7 @@ export default function Currency({
       <Ariakit.SelectProvider
         defaultValue={currency}
         items={matches}
-        setValue={onCurrencyChange}
+        setValue={onChange}
         value={currency}
         placement="bottom-end"
       >
