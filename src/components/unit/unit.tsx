@@ -3,7 +3,8 @@ import "./Unit.css";
 import { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-export type Units = "liter" | "gallon";
+// This value could be "" while initializing
+export type Units = "liter" | "gallon" | "";
 
 type UnitProps = {
   id: string;

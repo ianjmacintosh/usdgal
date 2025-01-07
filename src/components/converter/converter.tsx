@@ -25,7 +25,7 @@ function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
   // Gas price values (price, currency, units)
   const [topNumber, setTopNumber] = useState(0);
   const [topCurrency, setTopCurrency] = useState<string>("");
-  const [topUnit, setTopUnit] = useState<Units | "">("");
+  const [topUnit, setTopUnit] = useState<Units>("");
 
   // Converted gas price values (price, currency, units)
   const [bottomNumber, setBottomNumber] = useState(0);
