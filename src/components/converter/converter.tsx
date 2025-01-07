@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import GithubLogo from "@/assets/github.svg?react";
 import "./converter.css";
 import getGasPrice from "@/utils/get-gas-price";
@@ -10,9 +10,11 @@ import { getCurrencyByCountry, getUnitsByCountry } from "@/utils/locale-data";
 import { fetchCountryCode } from "@/utils/api";
 import { FormattedMessage } from "react-intl";
 import LanguageSelect from "@/components/language-select/language-select";
-import Unit, { Units } from "@/components/unit/unit";
-import Currency from "@/components/currency/currency";
-import Number from "../number/number";
+import {
+  BottomGasPriceContext,
+  TopGasPriceContext,
+} from "@/contexts/gas-price-context";
+import { Units } from "@/components/unit/unit";
 
 type ConverterProps = {
   userLanguage: string;
@@ -37,10 +39,10 @@ function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
   );
 
   // Whether we're updating the top or bottom number
-  const [isUpdatingBottomNumber] = useState(true);
+  const [isTopDriving, setIsTopDriving] = useState(true);
 
   useEffect(() => {
-    if (isUpdatingBottomNumber) {
+    if (isTopDriving) {
       const newResult = getGasPrice(
         topNumber,
         topCurrency,
@@ -60,7 +62,7 @@ function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
       setTopNumber(newResult);
     }
   }, [
-    isUpdatingBottomNumber,
+    isTopDriving,
     topNumber,
     topCurrency,
     topUnit,
@@ -97,58 +99,34 @@ function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
         <h2 className="text-3xl font-bold my-4">
           <FormattedMessage id="gasCost" />
         </h2>
-        <GasPrice label="From">
-          <Number
-            currency={topCurrency}
-            label="Amount"
-            onChange={setTopNumber}
-            unit={topUnit}
-            userLanguage={userLanguage}
-            number={topNumber}
-          />
-          <Currency
-            currency={topCurrency}
-            onChange={(newCurrency: string) => {
-              setTopCurrency(newCurrency);
-            }}
-            userLanguage={userLanguage}
-          />
-          <Unit
-            id="top_unit"
-            unit={topUnit}
-            onChange={(newUnit: Units) => {
-              setTopUnit(newUnit);
-            }}
-          />
-        </GasPrice>
+        <TopGasPriceContext.Provider
+          value={{
+            number: topNumber,
+            setNumber: setTopNumber,
+            currency: topCurrency,
+            setCurrency: setTopCurrency,
+            unit: topUnit,
+            setUnit: setTopUnit,
+          }}
+        >
+          <GasPrice label="From" contextName="top" />
+        </TopGasPriceContext.Provider>
 
         <h2 className="text-3xl font-bold my-4">
           <FormattedMessage id="convertedGasCost" />
         </h2>
-        <GasPrice label="To">
-          <Number
-            currency={bottomCurrency}
-            label="Amount"
-            onChange={setBottomNumber}
-            unit={bottomUnit}
-            userLanguage={userLanguage}
-            number={bottomNumber}
-          />
-          <Currency
-            currency={bottomCurrency}
-            onChange={(newCurrency: string) => {
-              setBottomCurrency(newCurrency);
-            }}
-            userLanguage={userLanguage}
-          />
-          <Unit
-            id="bottom_unit"
-            unit={bottomUnit}
-            onChange={(newUnit: Units) => {
-              setBottomUnit(newUnit);
-            }}
-          />
-        </GasPrice>
+        <BottomGasPriceContext.Provider
+          value={{
+            number: bottomNumber,
+            setNumber: setBottomNumber,
+            currency: bottomCurrency,
+            setCurrency: setBottomCurrency,
+            unit: bottomUnit,
+            setUnit: setBottomUnit,
+          }}
+        >
+          <GasPrice label="To" contextName="bottom" />
+        </BottomGasPriceContext.Provider>
         <p className="my-2 text-sm">
           <em>
             <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
