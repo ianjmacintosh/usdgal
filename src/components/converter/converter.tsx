@@ -24,7 +24,7 @@ function Converter({ userLanguage, userLocation = "US" }: ConverterProps) {
 
   const [gasPrices, dispatch] = useReducer(
     gasPricesReducer,
-    initialGasPrices(userLocation, userLocation),
+    initialGasPrices(userLocation),
   );
 
   return (
