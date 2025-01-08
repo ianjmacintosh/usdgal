@@ -13,7 +13,6 @@ type GasPrice = {
   number: number;
   currency: string;
   unit: Units;
-  driving?: boolean;
 };
 
 export type GasPrices = {
@@ -26,7 +25,7 @@ export function gasPricesReducer(gasPrices: GasPrices, action: GasPriceAction) {
     case "update":
       if (action.id === "top") {
         return {
-          top: { ...action.payload, driving: true },
+          top: { ...action.payload },
           bottom: {
             ...gasPrices.bottom,
             number: getGasPrice(
@@ -36,7 +35,6 @@ export function gasPricesReducer(gasPrices: GasPrices, action: GasPriceAction) {
               gasPrices.bottom.currency,
               gasPrices.bottom.unit,
             ),
-            driving: false,
           },
         };
       } else {
@@ -50,9 +48,8 @@ export function gasPricesReducer(gasPrices: GasPrices, action: GasPriceAction) {
               gasPrices.top.currency,
               gasPrices.top.unit,
             ),
-            driving: false,
           },
-          bottom: { ...action.payload, driving: true },
+          bottom: { ...action.payload },
         };
       }
     default:
@@ -86,13 +83,11 @@ export const initialGasPrices = (
   return {
     top: {
       ...topPrice,
-      driving: true,
     },
     bottom: {
       ...bottomPrice,
       currency: getCurrencyByCountry(userHomeCountry),
       unit: getUnitsByCountry(userHomeCountry),
-      driving: false,
     },
   };
 };
