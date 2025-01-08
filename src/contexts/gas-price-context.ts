@@ -4,7 +4,7 @@ import getGasPrice from "@/utils/get-gas-price";
 import { createContext } from "react";
 
 type GasPriceAction = {
-  type: "update" | "setDriver";
+  type: "update";
   id: string;
   payload: GasPrice;
 };
@@ -23,18 +23,6 @@ export type GasPrices = {
 
 export function gasPricesReducer(gasPrices: GasPrices, action: GasPriceAction) {
   switch (action.type) {
-    case "setDriver":
-      if (action.id === "top") {
-        return {
-          top: { ...gasPrices.top, driving: true },
-          bottom: { ...gasPrices.bottom, driving: false },
-        };
-      } else {
-        return {
-          top: { ...gasPrices.top, driving: false },
-          bottom: { ...gasPrices.bottom, driving: true },
-        };
-      }
     case "update":
       if (action.id === "top") {
         return {
