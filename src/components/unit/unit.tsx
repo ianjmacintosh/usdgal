@@ -1,6 +1,5 @@
 import * as Ariakit from "@ariakit/react";
 import "./Unit.css";
-import { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 // This value could be "" while initializing
@@ -20,9 +19,6 @@ const Unit = ({ id, unit, onChange, disabled }: UnitProps) => {
     liter: intl.formatMessage({ id: "perLiter" }),
     gallon: intl.formatMessage({ id: "perGallon" }),
   };
-  // useEffect(() => {
-  //   onChange(unit as Units);
-  // }, [unit, onChange]);
 
   return (
     <Ariakit.SelectProvider

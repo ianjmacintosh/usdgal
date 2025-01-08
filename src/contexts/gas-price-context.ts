@@ -1,3 +1,4 @@
+import { getCurrencyByCountry, getUnitsByCountry } from "@/utils/locale-data";
 import { Units } from "@/components/unit/unit";
 import getGasPrice from "@/utils/get-gas-price";
 import { createContext } from "react";
@@ -80,7 +81,24 @@ export function gasPricesReducer(gasPrices: GasPrices, action: GasPriceAction) {
   }
 }
 
-export const GasPricesContext = createContext<GasPrices>(null);
-export const GasPricesDispatchContext = createContext<React.Dispatch<any>>(
-  () => {},
-);
+const userHomeCountry = "US";
+
+export const initialGasPrices = {
+  top: {
+    number: 0,
+    currency: "BRL",
+    unit: "liter" as Units,
+    driving: true,
+  },
+  bottom: {
+    number: 0,
+    currency: getCurrencyByCountry(userHomeCountry) || "USD",
+    unit: getUnitsByCountry(userHomeCountry) || ("gallon" as Units),
+    driving: false,
+  },
+};
+
+export const GasPricesContext = createContext<GasPrices>(initialGasPrices);
+export const GasPricesDispatchContext = createContext<
+  React.Dispatch<GasPriceAction>
+>(() => {});

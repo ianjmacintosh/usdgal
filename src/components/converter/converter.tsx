@@ -5,39 +5,21 @@ import "./converter.css";
 import GasPrice from "@/components/gas-price/gas-price";
 import ConversionTable from "@/components/conversion-table/conversion-table";
 import exchangeRateData from "@/utils/exchange-rate-data";
-import { getCurrencyByCountry, getUnitsByCountry } from "@/utils/locale-data";
 import { FormattedMessage, useIntl } from "react-intl";
 import LanguageSelect from "@/components/language-select/language-select";
 import {
   GasPricesContext,
   GasPricesDispatchContext,
   gasPricesReducer,
+  initialGasPrices,
 } from "@/contexts/gas-price-context";
-import { Units } from "@/components/unit/unit";
 
 type ConverterProps = {
   userLanguage: string;
 };
 
-function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
+function Converter({ userLanguage }: ConverterProps) {
   const intl = useIntl();
-  const userLanguage = userLanguageProp;
-  const userHomeCountry = userLanguage.split("-")[1] || "US";
-
-  const initialGasPrices = {
-    top: {
-      number: 0,
-      currency: "BRL",
-      unit: "liter",
-      driving: true,
-    },
-    bottom: {
-      number: 0,
-      currency: getCurrencyByCountry(userHomeCountry),
-      unit: getUnitsByCountry(userHomeCountry) as Units,
-      driving: false,
-    },
-  };
 
   const [gasPrices, dispatch] = useReducer(gasPricesReducer, initialGasPrices);
 
