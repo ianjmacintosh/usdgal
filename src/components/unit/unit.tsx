@@ -20,9 +20,9 @@ const Unit = ({ id, unit, onChange, disabled }: UnitProps) => {
     liter: intl.formatMessage({ id: "perLiter" }),
     gallon: intl.formatMessage({ id: "perGallon" }),
   };
-  useEffect(() => {
-    onChange(unit as Units);
-  }, [unit, onChange]);
+  // useEffect(() => {
+  //   onChange(unit as Units);
+  // }, [unit, onChange]);
 
   return (
     <Ariakit.SelectProvider

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useIntl } from "react-intl";
 import {
   getFormattedPrice,
@@ -12,6 +12,7 @@ type NumberProps = {
   currency: string;
   label: string;
   onChange: (newValue: number) => void;
+  onFocus?: (newValue: number) => void;
   unit: string;
 };
 
@@ -22,6 +23,7 @@ const Number = ({
   label,
   onChange,
   unit,
+  onFocus,
 }: NumberProps) => {
   const intl = useIntl();
   const [displayNumber, setDisplayNumber] = useState(

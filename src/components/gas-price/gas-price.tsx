@@ -1,6 +1,6 @@
 import {
-  BottomGasPriceContext,
-  TopGasPriceContext,
+  GasPricesContext,
+  GasPricesDispatchContext,
 } from "@/contexts/gas-price-context";
 import "./gas-price.css";
 import { useContext } from "react";
@@ -10,19 +10,32 @@ import Unit, { Units } from "../unit/unit";
 
 type GasPriceProps = {
   label: string;
-  contextName: string;
+  gasPricesKey: "top" | "bottom";
 };
 
-function GasPrice({ label, contextName }: GasPriceProps) {
-  const context = useContext(
-    contextName === "top" ? TopGasPriceContext : BottomGasPriceContext,
-  );
+function GasPrice({ label, gasPricesKey }: GasPriceProps) {
+  const context = useContext(GasPricesContext);
+  const dispatch = useContext(GasPricesDispatchContext);
 
   if (!context) {
     return;
   }
 
-  const { number, setNumber, currency, setCurrency, unit, setUnit } = context;
+  const updateHandler = ({
+    key,
+    value: newValue,
+  }: {
+    value: number | string;
+    key: string;
+  }) => {
+    dispatch({
+      type: "update",
+      id: gasPricesKey,
+      payload: { ...context[gasPricesKey], [key]: newValue },
+    });
+  };
+
+  const { number, currency, unit } = context[gasPricesKey as "top" | "bottom"];
 
   return (
     <div className="mt-2 mb-8">
@@ -31,23 +44,34 @@ function GasPrice({ label, contextName }: GasPriceProps) {
         <Number
           currency={currency}
           label="Amount"
-          onChange={setNumber}
           unit={unit}
           userLanguage={"en-US"}
           number={number}
+          onChange={(newValue) => {
+            if (newValue === number) {
+              return;
+            }
+            updateHandler({ key: "number", value: newValue });
+          }}
         />
         <Currency
           currency={currency}
-          onChange={(newCurrency: string) => {
-            setCurrency(newCurrency);
+          onChange={(newValue) => {
+            if (newValue === currency) {
+              return;
+            }
+            updateHandler({ key: "currency", value: newValue });
           }}
           userLanguage={"en-US"}
         />
         <Unit
-          id="bottom_unit"
+          id={`${label.toLowerCase()}_unit`}
           unit={unit}
-          onChange={(newUnit: Units) => {
-            setUnit(newUnit);
+          onChange={(newValue) => {
+            if (newValue === unit) {
+              return;
+            }
+            updateHandler({ key: "unit", value: newValue });
           }}
         />
       </fieldset>

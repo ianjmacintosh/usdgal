@@ -1,18 +1,17 @@
-import { createContext, useEffect, useState, useContext } from "react";
+import { useReducer } from "react";
 import GithubLogo from "@/assets/github.svg?react";
 import "./converter.css";
-import getGasPrice from "@/utils/get-gas-price";
 
 import GasPrice from "@/components/gas-price/gas-price";
 import ConversionTable from "@/components/conversion-table/conversion-table";
 import exchangeRateData from "@/utils/exchange-rate-data";
 import { getCurrencyByCountry, getUnitsByCountry } from "@/utils/locale-data";
-import { fetchCountryCode } from "@/utils/api";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import LanguageSelect from "@/components/language-select/language-select";
 import {
-  BottomGasPriceContext,
-  TopGasPriceContext,
+  GasPricesContext,
+  GasPricesDispatchContext,
+  gasPricesReducer,
 } from "@/contexts/gas-price-context";
 import { Units } from "@/components/unit/unit";
 
@@ -21,112 +20,71 @@ type ConverterProps = {
 };
 
 function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
+  const intl = useIntl();
   const userLanguage = userLanguageProp;
   const userHomeCountry = userLanguage.split("-")[1] || "US";
 
-  // Gas price values (price, currency, units)
-  const [topNumber, setTopNumber] = useState(0);
-  const [topCurrency, setTopCurrency] = useState<string>("");
-  const [topUnit, setTopUnit] = useState<Units>("");
+  const initialGasPrices = {
+    top: {
+      number: 0,
+      currency: "BRL",
+      unit: "liter",
+      driving: true,
+    },
+    bottom: {
+      number: 0,
+      currency: getCurrencyByCountry(userHomeCountry),
+      unit: getUnitsByCountry(userHomeCountry) as Units,
+      driving: false,
+    },
+  };
 
-  // Converted gas price values (price, currency, units)
-  const [bottomNumber, setBottomNumber] = useState(0);
-  const [bottomCurrency, setBottomCurrency] = useState<string>(
-    getCurrencyByCountry(userHomeCountry),
-  );
-  const [bottomUnit, setBottomUnit] = useState<Units>(
-    getUnitsByCountry(userHomeCountry) as Units,
-  );
+  const [gasPrices, dispatch] = useReducer(gasPricesReducer, initialGasPrices);
 
-  // Whether we're updating the top or bottom number
-  const [isTopDriving, setIsTopDriving] = useState(true);
+  // useEffect(() => {
+  //   async function startFetching() {
+  //     let countryCode = await fetchCountryCode();
+  //     if (!ignore) {
+  //       // If the user is in their home country, let's guess where they want to go
+  //       if (countryCode === userHomeCountry) {
+  //         countryCode = userHomeCountry === "US" ? "MX" : "US";
+  //       }
+  //       const currency = getCurrencyByCountry(countryCode);
+  //       const units = getUnitsByCountry(countryCode);
+  //       setTopCurrency(currency);
+  //       setTopUnit(units as Units);
+  //     }
+  //   }
 
-  useEffect(() => {
-    if (isTopDriving) {
-      const newResult = getGasPrice(
-        topNumber,
-        topCurrency,
-        topUnit,
-        bottomCurrency,
-        bottomUnit,
-      );
-      setBottomNumber(newResult);
-    } else {
-      const newResult = getGasPrice(
-        bottomNumber,
-        bottomCurrency,
-        bottomUnit,
-        topCurrency,
-        topUnit,
-      );
-      setTopNumber(newResult);
-    }
-  }, [
-    isTopDriving,
-    topNumber,
-    topCurrency,
-    topUnit,
-    bottomCurrency,
-    bottomUnit,
-    bottomNumber,
-  ]);
-
-  useEffect(() => {
-    async function startFetching() {
-      let countryCode = await fetchCountryCode();
-      if (!ignore) {
-        // If the user is in their home country, let's guess where they want to go
-        if (countryCode === userHomeCountry) {
-          countryCode = userHomeCountry === "US" ? "MX" : "US";
-        }
-        const currency = getCurrencyByCountry(countryCode);
-        const units = getUnitsByCountry(countryCode);
-        setTopCurrency(currency);
-        setTopUnit(units as Units);
-      }
-    }
-
-    let ignore = false;
-    startFetching();
-    return () => {
-      ignore = true;
-    };
-  }, []);
+  //   let ignore = false;
+  //   startFetching();
+  //   return () => {
+  //     ignore = true;
+  //   };
+  // }, []);
 
   return (
     <>
       <div className="container">
-        <h2 className="text-3xl font-bold my-4">
-          <FormattedMessage id="gasCost" />
-        </h2>
-        <TopGasPriceContext.Provider
-          value={{
-            number: topNumber,
-            setNumber: setTopNumber,
-            currency: topCurrency,
-            setCurrency: setTopCurrency,
-            unit: topUnit,
-            setUnit: setTopUnit,
-          }}
-        >
-          <GasPrice label="From" contextName="top" />
-        </TopGasPriceContext.Provider>
+        <GasPricesContext.Provider value={gasPrices}>
+          <GasPricesDispatchContext.Provider value={dispatch}>
+            <h2 className="text-3xl font-bold my-4">
+              <FormattedMessage id="gasCost" />
+            </h2>
+            <GasPrice
+              label={intl.formatMessage({ id: "gasCost" })}
+              gasPricesKey="top"
+            />
 
-        <h2 className="text-3xl font-bold my-4">
-          <FormattedMessage id="convertedGasCost" />
-        </h2>
-        <BottomGasPriceContext.Provider
-          value={{
-            number: bottomNumber,
-            setNumber: setBottomNumber,
-            currency: bottomCurrency,
-            setCurrency: setBottomCurrency,
-            unit: bottomUnit,
-            setUnit: setBottomUnit,
-          }}
-        >
-          <GasPrice label="To" contextName="bottom" />
-        </BottomGasPriceContext.Provider>
+            <h2 className="text-3xl font-bold my-4">
+              <FormattedMessage id="convertedGasCost" />
+            </h2>
+            <GasPrice
+              label={intl.formatMessage({ id: "convertedGasCost" })}
+              gasPricesKey="bottom"
+            />
+          </GasPricesDispatchContext.Provider>
+        </GasPricesContext.Provider>
         <p className="my-2 text-sm">
           <em>
             <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
@@ -136,12 +94,12 @@ function Converter({ userLanguage: userLanguageProp }: ConverterProps) {
           </em>
         </p>
         <ConversionTable
-          topNumber={topNumber}
-          bottomNumber={bottomNumber}
-          topUnit={topUnit}
-          bottomUnit={bottomUnit}
-          topCurrency={topCurrency}
-          bottomCurrency={bottomCurrency}
+          topNumber={gasPrices.top.number}
+          topCurrency={gasPrices.top.currency}
+          topUnit={gasPrices.top.unit}
+          bottomNumber={gasPrices.bottom.number}
+          bottomCurrency={gasPrices.bottom.currency}
+          bottomUnit={gasPrices.bottom.unit}
           exchangeRateData={exchangeRateData}
         />
       </div>

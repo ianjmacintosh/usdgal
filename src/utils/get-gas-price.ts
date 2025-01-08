@@ -29,6 +29,9 @@ const getGasPrice = (
   targetUnit: Units | "",
   exchangeRates?: { [key: string]: number },
 ) => {
+  if (exchangeRates === undefined) {
+    exchangeRates = exchangeRateData.rates;
+  }
   // Return 0 if we're missing info
   if (
     sourceCurrency === "" ||

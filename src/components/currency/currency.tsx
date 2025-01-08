@@ -32,9 +32,9 @@ export default function Currency({
     });
   }, [listItems, searchValue]);
 
-  useEffect(() => {
-    onChange(selectValue);
-  }, [currency, onChange, selectValue]);
+  // useEffect(() => {
+  //   onChange(selectValue);
+  // }, [currency, onChange, selectValue]);
 
   return (
     <Ariakit.ComboboxProvider
