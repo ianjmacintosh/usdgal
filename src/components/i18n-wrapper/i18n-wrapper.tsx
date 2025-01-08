@@ -6,6 +6,9 @@ import es from "@/languages/es.ts";
 import pt from "@/languages/pt.ts";
 import hi from "@/languages/hi.ts";
 import de from "@/languages/de.ts";
+import { initialGasPrices } from "@/contexts/gas-price-context.ts";
+import { fetchCountryCode } from "@/utils/api.ts";
+import { useEffect, useState } from "react";
 
 type I18nWrapperProps = { language: string };
 
@@ -41,6 +44,24 @@ const getMessages = (language: string) => {
 };
 
 export function I18nWrapper({ language }: I18nWrapperProps) {
+  const [geolocation, setGeolocation] = useState("US");
+
+  useEffect(() => {
+    async function startFetching() {
+      const countryCode = await fetchCountryCode();
+      if (!ignore) {
+        setGeolocation(countryCode);
+      }
+      return initialGasPrices;
+    }
+
+    let ignore = false;
+    startFetching();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
   return (
     <>
       <IntlProvider
@@ -48,7 +69,7 @@ export function I18nWrapper({ language }: I18nWrapperProps) {
         messages={getMessages(language)}
         defaultLocale="en"
       >
-        <Converter userLanguage={language} />
+        <Converter userLanguage={language} userLocation={geolocation} />
       </IntlProvider>
     </>
   );

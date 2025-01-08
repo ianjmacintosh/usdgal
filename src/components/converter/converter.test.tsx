@@ -77,7 +77,7 @@ const PortugueseTestComponent = ({
 }) => {
   return (
     <IntlProvider locale="pt-BR" messages={messages}>
-      <Converter userLanguage="pt-BR" {...props} />
+      <Converter userLanguage="pt-BR" userLocation="BR" {...props} />
     </IntlProvider>
   );
 };
@@ -114,7 +114,9 @@ describe("<Converter userLanguage='es-MX' />", () => {
   });
 
   test("headline to be in Spanish", () => {
-    expect(screen.getByText("Precio de la Gasolina")).toBeVisible();
+    expect(
+      screen.getByText("Precio de la Gasolina", { selector: "h2" }),
+    ).toBeVisible();
   });
 });
 

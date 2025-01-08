@@ -11,9 +11,10 @@ import Unit from "../unit/unit";
 type GasPriceProps = {
   label: string;
   gasPricesKey: "top" | "bottom";
+  userLanguage: string;
 };
 
-function GasPrice({ label, gasPricesKey }: GasPriceProps) {
+function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
   const context = useContext(GasPricesContext);
   const dispatch = useContext(GasPricesDispatchContext);
 
@@ -45,7 +46,7 @@ function GasPrice({ label, gasPricesKey }: GasPriceProps) {
           currency={currency}
           label="Amount"
           unit={unit}
-          userLanguage={"en-US"}
+          userLanguage={userLanguage}
           number={number}
           onChange={(newValue) => {
             if (newValue === number) {
