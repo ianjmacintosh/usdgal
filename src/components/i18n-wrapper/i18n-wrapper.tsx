@@ -6,7 +6,7 @@ import es from "@/languages/es.ts";
 import pt from "@/languages/pt.ts";
 import hi from "@/languages/hi.ts";
 import de from "@/languages/de.ts";
-import { initialGasPrices } from "@/contexts/gas-price-context.ts";
+import { getInitialGasPrices } from "@/contexts/gas-price-context.ts";
 import { fetchCountryCode } from "@/utils/api.ts";
 import { useEffect, useState } from "react";
 
@@ -44,15 +44,23 @@ const getMessages = (language: string) => {
 };
 
 export function I18nWrapper({ language }: I18nWrapperProps) {
-  const [geolocation, setGeolocation] = useState("US");
+  // The "language" prop indicates what language the site is displayed in
+  // The "userLanguage" variable indicates what language the user's browser is set to
+  const userLanguage = navigator.language;
+
+  const [geolocation, setGeolocation] = useState(null);
 
   useEffect(() => {
+    // If we already have geolocated the user, return early
+    if (geolocation) return;
+
     async function startFetching() {
       const countryCode = await fetchCountryCode();
       if (!ignore) {
         setGeolocation(countryCode);
       }
-      return initialGasPrices;
+      // Change this to set a value in context that may be read when a consumer calls getInitialGasPrices
+      return getInitialGasPrices;
     }
 
     let ignore = false;
@@ -69,7 +77,9 @@ export function I18nWrapper({ language }: I18nWrapperProps) {
         messages={getMessages(language)}
         defaultLocale="en"
       >
-        <Converter userLanguage={language} userLocation={geolocation} />
+        {geolocation && (
+          <Converter userLanguage={userLanguage} userLocation={geolocation} />
+        )}
       </IntlProvider>
     </>
   );

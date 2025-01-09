@@ -1,20 +1,10 @@
-import {
-  describe,
-  test,
-  expect,
-  beforeEach,
-  afterEach,
-  beforeAll,
-  afterAll,
-} from "vitest";
+import { describe, test, expect, beforeEach, afterEach } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import Converter from "./converter.tsx";
 import userEvent from "@testing-library/user-event";
 import getGasPrice from "../../utils/get-gas-price.ts";
 import { getFormattedPrice } from "../../utils/number-format.ts";
 import { selectItemFromFancySelect } from "../../utils/test-utils.ts";
-import { http, HttpResponse } from "msw";
-import { setupServer } from "msw/node";
 import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
 import en from "../../languages/en.ts";
@@ -22,23 +12,9 @@ import es from "../../languages/es.ts";
 import pt from "../../languages/pt.ts";
 import { createRoutesStub } from "react-router";
 
-export const restHandlers = [
-  http.get("/workers/getLocation", () => {
-    return HttpResponse.json({ ipData: { country: "US" } });
-  }),
-];
-
-// Start server before all tests
-beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
-
-//  Close server after all tests
-afterAll(() => server.close());
-
 afterEach(() => {
   cleanup();
 });
-
-const server = setupServer(...restHandlers);
 
 const englishTestComponent = ({
   messages = en,
@@ -49,7 +25,21 @@ const englishTestComponent = ({
 }) => {
   return (
     <IntlProvider locale="en-US" messages={messages}>
-      <Converter userLanguage="en-US" {...props} />
+      <Converter userLanguage="en-US" userLocation="US" {...props} />
+    </IntlProvider>
+  );
+};
+
+const englishTestComponentInHonduras = ({
+  messages = en,
+  ...props
+}: {
+  messages?: Record<string, string>;
+  [key: string]: unknown;
+}) => {
+  return (
+    <IntlProvider locale="en-US" messages={messages}>
+      <Converter userLanguage="en-US" userLocation="HN" {...props} />
     </IntlProvider>
   );
 };
@@ -63,7 +53,7 @@ const spanishTestComponent = ({
 }) => {
   return (
     <IntlProvider locale="es-MX" messages={messages}>
-      <Converter userLanguage="es-MX" {...props} />
+      <Converter userLanguage="es-MX" userLocation="US" {...props} />
     </IntlProvider>
   );
 };
@@ -86,6 +76,10 @@ const Stub = createRoutesStub([
   {
     path: "/",
     Component: englishTestComponent,
+  },
+  {
+    path: "/en/hn",
+    Component: englishTestComponentInHonduras,
   },
   {
     path: "/es",
@@ -113,10 +107,8 @@ describe("<Converter userLanguage='es-MX' />", () => {
     render(<Stub initialEntries={["/es"]} />);
   });
 
-  test("headline to be in Spanish", () => {
-    expect(
-      screen.getByText("Precio de la Gasolina", { selector: "h2" }),
-    ).toBeVisible();
+  test("headline to be in Spanish", async () => {
+    expect(screen.getAllByText("Precio de la Gasolina")[0]).toBeVisible();
   });
 });
 
@@ -127,7 +119,7 @@ describe("<Converter userLanguage='en-US' />", () => {
     render(<Stub initialEntries={["/"]} />);
   });
 
-  test("loads with the correct starting values", async () => {
+  test("loads with the correct default starting values", async () => {
     const {
       topCurrencyInput,
       topUnitInput,
@@ -178,7 +170,54 @@ describe("<Converter userLanguage='en-US' />", () => {
     await user.keyboard("1");
     expect(topPriceInput.value).not.toBe("0.00");
   });
-  test.skip("correctly converts BRL per liter to USD per gallon", async () => {});
+
+  test("correctly converts BRL per liter to USD per gallon", async () => {
+    const {
+      topPriceInput,
+      topCurrencyInput,
+      topUnitInput,
+      bottomPriceInput,
+      bottomCurrencyInput,
+      bottomUnitInput,
+    } = elements();
+
+    // Store the correct conversion of 1.00 BRL per liter to USD per gallon in a variable named "expectedPrice"
+    const expectedPrice = getGasPrice(1, "BRL", "liter", "USD", "gallon");
+
+    await user.click(topPriceInput);
+    await user.keyboard("1");
+
+    await selectItemFromFancySelect(topCurrencyInput, "BRL");
+    await selectItemFromFancySelect(bottomCurrencyInput, "USD");
+    await selectItemFromFancySelect(topUnitInput, "per liter");
+    await selectItemFromFancySelect(bottomUnitInput, "per gallon");
+
+    expect(bottomPriceInput.value).not.toBe("0.00");
+    expect(bottomPriceInput.value).toBe(expectedPrice.toFixed(2));
+  });
+
+  test("loads values based on geolocation", async () => {
+    // Arrange
+    cleanup();
+
+    render(<Stub initialEntries={["/en/hn"]} />);
+    const {
+      topCurrencyInput,
+      topUnitInput,
+      bottomCurrencyInput,
+      bottomUnitInput,
+    } = elements();
+
+    await waitFor(() => {
+      expect(topCurrencyInput.textContent).toBe("HNL");
+      expect(topUnitInput.textContent).toBe("per gallon");
+    });
+    await waitFor(() => {
+      expect(bottomCurrencyInput.textContent).toBe("USD");
+      expect(bottomUnitInput.textContent).toBe("per gallon");
+    });
+  });
+
   test.skip("rounds prices correctly (to 2 decimal places)", async () => {});
   test.skip("doesn't throw NaN errors when the user provides incomplete numbers", async () => {});
   test.skip("converts prices with commas from local to home", async () => {});
@@ -191,7 +230,6 @@ describe("<Converter userLanguage='pt-BR' />", () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
-    // This "defaultUserLocation" thing is kind of a hack -- I'm using it to test when we geolocate the Brazilian user as being in Brazil
     render(<Stub initialEntries={["/pt"]} />);
   });
 
@@ -216,12 +254,6 @@ describe("<Converter userLanguage='pt-BR' />", () => {
   test("assumes if the user is at home, they're preparing for a price in USD per gallon", async () => {
     // Arrange
     cleanup();
-    const server = setupServer();
-    server.use(
-      http.get("/workers/getLocation", () => {
-        return HttpResponse.json({ ipData: { country: "BR" } });
-      }),
-    );
 
     render(<Stub initialEntries={["/pt"]} />);
 

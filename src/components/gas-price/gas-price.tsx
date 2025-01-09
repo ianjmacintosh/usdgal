@@ -44,7 +44,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
         <legend>{label}</legend>
         <Number
           currency={currency}
-          label="Amount"
+          label={label}
           unit={unit}
           userLanguage={userLanguage}
           number={number}

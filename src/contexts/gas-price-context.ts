@@ -57,12 +57,25 @@ export function gasPricesReducer(gasPrices: GasPrices, action: GasPriceAction) {
   }
 }
 
-export const initialGasPrices = (userHomeCountry = "MX") => {
+export const getInitialGasPrices = (
+  userHomeCountry: string,
+  userLocation: string,
+) => {
+  // Assume the user wants to know about the place we geolocated them
+  let foreignCountry = userLocation;
+
+  // If someone is geolocated in their home country, we can guess about where they're researching
+  if (userHomeCountry === userLocation) {
+    // If they're from the US, let's guess they're researching MX
+    // If they're not from the US, let's guess they're researching the US (because they're researching about liters-to-gallons)
+    foreignCountry = userHomeCountry === "US" ? "MX" : "US";
+  }
+
   const defaultGasPrices = {
     top: {
       number: 0,
-      currency: getCurrencyByCountry(userHomeCountry === "US" ? "MX" : "US"),
-      unit: getUnitsByCountry(userHomeCountry === "US" ? "MX" : "US"),
+      currency: getCurrencyByCountry(foreignCountry),
+      unit: getUnitsByCountry(foreignCountry),
     },
     bottom: {
       number: 0,
@@ -70,10 +83,11 @@ export const initialGasPrices = (userHomeCountry = "MX") => {
       unit: getUnitsByCountry(userHomeCountry),
     },
   };
+
   return defaultGasPrices;
 };
 
-export const GasPricesContext = createContext<GasPrices>(initialGasPrices());
+export const GasPricesContext = createContext<GasPrices | null>(null);
 export const GasPricesDispatchContext = createContext<
   React.Dispatch<GasPriceAction>
 >(() => {});
