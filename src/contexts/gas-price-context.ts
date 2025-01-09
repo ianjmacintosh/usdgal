@@ -64,11 +64,14 @@ export const getInitialGasPrices = (
   // Assume the user wants to know about the place we geolocated them
   let foreignCountry = userLocation;
 
-  // If someone is geolocated in their home country, we can guess about where they're researching
+  // If we geolocate someone to their home country (as indicated by their browser), let's convert gas prices from their home to someplace they might be interested in
   if (userHomeCountry === userLocation) {
     // If they're from the US, let's guess they're researching MX
-    // If they're not from the US, let's guess they're researching the US (because they're researching about liters-to-gallons)
-    foreignCountry = userHomeCountry === "US" ? "MX" : "US";
+    foreignCountry =
+      userHomeCountry === "US"
+        ? "MX"
+        : // If they're not from the US, let's guess they're researching the US (because they're researching about liters-to-gallons)
+          "US";
   }
 
   const defaultGasPrices = {
