@@ -32,7 +32,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
     dispatch({
       type: "update",
       id: gasPricesKey,
-      payload: { ...context[gasPricesKey], [key]: newValue },
+      payload: { key: key, value: newValue },
     });
   };
 

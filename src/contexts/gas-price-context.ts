@@ -18,40 +18,42 @@ type GasPrice = {
 export type GasPrices = {
   top: GasPrice;
   bottom: GasPrice;
+  driver: "top" | "bottom";
 };
 
-export function gasPricesReducer(gasPrices: GasPrices, action: GasPriceAction) {
+export function gasPricesReducer(
+  gasPrices: GasPrices,
+  action: GasPriceAction,
+  options = {},
+) {
   switch (action.type) {
-    case "update":
-      if (action.id === "top") {
-        return {
-          top: { ...action.payload },
-          bottom: {
-            ...gasPrices.bottom,
-            number: getGasPrice(
-              action.payload.number,
-              action.payload.currency,
-              action.payload.unit,
-              gasPrices.bottom.currency,
-              gasPrices.bottom.unit,
-            ),
-          },
-        };
-      } else {
-        return {
-          top: {
-            ...gasPrices.top,
-            number: getGasPrice(
-              action.payload.number,
-              action.payload.currency,
-              action.payload.unit,
-              gasPrices.top.currency,
-              gasPrices.top.unit,
-            ),
-          },
-          bottom: { ...action.payload },
-        };
+    case "update": {
+      const newGasPrices = { ...gasPrices };
+      // Update which gas price is in control when the number changes
+      if (action.payload.key === "number") {
+        newGasPrices.driver = action.id;
       }
+
+      // Store which price is doing the driving and which is being driven
+      const driver = newGasPrices.driver;
+      const driven = newGasPrices.driver === "top" ? "bottom" : "top";
+
+      // Apply the change being requested
+      newGasPrices[action.id][action.payload.key] = action.payload.value;
+
+      // Update the number for the non-driven gas price
+      newGasPrices[driven].number = getGasPrice(
+        newGasPrices[driver].number,
+        newGasPrices[driver].currency,
+        newGasPrices[driver].unit,
+        newGasPrices[driven].currency,
+        newGasPrices[driven].unit,
+        options?.exchangeRates?.rates,
+      );
+
+      // Return the new gas prices object
+      return newGasPrices;
+    }
     default:
       return gasPrices;
   }
@@ -60,7 +62,7 @@ export function gasPricesReducer(gasPrices: GasPrices, action: GasPriceAction) {
 export const getInitialGasPrices = (
   userHomeCountry: string,
   userLocation: string,
-) => {
+): GasPrices => {
   // Assume the user wants to know about the place we geolocated them
   let foreignCountry = userLocation;
 
@@ -85,6 +87,7 @@ export const getInitialGasPrices = (
       currency: getCurrencyByCountry(userHomeCountry),
       unit: getUnitsByCountry(userHomeCountry),
     },
+    driver: "top",
   };
 
   return defaultGasPrices;
