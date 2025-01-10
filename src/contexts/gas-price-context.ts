@@ -24,7 +24,13 @@ export type GasPrices = {
 export function gasPricesReducer(
   gasPrices: GasPrices,
   action: GasPricesAction,
-  options = {},
+  options?: {
+    exchangeRates?: {
+      rates: {
+        [key: string]: number;
+      };
+    };
+  },
 ) {
   switch (action.type) {
     case "update": {
@@ -39,7 +45,8 @@ export function gasPricesReducer(
       const driven = newGasPrices.driver === "top" ? "bottom" : "top";
 
       // Apply the change being requested
-      newGasPrices[action.id][action.payload.key] = action.payload.value;
+      newGasPrices[action.id][action.payload.key] = action.payload
+        .value as number & string;
 
       // Update the number for the non-driven gas price
       newGasPrices[driven].number = getGasPrice(
