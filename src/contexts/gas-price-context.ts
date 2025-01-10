@@ -1,12 +1,12 @@
 import { getCurrencyByCountry, getUnitsByCountry } from "@/utils/locale-data";
-import { Units } from "@/components/unit/unit";
+import { Units } from "@/components/unit-select/unit-select";
 import getGasPrice from "@/utils/get-gas-price";
 import { createContext } from "react";
 
-type GasPriceAction = {
+export type GasPricesAction = {
   type: "update";
-  id: string;
-  payload: GasPrice;
+  id: "top" | "bottom";
+  payload: { key: "number" | "currency" | "unit"; value: number | string };
 };
 
 type GasPrice = {
@@ -23,7 +23,7 @@ export type GasPrices = {
 
 export function gasPricesReducer(
   gasPrices: GasPrices,
-  action: GasPriceAction,
+  action: GasPricesAction,
   options = {},
 ) {
   switch (action.type) {
@@ -87,7 +87,7 @@ export const getInitialGasPrices = (
       currency: getCurrencyByCountry(userHomeCountry),
       unit: getUnitsByCountry(userHomeCountry),
     },
-    driver: "top",
+    driver: <"top" | "bottom">"top",
   };
 
   return defaultGasPrices;
@@ -95,5 +95,5 @@ export const getInitialGasPrices = (
 
 export const GasPricesContext = createContext<GasPrices | null>(null);
 export const GasPricesDispatchContext = createContext<
-  React.Dispatch<GasPriceAction>
+  React.Dispatch<GasPricesAction>
 >(() => {});

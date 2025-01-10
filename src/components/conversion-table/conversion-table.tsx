@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import "./conversion-table.css";
-import { Units } from "@/components/unit/unit";
+import { Units } from "@/components/unit-select/unit-select";
 
 type ConversionTableProps = {
   topNumber: number;

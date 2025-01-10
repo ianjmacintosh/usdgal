@@ -1,4 +1,6 @@
+import { describe, expect, test } from "vitest";
 import { gasPricesReducer } from "./gas-price-context";
+import { GasPrices, GasPricesAction } from "./gas-price-context";
 
 const LITERS_IN_A_GALLON = 3.78541;
 
@@ -11,7 +13,7 @@ describe("gasPricesReducer", () => {
     },
   };
 
-  const startingGasPrices = () => {
+  const startingGasPrices = (): GasPrices => {
     return {
       top: { number: 1, currency: "USD", unit: "liter" },
       bottom: { number: 1, currency: "USD", unit: "liter" },
@@ -24,7 +26,7 @@ describe("gasPricesReducer", () => {
       type: "update",
       id: "bottom",
       payload: { key: "unit", value: "gallon" },
-    };
+    } as GasPricesAction;
 
     const updatedGasPrices = gasPricesReducer(startingGasPrices(), action, {
       exchangeRates: fakeExchangeRates,
@@ -48,7 +50,7 @@ describe("gasPricesReducer", () => {
       type: "update",
       id: "bottom",
       payload: { key: "currency", value: "BRL" },
-    };
+    } as GasPricesAction;
 
     const updatedGasPrices = gasPricesReducer(startingGasPrices(), action, {
       exchangeRates: fakeExchangeRates,
@@ -62,7 +64,7 @@ describe("gasPricesReducer", () => {
         unit: "liter",
       },
       driver: "top",
-    };
+    } as GasPrices;
 
     expect(updatedGasPrices).toEqual(expectedGasPrices);
   });
@@ -72,7 +74,7 @@ describe("gasPricesReducer", () => {
       type: "update",
       id: "bottom",
       payload: { key: "number", value: 3 },
-    };
+    } as GasPricesAction;
 
     const updatedGasPrices = gasPricesReducer(startingGasPrices(), action, {
       exchangeRates: fakeExchangeRates,

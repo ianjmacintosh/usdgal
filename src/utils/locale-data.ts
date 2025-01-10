@@ -1,4 +1,4 @@
-import { Units } from "@/components/unit/unit";
+import { Units } from "@/components/unit-select/unit-select";
 
 // https://raw.githubusercontent.com/SirCen/country-currencies/refs/heads/main/countryCurrencyInfo.ts
 
@@ -1320,7 +1320,7 @@ const getCurrencyByCountry = (countryCode: string) => {
   return country?.Currencies[0] ?? "USD";
 };
 
-const getUnitsByCountry = (countryCode: string) => {
+const getUnitsByCountry = (countryCode: string): Units => {
   let units = "liter";
 
   if (countriesUsingGallons.includes(countryCode)) {
