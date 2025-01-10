@@ -16,7 +16,7 @@ type NumberProps = {
   unit: string;
 };
 
-const Number = ({
+const NumberInput = ({
   number,
   userLanguage,
   currency,
@@ -78,4 +78,4 @@ const Number = ({
   );
 };
 
-export default Number;
+export default NumberInput;

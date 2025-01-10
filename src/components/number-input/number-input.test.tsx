@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import Number from "./number-input";
+import NumberInput from "./number-input";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
@@ -13,7 +13,7 @@ describe("<Number />", () => {
     const [number, setNumber] = useState(0);
     return (
       <IntlProvider locale="en-US" messages={en}>
-        <Number
+        <NumberInput
           currency="USD"
           label="Amount"
           onChange={setNumber}

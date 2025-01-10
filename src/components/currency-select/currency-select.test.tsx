@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, getByText, render, screen } from "@testing-library/react";
-import Currency from "./currency-select";
+import CurrencySelect from "./currency-select";
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
@@ -15,7 +15,7 @@ describe("<Currency />", () => {
 
     return (
       <IntlProvider locale="en-US" messages={en}>
-        <Currency
+        <CurrencySelect
           userLanguage="en"
           currency={currency}
           onChange={(newValue) => {

@@ -12,7 +12,7 @@ type UnitProps = {
   disabled?: boolean;
 };
 
-const Unit = ({ id, unit, onChange, disabled }: UnitProps) => {
+const UnitSelect = ({ id, unit, onChange, disabled }: UnitProps) => {
   const intl = useIntl();
   const displayUnit = {
     "": "",
@@ -56,4 +56,4 @@ const Unit = ({ id, unit, onChange, disabled }: UnitProps) => {
   );
 };
 
-export default Unit;
+export default UnitSelect;

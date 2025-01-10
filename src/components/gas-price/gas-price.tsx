@@ -4,9 +4,9 @@ import {
 } from "@/contexts/gas-price-context";
 import "./gas-price.css";
 import { useContext } from "react";
-import Number from "@/components/number-input/number-input";
-import Currency from "@/components/currency-select/currency-select";
-import Unit from "@/components/unit-select/unit-select";
+import NumberInput from "@/components/number-input/number-input";
+import CurrencySelect from "@/components/currency-select/currency-select";
+import UnitSelect from "@/components/unit-select/unit-select";
 
 type GasPriceProps = {
   label: string;
@@ -42,7 +42,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
     <div className="mt-2 mb-8">
       <fieldset>
         <legend>{label}</legend>
-        <Number
+        <NumberInput
           currency={currency}
           label={label}
           unit={unit}
@@ -55,7 +55,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
             updateHandler({ key: "number", value: newValue });
           }}
         />
-        <Currency
+        <CurrencySelect
           currency={currency}
           onChange={(newValue) => {
             if (newValue === currency) {
@@ -65,7 +65,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
           }}
           userLanguage={"en-US"}
         />
-        <Unit
+        <UnitSelect
           id={`${label.toLowerCase()}_unit`}
           unit={unit}
           onChange={(newValue) => {

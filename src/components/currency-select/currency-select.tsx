@@ -11,7 +11,7 @@ type CurrencyProps = {
   userLanguage: string;
 };
 
-export default function Currency({
+export default function CurrencySelect({
   currency,
   onChange,
   userLanguage,
