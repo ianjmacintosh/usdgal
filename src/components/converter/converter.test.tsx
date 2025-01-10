@@ -119,7 +119,7 @@ describe("<Converter userLanguage='en-US' />", () => {
     render(<Stub initialEntries={["/"]} />);
   });
 
-  test("loads with the correct default starting values", async () => {
+  test("assumes Americans are going to Mexico", async () => {
     const {
       topCurrencyInput,
       topUnitInput,
@@ -196,6 +196,15 @@ describe("<Converter userLanguage='en-US' />", () => {
     expect(bottomPriceInput.value).toBe(expectedPrice.toFixed(2));
   });
 
+  test.skip("rounds prices correctly (to 2 decimal places)", async () => {});
+  test.skip("doesn't throw NaN errors when the user provides incomplete numbers", async () => {});
+  test.skip("converts prices with commas from local to home", async () => {});
+  test.skip("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {});
+  test.skip("updates bottom price (but not top price) when the user updates the bottom currency or units", async () => {});
+  test.skip("has a link for my personal site and my GitHub project", () => {});
+});
+
+describe("<Converter userLanguage='en-US' userLocation='HN' />", () => {
   test("loads values based on geolocation", async () => {
     // Arrange
     cleanup();
@@ -217,13 +226,6 @@ describe("<Converter userLanguage='en-US' />", () => {
       expect(bottomUnitInput.textContent).toBe("per gallon");
     });
   });
-
-  test.skip("rounds prices correctly (to 2 decimal places)", async () => {});
-  test.skip("doesn't throw NaN errors when the user provides incomplete numbers", async () => {});
-  test.skip("converts prices with commas from local to home", async () => {});
-  test.skip("does a normal 1:1 conversion when currencies and units of measure are set to be equal", async () => {});
-  test.skip("updates bottom price (but not top price) when the user updates the bottom currency or units", async () => {});
-  test.skip("has a link for my personal site and my GitHub project", () => {});
 });
 
 describe("<Converter userLanguage='pt-BR' />", () => {
