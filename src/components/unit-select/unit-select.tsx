@@ -1,5 +1,5 @@
 import * as Ariakit from "@ariakit/react";
-import "./Unit.css";
+import "./unit-select.css";
 import { FormattedMessage, useIntl } from "react-intl";
 
 // This value could be "" while initializing

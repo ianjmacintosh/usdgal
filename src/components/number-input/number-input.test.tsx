@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import Number from "../number/number";
+import Number from "./number-input";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";

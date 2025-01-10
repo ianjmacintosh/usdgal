@@ -1,6 +1,6 @@
 import * as Ariakit from "@ariakit/react";
 import { startTransition, useEffect, useMemo, useState } from "react";
-import "./currency.css";
+import "./currency-select.css";
 import { matchSorter } from "match-sorter";
 import { debounce } from "lodash-es";
 import { currenciesSelectStoreItems } from "@/utils/exchange-rate-data";

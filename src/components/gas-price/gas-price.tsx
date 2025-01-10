@@ -4,9 +4,9 @@ import {
 } from "@/contexts/gas-price-context";
 import "./gas-price.css";
 import { useContext } from "react";
-import Number from "../number/number";
-import Currency from "../currency/currency";
-import Unit from "../unit/unit";
+import Number from "@/components/number-input/number-input";
+import Currency from "@/components/currency-select/currency-select";
+import Unit from "@/components/unit-select/unit-select";
 
 type GasPriceProps = {
   label: string;
