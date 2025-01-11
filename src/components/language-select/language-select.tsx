@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import "./language-select.css";
 
 type LanguageSelectProps = {
-  userLanguage: string;
+  siteLanguage: string;
 };
 
 const getFlagIcon = (country: string) => {
@@ -61,7 +61,9 @@ const defaultLanguage = {
   flagElement: getFlagIcon("US"),
 };
 
-const LanguageSelect = ({ userLanguage }: LanguageSelectProps) => {
+const LanguageSelect = ({
+  siteLanguage: userLanguage,
+}: LanguageSelectProps) => {
   const navigate = useNavigate();
   const handleLanguageChange = (newLanguage: string) => {
     if (newLanguage !== "en") {

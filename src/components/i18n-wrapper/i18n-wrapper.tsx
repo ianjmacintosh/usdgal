@@ -10,7 +10,7 @@ import { getInitialGasPrices } from "@/contexts/gas-price-context.ts";
 import { fetchCountryCode } from "@/utils/api.ts";
 import { useEffect, useState } from "react";
 
-type I18nWrapperProps = { language: string };
+type I18nWrapperProps = { siteLanguage: string };
 
 const getMessages = (language: string) => {
   // Why does FormatJS want consumers handling this logic? RFC-5646 is complicated:
@@ -43,8 +43,8 @@ const getMessages = (language: string) => {
   }
 };
 
-export function I18nWrapper({ language }: I18nWrapperProps) {
-  // The "language" prop indicates what language the site is displayed in
+export function I18nWrapper({ siteLanguage }: I18nWrapperProps) {
+  // The "siteLanguage" prop indicates what language the site is displayed in
   // The "userLanguage" variable indicates what language the user's browser is set to
   const userLanguage = navigator.language;
 
@@ -73,12 +73,16 @@ export function I18nWrapper({ language }: I18nWrapperProps) {
   return (
     <>
       <IntlProvider
-        locale={language}
-        messages={getMessages(language)}
+        locale={siteLanguage}
+        messages={getMessages(siteLanguage)}
         defaultLocale="en"
       >
         {geolocation && (
-          <Converter userLanguage={userLanguage} userLocation={geolocation} />
+          <Converter
+            siteLanguage={siteLanguage}
+            userLanguage={userLanguage}
+            userLocation={geolocation}
+          />
         )}
       </IntlProvider>
     </>

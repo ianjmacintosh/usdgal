@@ -29,5 +29,5 @@ export function meta() {
 }
 
 export default function Component() {
-  return <I18nWrapper language={language} />;
+  return <I18nWrapper siteLanguage={language} />;
 }

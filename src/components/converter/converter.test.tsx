@@ -25,7 +25,12 @@ const englishTestComponent = ({
 }) => {
   return (
     <IntlProvider locale="en-US" messages={messages}>
-      <Converter userLanguage="en-US" userLocation="US" {...props} />
+      <Converter
+        siteLanguage="en"
+        userLanguage="en-US"
+        userLocation="US"
+        {...props}
+      />
     </IntlProvider>
   );
 };
@@ -39,7 +44,12 @@ const englishTestComponentInHonduras = ({
 }) => {
   return (
     <IntlProvider locale="en-US" messages={messages}>
-      <Converter userLanguage="en-US" userLocation="HN" {...props} />
+      <Converter
+        siteLanguage="en"
+        userLanguage="en-US"
+        userLocation="HN"
+        {...props}
+      />
     </IntlProvider>
   );
 };
@@ -53,7 +63,12 @@ const spanishTestComponent = ({
 }) => {
   return (
     <IntlProvider locale="es-MX" messages={messages}>
-      <Converter userLanguage="es-MX" userLocation="US" {...props} />
+      <Converter
+        siteLanguage="es"
+        userLanguage="es-MX"
+        userLocation="US"
+        {...props}
+      />
     </IntlProvider>
   );
 };
@@ -67,7 +82,12 @@ const PortugueseTestComponent = ({
 }) => {
   return (
     <IntlProvider locale="pt-BR" messages={messages}>
-      <Converter userLanguage="pt-BR" userLocation="BR" {...props} />
+      <Converter
+        siteLanguage="pt"
+        userLanguage="pt-BR"
+        userLocation="BR"
+        {...props}
+      />
     </IntlProvider>
   );
 };
@@ -102,7 +122,7 @@ const elements = () => {
   };
 };
 
-describe("<Converter userLanguage='es-MX' />", () => {
+describe('<Converter siteLanguage="en-US" userLanguage="es-MX" />', () => {
   beforeEach(() => {
     render(<Stub initialEntries={["/es"]} />);
   });
@@ -112,7 +132,7 @@ describe("<Converter userLanguage='es-MX' />", () => {
   });
 });
 
-describe("<Converter userLanguage='en-US' />", () => {
+describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
@@ -204,7 +224,7 @@ describe("<Converter userLanguage='en-US' />", () => {
   test.skip("has a link for my personal site and my GitHub project", () => {});
 });
 
-describe("<Converter userLanguage='en-US' userLocation='HN' />", () => {
+describe('<Converter siteLanguage="en-US" userLanguage="en-US" userLocation="HN" />', () => {
   test("loads values based on geolocation", async () => {
     // Arrange
     cleanup();
@@ -228,7 +248,7 @@ describe("<Converter userLanguage='en-US' userLocation='HN' />", () => {
   });
 });
 
-describe("<Converter userLanguage='pt-BR' />", () => {
+describe('<Converter siteLanguage="en-US" userLanguage="pt-BR" />', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {

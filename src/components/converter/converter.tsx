@@ -1,25 +1,29 @@
 import { useReducer } from "react";
-import GithubLogo from "@/assets/github.svg?react";
 import "./converter.css";
 
 import GasPrice from "@/components/gas-price/gas-price";
 import ConversionTable from "@/components/conversion-table/conversion-table";
 import exchangeRateData from "@/utils/exchange-rate-data";
 import { FormattedMessage, useIntl } from "react-intl";
-import LanguageSelect from "@/components/language-select/language-select";
 import {
   GasPricesContext,
   GasPricesDispatchContext,
   gasPricesReducer,
   getInitialGasPrices,
 } from "@/contexts/gas-price-context";
+import Footer from "../footer/footer";
 
 type ConverterProps = {
+  siteLanguage: string;
   userLanguage: string;
   userLocation: string;
 };
 
-function Converter({ userLanguage, userLocation }: ConverterProps) {
+function Converter({
+  siteLanguage,
+  userLanguage,
+  userLocation,
+}: ConverterProps) {
   const intl = useIntl();
   const userLanguageCountry = userLanguage.split("-")[1];
 
@@ -70,28 +74,7 @@ function Converter({ userLanguage, userLocation }: ConverterProps) {
           exchangeRateData={exchangeRateData}
         />
       </div>
-      <footer>
-        <LanguageSelect userLanguage={userLanguage} />
-        <nav>
-          <ul>
-            <li>
-              <a
-                href="https://www.github.com/ianjmacintosh/usdgal"
-                target="_blank"
-              >
-                <span>
-                  <FormattedMessage id="sourceCode" />
-                </span>
-                <GithubLogo height={18} width={18} />
-              </a>
-            </li>
-          </ul>
-        </nav>
-        &copy; 2024{" "}
-        <a href="https://www.ianjmacintosh.com/" target="_blank">
-          Ian J. MacIntosh
-        </a>
-      </footer>
+      <Footer siteLanguage={siteLanguage} />
     </>
   );
 }

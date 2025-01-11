@@ -17,7 +17,7 @@ const TestComponent = ({
 }) => {
   return (
     <IntlProvider locale="en" messages={messages} {...props}>
-      <LanguageSelect userLanguage="pt" />
+      <LanguageSelect siteLanguage="pt" />
     </IntlProvider>
   );
 };
