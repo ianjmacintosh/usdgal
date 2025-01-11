@@ -1,5 +1,7 @@
 import { useReducer } from "react";
 import "./converter.css";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "@/components/error-fallback/error-fallback";
 
 import GasPrice from "@/components/gas-price/gas-price";
 import ConversionTable from "@/components/conversion-table/conversion-table";
@@ -37,23 +39,27 @@ function Converter({
       <div className="container">
         <GasPricesContext.Provider value={gasPrices}>
           <GasPricesDispatchContext.Provider value={dispatch}>
-            <h2 className="text-3xl font-bold my-4">
-              <FormattedMessage id="gasCost" />
-            </h2>
-            <GasPrice
-              label={intl.formatMessage({ id: "gasCost" })}
-              gasPricesKey="top"
-              userLanguage={userLanguage}
-            />
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+              <h2 className="text-3xl font-bold my-4">
+                <FormattedMessage id="gasCost" />
+              </h2>
+              <GasPrice
+                label={intl.formatMessage({ id: "gasCost" })}
+                gasPricesKey="top"
+                userLanguage={userLanguage}
+              />
+            </ErrorBoundary>
 
-            <h2 className="text-3xl font-bold my-4">
-              <FormattedMessage id="convertedGasCost" />
-            </h2>
-            <GasPrice
-              label={intl.formatMessage({ id: "convertedGasCost" })}
-              gasPricesKey="bottom"
-              userLanguage={userLanguage}
-            />
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+              <h2 className="text-3xl font-bold my-4">
+                <FormattedMessage id="convertedGasCost" />
+              </h2>
+              <GasPrice
+                label={intl.formatMessage({ id: "convertedGasCost" })}
+                gasPricesKey="bottom"
+                userLanguage={userLanguage}
+              />
+            </ErrorBoundary>
           </GasPricesDispatchContext.Provider>
         </GasPricesContext.Provider>
         <p className="my-2 text-sm">
@@ -74,7 +80,10 @@ function Converter({
           exchangeRateData={exchangeRateData}
         />
       </div>
-      <Footer siteLanguage={siteLanguage} />
+
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Footer siteLanguage={siteLanguage} />
+      </ErrorBoundary>
     </>
   );
 }
