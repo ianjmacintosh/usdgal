@@ -7,6 +7,8 @@ import { useContext } from "react";
 import NumberInput from "@/components/number-input/number-input";
 import CurrencySelect from "@/components/currency-select/currency-select";
 import UnitSelect from "@/components/unit-select/unit-select";
+import { getFormattedPrice, isTinyNumber } from "@/utils/number-format";
+import { FormattedMessage } from "react-intl";
 
 type GasPriceProps = {
   label: string;
@@ -37,6 +39,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
   };
 
   const { number, currency, unit } = context[gasPricesKey as "top" | "bottom"];
+  const displayNumber = getFormattedPrice(number, userLanguage, currency);
 
   return (
     <div className="mt-2 mb-8">
@@ -76,7 +79,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
           }}
         />
       </fieldset>
-      {/* {isTinyNumber(number, userLanguage, currency) ? (
+      {isTinyNumber(number, userLanguage, currency) ? (
         <p className="mt-4">
           <em role="status">
             <FormattedMessage
@@ -87,7 +90,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
         </p>
       ) : (
         ""
-      )} */}
+      )}
     </div>
   );
 }
