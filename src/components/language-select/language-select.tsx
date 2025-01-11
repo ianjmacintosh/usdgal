@@ -8,6 +8,7 @@ type LanguageSelectProps = {
   siteLanguage: string;
 };
 
+// getFlagIcon function: Maps country codes to flag icons
 const getFlagIcon = (country: string) => {
   switch (country) {
     case "US":
@@ -25,13 +26,16 @@ const getFlagIcon = (country: string) => {
   }
 };
 
+// supportedLanguages array: List of supported languages, with the first language being the default site language
 const supportedLanguages = [
+  // ⬇️ WARNING: The first language in this array will be the site language picker's value when we don't know what language they're using!!
   {
     id: "en",
     languageName: "English",
     countryName: "United States",
     flagElement: getFlagIcon("US"),
   },
+  // ⬆️ WARNING: The first language in this array will be the site language picker's value when we don't know what language they're using!!
   {
     id: "de",
     languageName: "Deutsch",
@@ -54,18 +58,12 @@ const supportedLanguages = [
   },
 ];
 
-const defaultLanguage = {
-  id: "en",
-  languageName: "English",
-  countryName: "United States",
-  flagElement: getFlagIcon("US"),
-};
-
-const LanguageSelect = ({
-  siteLanguage: userLanguage,
-}: LanguageSelectProps) => {
+// LanguageSelect component: Renders the language select dropdown and handles language changes
+const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
   const navigate = useNavigate();
+  // handleLanguageChange function: Handles language changes by navigating to its URL
   const handleLanguageChange = (newLanguage: string) => {
+    // The site's English version has a special URL ("/" instead of "/en")
     if (newLanguage !== "en") {
       navigate(`/${newLanguage}`);
     } else {
@@ -73,16 +71,15 @@ const LanguageSelect = ({
     }
   };
   const currentLanguage =
-    supportedLanguages.find((language) => {
-      return language.id === userLanguage;
-    }) ?? defaultLanguage;
+    supportedLanguages.find(({ id }) => id === siteLanguage) ||
+    supportedLanguages[0];
   return (
     <form className="my-4 language-form">
       <label htmlFor="language-select" className="font-bold">
         <FormattedMessage defaultMessage="Language" id="language" />
       </label>
       <Ariakit.SelectProvider
-        defaultValue={userLanguage}
+        defaultValue={siteLanguage}
         setValue={(newValue) => {
           handleLanguageChange(String(newValue));
         }}
@@ -104,21 +101,22 @@ const LanguageSelect = ({
           className="popover unit-popover"
           unmountOnHide={true}
         >
-          {supportedLanguages.map((language) => {
-            return (
-              <Ariakit.SelectItem
-                className="select-item"
-                key={language.id}
-                value={language.id}
-                id={language.id}
-              >
-                {currentLanguage.id === language.id ? "✓" : ""}
-                {language.flagElement}
-                {language.languageName}{" "}
-                {language.countryName ? `(${language.countryName})` : ""}
-              </Ariakit.SelectItem>
-            );
-          })}
+          {supportedLanguages.map(
+            ({ id, flagElement, languageName, countryName }) => {
+              return (
+                <Ariakit.SelectItem
+                  className="select-item"
+                  key={id}
+                  value={id}
+                  id={id}
+                >
+                  {currentLanguage.id === id ? "✓" : ""}
+                  {flagElement}
+                  {languageName} {countryName ? `(${countryName})` : ""}
+                </Ariakit.SelectItem>
+              );
+            },
+          )}
         </Ariakit.SelectPopover>
       </Ariakit.SelectProvider>
     </form>
