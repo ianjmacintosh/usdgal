@@ -17,7 +17,7 @@ import Footer from "@/components/footer/footer";
 
 type ConverterProps = {
   siteLanguage: string;
-  userLanguage: string;
+  userLanguage?: string;
   userLocation: string;
 };
 
@@ -33,7 +33,7 @@ type ConverterProps = {
  */
 function Converter({
   siteLanguage,
-  userLanguage,
+  userLanguage = navigator.language,
   userLocation,
 }: ConverterProps) {
   const intl = useIntl();

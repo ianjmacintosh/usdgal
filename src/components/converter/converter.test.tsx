@@ -26,7 +26,7 @@ const englishTestComponent = ({
   return (
     <IntlProvider locale="en-US" messages={messages}>
       <Converter
-        siteLanguage="en"
+        siteLanguage="en-US"
         userLanguage="en-US"
         userLocation="US"
         {...props}
@@ -45,7 +45,7 @@ const englishTestComponentInHonduras = ({
   return (
     <IntlProvider locale="en-US" messages={messages}>
       <Converter
-        siteLanguage="en"
+        siteLanguage="en-US"
         userLanguage="en-US"
         userLocation="HN"
         {...props}
@@ -64,7 +64,7 @@ const spanishTestComponent = ({
   return (
     <IntlProvider locale="es-MX" messages={messages}>
       <Converter
-        siteLanguage="es"
+        siteLanguage="en-US"
         userLanguage="es-MX"
         userLocation="US"
         {...props}
@@ -83,7 +83,7 @@ const PortugueseTestComponent = ({
   return (
     <IntlProvider locale="pt-BR" messages={messages}>
       <Converter
-        siteLanguage="pt"
+        siteLanguage="en-US"
         userLanguage="pt-BR"
         userLocation="BR"
         {...props}

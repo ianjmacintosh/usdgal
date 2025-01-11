@@ -1,4 +1,4 @@
-import Converter from "../converter/converter.tsx";
+import Converter from "@/components/converter/converter";
 import "@/pages/home.css";
 import { IntlProvider } from "react-intl";
 import en from "@/languages/en.ts";
@@ -45,8 +45,6 @@ const getMessages = (language: string) => {
 
 export function I18nWrapper({ siteLanguage }: I18nWrapperProps) {
   // The "siteLanguage" prop indicates what language the site is displayed in
-  // The "userLanguage" variable indicates what language the user's browser is set to
-  const userLanguage = navigator.language;
 
   const [geolocation, setGeolocation] = useState(null);
 
@@ -78,11 +76,7 @@ export function I18nWrapper({ siteLanguage }: I18nWrapperProps) {
         defaultLocale="en"
       >
         {geolocation && (
-          <Converter
-            siteLanguage={siteLanguage}
-            userLanguage={userLanguage}
-            userLocation={geolocation}
-          />
+          <Converter siteLanguage={siteLanguage} userLocation={geolocation} />
         )}
       </IntlProvider>
     </>
