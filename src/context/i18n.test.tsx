@@ -1,8 +1,16 @@
-import { describe, test, expect, beforeEach } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
-import { I18nProvider, useI18n } from "./i18n";
 import userEvent from "@testing-library/user-event";
+import { describe, test, expect, beforeEach, beforeAll } from "vitest";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { http, HttpResponse } from "msw";
+import { setupServer } from "msw/node";
+import { I18nProvider, useI18n } from "./i18n";
+
+const server = setupServer(
+  http.get("/workers/getLocation", () => {
+    return HttpResponse.json({ ipData: { country: "FR" } });
+  }),
+);
 
 const TestComponent = ({ ...props }: { [key: string]: unknown }) => {
   const { state, dispatch } = useI18n();
@@ -48,6 +56,10 @@ const elements = () => {
   };
 };
 
+beforeAll(() => {
+  server.listen();
+});
+
 beforeEach(() => {
   cleanup();
   render(
@@ -79,5 +91,12 @@ describe("<I18nProvider />", () => {
 
     await user.click(elements().userLocationButton);
     expect(elements().userLocationText).toHaveTextContent("GT.");
+  });
+
+  test("updates userLocation using geolocation endpoint", async () => {
+    // See msw implementation at https://github.com/ianjmacintosh/usdgal/blob/91011d506032326067c13e942e744f1f2608e36d/src/App.test.tsx
+    await waitFor(() => {
+      expect(elements().userLocationText).toHaveTextContent("FR.");
+    });
   });
 });

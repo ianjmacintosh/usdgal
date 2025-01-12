@@ -6,6 +6,7 @@
 // * Use TypeScript union type to support creating a context with undefined initial value
 // * Support async "user location" lookup via [helper function](https://kentcdodds.com/blog/how-to-use-react-context-effectively#what-about-async-actions)
 
+import { fetchCountryCode } from "@/utils/api";
 import { createContext, useContext, useReducer } from "react";
 
 type Action = {
@@ -53,6 +54,9 @@ const initialState: State = {
 const I18nProvider = ({ children }: I18nProviderProps) => {
   const [state, dispatch] = useReducer(i18nReducer, initialState);
   const value = { state, dispatch };
+
+  initializeUserLocation(dispatch, state);
+
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 };
 
@@ -64,4 +68,14 @@ const useI18n = () => {
   return context;
 };
 
-export { I18nProvider, useI18n };
+const initializeUserLocation = (dispatch: Dispatch, state: State) => {
+  if (state?.userLocation) return;
+
+  async function startFetching() {
+    const countryCode = await fetchCountryCode();
+    dispatch({ type: "setUserLocation", payload: countryCode });
+  }
+  startFetching();
+};
+
+export { I18nProvider, useI18n, initializeUserLocation };
