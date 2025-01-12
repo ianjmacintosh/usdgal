@@ -6,7 +6,7 @@
 // * Use TypeScript union type to support creating a context with undefined initial value
 // * Support async "user location" lookup via [helper function](https://kentcdodds.com/blog/how-to-use-react-context-effectively#what-about-async-actions)
 
-import { createContext, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 
 type Action = {
   type: "setSiteLanguage" | "setUserLanguage" | "setUserLocation";
@@ -23,37 +23,38 @@ type I18nProviderProps = {
   children: React.ReactNode;
 };
 
-const defaultState = {
+const I18nContext = createContext<
+  | {
+      state: State;
+      dispatch: Dispatch;
+    }
+  | undefined
+>(undefined);
+
+const i18nReducer = (state: State) => {
+  return {
+    ...state,
+  };
+};
+
+const initialState: State = {
   siteLanguage: "en",
   userLanguage: "en-US",
   userLocation: null,
 };
 
-const I18StateContext = createContext<
-  { state: State; dispatch: Dispatch } | undefined
->(undefined); // KCD-approved! https://kentcdodds.com/blog/how-to-use-react-context-effectively#typescript
-
-const I18nReducer = (state: State, action: Action) => {
-  switch (action.type) {
-    case "setSiteLanguage":
-      return { ...state, siteLanguage: action.payload };
-    case "setUserLanguage":
-      return { ...state, userLanguage: action.payload };
-    case "setUserLocation":
-      return { ...state, userLocation: action.payload };
-    default:
-      return state;
-  }
-};
-
 const I18nProvider = ({ children }: I18nProviderProps) => {
-  const [state, dispatch] = useReducer(I18nReducer, defaultState);
+  const [state, dispatch] = useReducer(i18nReducer, initialState);
   const value = { state, dispatch };
-  return (
-    <I18StateContext.Provider value={value}>
-      {children}
-    </I18StateContext.Provider>
-  );
+  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 };
 
-export { I18nProvider };
+const useI18n = () => {
+  const context = useContext(I18nContext);
+  if (context === undefined) {
+    throw new Error("useI18n must be used within a I18nProvider");
+  }
+  return context;
+};
+
+export { I18nProvider, useI18n };
