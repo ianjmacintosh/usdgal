@@ -5,6 +5,7 @@ import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { I18nProvider, useI18n } from "./i18n";
+import { FormattedMessage } from "react-intl";
 
 const server = setupServer(
   http.get("/workers/getLocation", () => {
@@ -17,6 +18,9 @@ const TestComponent = ({ ...props }: { [key: string]: unknown }) => {
   return (
     <I18nProvider {...props}>
       <h1>Hello World</h1>
+      <h2>
+        <FormattedMessage id="meta_title" />
+      </h2>
       <p>Site Language: {state.siteLanguage}.</p>
       <p>User Language: {state.userLanguage}.</p>
       <p>User Location: {state.userLocation}.</p>
@@ -98,5 +102,9 @@ describe("<I18nProvider />", () => {
     await waitFor(() => {
       expect(elements().userLocationText).toHaveTextContent("FR.");
     });
+  });
+
+  test("provides necessary context to support <FormattedMessage />", async () => {
+    expect(screen.getByText("Gas Price Converter")).toBeVisible();
   });
 });
