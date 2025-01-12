@@ -46,7 +46,7 @@ const i18nReducer = (state: State, action: Action) => {
 
 const initialState: State = {
   siteLanguage: "en",
-  userLanguage: "en-US",
+  userLanguage: navigator?.language || "en-US",
   userLocation: null,
 };
 
