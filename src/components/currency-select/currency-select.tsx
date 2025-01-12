@@ -32,10 +32,6 @@ export default function CurrencySelect({
     });
   }, [listItems, searchValue]);
 
-  // useEffect(() => {
-  //   onChange(selectValue);
-  // }, [currency, onChange, selectValue]);
-
   return (
     <Ariakit.ComboboxProvider
       resetValueOnHide
