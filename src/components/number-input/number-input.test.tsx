@@ -123,21 +123,6 @@ describe("<Number />", () => {
     expect(input.value).toBe("4.43");
   });
 
-  test.skip("disables dropdowns when the component is disabled", async () => {
-    // Move over pig, I'm gonna make my OWN component!!
-    cleanup();
-    render(<TestComponent disabled />);
-
-    const input = screen.getByLabelText("Amount", {
-      exact: false,
-    }) as HTMLInputElement;
-
-    await user.click(input);
-    await user.keyboard("4.43");
-
-    expect(input.value).toBe("0.00");
-  });
-
   test("formats with commas and decimal places when the user exits a field", async () => {
     const input = screen.getByLabelText("Amount", {
       exact: false,
