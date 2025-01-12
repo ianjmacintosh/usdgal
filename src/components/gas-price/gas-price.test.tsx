@@ -27,7 +27,7 @@ describe("<GasPrice />", () => {
           <GasPricesDispatchContext.Provider value={dispatch}>
             <GasPrice
               label="test"
-              userLanguage="en-US"
+              siteLanguage="en-US"
               gasPricesKey="top"
               {...props}
             />

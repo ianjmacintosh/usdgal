@@ -18,7 +18,7 @@ describe("<Number />", () => {
           label="Amount"
           onChange={setNumber}
           unit="liter"
-          userLanguage="en-US"
+          siteLanguage="en-US"
           number={number}
           {...props}
         />

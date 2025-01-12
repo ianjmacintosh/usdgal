@@ -65,7 +65,7 @@ function Converter({
               <GasPrice
                 label={intl.formatMessage({ id: "gasCost" })}
                 gasPricesKey="top"
-                userLanguage={userLanguage}
+                siteLanguage={siteLanguage}
               />
 
               <h2 className="text-3xl font-bold my-4">
@@ -76,7 +76,7 @@ function Converter({
               <GasPrice
                 label={intl.formatMessage({ id: "convertedGasCost" })}
                 gasPricesKey="bottom"
-                userLanguage={userLanguage}
+                siteLanguage={siteLanguage}
               />
             </ErrorBoundary>
           </GasPricesDispatchContext.Provider>
@@ -86,7 +86,7 @@ function Converter({
         <p className="my-2 text-sm">
           <em>
             <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
-            {Intl.DateTimeFormat(userLanguage, {
+            {Intl.DateTimeFormat(siteLanguage, {
               dateStyle: "medium",
             }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}
           </em>

@@ -13,10 +13,10 @@ import { FormattedMessage } from "react-intl";
 type GasPriceProps = {
   label: string;
   gasPricesKey: "top" | "bottom";
-  userLanguage: string;
+  siteLanguage: string;
 };
 
-function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
+function GasPrice({ label, gasPricesKey, siteLanguage }: GasPriceProps) {
   const context = useContext(GasPricesContext);
   const dispatch = useContext(GasPricesDispatchContext);
 
@@ -39,7 +39,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
   };
 
   const { number, currency, unit } = context[gasPricesKey as "top" | "bottom"];
-  const displayNumber = getFormattedPrice(number, userLanguage, currency);
+  const displayNumber = getFormattedPrice(number, siteLanguage, currency);
 
   return (
     <div className="mt-2 mb-8">
@@ -49,7 +49,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
           currency={currency}
           label={label}
           unit={unit}
-          userLanguage={userLanguage}
+          siteLanguage={siteLanguage}
           number={number}
           onChange={(newValue) => {
             if (newValue === number) {
@@ -66,7 +66,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
             }
             updateHandler({ key: "currency", value: newValue });
           }}
-          userLanguage={"en-US"}
+          siteLanguage={siteLanguage}
         />
         <UnitSelect
           id={`${label.toLowerCase()}_unit`}
@@ -79,7 +79,7 @@ function GasPrice({ label, gasPricesKey, userLanguage }: GasPriceProps) {
           }}
         />
       </fieldset>
-      {isTinyNumber(number, userLanguage, currency) ? (
+      {isTinyNumber(number, siteLanguage, currency) ? (
         <p className="mt-4">
           <em role="status">
             <FormattedMessage

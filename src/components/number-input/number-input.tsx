@@ -8,7 +8,7 @@ import {
 
 type NumberProps = {
   number: number;
-  userLanguage: string;
+  siteLanguage: string;
   currency: string;
   label: string;
   onChange: (newValue: number) => void;
@@ -18,7 +18,7 @@ type NumberProps = {
 
 const NumberInput = ({
   number,
-  userLanguage,
+  siteLanguage,
   currency,
   label,
   onChange,
@@ -26,14 +26,14 @@ const NumberInput = ({
 }: NumberProps) => {
   const intl = useIntl();
   const [displayNumber, setDisplayNumber] = useState(
-    getFormattedPrice(number, userLanguage, currency),
+    getFormattedPrice(number, siteLanguage, currency),
   );
   const [isNumberFocused, setIsNumberFocused] = useState(false);
 
   useEffect(() => {
     if (isNumberFocused) return;
 
-    setDisplayNumber(getFormattedPrice(number, userLanguage, currency));
+    setDisplayNumber(getFormattedPrice(number, siteLanguage, currency));
   }, [number, currency, isNumberFocused]);
 
   const handleDisplayNumberChange = (
@@ -41,11 +41,11 @@ const NumberInput = ({
   ) => {
     const displayNumber = event.target.value;
 
-    if (!isLegalPriceValue(displayNumber, userLanguage)) return;
+    if (!isLegalPriceValue(displayNumber, siteLanguage)) return;
 
     setDisplayNumber(displayNumber);
 
-    onChange(getParsedNumber(displayNumber, userLanguage));
+    onChange(getParsedNumber(displayNumber, siteLanguage));
   };
 
   return (
@@ -59,7 +59,7 @@ const NumberInput = ({
         setIsNumberFocused(true);
       }}
       onBlur={() => {
-        setDisplayNumber(getFormattedPrice(number, userLanguage, currency));
+        setDisplayNumber(getFormattedPrice(number, siteLanguage, currency));
         setIsNumberFocused(false);
       }}
       onChange={(value) => {

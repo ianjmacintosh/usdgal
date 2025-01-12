@@ -16,7 +16,7 @@ describe("<Currency />", () => {
     return (
       <IntlProvider locale="en-US" messages={en}>
         <CurrencySelect
-          userLanguage="en"
+          siteLanguage="en"
           currency={currency}
           onChange={(newValue) => {
             setCurrency(newValue);
@@ -113,7 +113,7 @@ describe("<Currency />", () => {
 
   test("translates currency names", async () => {
     cleanup();
-    render(<TestComponent userLanguage="pt-BR" />);
+    render(<TestComponent siteLanguage="pt" />);
 
     const currencyButton = screen.getByRole("combobox");
     await user.click(currencyButton);

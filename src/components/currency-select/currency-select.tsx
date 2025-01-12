@@ -5,25 +5,25 @@ import { matchSorter } from "match-sorter";
 import { debounce } from "lodash-es";
 import { currenciesSelectStoreItems } from "@/utils/exchange-rate-data";
 
-type CurrencyProps = {
+type CurrencySelectProps = {
   currency: string;
   onChange: (newValue: string) => void;
-  userLanguage: string;
+  siteLanguage: string;
 };
 
 export default function CurrencySelect({
   currency,
   onChange,
-  userLanguage,
-}: CurrencyProps) {
+  siteLanguage,
+}: CurrencySelectProps) {
   const [searchValue, setSearchValue] = useState("");
   const selectValue = currency;
   const [listItems, setListItems] = useState(
-    currenciesSelectStoreItems(userLanguage),
+    currenciesSelectStoreItems(siteLanguage),
   );
   useEffect(() => {
-    setListItems(currenciesSelectStoreItems(userLanguage));
-  }, [userLanguage]);
+    setListItems(currenciesSelectStoreItems(siteLanguage));
+  }, [siteLanguage]);
 
   const matches = useMemo(() => {
     return matchSorter(listItems, searchValue, {

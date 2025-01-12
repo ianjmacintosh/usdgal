@@ -11,6 +11,7 @@ import en from "../../languages/en.ts";
 import es from "../../languages/es.ts";
 import pt from "../../languages/pt.ts";
 import { createRoutesStub } from "react-router";
+import exchangeRateData from "@/utils/exchange-rate-data";
 
 afterEach(() => {
   cleanup();
@@ -35,7 +36,7 @@ const englishTestComponent = ({
   );
 };
 
-const englishTestComponentInHonduras = ({
+const mixedUpEnglishTestComponent = ({
   messages = en,
   ...props
 }: {
@@ -46,8 +47,8 @@ const englishTestComponentInHonduras = ({
     <IntlProvider locale="en-US" messages={messages}>
       <Converter
         siteLanguage="en-US"
-        userLanguage="en-US"
-        userLocation="HN"
+        userLanguage="pt-BR"
+        userLocation="IN"
         {...props}
       />
     </IntlProvider>
@@ -98,8 +99,8 @@ const Stub = createRoutesStub([
     Component: englishTestComponent,
   },
   {
-    path: "/en/hn",
-    Component: englishTestComponentInHonduras,
+    path: "/en/in",
+    Component: mixedUpEnglishTestComponent,
   },
   {
     path: "/es",
@@ -224,12 +225,13 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
   test.skip("has a link for my personal site and my GitHub project", () => {});
 });
 
-describe('<Converter siteLanguage="en-US" userLanguage="en-US" userLocation="HN" />', () => {
-  test("loads values based on geolocation", async () => {
-    // Arrange
+describe('<Converter siteLanguage="en-US" userLanguage="pt-BR" userLocation="IN" />', () => {
+  beforeEach(() => {
     cleanup();
 
-    render(<Stub initialEntries={["/en/hn"]} />);
+    render(<Stub initialEntries={["/en/in"]} />);
+  });
+  test("loads values based on geolocation", async () => {
     const {
       topCurrencyInput,
       topUnitInput,
@@ -238,13 +240,30 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" userLocation="HN"
     } = elements();
 
     await waitFor(() => {
-      expect(topCurrencyInput.textContent).toBe("HNL");
-      expect(topUnitInput.textContent).toBe("per gallon");
+      expect(topCurrencyInput.textContent).toBe("INR");
+      expect(topUnitInput.textContent).toBe("per liter");
     });
     await waitFor(() => {
-      expect(bottomCurrencyInput.textContent).toBe("USD");
-      expect(bottomUnitInput.textContent).toBe("per gallon");
+      expect(bottomCurrencyInput.textContent).toBe("BRL");
+      expect(bottomUnitInput.textContent).toBe("per liter");
     });
+  });
+
+  test('displays the "last updated" date in the site language (English)', () => {
+    expect(
+      screen.getByText(
+        Intl.DateTimeFormat("en-US", {
+          dateStyle: "medium",
+        }).format(exchangeRateData.timestamp * 1000),
+        { exact: false },
+      ),
+    ).toBeInTheDocument();
+  });
+
+  test("formats the gas price numbers in the site language (English)", () => {
+    expect(
+      screen.getByLabelText("Amount of BRL paid per liter of gas"),
+    ).toHaveValue("0.00");
   });
 });
 
