@@ -22,7 +22,7 @@ const selectItemFromFancySelect = async (
   });
 };
 
-const Test18nContextWrapper = ({
+const TestI18nContextWrapper = ({
   children,
   ...props
 }: IntlTestWrapperProps) => {
@@ -33,4 +33,4 @@ const Test18nContextWrapper = ({
   );
 };
 
-export { Test18nContextWrapper, selectItemFromFancySelect };
+export { TestI18nContextWrapper, selectItemFromFancySelect };
