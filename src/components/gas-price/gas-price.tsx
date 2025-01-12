@@ -52,18 +52,14 @@ function GasPrice({ label, gasPricesKey, siteLanguage }: GasPriceProps) {
           siteLanguage={siteLanguage}
           number={number}
           onChange={(newValue) => {
-            if (newValue === number) {
-              return;
-            }
+            if (newValue === number) return; // Return early the value wouldn't change
             updateHandler({ key: "number", value: newValue });
           }}
         />
         <CurrencySelect
           currency={currency}
           onChange={(newValue) => {
-            if (newValue === currency) {
-              return;
-            }
+            if (newValue === currency) return; // Return early the value wouldn't change
             updateHandler({ key: "currency", value: newValue });
           }}
           siteLanguage={siteLanguage}
@@ -72,9 +68,7 @@ function GasPrice({ label, gasPricesKey, siteLanguage }: GasPriceProps) {
           id={`${label.toLowerCase()}_unit`}
           unit={unit}
           onChange={(newValue) => {
-            if (newValue === unit) {
-              return;
-            }
+            if (newValue === unit) return; // Return early the value wouldn't change
             updateHandler({ key: "unit", value: newValue });
           }}
         />
