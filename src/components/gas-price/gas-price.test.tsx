@@ -58,4 +58,23 @@ describe("<GasPrice />", () => {
     });
     expect(warning).toBeVisible();
   });
+
+  test("doesn't warn just because the number is less than the display number", async () => {
+    cleanup();
+    render(<TestComponent />);
+
+    const input = screen.getByLabelText("Amount", {
+      exact: false,
+    }) as HTMLInputElement;
+
+    await user.click(input);
+    await user.keyboard("69.13733353240167");
+    await user.tab();
+    expect(input.value).toBe("69.14");
+
+    const warning = screen.queryByText("This amount is displayed as", {
+      exact: false,
+    });
+    expect(warning).not.toBeInTheDocument();
+  });
 });

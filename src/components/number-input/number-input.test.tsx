@@ -174,44 +174,6 @@ describe("<Number />", () => {
     expect(input.value).toBe("1.00");
   });
 
-  test.skip("warns when a display value is 0 but the actual value is not", async () => {
-    cleanup();
-    render(<TestComponent />);
-
-    const input = screen.getByLabelText("Amount", {
-      exact: false,
-    }) as HTMLInputElement;
-
-    await user.click(input);
-    await user.keyboard("0.0001");
-    await user.tab();
-    expect(input.value).toBe("0.01");
-
-    const warning = screen.queryByText("This amount is displayed as", {
-      exact: false,
-    });
-    expect(warning).toBeVisible();
-  });
-
-  test("doesn't warn just because the number is less than the display number", async () => {
-    cleanup();
-    render(<TestComponent />);
-
-    const input = screen.getByLabelText("Amount", {
-      exact: false,
-    }) as HTMLInputElement;
-
-    await user.click(input);
-    await user.keyboard("69.13733353240167");
-    await user.tab();
-    expect(input.value).toBe("69.14");
-
-    const warning = screen.queryByText("This amount is displayed as", {
-      exact: false,
-    });
-    expect(warning).not.toBeInTheDocument();
-  });
-
   test.skip("can handle missing currency prop", async () => {
     cleanup();
     render(<TestComponent currency="" />);
