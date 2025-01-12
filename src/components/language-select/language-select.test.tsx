@@ -29,6 +29,10 @@ beforeEach(() => {
       path: "/",
       Component: TestComponent,
     },
+    {
+      path: "/de",
+      Component: TestComponent,
+    },
   ]);
   render(<Stub initialEntries={["/"]} />);
 });
@@ -50,18 +54,5 @@ describe("<LanguageSelect />", () => {
 
     expect(portuguesOption).toHaveAttribute("aria-selected", "true");
     expect(portuguesOption).toHaveTextContent("✓");
-  });
-
-  test.skip("asks to update the language when the user changes its value", async () => {
-    const selectButton = screen.getByRole("combobox");
-    expect(selectButton.textContent).toBe("Português");
-
-    await user.click(selectButton);
-
-    const germanOption = document.querySelector("#de") as HTMLElement;
-
-    await user.click(germanOption);
-
-    // expect(mockLanguageChangeHandler).toHaveBeenCalledWith("de");
   });
 });
