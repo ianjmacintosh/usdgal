@@ -45,26 +45,36 @@ describe("<Number />", () => {
   });
 
   test("clears the number input when the starting value is 0", async () => {
-    const input = screen.getByLabelText("Amount", {
-      exact: false,
-    }) as HTMLInputElement;
+    const input = () => {
+      return screen.getByLabelText("Amount", {
+        exact: false,
+      }) as HTMLInputElement;
+    };
 
     // Supports 2 decimal places
-    expect(input.value).toBe("0.00");
-    await user.click(input);
-    expect(input.value).toBe("");
+    let currentInput = input();
+    expect(currentInput.value).toBe("0.00");
+    await user.click(currentInput);
+    expect(currentInput.value).toBe("");
+    await user.tab();
 
-    // // Supports 3 decimal places
-    // await selectItemFromFancySelect(currencyDropdown, "TND");
-    // expect(input.value).toBe("0.000");
-    // await user.click(input);
-    // expect(input.value).toBe("");
+    // Supports 3 decimal places
+    cleanup();
+    render(<TestComponent currency="TND" number={0} />);
+    currentInput = input();
+    expect(currentInput.value).toBe("0.000");
+    await user.click(currentInput);
+    expect(currentInput.value).toBe("");
+    await user.tab();
 
-    // // Supports 0 decimal places
-    // await selectItemFromFancySelect(currencyDropdown, "JPY");
-    // expect(input.value).toBe("0");
-    // await user.click(input);
-    // expect(input.value).toBe("");
+    // Supports 0 decimal places
+    cleanup();
+    render(<TestComponent currency="JPY" number={0} />);
+    currentInput = input();
+    expect(currentInput.value).toBe("0");
+    await user.click(currentInput);
+    expect(currentInput.value).toBe("");
+    await user.tab();
   });
 
   test("prevents the user from entering illegal characters", async () => {
