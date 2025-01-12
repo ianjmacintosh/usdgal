@@ -6,7 +6,7 @@ import es from "@/languages/es.ts";
 import pt from "@/languages/pt.ts";
 import hi from "@/languages/hi.ts";
 import de from "@/languages/de.ts";
-import { getInitialGasPrices } from "@/contexts/gas-price-context.ts";
+import { getInitialGasPrices } from "@/context/gas-price-context";
 import { fetchCountryCode } from "@/utils/api.ts";
 import { useEffect, useState } from "react";
 

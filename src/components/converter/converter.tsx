@@ -12,7 +12,7 @@ import {
   GasPricesDispatchContext,
   gasPricesReducer,
   getInitialGasPrices,
-} from "@/contexts/gas-price-context";
+} from "@/context/gas-price-context";
 import Footer from "@/components/footer/footer";
 
 type ConverterProps = {

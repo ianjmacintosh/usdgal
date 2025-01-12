@@ -1,4 +1,4 @@
-import { I18nWrapper } from "@/components/i18n-wrapper/i18n-wrapper.tsx";
+import { I18nWrapper } from "@/context/i18n-wrapper.tsx";
 import { createIntl } from "react-intl";
 import { defaultLinks } from "./home-defaults.ts";
 import es from "../languages/es.ts";
