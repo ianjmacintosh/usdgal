@@ -64,7 +64,7 @@ const spanishTestComponent = ({
   return (
     <IntlProvider locale="es-MX" messages={messages}>
       <Converter
-        siteLanguage="en-US"
+        siteLanguage="es-MX"
         userLanguage="es-MX"
         userLocation="US"
         {...props}
@@ -83,7 +83,7 @@ const PortugueseTestComponent = ({
   return (
     <IntlProvider locale="pt-BR" messages={messages}>
       <Converter
-        siteLanguage="en-US"
+        siteLanguage="pt-BR"
         userLanguage="pt-BR"
         userLocation="BR"
         {...props}
@@ -248,7 +248,7 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" userLocation="HN"
   });
 });
 
-describe('<Converter siteLanguage="en-US" userLanguage="pt-BR" />', () => {
+describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
@@ -273,7 +273,7 @@ describe('<Converter siteLanguage="en-US" userLanguage="pt-BR" />', () => {
     });
   });
 
-  test("assumes if the user is at home, they're preparing for a price in USD per gallon", async () => {
+  test("assumes a Brazilian visitor visiting the site from Brazil wants to see prices in USD per gallon", async () => {
     // Arrange
     cleanup();
 
