@@ -13,7 +13,11 @@ const TestComponent = ({ ...props }: { [key: string]: unknown }) => {
 
 beforeEach(() => {
   cleanup();
-  render(<TestComponent />);
+  render(
+    <I18nProvider>
+      <TestComponent />
+    </I18nProvider>,
+  );
 });
 
 describe("<I18nProvider />", () => {
