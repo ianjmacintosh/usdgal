@@ -1,4 +1,4 @@
-import { I18nWrapper } from "@/I18nWrapper";
+import { I18nWrapper } from "@/components/i18n-wrapper/i18n-wrapper.tsx";
 import { createIntl } from "react-intl";
 import { defaultLinks } from "./home-defaults.ts";
 import hi from "../languages/hi.ts";
@@ -29,5 +29,5 @@ export function meta() {
 }
 
 export default function Component() {
-  return <I18nWrapper language={language} />;
+  return <I18nWrapper siteLanguage={language} />;
 }
