@@ -25,7 +25,7 @@ const Footer = ({ siteLanguage }: FooterProps) => {
           </li>
         </ul>
       </nav>
-      &copy; 2024{" "}
+      &copy; 2025{" "}
       <a href="https://www.ianjmacintosh.com/" target="_blank">
         Ian J. MacIntosh
       </a>
