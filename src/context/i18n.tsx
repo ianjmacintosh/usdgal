@@ -31,10 +31,17 @@ const I18nContext = createContext<
   | undefined
 >(undefined);
 
-const i18nReducer = (state: State) => {
-  return {
-    ...state,
-  };
+const i18nReducer = (state: State, action: Action) => {
+  switch (action.type) {
+    case "setSiteLanguage":
+      return { ...state, siteLanguage: action.payload };
+    case "setUserLanguage":
+      return { ...state, userLanguage: action.payload };
+    case "setUserLocation":
+      return { ...state, userLocation: action.payload };
+    default:
+      throw new Error(`Unsupported action type: ${action.type}`);
+  }
 };
 
 const initialState: State = {
