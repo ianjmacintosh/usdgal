@@ -4,8 +4,9 @@ import { describe, test, expect, beforeEach, beforeAll } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
-import { I18nProvider, useI18n } from "./i18n";
+import { useI18n } from "./i18n";
 import { FormattedMessage } from "react-intl";
+import { Test18nContextWrapper } from "@/utils/test-utils";
 
 const server = setupServer(
   http.get("/workers/getLocation", () => {
@@ -67,9 +68,9 @@ beforeAll(() => {
 beforeEach(() => {
   cleanup();
   render(
-    <I18nProvider siteLanguage="en">
+    <Test18nContextWrapper>
       <TestComponent />
-    </I18nProvider>,
+    </Test18nContextWrapper>,
   );
 });
 

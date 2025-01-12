@@ -1,6 +1,12 @@
+import { I18nProvider } from "@/context/i18n";
 import { getByText, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect } from "vitest";
+
+type IntlTestWrapperProps = {
+  children: React.ReactNode;
+  siteLanguage?: string;
+};
 
 const selectItemFromFancySelect = async (
   selectElement: Element,
@@ -16,4 +22,15 @@ const selectItemFromFancySelect = async (
   });
 };
 
-export { selectItemFromFancySelect };
+const Test18nContextWrapper = ({
+  children,
+  ...props
+}: IntlTestWrapperProps) => {
+  return (
+    <I18nProvider siteLanguage="en" {...props}>
+      {children}
+    </I18nProvider>
+  );
+};
+
+export { Test18nContextWrapper, selectItemFromFancySelect };
