@@ -28,6 +28,7 @@ type State = {
 
 type I18nProviderProps = {
   children: React.ReactNode;
+  siteLanguage: string;
 };
 
 const I18nContext = createContext<
@@ -88,8 +89,11 @@ const initialState: State = {
   userLocation: null,
 };
 
-const I18nProvider = ({ children }: I18nProviderProps) => {
-  const [state, dispatch] = useReducer(i18nReducer, initialState);
+const I18nProvider = ({ siteLanguage, children }: I18nProviderProps) => {
+  const [state, dispatch] = useReducer(i18nReducer, {
+    ...initialState,
+    siteLanguage,
+  });
   const value = { state, dispatch };
 
   initializeUserLocation(dispatch, state);
@@ -97,8 +101,8 @@ const I18nProvider = ({ children }: I18nProviderProps) => {
   return (
     <I18nContext.Provider value={value}>
       <IntlProvider
-        locale={state.siteLanguage}
-        messages={getMessages(state.siteLanguage)}
+        locale={siteLanguage}
+        messages={getMessages(siteLanguage)}
         defaultLocale="en"
       >
         {children}

@@ -13,10 +13,10 @@ const server = setupServer(
   }),
 );
 
-const TestComponent = ({ ...props }: { [key: string]: unknown }) => {
+const TestComponent = () => {
   const { state, dispatch } = useI18n();
   return (
-    <I18nProvider {...props}>
+    <>
       <h1>Hello World</h1>
       <h2>
         <FormattedMessage id="meta_title" />
@@ -39,7 +39,7 @@ const TestComponent = ({ ...props }: { [key: string]: unknown }) => {
       >
         Update User Location to "GT"
       </button>
-    </I18nProvider>
+    </>
   );
 };
 
@@ -67,7 +67,7 @@ beforeAll(() => {
 beforeEach(() => {
   cleanup();
   render(
-    <I18nProvider>
+    <I18nProvider siteLanguage="en">
       <TestComponent />
     </I18nProvider>,
   );
