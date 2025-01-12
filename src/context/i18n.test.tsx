@@ -73,7 +73,11 @@ describe("<I18nProvider />", () => {
 
     await user.click(elements().siteLanguageButton);
     expect(elements().siteLanguageText).toHaveTextContent("pt.");
-    expect(elements().userLanguageText).toHaveTextContent("en-US.");
-    expect(elements().userLocationText).toHaveTextContent(": .");
+
+    await user.click(elements().userLanguageButton);
+    expect(elements().userLanguageText).toHaveTextContent("in-HI.");
+
+    await user.click(elements().userLocationButton);
+    expect(elements().userLocationText).toHaveTextContent("GT.");
   });
 });
