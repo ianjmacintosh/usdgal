@@ -14,8 +14,6 @@ import es from "@/languages/es.ts";
 import pt from "@/languages/pt.ts";
 import hi from "@/languages/hi.ts";
 import de from "@/languages/de.ts";
-import { setupServer } from "msw/node";
-import { http, HttpResponse } from "msw";
 
 type Action = {
   type: "setSiteLanguage" | "setUserLanguage" | "setUserLocation";
@@ -31,13 +29,6 @@ type State = {
 type I18nProviderProps = {
   children: React.ReactNode;
   siteLanguage: string;
-};
-
-type TestI18nProviderProps = {
-  children: React.ReactNode;
-  siteLanguage?: string;
-  userLanguage?: string;
-  userLocation?: string;
 };
 
 const I18nContext = createContext<
@@ -138,24 +129,4 @@ const initializeUserLocation = (dispatch: Dispatch, state: State) => {
   startFetching();
 };
 
-const TestI18nProvider = ({
-  children,
-  userLocation = "FR",
-  ...props
-}: TestI18nProviderProps) => {
-  const server = setupServer(
-    http.get("/workers/getLocation", () => {
-      return HttpResponse.json({ ipData: { country: userLocation } });
-    }),
-  );
-
-  server.listen();
-
-  return (
-    <I18nProvider siteLanguage="en" {...props}>
-      {children}
-    </I18nProvider>
-  );
-};
-
-export { I18nProvider, useI18n, initializeUserLocation, TestI18nProvider };
+export { I18nProvider, useI18n, initializeUserLocation };

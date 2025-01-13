@@ -2,9 +2,37 @@ import "@testing-library/jest-dom/vitest";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import { useI18n } from "./i18n";
+import { I18nProvider, useI18n } from "./i18n";
 import { FormattedMessage } from "react-intl";
-import { TestI18nProvider } from "./i18n";
+import { setupServer } from "msw/node";
+import { http, HttpResponse } from "msw";
+
+type TestI18nProviderProps = {
+  children: React.ReactNode;
+  siteLanguage?: string;
+  userLanguage?: string;
+  userLocation?: string;
+};
+
+const TestI18nProvider = ({
+  children,
+  userLocation = "FR",
+  ...props
+}: TestI18nProviderProps) => {
+  const server = setupServer(
+    http.get("/workers/getLocation", () => {
+      return HttpResponse.json({ ipData: { country: userLocation } });
+    }),
+  );
+
+  server.listen();
+
+  return (
+    <I18nProvider siteLanguage="en" {...props}>
+      {children}
+    </I18nProvider>
+  );
+};
 
 const TestComponent = () => {
   const { state, dispatch } = useI18n();
@@ -97,3 +125,5 @@ describe("<I18nProvider />", () => {
     expect(screen.getByText("Gas Price Converter")).toBeVisible();
   });
 });
+
+export default TestI18nProvider;

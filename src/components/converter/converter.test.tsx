@@ -12,7 +12,7 @@ import es from "../../languages/es.ts";
 import pt from "../../languages/pt.ts";
 import { createRoutesStub } from "react-router";
 import exchangeRateData from "@/utils/exchange-rate-data";
-import { TestI18nProvider } from "@/context/i18n.tsx";
+import TestI18nProvider from "@/context/i18n.test.tsx";
 
 afterEach(() => {
   cleanup();
