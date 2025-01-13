@@ -12,27 +12,27 @@ import es from "../../languages/es.ts";
 import pt from "../../languages/pt.ts";
 import { createRoutesStub } from "react-router";
 import exchangeRateData from "@/utils/exchange-rate-data";
+import { TestI18nProvider } from "@/context/i18n.tsx";
 
 afterEach(() => {
   cleanup();
 });
 
 const englishTestComponent = ({
-  messages = en,
   ...props
 }: {
   messages?: Record<string, string>;
   [key: string]: unknown;
 }) => {
   return (
-    <IntlProvider locale="en-US" messages={messages}>
+    <TestI18nProvider>
       <Converter
         siteLanguage="en-US"
         userLanguage="en-US"
         userLocation="US"
         {...props}
       />
-    </IntlProvider>
+    </TestI18nProvider>
   );
 };
 
