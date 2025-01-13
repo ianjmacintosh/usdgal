@@ -1,4 +1,5 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import { I18nProvider } from "./context/i18n";
 
 /*
 
@@ -31,7 +32,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div id="root">{children}</div>
+        <div id="root">
+          <I18nProvider siteLanguage="en">{children}</I18nProvider>
+        </div>
         <ScrollRestoration />
         <Scripts />
         {/* <!-- 100% privacy-first analytics --> */}

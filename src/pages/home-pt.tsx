@@ -1,7 +1,6 @@
 import { createIntl } from "react-intl";
 import { defaultLinks } from "./home-defaults.ts";
 import pt from "../languages/pt.ts";
-import { I18nProvider } from "@/context/i18n.tsx";
 import Converter from "@/components/converter/converter.tsx";
 
 const language = "pt";
@@ -30,9 +29,5 @@ export function meta() {
 }
 
 export default function Component() {
-  return (
-    <I18nProvider siteLanguage="pt">
-      <Converter userLocation="BR" />
-    </I18nProvider>
-  );
+  return <Converter userLocation="BR" />;
 }
