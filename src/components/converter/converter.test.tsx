@@ -118,6 +118,7 @@ const elements = () => {
 
 describe('<Converter siteLanguage="en-US" userLanguage="es-MX" />', () => {
   beforeEach(() => {
+    cleanup();
     render(<Stub initialEntries={["/es"]} />);
   });
 
@@ -130,6 +131,7 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
+    cleanup();
     render(<Stub initialEntries={["/"]} />);
   });
 
@@ -264,6 +266,7 @@ describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
+    cleanup();
     render(<Stub initialEntries={["/pt"]} />);
   });
 
