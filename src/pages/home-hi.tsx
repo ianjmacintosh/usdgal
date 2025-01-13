@@ -1,7 +1,8 @@
-import { I18nWrapper } from "@/context/i18n-wrapper.tsx";
 import { createIntl } from "react-intl";
 import { defaultLinks } from "./home-defaults.ts";
 import hi from "../languages/hi.ts";
+import { I18nProvider } from "@/context/i18n.tsx";
+import Converter from "@/components/converter/converter.tsx";
 
 const language = "hi";
 
@@ -29,5 +30,9 @@ export function meta() {
 }
 
 export default function Component() {
-  return <I18nWrapper siteLanguage={language} />;
+  return (
+    <I18nProvider siteLanguage="hi">
+      <Converter userLocation="IN" />
+    </I18nProvider>
+  );
 }
