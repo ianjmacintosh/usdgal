@@ -220,7 +220,7 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
   test.skip("has a link for my personal site and my GitHub project", () => {});
 });
 
-describe('<Converter siteLanguage="en-US" userLanguage="pt-BR" userLocation="IN" />', () => {
+describe("<Converter /> displayed in English for a pt-BR user located in India", () => {
   beforeEach(() => {
     cleanup();
 
