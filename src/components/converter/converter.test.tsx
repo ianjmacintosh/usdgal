@@ -22,12 +22,7 @@ const englishTestComponent = ({
 }) => {
   return (
     <TestI18nProvider>
-      <Converter
-        siteLanguage="en-US"
-        userLanguage="en-US"
-        userLocation="US"
-        {...props}
-      />
+      <Converter userLanguage="en-US" userLocation="US" {...props} />
     </TestI18nProvider>
   );
 };
@@ -40,12 +35,7 @@ const mixedUpEnglishTestComponent = ({
 }) => {
   return (
     <TestI18nProvider>
-      <Converter
-        siteLanguage="en-US"
-        userLanguage="pt-BR"
-        userLocation="IN"
-        {...props}
-      />
+      <Converter userLanguage="pt-BR" userLocation="IN" {...props} />
     </TestI18nProvider>
   );
 };
@@ -58,12 +48,7 @@ const spanishTestComponent = ({
 }) => {
   return (
     <TestI18nProvider siteLanguage="es">
-      <Converter
-        siteLanguage="es-MX"
-        userLanguage="es-MX"
-        userLocation="US"
-        {...props}
-      />
+      <Converter userLanguage="es-MX" userLocation="US" {...props} />
     </TestI18nProvider>
   );
 };
@@ -76,12 +61,7 @@ const PortugueseTestComponent = ({
 }) => {
   return (
     <TestI18nProvider siteLanguage="pt">
-      <Converter
-        siteLanguage="pt-BR"
-        userLanguage="pt-BR"
-        userLocation="BR"
-        {...props}
-      />
+      <Converter userLanguage="pt-BR" userLocation="BR" {...props} />
     </TestI18nProvider>
   );
 };
