@@ -29,6 +29,7 @@ type State = {
 type I18nProviderProps = {
   children: React.ReactNode;
   siteLanguage: string;
+  userLanguage?: string; // Only used for testing
 };
 
 const I18nContext = createContext<
@@ -83,13 +84,17 @@ const getMessages = (language: string) => {
   }
 };
 
-const initialState: State = {
-  siteLanguage: "en",
-  userLanguage: navigator?.language || "en-US",
-  userLocation: null,
-};
+const I18nProvider = ({
+  siteLanguage,
+  children,
+  userLanguage: userLanguageProp,
+}: I18nProviderProps) => {
+  const initialState: State = {
+    siteLanguage: "en",
+    userLanguage: userLanguageProp || navigator?.language || "en-US",
+    userLocation: null,
+  };
 
-const I18nProvider = ({ siteLanguage, children }: I18nProviderProps) => {
   const [state, dispatch] = useReducer(i18nReducer, {
     ...initialState,
     siteLanguage,

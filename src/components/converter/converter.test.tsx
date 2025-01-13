@@ -21,8 +21,8 @@ const englishTestComponent = ({
   [key: string]: unknown;
 }) => {
   return (
-    <TestI18nProvider>
-      <Converter userLanguage="en-US" userLocation="US" {...props} />
+    <TestI18nProvider userLanguage="en-US">
+      <Converter userLocation="US" {...props} />
     </TestI18nProvider>
   );
 };
@@ -34,8 +34,8 @@ const mixedUpEnglishTestComponent = ({
   [key: string]: unknown;
 }) => {
   return (
-    <TestI18nProvider>
-      <Converter userLanguage="pt-BR" userLocation="IN" {...props} />
+    <TestI18nProvider userLanguage="pt-BR">
+      <Converter userLocation="IN" {...props} />
     </TestI18nProvider>
   );
 };
@@ -47,8 +47,8 @@ const spanishTestComponent = ({
   [key: string]: unknown;
 }) => {
   return (
-    <TestI18nProvider siteLanguage="es">
-      <Converter userLanguage="es-MX" userLocation="US" {...props} />
+    <TestI18nProvider siteLanguage="es" userLanguage="es-MX">
+      <Converter userLocation="US" {...props} />
     </TestI18nProvider>
   );
 };
@@ -237,9 +237,8 @@ describe("<Converter /> displayed in English for a pt-BR user located in India",
   });
 
   test("formats the gas price numbers in the site language (English)", () => {
-    expect(
-      screen.getByLabelText("Amount of BRL paid per liter of gas"),
-    ).toHaveValue("0.00");
+    const { bottomPriceInput } = elements();
+    expect(bottomPriceInput).toHaveValue("0.00");
   });
 });
 
@@ -260,12 +259,12 @@ describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {
     } = elements();
 
     await waitFor(() => {
-      expect(topCurrencyInput.textContent).toBe("USD");
-      expect(topUnitInput.textContent).toBe("por galão");
+      expect(topCurrencyInput.textContent).toBe("BRL");
+      expect(topUnitInput.textContent).toBe("por litro");
     });
     await waitFor(() => {
-      expect(bottomCurrencyInput.textContent).toBe("BRL");
-      expect(bottomUnitInput.textContent).toBe("por litro");
+      expect(bottomCurrencyInput.textContent).toBe("USD");
+      expect(bottomUnitInput.textContent).toBe("por galão");
     });
   });
 
@@ -275,16 +274,16 @@ describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {
 
     render(<Stub initialEntries={["/pt"]} />);
 
-    const { topCurrencyInput, topUnitInput } = elements();
+    const { bottomCurrencyInput, bottomUnitInput } = elements();
 
     // Act
 
     // Assert
     await waitFor(() => {
-      expect(topCurrencyInput.textContent).toBe("USD");
+      expect(bottomCurrencyInput.textContent).toBe("USD");
     });
     await waitFor(() => {
-      expect(topUnitInput.textContent).toBe("por galão");
+      expect(bottomUnitInput.textContent).toBe("por galão");
     });
   });
 

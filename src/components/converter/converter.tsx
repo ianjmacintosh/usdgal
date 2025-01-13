@@ -25,20 +25,21 @@ type ConverterProps = {
  * The main component of the gas price converter.
  *
  * @param {Object} props - Component props
- * @param {string} props.siteLanguage - The site's language (e.g., "en")
- * @param {string} props.userLanguage - The user's browser's language (e.g., "en-US")
  * @param {string} props.userLocation - The user's location based on geolocation (e.g., "HN")
  *
  * @returns {JSX.Element} The main component of the gas price converter
  */
-function Converter({
-  userLanguage = navigator.language,
-  userLocation,
-}: ConverterProps) {
-  const {
-    state: { siteLanguage },
-  } = useI18n();
+function Converter({ userLocation }: ConverterProps) {
+  const { state: i18nState } = useI18n();
   const intl = useIntl();
+
+  const { siteLanguage } = i18nState;
+
+  let { userLanguage } = i18nState;
+
+  if (!userLanguage) {
+    userLanguage = navigator?.language || "en-US";
+  }
 
   // Guess the user's home country based on the second part of their browser's language code (`navigator.language`),
   // (e.g., "en-US" -> "US")

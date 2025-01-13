@@ -102,6 +102,23 @@ describe("<I18nProvider />", () => {
     expect(elements().userLocationText).toHaveTextContent(": .");
   });
 
+  test("supports setting siteLanguage and userLanguage via props", async () => {
+    cleanup();
+    render(
+      <TestI18nProvider siteLanguage="pt" userLanguage="in-HI">
+        <TestComponent />
+      </TestI18nProvider>,
+    );
+
+    const user = userEvent.setup();
+
+    await user.click(elements().siteLanguageButton);
+    expect(elements().siteLanguageText).toHaveTextContent("pt.");
+
+    await user.click(elements().userLanguageButton);
+    expect(elements().userLanguageText).toHaveTextContent("in-HI.");
+  });
+
   test("supports updates via reducer", async () => {
     const user = userEvent.setup();
 
