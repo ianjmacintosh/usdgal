@@ -6,10 +6,6 @@ import getGasPrice from "../../utils/get-gas-price.ts";
 import { getFormattedPrice } from "../../utils/number-format.ts";
 import { selectItemFromFancySelect } from "../../utils/test-utils.ts";
 import "@testing-library/jest-dom/vitest";
-import { IntlProvider } from "react-intl";
-import en from "../../languages/en.ts";
-import es from "../../languages/es.ts";
-import pt from "../../languages/pt.ts";
 import { createRoutesStub } from "react-router";
 import exchangeRateData from "@/utils/exchange-rate-data";
 import TestI18nProvider from "@/context/i18n.test.tsx";
@@ -37,59 +33,56 @@ const englishTestComponent = ({
 };
 
 const mixedUpEnglishTestComponent = ({
-  messages = en,
   ...props
 }: {
   messages?: Record<string, string>;
   [key: string]: unknown;
 }) => {
   return (
-    <IntlProvider locale="en-US" messages={messages}>
+    <TestI18nProvider>
       <Converter
         siteLanguage="en-US"
         userLanguage="pt-BR"
         userLocation="IN"
         {...props}
       />
-    </IntlProvider>
+    </TestI18nProvider>
   );
 };
 
 const spanishTestComponent = ({
-  messages = es,
   ...props
 }: {
   messages?: Record<string, string>;
   [key: string]: unknown;
 }) => {
   return (
-    <IntlProvider locale="es-MX" messages={messages}>
+    <TestI18nProvider siteLanguage="es">
       <Converter
         siteLanguage="es-MX"
         userLanguage="es-MX"
         userLocation="US"
         {...props}
       />
-    </IntlProvider>
+    </TestI18nProvider>
   );
 };
 
 const PortugueseTestComponent = ({
-  messages = pt,
   ...props
 }: {
   messages?: Record<string, string>;
   [key: string]: unknown;
 }) => {
   return (
-    <IntlProvider locale="pt-BR" messages={messages}>
+    <TestI18nProvider siteLanguage="pt">
       <Converter
         siteLanguage="pt-BR"
         userLanguage="pt-BR"
         userLocation="BR"
         {...props}
       />
-    </IntlProvider>
+    </TestI18nProvider>
   );
 };
 

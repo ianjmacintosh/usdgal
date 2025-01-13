@@ -16,6 +16,7 @@ type TestI18nProviderProps = {
 
 const TestI18nProvider = ({
   children,
+  siteLanguage = "en",
   userLocation = "FR",
   ...props
 }: TestI18nProviderProps) => {
@@ -28,7 +29,7 @@ const TestI18nProvider = ({
   server.listen();
 
   return (
-    <I18nProvider siteLanguage="en" {...props}>
+    <I18nProvider siteLanguage={siteLanguage} {...props}>
       {children}
     </I18nProvider>
   );

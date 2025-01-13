@@ -14,6 +14,7 @@ import {
   getInitialGasPrices,
 } from "@/context/gas-price-context";
 import Footer from "@/components/footer/footer";
+import { useI18n } from "@/context/i18n";
 
 type ConverterProps = {
   siteLanguage: string;
@@ -32,10 +33,12 @@ type ConverterProps = {
  * @returns {JSX.Element} The main component of the gas price converter
  */
 function Converter({
-  siteLanguage,
   userLanguage = navigator.language,
   userLocation,
 }: ConverterProps) {
+  const {
+    state: { siteLanguage },
+  } = useI18n();
   const intl = useIntl();
 
   // Guess the user's home country based on the second part of their browser's language code (`navigator.language`),
