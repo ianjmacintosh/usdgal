@@ -21,7 +21,7 @@ const TestI18nProvider = ({
   ...props
 }: TestI18nProviderProps) => {
   const server = setupServer(
-    http.get("/workers/getLocation", () => {
+    http.get("https://gasco.st/workers/getLocation", () => {
       return HttpResponse.json({ ipData: { country: userLocation } });
     }),
   );
