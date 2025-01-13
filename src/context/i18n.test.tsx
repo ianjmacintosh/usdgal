@@ -142,6 +142,13 @@ describe("<I18nProvider />", () => {
   test("provides necessary context to support <FormattedMessage />", async () => {
     expect(screen.getByText("Gas Price Converter")).toBeVisible();
   });
+
+  test("updates text when language changes", async () => {
+    const user = userEvent.setup();
+    expect(screen.getByText("Gas Price Converter")).toBeVisible();
+    await user.click(elements().siteLanguageButton);
+    expect(screen.getByText("Conversor de preço de combustível")).toBeVisible();
+  });
 });
 
 export default TestI18nProvider;

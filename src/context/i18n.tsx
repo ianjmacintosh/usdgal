@@ -106,8 +106,8 @@ const I18nProvider = ({
   return (
     <I18nContext.Provider value={value}>
       <IntlProvider
-        locale={siteLanguage}
-        messages={getMessages(siteLanguage)}
+        locale={state.siteLanguage}
+        messages={getMessages(state.siteLanguage)}
         defaultLocale="en"
       >
         {children}
