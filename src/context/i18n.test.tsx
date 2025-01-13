@@ -1,18 +1,10 @@
 import "@testing-library/jest-dom/vitest";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, beforeEach, beforeAll } from "vitest";
+import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import { http, HttpResponse } from "msw";
-import { setupServer } from "msw/node";
 import { useI18n } from "./i18n";
 import { FormattedMessage } from "react-intl";
 import { TestI18nProvider } from "./i18n";
-
-const server = setupServer(
-  http.get("/workers/getLocation", () => {
-    return HttpResponse.json({ ipData: { country: "FR" } });
-  }),
-);
 
 const TestComponent = () => {
   const { state, dispatch } = useI18n();
@@ -60,10 +52,6 @@ const elements = () => {
     }),
   };
 };
-
-beforeAll(() => {
-  server.listen();
-});
 
 beforeEach(() => {
   cleanup();
