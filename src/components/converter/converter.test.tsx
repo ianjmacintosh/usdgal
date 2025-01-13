@@ -34,7 +34,7 @@ const mixedUpEnglishTestComponent = ({
   [key: string]: unknown;
 }) => {
   return (
-    <TestI18nProvider userLanguage="pt-BR">
+    <TestI18nProvider siteLanguage="en" userLanguage="pt-BR">
       <Converter userLocation="IN" {...props} />
     </TestI18nProvider>
   );
@@ -60,8 +60,8 @@ const PortugueseTestComponent = ({
   [key: string]: unknown;
 }) => {
   return (
-    <TestI18nProvider siteLanguage="pt">
-      <Converter userLanguage="pt-BR" userLocation="BR" {...props} />
+    <TestI18nProvider siteLanguage="pt" userLanguage="pt-BR">
+      <Converter userLocation="BR" {...props} />
     </TestI18nProvider>
   );
 };
@@ -122,14 +122,14 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
       bottomCurrencyInput,
       bottomUnitInput,
     } = elements();
+    await waitFor(() => {
+      expect(topCurrencyInput.textContent).toBe("USD");
+      expect(topUnitInput.textContent).toBe("per gallon");
+    });
 
     await waitFor(() => {
-      expect(topCurrencyInput.textContent).toBe("MXN");
-      expect(topUnitInput.textContent).toBe("per liter");
-    });
-    await waitFor(() => {
-      expect(bottomCurrencyInput.textContent).toBe("USD");
-      expect(bottomUnitInput.textContent).toBe("per gallon");
+      expect(bottomCurrencyInput.textContent).toBe("MXN");
+      expect(bottomUnitInput.textContent).toBe("per liter");
     });
   });
 
@@ -250,39 +250,20 @@ describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {
     render(<Stub initialEntries={["/pt"]} />);
   });
 
-  test("loads with the correct starting values", async () => {
-    const {
-      topCurrencyInput,
-      topUnitInput,
-      bottomCurrencyInput,
-      bottomUnitInput,
-    } = elements();
+  test('loads top gas price (local gas price -- "converting from" price) based on user location', async () => {
+    const { topCurrencyInput, topUnitInput } = elements();
 
     await waitFor(() => {
       expect(topCurrencyInput.textContent).toBe("BRL");
       expect(topUnitInput.textContent).toBe("por litro");
     });
-    await waitFor(() => {
-      expect(bottomCurrencyInput.textContent).toBe("USD");
-      expect(bottomUnitInput.textContent).toBe("por galão");
-    });
   });
 
-  test("assumes a Brazilian visitor visiting the site from Brazil wants to see prices in USD per gallon", async () => {
-    // Arrange
-    cleanup();
-
-    render(<Stub initialEntries={["/pt"]} />);
-
+  test('loads the bottom gas price (converted as price -- "converting to" price) based on user location and browser settings', async () => {
     const { bottomCurrencyInput, bottomUnitInput } = elements();
 
-    // Act
-
-    // Assert
     await waitFor(() => {
       expect(bottomCurrencyInput.textContent).toBe("USD");
-    });
-    await waitFor(() => {
       expect(bottomUnitInput.textContent).toBe("por galão");
     });
   });
