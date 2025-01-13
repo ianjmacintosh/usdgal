@@ -33,13 +33,7 @@ function Converter({ userLocation }: ConverterProps) {
   const { state: i18nState } = useI18n();
   const intl = useIntl();
 
-  const { siteLanguage } = i18nState;
-
-  let { userLanguage } = i18nState;
-
-  if (!userLanguage) {
-    userLanguage = navigator?.language || "en-US";
-  }
+  const { siteLanguage, userLanguage } = i18nState;
 
   // Guess the user's home country based on the second part of their browser's language code (`navigator.language`),
   // (e.g., "en-US" -> "US")
