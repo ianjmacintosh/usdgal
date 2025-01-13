@@ -206,18 +206,19 @@ describe("<Converter /> displayed in English for a pt-BR user located in India",
 
     render(<Stub initialEntries={["/en/in"]} />);
   });
-  test("loads values based on geolocation", async () => {
-    const {
-      topCurrencyInput,
-      topUnitInput,
-      bottomCurrencyInput,
-      bottomUnitInput,
-    } = elements();
+
+  test('loads top gas price (local gas price -- "converting from" price) based on user location', async () => {
+    const { topCurrencyInput, topUnitInput } = elements();
 
     await waitFor(() => {
       expect(topCurrencyInput.textContent).toBe("INR");
       expect(topUnitInput.textContent).toBe("per liter");
     });
+  });
+
+  test('loads the bottom gas price (converted as price -- "converting to" price) based on user location and browser settings', async () => {
+    const { bottomCurrencyInput, bottomUnitInput } = elements();
+
     await waitFor(() => {
       expect(bottomCurrencyInput.textContent).toBe("BRL");
       expect(bottomUnitInput.textContent).toBe("per liter");
