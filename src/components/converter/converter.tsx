@@ -17,7 +17,6 @@ import Footer from "@/components/footer/footer";
 import { useI18n } from "@/context/i18n";
 
 type ConverterProps = {
-  userLanguage?: string;
   userLocation: string;
 };
 
