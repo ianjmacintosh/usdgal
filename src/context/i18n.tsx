@@ -31,6 +31,11 @@ type I18nProviderProps = {
   siteLanguage: string;
 };
 
+type IntlTestWrapperProps = {
+  children: React.ReactNode;
+  siteLanguage?: string;
+};
+
 const I18nContext = createContext<
   | {
       state: State;
@@ -129,4 +134,12 @@ const initializeUserLocation = (dispatch: Dispatch, state: State) => {
   startFetching();
 };
 
-export { I18nProvider, useI18n, initializeUserLocation };
+const TestI18nProvider = ({ children, ...props }: IntlTestWrapperProps) => {
+  return (
+    <I18nProvider siteLanguage="en" {...props}>
+      {children}
+    </I18nProvider>
+  );
+};
+
+export { I18nProvider, useI18n, initializeUserLocation, TestI18nProvider };

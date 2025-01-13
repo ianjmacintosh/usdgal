@@ -6,7 +6,7 @@ import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { useI18n } from "./i18n";
 import { FormattedMessage } from "react-intl";
-import { TestI18nContextWrapper } from "@/utils/test-utils";
+import { TestI18nProvider } from "./i18n";
 
 const server = setupServer(
   http.get("/workers/getLocation", () => {
@@ -68,9 +68,9 @@ beforeAll(() => {
 beforeEach(() => {
   cleanup();
   render(
-    <TestI18nContextWrapper>
+    <TestI18nProvider>
       <TestComponent />
-    </TestI18nContextWrapper>,
+    </TestI18nProvider>,
   );
 });
 
