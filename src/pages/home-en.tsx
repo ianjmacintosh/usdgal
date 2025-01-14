@@ -32,7 +32,7 @@ export function meta() {
 export default function Component() {
   return (
     <I18nProvider siteLanguage={language}>
-      <Converter userLocation="US" />
+      <Converter />
     </I18nProvider>
   );
 }

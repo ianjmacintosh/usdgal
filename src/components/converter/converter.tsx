@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import "./converter.css";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/error-fallback/error-fallback";
@@ -16,10 +16,6 @@ import {
 import Footer from "@/components/footer/footer";
 import { useI18n } from "@/context/i18n";
 
-type ConverterProps = {
-  userLocation: string;
-};
-
 /**
  * The main component of the gas price converter.
  *
@@ -28,11 +24,11 @@ type ConverterProps = {
  *
  * @returns {JSX.Element} The main component of the gas price converter
  */
-function Converter({ userLocation }: ConverterProps) {
+function Converter() {
   const { state: i18nState } = useI18n();
   const intl = useIntl();
 
-  const { siteLanguage, userLanguage } = i18nState;
+  const { siteLanguage, userLanguage, userLocation } = i18nState;
 
   // Guess the user's home country based on the second part of their browser's language code (`navigator.language`),
   // (e.g., "en-US" -> "US")
@@ -43,68 +39,79 @@ function Converter({ userLocation }: ConverterProps) {
   const [gasPrices, dispatch] = useReducer(
     // The gasPricesReducer method is what child elements use to update their parent gasPrices object
     gasPricesReducer,
-    // getInitialGasPrices builds default conversion settings based on the user's geolocation and browser language
-    getInitialGasPrices(userLanguageCountry, userLocation),
+    // getInitialGasPrices builds default conversion settings based on the user's geolocation (or US if we have to guess) and browser language
+    getInitialGasPrices(userLanguageCountry, userLocation || "US"),
   );
 
+  useEffect(() => {
+    if (userLocation)
+      // Replace the entire gasPrices object when the userLocation changes
+      dispatch({
+        type: "replace",
+        payload: getInitialGasPrices(userLanguageCountry, userLocation),
+      });
+  }, [userLocation]);
+
   return (
-    <>
-      <div className="container">
-        {/* GasPricesContext.Provider provides the top & bottom gas cost, currency, and amount (per gallon/per liter) */}
-        <GasPricesContext.Provider value={gasPrices}>
-          <GasPricesDispatchContext.Provider value={dispatch}>
-            <ErrorBoundary FallbackComponent={ErrorFallback}>
-              <h2 className="text-3xl font-bold my-4">
-                <FormattedMessage id="gasCost" />
-              </h2>
-              {/* This <GasPrice /> component gives us the "top" number, currency, and unit -- what we're converting from */}
-              <GasPrice
-                label={intl.formatMessage({ id: "gasCost" })}
-                gasPricesKey="top"
-                siteLanguage={siteLanguage}
-              />
+    userLocation && (
+      <>
+        <div className="container">
+          {/* GasPricesContext.Provider provides the top & bottom gas cost, currency, and amount (per gallon/per liter) */}
+          <GasPricesContext.Provider value={gasPrices}>
+            <GasPricesDispatchContext.Provider value={dispatch}>
+              <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <h2 className="text-3xl font-bold my-4">
+                  <FormattedMessage id="gasCost" />
+                </h2>
+                {/* This <GasPrice /> component gives us the "top" number, currency, and unit -- what we're converting from */}
+                <GasPrice
+                  label={intl.formatMessage({ id: "gasCost" })}
+                  gasPricesKey="top"
+                  siteLanguage={siteLanguage}
+                />
 
-              <h2 className="text-3xl font-bold my-4">
-                <FormattedMessage id="convertedGasCost" />
-              </h2>
+                <h2 className="text-3xl font-bold my-4">
+                  <FormattedMessage id="convertedGasCost" />
+                </h2>
 
-              {/* This <GasPrice /> component gives us the "bottom" number, currency, and unit -- what we're converting to */}
-              <GasPrice
-                label={intl.formatMessage({ id: "convertedGasCost" })}
-                gasPricesKey="bottom"
-                siteLanguage={siteLanguage}
-              />
-            </ErrorBoundary>
-          </GasPricesDispatchContext.Provider>
-        </GasPricesContext.Provider>
+                {/* This <GasPrice /> component gives us the "bottom" number, currency, and unit -- what we're converting to */}
+                <GasPrice
+                  label={intl.formatMessage({ id: "convertedGasCost" })}
+                  gasPricesKey="bottom"
+                  siteLanguage={siteLanguage}
+                />
+              </ErrorBoundary>
+            </GasPricesDispatchContext.Provider>
+          </GasPricesContext.Provider>
 
-        {/* This paragraph displays when the exchange rates were last converted */}
-        <p className="my-2 text-sm">
-          <em>
-            <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
-            {Intl.DateTimeFormat(siteLanguage, {
-              dateStyle: "medium",
-              timeZone: "UTC",
-            }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}
-          </em>
-        </p>
+          {/* This paragraph displays when the exchange rates were last converted */}
+          <p className="my-2 text-sm">
+            <em>
+              <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
+              {Intl.DateTimeFormat(siteLanguage, {
+                dateStyle: "medium",
+                timeZone: "UTC",
+              }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}
+            </em>
+          </p>
 
-        {/* The "Conversion Table" explains in detail how we came up with the gas price conversion */}
-        <ConversionTable
-          topNumber={gasPrices.top.number}
-          topCurrency={gasPrices.top.currency}
-          topUnit={gasPrices.top.unit}
-          bottomNumber={gasPrices.bottom.number}
-          bottomCurrency={gasPrices.bottom.currency}
-          bottomUnit={gasPrices.bottom.unit}
-          exchangeRateData={exchangeRateData}
-        />
-      </div>
+          {/* The "Conversion Table" explains in detail how we came up with the gas price conversion */}
+          <ConversionTable
+            topNumber={gasPrices.top.number}
+            topCurrency={gasPrices.top.currency}
+            topUnit={gasPrices.top.unit}
+            bottomNumber={gasPrices.bottom.number}
+            bottomCurrency={gasPrices.bottom.currency}
+            bottomUnit={gasPrices.bottom.unit}
+            exchangeRateData={exchangeRateData}
+          />
+        </div>
 
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <Footer siteLanguage={siteLanguage} />
-      </ErrorBoundary>
-    </>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Footer siteLanguage={siteLanguage} />
+        </ErrorBoundary>
+      </>
+    )
   );
 }
 
