@@ -19,6 +19,7 @@ export default defineConfig({
       "*.quarantine.js",
       "*.quarantine.jsx",
     ],
+    setupFiles: "./vitest.setup.ts",
   },
   resolve: {
     alias: {

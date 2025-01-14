@@ -3,11 +3,18 @@ import { Units } from "@/components/unit-select/unit-select";
 import getGasPrice from "@/utils/get-gas-price";
 import { createContext } from "react";
 
-export type GasPricesAction = {
+export type GasPricesUpdateAction = {
   type: "update";
   id: "top" | "bottom";
   payload: { key: "number" | "currency" | "unit"; value: number | string };
 };
+
+export type GasPricesReplaceAction = {
+  type: "replace";
+  payload: GasPrices;
+};
+
+export type GasPricesAction = GasPricesUpdateAction | GasPricesReplaceAction;
 
 type GasPrice = {
   number: number;
@@ -59,6 +66,10 @@ export function gasPricesReducer(
       );
 
       // Return the new gas prices object
+      return newGasPrices;
+    }
+    case "replace": {
+      const newGasPrices = action.payload;
       return newGasPrices;
     }
     default:

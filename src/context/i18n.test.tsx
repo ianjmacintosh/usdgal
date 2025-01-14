@@ -4,30 +4,18 @@ import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { I18nProvider, useI18n } from "./i18n";
 import { FormattedMessage } from "react-intl";
-import { setupServer } from "msw/node";
-import { http, HttpResponse } from "msw";
 
 type TestI18nProviderProps = {
   children: React.ReactNode;
   siteLanguage?: string;
   userLanguage?: string;
-  userLocation?: string;
 };
 
 const TestI18nProvider = ({
   children,
   siteLanguage = "en",
-  userLocation = "FR",
   ...props
 }: TestI18nProviderProps) => {
-  const server = setupServer(
-    http.get("https://gasco.st/workers/getLocation", () => {
-      return HttpResponse.json({ ipData: { country: userLocation } });
-    }),
-  );
-
-  server.listen();
-
   return (
     <I18nProvider siteLanguage={siteLanguage} {...props}>
       {children}

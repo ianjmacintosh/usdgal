@@ -9,20 +9,17 @@ import "@testing-library/jest-dom/vitest";
 import { createRoutesStub } from "react-router";
 import exchangeRateData from "@/utils/exchange-rate-data";
 import TestI18nProvider from "@/context/i18n.test.tsx";
+import { server } from "@/mocks/server.ts";
+import { getGeolocationHandlers } from "@/mocks/handlers.ts";
 
 afterEach(() => {
   cleanup();
 });
 
-const englishTestComponent = ({
-  ...props
-}: {
-  messages?: Record<string, string>;
-  [key: string]: unknown;
-}) => {
+const englishTestComponent = ({ ...props }: { [key: string]: unknown }) => {
   return (
-    <TestI18nProvider userLanguage="en-US">
-      <Converter userLocation="US" {...props} />
+    <TestI18nProvider siteLanguage="en" userLanguage="en-US">
+      <Converter {...props} />
     </TestI18nProvider>
   );
 };
@@ -30,38 +27,27 @@ const englishTestComponent = ({
 const mixedUpEnglishTestComponent = ({
   ...props
 }: {
-  messages?: Record<string, string>;
   [key: string]: unknown;
 }) => {
   return (
     <TestI18nProvider siteLanguage="en" userLanguage="pt-BR">
-      <Converter userLocation="IN" {...props} />
+      <Converter {...props} />
     </TestI18nProvider>
   );
 };
 
-const spanishTestComponent = ({
-  ...props
-}: {
-  messages?: Record<string, string>;
-  [key: string]: unknown;
-}) => {
+const spanishTestComponent = ({ ...props }: { [key: string]: unknown }) => {
   return (
     <TestI18nProvider siteLanguage="es" userLanguage="es-MX">
-      <Converter userLocation="US" {...props} />
+      <Converter {...props} />
     </TestI18nProvider>
   );
 };
 
-const PortugueseTestComponent = ({
-  ...props
-}: {
-  messages?: Record<string, string>;
-  [key: string]: unknown;
-}) => {
+const PortugueseTestComponent = ({ ...props }: { [key: string]: unknown }) => {
   return (
     <TestI18nProvider siteLanguage="pt" userLanguage="pt-BR">
-      <Converter userLocation="BR" {...props} />
+      <Converter {...props} />
     </TestI18nProvider>
   );
 };
@@ -99,20 +85,29 @@ const elements = () => {
 describe('<Converter siteLanguage="en-US" userLanguage="es-MX" />', () => {
   beforeEach(() => {
     cleanup();
+    server.use(...getGeolocationHandlers("US"));
+
     render(<Stub initialEntries={["/es"]} />);
   });
 
   test("headline to be in Spanish", async () => {
-    expect(screen.getAllByText("Precio de la Gasolina")[0]).toBeVisible();
+    await waitFor(() => {
+      expect(screen.getAllByText("Precio de la Gasolina")[0]).toBeVisible();
+    });
   });
 });
 
 describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
   const user = userEvent.setup();
 
-  beforeEach(() => {
+  beforeEach(async () => {
     cleanup();
+    server.use(...getGeolocationHandlers("US"));
+
     render(<Stub initialEntries={["/"]} />);
+    await waitFor(() => {
+      expect(screen.getAllByText("Gas Cost")[0]).toBeVisible();
+    });
   });
 
   test("assumes Americans are going to Mexico", async () => {
@@ -201,10 +196,14 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
 });
 
 describe("<Converter /> displayed in English for a pt-BR user located in India", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     cleanup();
+    server.use(...getGeolocationHandlers("IN"));
 
     render(<Stub initialEntries={["/en/in"]} />);
+    await waitFor(() => {
+      expect(screen.getAllByText("Gas Cost")[0]).toBeVisible();
+    });
   });
 
   test('loads top gas price (local gas price -- "converting from" price) based on user location', async () => {
@@ -245,9 +244,15 @@ describe("<Converter /> displayed in English for a pt-BR user located in India",
 describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {
   const user = userEvent.setup();
 
-  beforeEach(() => {
+  beforeEach(async () => {
     cleanup();
+    server.use(...getGeolocationHandlers("BR"));
+
     render(<Stub initialEntries={["/pt"]} />);
+    await waitFor(() => {
+      // Wait for geolookup to finish
+      expect(screen.getAllByText("Preço da Gasolina")[0]).toBeVisible();
+    });
   });
 
   test('loads top gas price (local gas price -- "converting from" price) based on user location', async () => {

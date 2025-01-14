@@ -30,6 +30,7 @@ type I18nProviderProps = {
   children: React.ReactNode;
   siteLanguage: string;
   userLanguage?: string; // Only used for testing
+  userLocation?: string; // Only used for testing -- bypasses geolocation
 };
 
 const I18nContext = createContext<
@@ -87,12 +88,13 @@ const getMessages = (language: string) => {
 const I18nProvider = ({
   siteLanguage,
   children,
+  userLocation: userLocationProp,
   userLanguage: userLanguageProp,
 }: I18nProviderProps) => {
   const initialState: State = {
     siteLanguage: "en",
     userLanguage: userLanguageProp || navigator?.language || "en-US",
-    userLocation: null,
+    userLocation: userLocationProp || null,
   };
 
   const [state, dispatch] = useReducer(i18nReducer, {
@@ -125,13 +127,13 @@ const useI18n = () => {
 };
 
 const initializeUserLocation = (dispatch: Dispatch, state: State) => {
-  if (state?.userLocation) return;
-
   async function startFetching() {
     const countryCode = await fetchCountryCode();
     dispatch({ type: "setUserLocation", payload: countryCode });
   }
-  startFetching();
+  if (state.userLocation === null) {
+    startFetching();
+  }
 };
 
 export { I18nProvider, useI18n, initializeUserLocation };
