@@ -7,6 +7,7 @@
     "dev": "react-router dev --host",
     "dev:local": "react-router dev",
     "build": "react-router build",
+    "build:preview": "react-router build --mode=preview",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",

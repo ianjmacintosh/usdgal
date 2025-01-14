@@ -7,22 +7,24 @@ export async function fetchCountryCode() {
   let baseUrl;
 
   switch (import.meta.env.MODE) {
+    // Production should connect to https://gasco.st/
     case "production":
-      if (typeof import.meta.env.CF_PAGES_URL === "undefined") {
-        throw new Error(
-          "While building for Production, could not find Cloudflare Pages URL",
-        );
-      }
-
-      baseUrl =
-        import.meta.env.CF_PAGES_BRANCH === "main"
-          ? "https://gasco.st"
-          : import.meta.env.CF_PAGES_URL;
+      baseUrl = "https://gasco.st";
       break;
+
+    // Preview builds should connect to their Cloudflare Pages URL (exposed via vite.config.ts "envPrefix" setting)
+    case "preview":
+      baseUrl = import.meta.env.CF_PAGES_URL;
+      break;
+
+    // Everything else should connect to non-HTTPS localhost: http://localhost:5173
+    case "testing":
     case "development":
+    default:
       baseUrl = "http://localhost:5173";
       break;
   }
+
   const geolocationApiUrl = new URL(API_GETLOCATION_PATH, baseUrl);
 
   try {
