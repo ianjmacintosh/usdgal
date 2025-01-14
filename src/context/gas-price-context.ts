@@ -3,11 +3,18 @@ import { Units } from "@/components/unit-select/unit-select";
 import getGasPrice from "@/utils/get-gas-price";
 import { createContext } from "react";
 
-export type GasPricesAction = {
+export type GasPricesUpdateAction = {
   type: "update";
   id: "top" | "bottom";
   payload: { key: "number" | "currency" | "unit"; value: number | string };
 };
+
+export type GasPricesReplaceAction = {
+  type: "replace";
+  payload: GasPrices;
+};
+
+export type GasPricesAction = GasPricesUpdateAction | GasPricesReplaceAction;
 
 type GasPrice = {
   number: number;
@@ -61,27 +68,21 @@ export function gasPricesReducer(
       // Return the new gas prices object
       return newGasPrices;
     }
+    case "replace": {
+      const newGasPrices = action.payload;
+      return newGasPrices;
+    }
     default:
       return gasPrices;
   }
 }
 
 export const getInitialGasPrices = (
-  userHomeCountry: string,
+  homeCountry: string,
   userLocation: string,
 ): GasPrices => {
-  // Assume the user wants to know about the place we geolocated them
+  // The imagined "normal" use-case is that someone's in a foreign country and wants to convert from foreign prices to home prices
   let foreignCountry = userLocation;
-
-  // If we geolocate someone to their home country (as indicated by their browser), let's convert gas prices from their home to someplace they might be interested in
-  if (userHomeCountry === userLocation) {
-    // If they're from the US, let's guess they're researching MX
-    foreignCountry =
-      userHomeCountry === "US"
-        ? "MX"
-        : // If they're not from the US, let's guess they're researching the US (because they're researching about liters-to-gallons)
-          "US";
-  }
 
   const defaultGasPrices = {
     top: {
@@ -91,11 +92,27 @@ export const getInitialGasPrices = (
     },
     bottom: {
       number: 0,
-      currency: getCurrencyByCountry(userHomeCountry),
-      unit: getUnitsByCountry(userHomeCountry),
+      currency: getCurrencyByCountry(homeCountry),
+      unit: getUnitsByCountry(homeCountry),
     },
     driver: <"top" | "bottom">"top",
   };
+
+  // But if we geolocate someone to their home country (as indicated by their browser)
+  //   let's convert gas prices from their home to someplace they might be interested in
+  if (homeCountry === userLocation) {
+    // If they're from the US, let's guess they're researching MX
+    foreignCountry =
+      homeCountry === "US"
+        ? "MX"
+        : // If they're not from the US, let's guess they're researching the US (because they're researching about liters-to-gallons)
+          "US";
+
+    defaultGasPrices.top.currency = getCurrencyByCountry(homeCountry);
+    defaultGasPrices.top.unit = getUnitsByCountry(homeCountry);
+    defaultGasPrices.bottom.currency = getCurrencyByCountry(foreignCountry);
+    defaultGasPrices.bottom.unit = getUnitsByCountry(foreignCountry);
+  }
 
   return defaultGasPrices;
 };

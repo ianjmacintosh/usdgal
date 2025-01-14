@@ -8,6 +8,7 @@ import { configDefaults } from "vitest/config";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [!process.env.VITEST && reactRouter(), svgr()],
+  envPrefix: ["VITE_", "CF_PAGES_"],
   test: {
     environment: "happy-dom",
     globals: true,
@@ -19,6 +20,7 @@ export default defineConfig({
       "*.quarantine.js",
       "*.quarantine.jsx",
     ],
+    setupFiles: "./vitest.setup.ts",
   },
   resolve: {
     alias: {

@@ -6,90 +6,49 @@ import getGasPrice from "../../utils/get-gas-price.ts";
 import { getFormattedPrice } from "../../utils/number-format.ts";
 import { selectItemFromFancySelect } from "../../utils/test-utils.ts";
 import "@testing-library/jest-dom/vitest";
-import { IntlProvider } from "react-intl";
-import en from "../../languages/en.ts";
-import es from "../../languages/es.ts";
-import pt from "../../languages/pt.ts";
 import { createRoutesStub } from "react-router";
 import exchangeRateData from "@/utils/exchange-rate-data";
+import TestI18nProvider from "@/context/i18n.test.tsx";
+import { server } from "@/mocks/server.ts";
+import { getGeolocationHandlers } from "@/mocks/handlers.ts";
 
 afterEach(() => {
   cleanup();
 });
 
-const englishTestComponent = ({
-  messages = en,
-  ...props
-}: {
-  messages?: Record<string, string>;
-  [key: string]: unknown;
-}) => {
+const englishTestComponent = ({ ...props }: { [key: string]: unknown }) => {
   return (
-    <IntlProvider locale="en-US" messages={messages}>
-      <Converter
-        siteLanguage="en-US"
-        userLanguage="en-US"
-        userLocation="US"
-        {...props}
-      />
-    </IntlProvider>
+    <TestI18nProvider siteLanguage="en" userLanguage="en-US">
+      <Converter {...props} />
+    </TestI18nProvider>
   );
 };
 
 const mixedUpEnglishTestComponent = ({
-  messages = en,
   ...props
 }: {
-  messages?: Record<string, string>;
   [key: string]: unknown;
 }) => {
   return (
-    <IntlProvider locale="en-US" messages={messages}>
-      <Converter
-        siteLanguage="en-US"
-        userLanguage="pt-BR"
-        userLocation="IN"
-        {...props}
-      />
-    </IntlProvider>
+    <TestI18nProvider siteLanguage="en" userLanguage="pt-BR">
+      <Converter {...props} />
+    </TestI18nProvider>
   );
 };
 
-const spanishTestComponent = ({
-  messages = es,
-  ...props
-}: {
-  messages?: Record<string, string>;
-  [key: string]: unknown;
-}) => {
+const spanishTestComponent = ({ ...props }: { [key: string]: unknown }) => {
   return (
-    <IntlProvider locale="es-MX" messages={messages}>
-      <Converter
-        siteLanguage="es-MX"
-        userLanguage="es-MX"
-        userLocation="US"
-        {...props}
-      />
-    </IntlProvider>
+    <TestI18nProvider siteLanguage="es" userLanguage="es-MX">
+      <Converter {...props} />
+    </TestI18nProvider>
   );
 };
 
-const PortugueseTestComponent = ({
-  messages = pt,
-  ...props
-}: {
-  messages?: Record<string, string>;
-  [key: string]: unknown;
-}) => {
+const PortugueseTestComponent = ({ ...props }: { [key: string]: unknown }) => {
   return (
-    <IntlProvider locale="pt-BR" messages={messages}>
-      <Converter
-        siteLanguage="pt-BR"
-        userLanguage="pt-BR"
-        userLocation="BR"
-        {...props}
-      />
-    </IntlProvider>
+    <TestI18nProvider siteLanguage="pt" userLanguage="pt-BR">
+      <Converter {...props} />
+    </TestI18nProvider>
   );
 };
 
@@ -125,19 +84,30 @@ const elements = () => {
 
 describe('<Converter siteLanguage="en-US" userLanguage="es-MX" />', () => {
   beforeEach(() => {
+    cleanup();
+    server.use(...getGeolocationHandlers("US"));
+
     render(<Stub initialEntries={["/es"]} />);
   });
 
   test("headline to be in Spanish", async () => {
-    expect(screen.getAllByText("Precio de la Gasolina")[0]).toBeVisible();
+    await waitFor(() => {
+      expect(screen.getAllByText("Precio de la Gasolina")[0]).toBeVisible();
+    });
   });
 });
 
 describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
   const user = userEvent.setup();
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    cleanup();
+    server.use(...getGeolocationHandlers("US"));
+
     render(<Stub initialEntries={["/"]} />);
+    await waitFor(() => {
+      expect(screen.getAllByText("Gas Cost")[0]).toBeVisible();
+    });
   });
 
   test("assumes Americans are going to Mexico", async () => {
@@ -147,14 +117,14 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
       bottomCurrencyInput,
       bottomUnitInput,
     } = elements();
+    await waitFor(() => {
+      expect(topCurrencyInput.textContent).toBe("USD");
+      expect(topUnitInput.textContent).toBe("per gallon");
+    });
 
     await waitFor(() => {
-      expect(topCurrencyInput.textContent).toBe("MXN");
-      expect(topUnitInput.textContent).toBe("per liter");
-    });
-    await waitFor(() => {
-      expect(bottomCurrencyInput.textContent).toBe("USD");
-      expect(bottomUnitInput.textContent).toBe("per gallon");
+      expect(bottomCurrencyInput.textContent).toBe("MXN");
+      expect(bottomUnitInput.textContent).toBe("per liter");
     });
   });
 
@@ -225,24 +195,29 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
   test.skip("has a link for my personal site and my GitHub project", () => {});
 });
 
-describe('<Converter siteLanguage="en-US" userLanguage="pt-BR" userLocation="IN" />', () => {
-  beforeEach(() => {
+describe("<Converter /> displayed in English for a pt-BR user located in India", () => {
+  beforeEach(async () => {
     cleanup();
+    server.use(...getGeolocationHandlers("IN"));
 
     render(<Stub initialEntries={["/en/in"]} />);
+    await waitFor(() => {
+      expect(screen.getAllByText("Gas Cost")[0]).toBeVisible();
+    });
   });
-  test("loads values based on geolocation", async () => {
-    const {
-      topCurrencyInput,
-      topUnitInput,
-      bottomCurrencyInput,
-      bottomUnitInput,
-    } = elements();
+
+  test('loads top gas price (local gas price -- "converting from" price) based on user location', async () => {
+    const { topCurrencyInput, topUnitInput } = elements();
 
     await waitFor(() => {
       expect(topCurrencyInput.textContent).toBe("INR");
       expect(topUnitInput.textContent).toBe("per liter");
     });
+  });
+
+  test('loads the bottom gas price (converted as price -- "converting to" price) based on user location and browser settings', async () => {
+    const { bottomCurrencyInput, bottomUnitInput } = elements();
+
     await waitFor(() => {
       expect(bottomCurrencyInput.textContent).toBe("BRL");
       expect(bottomUnitInput.textContent).toBe("per liter");
@@ -261,53 +236,40 @@ describe('<Converter siteLanguage="en-US" userLanguage="pt-BR" userLocation="IN"
   });
 
   test("formats the gas price numbers in the site language (English)", () => {
-    expect(
-      screen.getByLabelText("Amount of BRL paid per liter of gas"),
-    ).toHaveValue("0.00");
+    const { bottomPriceInput } = elements();
+    expect(bottomPriceInput).toHaveValue("0.00");
   });
 });
 
 describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {
   const user = userEvent.setup();
 
-  beforeEach(() => {
-    render(<Stub initialEntries={["/pt"]} />);
-  });
-
-  test("loads with the correct starting values", async () => {
-    const {
-      topCurrencyInput,
-      topUnitInput,
-      bottomCurrencyInput,
-      bottomUnitInput,
-    } = elements();
-
-    await waitFor(() => {
-      expect(topCurrencyInput.textContent).toBe("USD");
-      expect(topUnitInput.textContent).toBe("por galão");
-    });
-    await waitFor(() => {
-      expect(bottomCurrencyInput.textContent).toBe("BRL");
-      expect(bottomUnitInput.textContent).toBe("por litro");
-    });
-  });
-
-  test("assumes a Brazilian visitor visiting the site from Brazil wants to see prices in USD per gallon", async () => {
-    // Arrange
+  beforeEach(async () => {
     cleanup();
+    server.use(...getGeolocationHandlers("BR"));
 
     render(<Stub initialEntries={["/pt"]} />);
+    await waitFor(() => {
+      // Wait for geolookup to finish
+      expect(screen.getAllByText("Preço da Gasolina")[0]).toBeVisible();
+    });
+  });
 
+  test('loads top gas price (local gas price -- "converting from" price) based on user location', async () => {
     const { topCurrencyInput, topUnitInput } = elements();
 
-    // Act
-
-    // Assert
     await waitFor(() => {
-      expect(topCurrencyInput.textContent).toBe("USD");
+      expect(topCurrencyInput.textContent).toBe("BRL");
+      expect(topUnitInput.textContent).toBe("por litro");
     });
+  });
+
+  test('loads the bottom gas price (converted as price -- "converting to" price) based on user location and browser settings', async () => {
+    const { bottomCurrencyInput, bottomUnitInput } = elements();
+
     await waitFor(() => {
-      expect(topUnitInput.textContent).toBe("por galão");
+      expect(bottomCurrencyInput.textContent).toBe("USD");
+      expect(bottomUnitInput.textContent).toBe("por galão");
     });
   });
 

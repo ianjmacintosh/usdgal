@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { gasPricesReducer } from "./gas-price-context";
+import { gasPricesReducer, getInitialGasPrices } from "./gas-price-context";
 import { GasPrices, GasPricesAction } from "./gas-price-context";
 
 const LITERS_IN_A_GALLON = 3.78541;
@@ -87,5 +87,17 @@ describe("gasPricesReducer", () => {
     };
 
     expect(updatedGasPrices).toEqual(expectedGasPrices);
+  });
+});
+
+describe("getInitialGasPrices", () => {
+  test("converts from BRL to USD for Brazilians in Brazil", () => {
+    const expectedGasPrices = {
+      top: { number: 0, currency: "BRL", unit: "liter" },
+      bottom: { number: 0, currency: "USD", unit: "gallon" },
+      driver: "top",
+    };
+
+    expect(getInitialGasPrices("BR", "BR")).toEqual(expectedGasPrices);
   });
 });

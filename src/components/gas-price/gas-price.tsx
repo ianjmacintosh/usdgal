@@ -1,7 +1,7 @@
 import {
   GasPricesContext,
   GasPricesDispatchContext,
-} from "@/contexts/gas-price-context";
+} from "@/context/gas-price-context";
 import "./gas-price.css";
 import { useContext } from "react";
 import NumberInput from "@/components/number-input/number-input";

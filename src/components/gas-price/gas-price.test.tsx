@@ -8,7 +8,7 @@ import {
   GasPricesDispatchContext,
   gasPricesReducer,
   getInitialGasPrices,
-} from "@/contexts/gas-price-context";
+} from "@/context/gas-price-context";
 import en from "@/languages/en";
 import { IntlProvider } from "react-intl";
 import { useReducer } from "react";
