@@ -84,6 +84,7 @@ function Converter({ userLocation }: ConverterProps) {
             <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
             {Intl.DateTimeFormat(siteLanguage, {
               dateStyle: "medium",
+              timeZone: "UTC",
             }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}
           </em>
         </p>
