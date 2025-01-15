@@ -35,7 +35,7 @@ export default {
   amountPaidPerUnit: "Amount of {currency} paid per {unit} of gas",
 
   // LanguageSelect.tsx
-  language: "Language:",
+  language: "Language",
 
   // Unit.tsx
   perLiter: "per liter",

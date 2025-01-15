@@ -44,6 +44,11 @@ describe("<LanguageSelect />", () => {
     expect(selectButton).toBeVisible();
   });
 
+  test("gives the combobox an accessible name", async () => {
+    const selectButton = screen.getByRole("combobox");
+    expect(selectButton).toHaveAccessibleName("Language");
+  });
+
   test("loads with the user's native language selected", async () => {
     const selectButton = screen.getByRole("combobox");
     expect(selectButton.textContent).toBe("Português");

@@ -9,7 +9,7 @@ export default {
   convertedGasCost: "रूपांतरित गैस लागत",
   exchangeRatesLastUpdated: "विनिमय दरें अंतिम बार अपडेट की गईं:",
   sourceCode: "स्रोत कोड",
-  language: "भाषा:",
+  language: "भाषा",
 
   // ConversionTable.tsx
   showDetails: "विवरण दिखाएँ",

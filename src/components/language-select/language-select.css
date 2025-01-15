@@ -7,6 +7,12 @@
   justify-content: center;
 }
 
+/* This is a little bit "cute" -- the label is "Language" and the ":" is added via this line of CSS */
+/* I'm using the > selector to avoid potentially putting colons everywhere in the language select dropdown*/
+.language-form > label::after {
+  content: ":";
+}
+
 .select-button {
   width: auto;
   border-radius: 0;

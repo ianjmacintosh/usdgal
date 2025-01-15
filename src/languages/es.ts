@@ -9,7 +9,7 @@ export default {
   convertedGasCost: "Precio Convertido de la Gasolina",
   exchangeRatesLastUpdated: "Última actualización de los tipos de cambio:",
   sourceCode: "Código fuente",
-  language: "Idioma:",
+  language: "Idioma",
 
   // ConversionTable.tsx
   showDetails: "Mostrar detalles",
