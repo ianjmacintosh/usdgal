@@ -48,7 +48,7 @@ describe("<ConversionTable />", () => {
     expect(screen.getByLabelText("Conversion Details")).toHaveClass("visible");
   });
 
-  test.skip("shows top converted value first", async () => {
+  test("shows top converted value first", async () => {
     render(
       <TestComponent
         topUnit="gallon"
@@ -58,6 +58,7 @@ describe("<ConversionTable />", () => {
       />,
     );
 
+    // Expect "Currency conversion rate" to map to something that starts with "1 USD ="
     expect(
       screen.getByLabelText("Currency conversion rate").textContent,
     ).toContain("USD = ");
@@ -78,8 +79,7 @@ describe("<ConversionTable />", () => {
     );
 
     expect(
-      screen.getByRole("definition", { name: "Currency conversion rate" })
-        .textContent,
+      screen.getByLabelText("Currency conversion rate").textContent,
     ).toContain("BRL = ");
 
     expect(
@@ -87,7 +87,7 @@ describe("<ConversionTable />", () => {
     ).toContain("liters = ");
   });
 
-  test.skip("shows exact currency values (input and output)", async () => {
+  test("shows exact currency values (input and output)", async () => {
     render(<TestComponent />);
 
     expect(screen.getByLabelText("Cost").textContent).toContain("1.23456 BRL");

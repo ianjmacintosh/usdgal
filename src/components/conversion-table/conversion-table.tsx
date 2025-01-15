@@ -75,10 +75,10 @@ const ConversionTable = ({
         aria-label={intl.formatMessage({ id: "conversionDetails" })}
       >
         <div style={{ "--i": 0 } as React.CSSProperties}>
-          <dt>
+          <dt id="cost">
             <FormattedMessage id="cost" />
           </dt>
-          <dd>
+          <dd aria-labelledby="cost">
             <FormattedMessage
               id="gasPriceFormula"
               values={{
@@ -92,10 +92,10 @@ const ConversionTable = ({
         {/* Only show conversion rates if the currencies are different */}
         {topCurrency !== bottomCurrency && (
           <div style={{ "--i": 1 } as React.CSSProperties}>
-            <dt>
+            <dt id="currency-conversion-rate">
               <FormattedMessage id="currencyConversionRate" />
             </dt>
-            <dd>
+            <dd aria-labelledby="currency-conversion-rate">
               {sourceCurrencyAbsoluteCost > targetCurrencyAbsoluteCost
                 ? `${sourceCurrencyAbsoluteCost / targetCurrencyAbsoluteCost} ${topCurrency} = 1 ${bottomCurrency}`
                 : `1 ${topCurrency} = ${targetCurrencyAbsoluteCost / sourceCurrencyAbsoluteCost} ${bottomCurrency}`}
@@ -106,10 +106,10 @@ const ConversionTable = ({
         {/* Only show volume conversion rates if the units are different */}
         {topUnit !== bottomUnit && (
           <div style={{ "--i": 2 } as React.CSSProperties}>
-            <dt>
+            <dt id="volume-conversion-rate">
               <FormattedMessage id="volumeConversionRate" />
             </dt>
-            <dd>
+            <dd aria-labelledby="volume-conversion-rate">
               {targetVolumeInLiters > sourceVolumeInLiters
                 ? `${targetVolumeInLiters / sourceVolumeInLiters} ${intl.formatMessage({ id: topUnit }, { quantity: targetVolumeInLiters })} = 1 ${intl.formatMessage({ id: bottomUnit }, { quantity: sourceVolumeInLiters })}`
                 : `1 ${intl.formatMessage({ id: topUnit }, { quantity: targetVolumeInLiters })} = ${sourceVolumeInLiters / targetVolumeInLiters} ${intl.formatMessage({ id: bottomUnit }, { quantity: sourceVolumeInLiters })}`}
@@ -117,10 +117,10 @@ const ConversionTable = ({
           </div>
         )}
         <div style={{ "--i": 3 } as React.CSSProperties}>
-          <dt>
+          <dt id="converted-cost">
             <FormattedMessage id="convertedCost" />
           </dt>
-          <dd>
+          <dd aria-labelledby="converted-cost">
             <FormattedMessage
               id="gasPriceFormula"
               values={{
