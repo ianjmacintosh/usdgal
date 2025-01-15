@@ -69,16 +69,16 @@ const ConversionTable = ({
           ? intl.formatMessage({ id: "hideDetails" })
           : intl.formatMessage({ id: "showDetails" })}
       </button>
-      <ul
+      <dl
         className={`details ${showDetails ? "visible" : ""}`}
         aria-hidden={!showDetails}
         aria-label={intl.formatMessage({ id: "conversionDetails" })}
       >
-        <li style={{ "--i": 0 } as React.CSSProperties}>
-          <label id="cost-label">
+        <div style={{ "--i": 0 } as React.CSSProperties}>
+          <dt>
             <FormattedMessage id="cost" />
-          </label>
-          <span aria-labelledby="cost-label">
+          </dt>
+          <dd>
             <FormattedMessage
               id="gasPriceFormula"
               values={{
@@ -87,41 +87,40 @@ const ConversionTable = ({
                 unit: topUnit,
               }}
             />
-          </span>
-        </li>
-
+          </dd>
+        </div>
         {/* Only show conversion rates if the currencies are different */}
         {topCurrency !== bottomCurrency && (
-          <li style={{ "--i": 1 } as React.CSSProperties}>
-            <label id="currency-conversion-rate-label">
+          <div style={{ "--i": 1 } as React.CSSProperties}>
+            <dt>
               <FormattedMessage id="currencyConversionRate" />
-            </label>
-            <span aria-labelledby="currency-conversion-rate-label">
+            </dt>
+            <dd>
               {sourceCurrencyAbsoluteCost > targetCurrencyAbsoluteCost
                 ? `${sourceCurrencyAbsoluteCost / targetCurrencyAbsoluteCost} ${topCurrency} = 1 ${bottomCurrency}`
                 : `1 ${topCurrency} = ${targetCurrencyAbsoluteCost / sourceCurrencyAbsoluteCost} ${bottomCurrency}`}
-            </span>
-          </li>
+            </dd>
+          </div>
         )}
 
         {/* Only show volume conversion rates if the units are different */}
         {topUnit !== bottomUnit && (
-          <li style={{ "--i": 2 } as React.CSSProperties}>
-            <label id="volume-conversion-rate-label">
+          <div style={{ "--i": 2 } as React.CSSProperties}>
+            <dt>
               <FormattedMessage id="volumeConversionRate" />
-            </label>
-            <span aria-labelledby="volume-conversion-rate-label">
+            </dt>
+            <dd>
               {targetVolumeInLiters > sourceVolumeInLiters
                 ? `${targetVolumeInLiters / sourceVolumeInLiters} ${intl.formatMessage({ id: topUnit }, { quantity: targetVolumeInLiters })} = 1 ${intl.formatMessage({ id: bottomUnit }, { quantity: sourceVolumeInLiters })}`
                 : `1 ${intl.formatMessage({ id: topUnit }, { quantity: targetVolumeInLiters })} = ${sourceVolumeInLiters / targetVolumeInLiters} ${intl.formatMessage({ id: bottomUnit }, { quantity: sourceVolumeInLiters })}`}
-            </span>
-          </li>
+            </dd>
+          </div>
         )}
-        <li style={{ "--i": 3 } as React.CSSProperties}>
-          <label id="converted-cost-label">
+        <div style={{ "--i": 3 } as React.CSSProperties}>
+          <dt>
             <FormattedMessage id="convertedCost" />
-          </label>
-          <span aria-labelledby="converted-cost-label">
+          </dt>
+          <dd>
             <FormattedMessage
               id="gasPriceFormula"
               values={{
@@ -130,9 +129,9 @@ const ConversionTable = ({
                 unit: bottomUnit,
               }}
             />
-          </span>
-        </li>
-      </ul>
+          </dd>
+        </div>
+      </dl>
     </>
   );
 };
