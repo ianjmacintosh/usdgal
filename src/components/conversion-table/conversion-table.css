@@ -7,36 +7,35 @@
   display: block;
 }
 
-.details label {
+.details dt {
   display: none;
 }
 
-.details.visible li {
-  display: list-item;
+.details.visible div {
+  display: block;
   opacity: 1;
   transition:
     opacity 200ms ease-out calc(var(--i) * 50ms),
     display 1s allow-discrete;
 }
 
-.details li {
+.details div {
   transition:
     opacity 200ms ease-out calc((4 - var(--i)) * 50ms),
     display 350ms allow-discrete;
   opacity: 0;
   width: 100%;
   margin-bottom: 1em;
-  font-size: 18px;
   display: none;
 }
 
-.details label {
+.details dt {
   font-weight: bold;
   display: block;
 }
 
 @starting-style {
-  .details.visible li {
+  .details.visible div {
     opacity: 0;
   }
 }

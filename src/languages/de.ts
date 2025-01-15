@@ -9,7 +9,7 @@ export default {
   convertedGasCost: "Umgerechnete Gaskosten",
   exchangeRatesLastUpdated: "Zuletzt aktualisierte Wechselkurse:",
   sourceCode: "Quellcode",
-  language: "Sprache:",
+  language: "Sprache",
 
   // ConversionTable.tsx
   showDetails: "Details anzeigen",

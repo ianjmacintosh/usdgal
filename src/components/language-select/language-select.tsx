@@ -75,7 +75,11 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
     supportedLanguages[0];
   return (
     <form className="my-4 language-form">
-      <label htmlFor="language-select" className="font-bold">
+      <label
+        htmlFor="language-select"
+        className="font-bold"
+        id="language-label"
+      >
         <FormattedMessage defaultMessage="Language" id="language" />
       </label>
       <Ariakit.SelectProvider
@@ -89,6 +93,7 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
         <Ariakit.Select
           className="language-select select-button button"
           id="language-select"
+          aria-labelledby="language-label"
         >
           <span className="current-value">
             {currentLanguage.flagElement}

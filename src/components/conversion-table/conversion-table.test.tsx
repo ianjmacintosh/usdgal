@@ -58,6 +58,7 @@ describe("<ConversionTable />", () => {
       />,
     );
 
+    // Expect "Currency conversion rate" to map to something that starts with "1 USD ="
     expect(
       screen.getByLabelText("Currency conversion rate").textContent,
     ).toContain("USD = ");
