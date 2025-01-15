@@ -6,8 +6,12 @@ export async function fetchCountryCode() {
   // Default to Production
   let baseUrl = "https://gasco.st";
 
-  if (import.meta.env.VITE_SERVER_URL) {
-    baseUrl = import.meta.env.VITE_SERVER_URL;
+  // Cloudflare Pages exposes the HTTP server's host as "CF_PAGES_URL"
+  if (import.meta.env.CF_PAGES_URL) {
+    // In Production, my build settings set CF_PAGES_URL=https://gasco.st
+    // In Preview environments, Cloudflare dynamically sets CF_PAGES_URL
+    // In Development, ".env.development" sets CF_PAGES_URL=http://localhost:5173
+    baseUrl = import.meta.env.CF_PAGES_URL;
   }
 
   const geolocationApiUrl = new URL(API_GETLOCATION_PATH, baseUrl);
