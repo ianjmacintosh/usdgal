@@ -5,10 +5,6 @@ export const getGeolocationHandlers = (country: string) => {
     http.get("https://gasco.st/workers/getLocation", () => {
       return HttpResponse.json({ ipData: { country } });
     }),
-
-    http.get("http://localhost:5173/workers/getLocation", () => {
-      return HttpResponse.json({ ipData: { country: country } });
-    }),
   ];
 };
 
