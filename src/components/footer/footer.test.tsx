@@ -29,7 +29,7 @@ const Stub = createRoutesStub([
     Component: EnglishTestComponent,
   },
   {
-    path: "/pt",
+    path: "/pt/",
     Component: PortugueseTestComponent,
   },
 ]);
@@ -53,7 +53,7 @@ describe('<Footer> element (loaded in the English site with "en-US" language)', 
 
 describe('<Footer> element (loaded in the Portuguese site with "pt-BR" language)', () => {
   beforeEach(() => {
-    render(<Stub initialEntries={["/pt"]} />);
+    render(<Stub initialEntries={["/pt/"]} />);
   });
 
   test("should render the footer", () => {

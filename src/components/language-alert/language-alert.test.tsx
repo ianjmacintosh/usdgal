@@ -75,7 +75,7 @@ describe("<LanguageAlert />", () => {
     const link = screen.getByRole("link");
 
     expect(link).toHaveTextContent("Ir a la versión española de este sitio");
-    expect(link).toHaveAttribute("href", "/es");
+    expect(link).toHaveAttribute("href", "/es/");
   });
 
   test("shows a link (in English) to the English site when a zh-Hans user shows up to the Spanish site", () => {
