@@ -1,17 +1,29 @@
 import { useI18n } from "@/context/i18n";
 import "./language-alert.css";
+import { useState } from "react";
 
 const LanguageAlert = () => {
   const {
     state: { userLanguage, siteLanguage },
   } = useI18n();
 
-  const displayMessage = userLanguage.indexOf(siteLanguage) === -1;
+  const [showMessage, setShowMessage] = useState(
+    userLanguage.indexOf(siteLanguage) === -1,
+  );
+
+  const closeMessage = () => {
+    setShowMessage(false);
+  };
 
   return (
-    displayMessage && (
+    showMessage && (
       <aside className="language-alert" role="alert">
-        <button type="button" aria-label="Close" className="close-button">
+        <button
+          type="button"
+          aria-label="Close"
+          className="close-button"
+          onClick={closeMessage}
+        >
           <svg
             width="15"
             height="15"
