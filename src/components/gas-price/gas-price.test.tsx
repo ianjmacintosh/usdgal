@@ -9,9 +9,8 @@ import {
   gasPricesReducer,
   getInitialGasPrices,
 } from "@/context/gas-price-context";
-import en from "@/languages/en";
-import { IntlProvider } from "react-intl";
 import { useReducer } from "react";
+import { I18nProvider } from "@/context/i18n";
 
 describe("<GasPrice />", () => {
   const user = userEvent.setup();
@@ -22,7 +21,7 @@ describe("<GasPrice />", () => {
     );
 
     return (
-      <IntlProvider locale="en-US" messages={en}>
+      <I18nProvider siteLanguage="en">
         <GasPricesContext.Provider value={gasPrices}>
           <GasPricesDispatchContext.Provider value={dispatch}>
             <GasPrice
@@ -33,7 +32,7 @@ describe("<GasPrice />", () => {
             />
           </GasPricesDispatchContext.Provider>
         </GasPricesContext.Provider>
-      </IntlProvider>
+      </I18nProvider>
     );
   };
 

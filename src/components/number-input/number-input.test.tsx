@@ -3,27 +3,24 @@ import { cleanup, render, screen } from "@testing-library/react";
 import NumberInput from "./number-input";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
-import { IntlProvider } from "react-intl";
-import en from "../../languages/en";
 import { useState } from "react";
-import es from "@/languages/es";
+import { I18nProvider } from "@/context/i18n";
 
 describe("<Number />", () => {
   const user = userEvent.setup();
   const TestComponent = ({ ...props }) => {
     const [number, setNumber] = useState(0);
     return (
-      <IntlProvider locale="en-US" messages={en}>
+      <I18nProvider siteLanguage="en">
         <NumberInput
           currency="USD"
           label="Amount"
           onChange={setNumber}
           unit="liter"
-          siteLanguage="en-US"
           number={number}
           {...props}
         />
-      </IntlProvider>
+      </I18nProvider>
     );
   };
 
@@ -186,7 +183,7 @@ describe("<Number />", () => {
 
     cleanup();
     render(
-      <IntlProvider locale="en-US" messages={es}>
+      <I18nProvider siteLanguage="es">
         <NumberInput
           currency=""
           label="Amount"
@@ -194,10 +191,9 @@ describe("<Number />", () => {
             console.log("Test");
           }}
           unit="liter"
-          siteLanguage="en-US"
           number={0}
         />
-      </IntlProvider>,
+      </I18nProvider>,
     );
 
     expect(
@@ -206,5 +202,26 @@ describe("<Number />", () => {
         "Importe de amountPaidPerUnitGenericCurrency pagado por liter de gasolina",
       ).textContent,
     ).toBe("");
+  });
+
+  test("matches formatting to the browser's language, not the site language", async () => {
+    cleanup();
+    render(
+      <I18nProvider siteLanguage="pt" userLanguage="en-US">
+        <NumberInput
+          currency="USD"
+          label="Amount"
+          onChange={() => {
+            console.log("Test");
+          }}
+          unit="liter"
+          number={0}
+        />
+      </I18nProvider>,
+    );
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+
+    expect(input.value).toBe("0.00");
   });
 });

@@ -49,7 +49,6 @@ function GasPrice({ label, gasPricesKey, siteLanguage }: GasPriceProps) {
           currency={currency}
           label={label}
           unit={unit}
-          siteLanguage={siteLanguage}
           number={number}
           onChange={(newValue) => {
             if (newValue === number) return; // Return early the value wouldn't change
