@@ -16,3 +16,7 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm run test
+      - name: Generate coverage report
+        run: npm run coverage
+      - name: Run Coveralls GitHub Action
+        uses: coverallsapp/github-action@v2
