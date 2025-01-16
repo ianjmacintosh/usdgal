@@ -177,8 +177,9 @@ describe("<Number />", () => {
     render(<TestComponent currency="" />);
 
     expect(
-      screen.getByLabelText("Amount of currency paid per liter of gas")
-        .textContent,
+      screen.getByLabelText("paid per liter of gas", {
+        exact: false,
+      }).textContent,
     ).toBe("");
 
     cleanup();
@@ -198,9 +199,8 @@ describe("<Number />", () => {
 
     expect(
       // TODO: Come up with a more elegant translation here
-      screen.getByLabelText(
-        "Importe de amountPaidPerUnitGenericCurrency pagado por liter de gasolina",
-      ).textContent,
+      screen.getByLabelText("pagado por liter de gasolina", { exact: false })
+        .textContent,
     ).toBe("");
   });
 

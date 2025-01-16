@@ -76,9 +76,7 @@ const NumberInput = ({
         { id: "amountPaidPerUnit" },
         {
           unit,
-          currency:
-            currency ||
-            intl.formatMessage({ id: "amountPaidPerUnitGenericCurrency" }),
+          currency,
         },
       )}
     />
