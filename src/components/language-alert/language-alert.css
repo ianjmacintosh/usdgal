@@ -18,6 +18,7 @@
 }
 
 .language-alert main {
+  padding: 10px 20px;
   grid-area: content;
   justify-self: center;
   align-self: center;
