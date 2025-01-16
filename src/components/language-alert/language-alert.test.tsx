@@ -69,19 +69,21 @@ describe("<LanguageAlert />", () => {
     expect(link).toHaveAttribute("href", "/");
   });
 
-  test("shows a link to the Spanish site when a es-MX user shows up to the English site", () => {
+  test("shows a link (in Spanish) to the Spanish site when a es-MX user shows up to the English site", () => {
     cleanup();
     render(<TestComponent siteLanguage="en" userLanguage="es-MX" />);
     const link = screen.getByRole("link");
 
+    expect(link).toHaveTextContent("Ir a la versión española de este sitio");
     expect(link).toHaveAttribute("href", "/es");
   });
 
-  test("shows a link to the English site when a zh-Hans user shows up to the Spanish site", () => {
+  test("shows a link (in English) to the English site when a zh-Hans user shows up to the Spanish site", () => {
     cleanup();
     render(<TestComponent siteLanguage="es" userLanguage="zh-Hans" />);
     const link = screen.getByRole("link");
 
+    expect(link).toHaveTextContent("Go to the English version of this site");
     expect(link).toHaveAttribute("href", "/");
   });
 });
