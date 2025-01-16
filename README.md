@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/ianjmacintosh/usdgal/badge.svg)](https://coveralls.io/github/ianjmacintosh/usdgal)
+
 # Gas Co.st ([website](https://www.gasco.st/))
 
 Instantly convert gasoline prices listed in foreign units and currencies
