@@ -234,11 +234,6 @@ describe("<Converter /> displayed in English for a pt-BR user located in India",
       ),
     ).toBeInTheDocument();
   });
-
-  test("formats the gas price numbers in the site language (English)", () => {
-    const { bottomPriceInput } = elements();
-    expect(bottomPriceInput).toHaveValue("0.00");
-  });
 });
 
 describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {

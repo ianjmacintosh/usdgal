@@ -5,10 +5,10 @@ import {
   getParsedNumber,
   isLegalPriceValue,
 } from "@/utils/number-format";
+import { useI18n } from "@/context/i18n";
 
 type NumberProps = {
   number: number;
-  siteLanguage: string;
   currency: string;
   label: string;
   onChange: (newValue: number) => void;
@@ -18,22 +18,24 @@ type NumberProps = {
 
 const NumberInput = ({
   number,
-  siteLanguage,
   currency,
   label,
   onChange,
   unit,
 }: NumberProps) => {
+  const {
+    state: { userLanguage },
+  } = useI18n();
   const intl = useIntl();
   const [displayNumber, setDisplayNumber] = useState(
-    getFormattedPrice(number, siteLanguage, currency),
+    getFormattedPrice(number, userLanguage, currency),
   );
   const [isNumberFocused, setIsNumberFocused] = useState(false);
 
   useEffect(() => {
     if (isNumberFocused) return;
 
-    setDisplayNumber(getFormattedPrice(number, siteLanguage, currency));
+    setDisplayNumber(getFormattedPrice(number, userLanguage, currency));
   }, [number, currency, isNumberFocused]);
 
   const handleDisplayNumberChange = (
@@ -41,11 +43,11 @@ const NumberInput = ({
   ) => {
     const displayNumber = event.target.value;
 
-    if (!isLegalPriceValue(displayNumber, siteLanguage)) return;
+    if (!isLegalPriceValue(displayNumber, userLanguage)) return;
 
     setDisplayNumber(displayNumber);
 
-    onChange(getParsedNumber(displayNumber, siteLanguage));
+    onChange(getParsedNumber(displayNumber, userLanguage));
   };
 
   return (
@@ -59,7 +61,7 @@ const NumberInput = ({
         setIsNumberFocused(true);
       }}
       onBlur={() => {
-        setDisplayNumber(getFormattedPrice(number, siteLanguage, currency));
+        setDisplayNumber(getFormattedPrice(number, userLanguage, currency));
         setIsNumberFocused(false);
       }}
       onChange={(value) => {
@@ -72,7 +74,12 @@ const NumberInput = ({
       className="number"
       aria-label={intl.formatMessage(
         { id: "amountPaidPerUnit" },
-        { unit, currency },
+        {
+          unit,
+          currency:
+            currency ||
+            intl.formatMessage({ id: "amountPaidPerUnitGenericCurrency" }),
+        },
       )}
     />
   );

@@ -3,26 +3,24 @@ import { cleanup, render, screen } from "@testing-library/react";
 import NumberInput from "./number-input";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
-import { IntlProvider } from "react-intl";
-import en from "../../languages/en";
 import { useState } from "react";
+import { I18nProvider } from "@/context/i18n";
 
 describe("<Number />", () => {
   const user = userEvent.setup();
   const TestComponent = ({ ...props }) => {
     const [number, setNumber] = useState(0);
     return (
-      <IntlProvider locale="en-US" messages={en}>
+      <I18nProvider siteLanguage="en">
         <NumberInput
           currency="USD"
           label="Amount"
           onChange={setNumber}
           unit="liter"
-          siteLanguage="en-US"
           number={number}
           {...props}
         />
-      </IntlProvider>
+      </I18nProvider>
     );
   };
 
@@ -174,12 +172,56 @@ describe("<Number />", () => {
     expect(input.value).toBe("1.00");
   });
 
-  test.skip("can handle missing currency prop", async () => {
+  test("can handle missing currency prop", async () => {
     cleanup();
     render(<TestComponent currency="" />);
 
     expect(
-      screen.queryByRole("combobox", { name: "Currency" })?.textContent,
+      screen.getByLabelText("Amount of currency paid per liter of gas")
+        .textContent,
     ).toBe("");
+
+    cleanup();
+    render(
+      <I18nProvider siteLanguage="es">
+        <NumberInput
+          currency=""
+          label="Amount"
+          onChange={() => {
+            console.log("Test");
+          }}
+          unit="liter"
+          number={0}
+        />
+      </I18nProvider>,
+    );
+
+    expect(
+      // TODO: Come up with a more elegant translation here
+      screen.getByLabelText(
+        "Importe de amountPaidPerUnitGenericCurrency pagado por liter de gasolina",
+      ).textContent,
+    ).toBe("");
+  });
+
+  test("matches formatting to the browser's language, not the site language", async () => {
+    cleanup();
+    render(
+      <I18nProvider siteLanguage="pt" userLanguage="en-US">
+        <NumberInput
+          currency="USD"
+          label="Amount"
+          onChange={() => {
+            console.log("Test");
+          }}
+          unit="liter"
+          number={0}
+        />
+      </I18nProvider>,
+    );
+
+    const input = screen.getByRole("textbox") as HTMLInputElement;
+
+    expect(input.value).toBe("0.00");
   });
 });
