@@ -74,6 +74,10 @@ h6 {
 
 /* ^^ Thanks Josh! Much love for this; https://www.joshwcomeau.com/css/custom-css-reset/ */
 
+a {
+  text-decoration: underline;
+}
+
 #root {
   display: grid;
   font-family: sans-serif;

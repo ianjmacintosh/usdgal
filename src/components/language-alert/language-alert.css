@@ -1,0 +1,14 @@
+.language-alert {
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: rgba(36, 36, 36, 0.2) 0 0 10px;
+  margin: 20px 0;
+}
+
+.language-alert p {
+  margin-bottom: 10px;
+}
+
+.language-alert p:last-child {
+  margin-bottom: 0;
+}
