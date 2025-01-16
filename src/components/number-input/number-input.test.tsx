@@ -6,6 +6,7 @@ import "@testing-library/jest-dom/vitest";
 import { IntlProvider } from "react-intl";
 import en from "../../languages/en";
 import { useState } from "react";
+import es from "@/languages/es";
 
 describe("<Number />", () => {
   const user = userEvent.setup();
@@ -174,12 +175,36 @@ describe("<Number />", () => {
     expect(input.value).toBe("1.00");
   });
 
-  test.skip("can handle missing currency prop", async () => {
+  test("can handle missing currency prop", async () => {
     cleanup();
     render(<TestComponent currency="" />);
 
     expect(
-      screen.queryByRole("combobox", { name: "Currency" })?.textContent,
+      screen.getByLabelText("Amount of currency paid per liter of gas")
+        .textContent,
+    ).toBe("");
+
+    cleanup();
+    render(
+      <IntlProvider locale="en-US" messages={es}>
+        <NumberInput
+          currency=""
+          label="Amount"
+          onChange={() => {
+            console.log("Test");
+          }}
+          unit="liter"
+          siteLanguage="en-US"
+          number={0}
+        />
+      </IntlProvider>,
+    );
+
+    expect(
+      // TODO: Come up with a more elegant translation here
+      screen.getByLabelText(
+        "Importe de amountPaidPerUnitGenericCurrency pagado por liter de gasolina",
+      ).textContent,
     ).toBe("");
   });
 });

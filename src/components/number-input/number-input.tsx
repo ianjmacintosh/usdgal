@@ -72,7 +72,12 @@ const NumberInput = ({
       className="number"
       aria-label={intl.formatMessage(
         { id: "amountPaidPerUnit" },
-        { unit, currency },
+        {
+          unit,
+          currency:
+            currency ||
+            intl.formatMessage({ id: "amountPaidPerUnitGenericCurrency" }),
+        },
       )}
     />
   );
