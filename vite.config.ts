@@ -12,7 +12,6 @@ export default defineConfig({
   test: {
     coverage: {
       include: ["src/**/*.{ts,tsx}"],
-      reporter: ["text", "json", "html"],
     },
     environment: "happy-dom",
     globals: true,
