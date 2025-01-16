@@ -1,8 +1,34 @@
 .language-alert {
+  padding: 0;
   border-radius: 10px;
-  padding: 20px;
   box-shadow: rgba(36, 36, 36, 0.2) 0 0 10px;
   margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "heading close"
+    "content content";
+}
+
+.language-alert h2 {
+  font-size: 1.4rem;
+  font-weight: bold;
+  grid-area: heading;
+  line-height: 44px;
+}
+
+.language-alert .close-button {
+  grid-area: close;
+  height: 44px;
+  width: 44px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.language-alert main {
+  grid-area: content;
+  padding-top: 0;
 }
 
 .language-alert p {
