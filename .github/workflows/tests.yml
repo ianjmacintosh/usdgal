@@ -7,7 +7,7 @@ on:
       - synchronize
 jobs:
   test:
-    name: Run `npm run test`
+    name: Run Vitest tests
     runs-on: ubuntu-latest
     steps:
       - name: Check out repo
@@ -16,6 +16,14 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm run test
+  publish-coverage:
+    name: Determine coverage and publish to Coveralls
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+      - name: Install deps
+        run: npm ci
       - name: Generate coverage report
         run: npm run coverage
       - name: Run Coveralls GitHub Action
