@@ -27,6 +27,9 @@ gallon {गैलन}
 other {{unit}}
 }`,
 
+  // language-alert.tsx
+  languageAlertText: "इस साइट के हिंदी संस्करण पर जाएँ",
+
   // GasPrice.tsx
   tinyNumber:
     "यह राशि इस प्रकार प्रदर्शित होती है {displayNumber} {currency}, लेकिन वास्तविक राशि कम है ({number} {currency})",

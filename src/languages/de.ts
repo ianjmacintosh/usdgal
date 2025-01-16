@@ -33,6 +33,9 @@ gallon {Gallone}
 other {{unit}}
 }`,
 
+  // language-alert.tsx
+  languageAlertText: "Gehen Sie zur deutschen Version dieser Website",
+
   // GasPrice.tsx
   tinyNumber:
     "Dieser Betrag wird als {displayNumber} {currency} angezeigt, aber der tatsächliche Betrag ist geringer ({number} {currency})",

@@ -15,6 +15,7 @@ import {
 } from "@/context/gas-price-context";
 import Footer from "@/components/footer/footer";
 import { useI18n } from "@/context/i18n";
+import LanguageAlert from "../language-alert/language-alert";
 
 /**
  * The main component of the gas price converter.
@@ -56,6 +57,7 @@ function Converter() {
     userLocation && (
       <>
         <div className="container">
+          <LanguageAlert />
           {/* GasPricesContext.Provider provides the top & bottom gas cost, currency, and amount (per gallon/per liter) */}
           <GasPricesContext.Provider value={gasPrices}>
             <GasPricesDispatchContext.Provider value={dispatch}>

@@ -33,6 +33,9 @@ export default {
     other {{unit}}
     }`,
 
+  // language-alert.tsx
+  languageAlertText: "Ir a la versión española de este sitio",
+
   // GasPrice.tsx
   tinyNumber:
     "Este importe se muestra como {displayNumber} {currency}, pero el importe real es menor ({number} {currency})",

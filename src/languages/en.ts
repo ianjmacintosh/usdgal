@@ -33,10 +33,12 @@ export default {
   tinyNumber:
     "This amount is displayed as {displayNumber} {currency}, but the actual amount is less ({number} {currency})",
   amountPaidPerUnit: "Amount of {currency} paid per {unit} of gas",
-  amountPaidPerUnitGenericCurrency: "currency", // If we don't know what currency it is, we'll use this for "Amount of _________ paid per {unit} of gas"
 
   // LanguageSelect.tsx
   language: "Language",
+
+  // language-alert.tsx
+  languageAlertText: "Go to the English version of this site",
 
   // Unit.tsx
   perLiter: "per liter",

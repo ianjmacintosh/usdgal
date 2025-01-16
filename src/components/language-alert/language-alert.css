@@ -1,0 +1,30 @@
+.language-alert {
+  border-radius: 10px;
+  box-shadow: rgba(36, 36, 36, 0.2) 0 0 10px;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "content close";
+  align-items: center;
+}
+
+.language-alert .close-button {
+  grid-area: close;
+  height: 44px;
+  width: 44px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.language-alert main {
+  padding: 10px 20px;
+  grid-area: content;
+  justify-self: center;
+  align-self: center;
+}
+
+button:hover svg {
+  color: #666;
+  fill: #666;
+}

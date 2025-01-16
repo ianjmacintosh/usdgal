@@ -12,7 +12,10 @@ const intl = createIntl({
 });
 
 export const links = () => {
-  return [...defaultLinks(), { rel: "canonical", href: "https://gasco.st/pt" }];
+  return [
+    ...defaultLinks(),
+    { rel: "canonical", href: "https://gasco.st/pt/" },
+  ];
 };
 
 export function meta() {

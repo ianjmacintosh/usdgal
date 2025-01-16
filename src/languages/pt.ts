@@ -34,6 +34,9 @@ gallon {galão}
 other {{unit}}
 }`,
 
+  // language-alert.tsx
+  languageAlertText: "Acesse a versão em português deste site",
+
   // GasPrice.tsx
   tinyNumber:
     "Este valor é exibido como {displayNumber} {currency}, mas o valor real é menor ({number} {currency})",

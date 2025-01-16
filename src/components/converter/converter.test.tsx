@@ -58,15 +58,15 @@ const Stub = createRoutesStub([
     Component: englishTestComponent,
   },
   {
-    path: "/en/in",
+    path: "/en/in/",
     Component: mixedUpEnglishTestComponent,
   },
   {
-    path: "/es",
+    path: "/es/",
     Component: spanishTestComponent,
   },
   {
-    path: "/pt",
+    path: "/pt/",
     Component: PortugueseTestComponent,
   },
 ]);
@@ -87,7 +87,7 @@ describe('<Converter siteLanguage="en-US" userLanguage="es-MX" />', () => {
     cleanup();
     server.use(...getGeolocationHandlers("US"));
 
-    render(<Stub initialEntries={["/es"]} />);
+    render(<Stub initialEntries={["/es/"]} />);
   });
 
   test("headline to be in Spanish", async () => {
@@ -200,7 +200,7 @@ describe("<Converter /> displayed in English for a pt-BR user located in India",
     cleanup();
     server.use(...getGeolocationHandlers("IN"));
 
-    render(<Stub initialEntries={["/en/in"]} />);
+    render(<Stub initialEntries={["/en/in/"]} />);
     await waitFor(() => {
       expect(screen.getAllByText("Gas Cost")[0]).toBeVisible();
     });
@@ -243,7 +243,7 @@ describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {
     cleanup();
     server.use(...getGeolocationHandlers("BR"));
 
-    render(<Stub initialEntries={["/pt"]} />);
+    render(<Stub initialEntries={["/pt/"]} />);
     await waitFor(() => {
       // Wait for geolookup to finish
       expect(screen.getAllByText("Preço da Gasolina")[0]).toBeVisible();

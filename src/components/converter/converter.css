@@ -21,12 +21,12 @@ footer nav a {
   gap: 10px;
 }
 
-footer a {
+a {
   text-decoration: underline;
 }
 
-footer a:hover,
-footer a:hover svg {
+a:hover,
+a:hover svg {
   color: #666;
   fill: #666;
 }
