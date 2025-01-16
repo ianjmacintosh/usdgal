@@ -38,6 +38,9 @@ export default {
   // LanguageSelect.tsx
   language: "Language",
 
+  // language-alert.tsx
+  languageAlertText: "Go to the English version of this site",
+
   // Unit.tsx
   perLiter: "per liter",
   perGallon: "per gallon",

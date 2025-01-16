@@ -21,7 +21,7 @@ const TestComponent = ({
 };
 
 describe("<LanguageAlert />", () => {
-  const americanEnglishSiteLinkText = "Go to the site in your language";
+  const americanEnglishSiteLinkText = "Go to the English version of this site";
   beforeEach(() => {
     cleanup();
     render(<TestComponent siteLanguage="es" userLanguage="en-US" />);
