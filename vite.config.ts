@@ -11,7 +11,7 @@ export default defineConfig({
   envPrefix: ["VITE_", "CF_PAGES_"],
   test: {
     coverage: {
-      include: ["src/**/*.{ts,tsx}"],
+      include: ["src/**/*.{js,jsx,ts,tsx}"],
     },
     environment: "happy-dom",
     globals: true,
