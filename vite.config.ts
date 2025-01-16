@@ -10,6 +10,10 @@ export default defineConfig({
   plugins: [!process.env.VITEST && reactRouter(), svgr()],
   envPrefix: ["VITE_", "CF_PAGES_"],
   test: {
+    coverage: {
+      include: ["src/**/*.{ts,tsx}"],
+      reporter: ["text", "json", "html"],
+    },
     environment: "happy-dom",
     globals: true,
     root: __dirname,
