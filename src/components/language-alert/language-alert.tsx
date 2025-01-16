@@ -1,7 +1,7 @@
 import { useI18n } from "@/context/i18n";
 import "./language-alert.css";
 import { useState } from "react";
-import { supportedLanguages } from "../language-select/language-select";
+import { getClosestSupportedLanguage } from "../language-select/language-select";
 
 const LanguageAlert = () => {
   const {
@@ -9,10 +9,7 @@ const LanguageAlert = () => {
   } = useI18n();
 
   // Identify the most likely best site language we support for the visitor, based on their browser settings
-  const bestSupportedLanguage =
-    supportedLanguages.find(
-      (languageSettings) => languageSettings.id === userLanguage.split("-")[0],
-    ) || supportedLanguages[0];
+  const bestSupportedLanguage = getClosestSupportedLanguage(userLanguage);
 
   // Store the name of that language and the site path
   const newSitePath = bestSupportedLanguage?.path;
