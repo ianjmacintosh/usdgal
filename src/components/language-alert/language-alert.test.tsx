@@ -21,7 +21,7 @@ const TestComponent = ({
 };
 
 describe("<LanguageAlert />", () => {
-  const americanEnglishSiteLinkText = "Go to the American English site";
+  const americanEnglishSiteLinkText = "Go to the site in your language";
   beforeEach(() => {
     cleanup();
     render(<TestComponent siteLanguage="es" userLanguage="en-US" />);
@@ -53,5 +53,35 @@ describe("<LanguageAlert />", () => {
         screen.queryByText(americanEnglishSiteLinkText),
       ).not.toBeInTheDocument();
     });
+  });
+
+  test("shows a link to the English site when a en-US user shows up to the Spanish site", () => {
+    const link = screen.getByRole("link");
+
+    expect(link).toHaveAttribute("href", "/");
+  });
+
+  test("shows a link to the English site when a en-UK user shows up to the Spanish site", () => {
+    cleanup();
+    render(<TestComponent siteLanguage="es" userLanguage="en-UK" />);
+    const link = screen.getByRole("link");
+
+    expect(link).toHaveAttribute("href", "/");
+  });
+
+  test("shows a link to the Spanish site when a es-MX user shows up to the English site", () => {
+    cleanup();
+    render(<TestComponent siteLanguage="en" userLanguage="es-MX" />);
+    const link = screen.getByRole("link");
+
+    expect(link).toHaveAttribute("href", "/es");
+  });
+
+  test("shows a link to the English site when a zh-Hans user shows up to the Spanish site", () => {
+    cleanup();
+    render(<TestComponent siteLanguage="es" userLanguage="zh-Hans" />);
+    const link = screen.getByRole("link");
+
+    expect(link).toHaveAttribute("href", "/");
   });
 });
