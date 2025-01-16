@@ -11,7 +11,6 @@ const LanguageAlert = () => {
   return (
     displayMessage && (
       <aside className="language-alert" role="alert">
-        <h2>English Site Available</h2>
         <button type="button" aria-label="Close" className="close-button">
           <svg
             width="15"
@@ -25,10 +24,6 @@ const LanguageAlert = () => {
           </svg>
         </button>
         <main>
-          <p>
-            This site is in Spanish, but your system preferences are set to
-            English.
-          </p>
           <p>
             <a href="/">Go to the American English site</a>
           </p>

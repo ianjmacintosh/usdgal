@@ -1,20 +1,11 @@
 .language-alert {
-  padding: 0;
   border-radius: 10px;
   box-shadow: rgba(36, 36, 36, 0.2) 0 0 10px;
   margin: 20px 0;
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-template-areas:
-    "heading close"
-    "content content";
-}
-
-.language-alert h2 {
-  font-size: 1.4rem;
-  font-weight: bold;
-  grid-area: heading;
-  line-height: 44px;
+  grid-template-areas: "content close";
+  align-items: center;
 }
 
 .language-alert .close-button {
@@ -28,13 +19,11 @@
 
 .language-alert main {
   grid-area: content;
-  padding-top: 0;
+  justify-self: center;
+  align-self: center;
 }
 
-.language-alert p {
-  margin-bottom: 10px;
-}
-
-.language-alert p:last-child {
-  margin-bottom: 0;
+button:hover svg {
+  color: #666;
+  fill: #666;
 }
