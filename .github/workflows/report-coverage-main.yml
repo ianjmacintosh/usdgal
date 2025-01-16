@@ -1,0 +1,18 @@
+name: Report test coverage for main branch
+on:
+  push:
+    branches:
+      - main
+jobs:
+  publish-coverage:
+    name: Build and publish code coverage report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+      - name: Install deps
+        run: npm ci
+      - name: Generate coverage report
+        run: npm run coverage
+      - name: Run Coveralls GitHub Action
+        uses: coverallsapp/github-action@v2
