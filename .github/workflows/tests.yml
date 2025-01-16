@@ -1,4 +1,4 @@
-name: Run Tests
+name: Test my application
 on:
   pull_request:
     types:
@@ -17,7 +17,7 @@ jobs:
       - name: Run tests
         run: npm run test
   publish-coverage:
-    name: Determine coverage and publish to Coveralls
+    name: Analyze code coverage and publish a report
     runs-on: ubuntu-latest
     steps:
       - name: Check out repo
