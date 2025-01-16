@@ -27,34 +27,39 @@ const getFlagIcon = (country: string) => {
 };
 
 // supportedLanguages array: List of supported languages, with the first language being the default site language
-const supportedLanguages = [
+export const supportedLanguages = [
   // ⬇️ WARNING: The first language in this array will be the site language picker's value when we don't know what language they're using!!
   {
     id: "en",
     languageName: "English",
     countryName: "United States",
     flagElement: getFlagIcon("US"),
+    path: "/",
   },
   // ⬆️ WARNING: The first language in this array will be the site language picker's value when we don't know what language they're using!!
   {
     id: "de",
     languageName: "Deutsch",
     flagElement: getFlagIcon("DE"),
+    path: "/de",
   },
   {
     id: "es",
     languageName: "Español",
     flagElement: getFlagIcon("MX"),
+    path: "/es",
   },
   {
     id: "hi",
     languageName: "हिन्दी",
     flagElement: getFlagIcon("IN"),
+    path: "/hi",
   },
   {
     id: "pt",
     languageName: "Português",
     flagElement: getFlagIcon("BR"),
+    path: "/pt",
   },
 ];
 
@@ -64,11 +69,9 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
   // handleLanguageChange function: Handles language changes by navigating to its URL
   const handleLanguageChange = (newLanguage: string) => {
     // The site's English version has a special URL ("/" instead of "/en")
-    if (newLanguage !== "en") {
-      navigate(`/${newLanguage}`);
-    } else {
-      navigate(`/`);
-    }
+    const newPath =
+      supportedLanguages.find(({ id }) => id === newLanguage)?.path || "/";
+    navigate(newPath);
   };
   const currentLanguage =
     supportedLanguages.find(({ id }) => id === siteLanguage) ||
