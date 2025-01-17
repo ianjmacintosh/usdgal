@@ -3,10 +3,11 @@ import { beforeEach, describe, expect, test } from "vitest";
 import LanguageAlert from "./language-alert";
 import TestI18nProvider from "@/context/i18n.test";
 import userEvent from "@testing-library/user-event";
+import { createRoutesStub } from "react-router";
 
 type LanguageAlertTestComponentProps = {
   siteLanguage: string;
-  userLanguage: string;
+  userLanguage?: string;
 };
 
 const TestComponent = ({
@@ -19,6 +20,17 @@ const TestComponent = ({
     </TestI18nProvider>
   );
 };
+
+const Stub = createRoutesStub([
+  {
+    path: "/",
+    Component: () => <TestComponent siteLanguage="en" userLanguage="en-US" />,
+  },
+  {
+    path: "/hi/en/",
+    Component: () => <TestComponent siteLanguage="hi" userLanguage="en-US" />,
+  },
+]);
 
 describe("<LanguageAlert />", () => {
   const americanEnglishSiteLinkText = "Go to the English version of this site";
@@ -85,5 +97,42 @@ describe("<LanguageAlert />", () => {
 
     expect(link).toHaveTextContent("Go to the English version of this site");
     expect(link).toHaveAttribute("href", "/");
+  });
+
+  // These tests all seem really E2E-like... should be either reworked OR put into an E2E test
+  describe.skip("when the user clicks the 'Go to English site' link on the Hindi site", () => {
+    beforeEach(() => {
+      cleanup();
+      render(<Stub initialEntries={["/hi/en/"]} />);
+    });
+    test("doesn't show a language alert when they get to the English site", async () => {
+      const link = screen.getByRole("link");
+
+      await userEvent.click(link);
+
+      await waitFor(() => {
+        screen.findByText("Gas Cost");
+      });
+
+      expect(
+        screen.queryByText(americanEnglishSiteLinkText),
+      ).not.toBeInTheDocument();
+    });
+    test.skip("shows the language alert again if they come back to a non-English site", () => {});
+  });
+
+  describe.skip("when the user intentionally clicked the language select dropdown", () => {
+    test("doesn't show a language alert when they get to the site they picked -- even if they've never dismissed it", () => {});
+    test("shows a language alert when they get to a different site than the one they picked -- even if it matches their system settings", () => {});
+  });
+
+  describe.skip("when the user closes the language alert", () => {
+    test("doesn't show the language alert again if they visit the same page again", () => {});
+    test("displays if they go to a different language version of the site (even if it matches their system settings)", () => {});
+  });
+
+  describe.skip("when the user ignores the language alert", () => {
+    test("displays again if they refresh", () => {});
+    test("does not display if they go to their system settings's preferred language", () => {});
   });
 });
