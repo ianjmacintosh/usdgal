@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, test } from "vitest";
 import LanguageAlert from "./language-alert";
 import TestI18nProvider from "@/context/i18n.test";
 import userEvent from "@testing-library/user-event";
-import { createRoutesStub } from "react-router";
 
 type LanguageAlertTestComponentProps = {
   siteLanguage: string;
@@ -20,17 +19,6 @@ const TestComponent = ({
     </TestI18nProvider>
   );
 };
-
-const Stub = createRoutesStub([
-  {
-    path: "/",
-    Component: () => <TestComponent siteLanguage="en" userLanguage="en-US" />,
-  },
-  {
-    path: "/hi/en/",
-    Component: () => <TestComponent siteLanguage="hi" userLanguage="en-US" />,
-  },
-]);
 
 describe("<LanguageAlert />", () => {
   const americanEnglishSiteLinkText = "Go to the English version of this site";
