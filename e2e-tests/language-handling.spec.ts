@@ -47,7 +47,7 @@ test.describe("An en-US user", () => {
       await expect(page.getByRole("alert")).toBeVisible();
     });
 
-    test("can dismiss the language alert and won't be pestered by it again", async ({
+    test("can dismiss the language alert on the German site to tell the site they prefer speaking German", async ({
       page,
     }) => {
       await page.getByRole("button", { name: "Close" }).click();
@@ -55,6 +55,18 @@ test.describe("An en-US user", () => {
 
       await page.reload();
       await expect(page.getByRole("alert")).not.toBeVisible();
+
+      await page.getByRole("combobox", { name: "Sprache" }).click();
+      await page.getByRole("option", { name: "English" }).click();
+
+      await expect(page.getByRole("alert")).toHaveText(
+        "Gehen Sie zur deutschen Version dieser Website",
+      );
+      await expect(
+        page.getByRole("link", {
+          name: "Gehen Sie zur deutschen Version dieser Website",
+        }),
+      ).toHaveAttribute("href", "/de/");
     });
   });
 });

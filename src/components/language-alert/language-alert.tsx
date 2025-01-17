@@ -9,27 +9,28 @@ const LanguageAlert = () => {
   const {
     state: { userLanguage, siteLanguage },
   } = useI18n();
+  // Guess the best language for the visitor based on their browser settings
+  const bestSupportedLanguageId = getClosestSupportedLanguage(userLanguage).id;
 
-  const [preferredLanguage, setPreferredLanguage] = useLocalStorage(
-    "preferredLanguage",
-    null,
+  const [preferredLanguageId, setPreferredLanguageId] = useLocalStorage(
+    "preferredLanguageId",
+    bestSupportedLanguageId,
   );
 
-  // Identify the most likely best site language we support for the visitor, based on their browser settings
-  const bestSupportedLanguage = getClosestSupportedLanguage(userLanguage);
-
   // Store the name of that language and the site path
-  const newSitePath = bestSupportedLanguage?.path;
+  const preferredLanguagePath =
+    getClosestSupportedLanguage(preferredLanguageId).path;
 
-  // If the current site language isn't currently what we identified as best for them, show the message
+  // Only offer a translation if the site language is both...
+  // - Not one the user has suggested they want by dismissing the alert
+  // - Not our idea of the best language to show them based on their system settings and our supported languages
   const [showMessage, setShowMessage] = useState(
-    preferredLanguage !== siteLanguage &&
-      siteLanguage !== bestSupportedLanguage.id,
+    siteLanguage !== preferredLanguageId,
   );
 
   const closeMessage = () => {
     // Store the user's preferred language in local storage
-    setPreferredLanguage(siteLanguage);
+    setPreferredLanguageId(siteLanguage);
 
     // Dismiss the message (it won't come back again)
     setShowMessage(false);
@@ -37,7 +38,7 @@ const LanguageAlert = () => {
 
   return (
     showMessage && (
-      <I18nProvider siteLanguage={bestSupportedLanguage.id}>
+      <I18nProvider siteLanguage={preferredLanguageId}>
         <aside className="language-alert" role="alert">
           <button
             type="button"
@@ -58,7 +59,7 @@ const LanguageAlert = () => {
           </button>
           <main>
             <p>
-              <a href={newSitePath}>
+              <a href={preferredLanguagePath}>
                 <FormattedMessage id="languageAlertText" />
               </a>
             </p>
