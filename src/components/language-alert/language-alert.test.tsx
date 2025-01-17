@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 
 type LanguageAlertTestComponentProps = {
   siteLanguage: string;
-  userLanguage: string;
+  userLanguage?: string;
 };
 
 const TestComponent = ({
@@ -24,18 +24,22 @@ describe("<LanguageAlert />", () => {
   const americanEnglishSiteLinkText = "Go to the English version of this site";
   beforeEach(() => {
     cleanup();
+    localStorage.clear();
     render(<TestComponent siteLanguage="es" userLanguage="en-US" />);
   });
+
   test("shows the language alert if (and only if) the user's browser language and site language are mismatched", () => {
     expect(screen.queryByText(americanEnglishSiteLinkText)).toBeVisible();
 
     cleanup();
+    localStorage.clear();
     render(<TestComponent siteLanguage="en" userLanguage="en-US" />);
     expect(
       screen.queryByText(americanEnglishSiteLinkText),
     ).not.toBeInTheDocument();
 
     cleanup();
+    localStorage.clear();
     render(<TestComponent siteLanguage="es" userLanguage="es-EC" />);
     expect(
       screen.queryByText(americanEnglishSiteLinkText),
@@ -63,6 +67,7 @@ describe("<LanguageAlert />", () => {
 
   test("shows a link to the English site when a en-UK user shows up to the Spanish site", () => {
     cleanup();
+    localStorage.clear();
     render(<TestComponent siteLanguage="es" userLanguage="en-UK" />);
     const link = screen.getByRole("link");
 
@@ -71,6 +76,7 @@ describe("<LanguageAlert />", () => {
 
   test("shows a link (in Spanish) to the Spanish site when a es-MX user shows up to the English site", () => {
     cleanup();
+    localStorage.clear();
     render(<TestComponent siteLanguage="en" userLanguage="es-MX" />);
     const link = screen.getByRole("link");
 
@@ -80,6 +86,7 @@ describe("<LanguageAlert />", () => {
 
   test("shows a link (in English) to the English site when a zh-Hans user shows up to the Spanish site", () => {
     cleanup();
+    localStorage.clear();
     render(<TestComponent siteLanguage="es" userLanguage="zh-Hans" />);
     const link = screen.getByRole("link");
 

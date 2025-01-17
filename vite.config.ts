@@ -16,6 +16,7 @@ export default defineConfig({
     environment: "happy-dom",
     globals: true,
     root: __dirname,
+    include: ["src/**/*.{test,spec}.{js,jsx,ts,tsx}"],
     exclude: [
       ...configDefaults.exclude,
       "*.quarantine.ts",
