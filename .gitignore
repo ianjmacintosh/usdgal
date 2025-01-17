@@ -29,3 +29,7 @@ build/
 
 # Code coverage directory
 /coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
