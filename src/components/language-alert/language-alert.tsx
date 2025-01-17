@@ -3,11 +3,17 @@ import "./language-alert.css";
 import { useState } from "react";
 import { getClosestSupportedLanguage } from "../language-select/language-select";
 import { FormattedMessage } from "react-intl";
+import { useLocalStorage } from "@/utils/use-local-storage";
 
 const LanguageAlert = () => {
   const {
     state: { userLanguage, siteLanguage },
   } = useI18n();
+
+  const [preferredLanguage, setPreferredLanguage] = useLocalStorage(
+    "preferredLanguage",
+    null,
+  );
 
   // Identify the most likely best site language we support for the visitor, based on their browser settings
   const bestSupportedLanguage = getClosestSupportedLanguage(userLanguage);
@@ -17,10 +23,15 @@ const LanguageAlert = () => {
 
   // If the current site language isn't currently what we identified as best for them, show the message
   const [showMessage, setShowMessage] = useState(
-    siteLanguage !== bestSupportedLanguage.id,
+    preferredLanguage !== siteLanguage &&
+      siteLanguage !== bestSupportedLanguage.id,
   );
 
   const closeMessage = () => {
+    // Store the user's preferred language in local storage
+    setPreferredLanguage(siteLanguage);
+
+    // Dismiss the message (it won't come back again)
     setShowMessage(false);
   };
 

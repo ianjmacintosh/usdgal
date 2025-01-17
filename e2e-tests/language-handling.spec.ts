@@ -8,9 +8,6 @@ test.describe("An en-US user", () => {
   test.describe("visiting the default (English) homepage", () => {
     test.beforeEach(async ({ page }) => {
       await page.goto("/");
-      console.log(
-        `Local storage is: ${await page.evaluate(() => JSON.stringify(localStorage))}`,
-      );
     });
 
     test("sees an English heading", async ({ page }) => {

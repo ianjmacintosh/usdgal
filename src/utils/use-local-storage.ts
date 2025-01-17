@@ -8,7 +8,7 @@ function getStorageValue(key: string, defaultValue: unknown) {
     return defaultValue;
   }
   // getting stored value
-  const saved = localStorage.getItem(key) || "{}";
+  const saved = localStorage.getItem(key) || "null";
   const initial = JSON.parse(saved);
   return initial || defaultValue;
 }
