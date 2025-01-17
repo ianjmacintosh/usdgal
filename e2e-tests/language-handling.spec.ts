@@ -8,6 +8,9 @@ test.describe("An en-US user", () => {
   test.describe("visiting the default (English) homepage", () => {
     test.beforeEach(async ({ page }) => {
       await page.goto("/");
+      console.log(
+        `Local storage is: ${await page.evaluate(() => JSON.stringify(localStorage))}`,
+      );
     });
 
     test("sees an English heading", async ({ page }) => {
@@ -47,14 +50,12 @@ test.describe("An en-US user", () => {
       await expect(page.getByRole("alert")).toBeVisible();
     });
 
-    test("can dismiss the language alert", async ({ page }) => {
-      await page.getByRole("button", { name: "Close" }).click();
-      await expect(page.getByRole("alert")).not.toBeVisible();
-    });
-
-    test.skip("doesn't see the language alert again if they dismiss it and reload", async ({
+    test("can dismiss the language alert and won't be pestered by it again", async ({
       page,
     }) => {
+      await page.getByRole("button", { name: "Close" }).click();
+      await expect(page.getByRole("alert")).not.toBeVisible();
+
       await page.reload();
       await expect(page.getByRole("alert")).not.toBeVisible();
     });
