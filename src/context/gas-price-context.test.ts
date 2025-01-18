@@ -1,8 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { gasPricesReducer, getInitialGasPrices } from "./gas-price-context";
 import { GasPrices, GasPricesAction } from "./gas-price-context";
-
-const LITERS_IN_A_GALLON = 3.78541;
+import { LITERS_PER_GALLON } from "@/utils/number-format";
 
 describe("gasPricesReducer", () => {
   const fakeExchangeRates = {
@@ -35,7 +34,7 @@ describe("gasPricesReducer", () => {
     const expectedGasPrices = {
       top: { number: 1, currency: "USD", unit: "liter" },
       bottom: {
-        number: 1 * LITERS_IN_A_GALLON,
+        number: 1 * LITERS_PER_GALLON,
         currency: "USD",
         unit: "gallon",
       },

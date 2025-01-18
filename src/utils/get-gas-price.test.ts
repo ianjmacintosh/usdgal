@@ -1,5 +1,6 @@
 import { describe, test, expect } from "vitest";
 import getGasPrice from "./get-gas-price";
+import { LITERS_PER_GALLON } from "./number-format";
 
 describe("getGasPrice method", () => {
   const fakeExchangeRates = {
@@ -70,7 +71,7 @@ describe("getGasPrice method", () => {
       fakeExchangeRates,
     );
 
-    expect(result).toBe(3.78541);
+    expect(result).toBe(LITERS_PER_GALLON);
   });
 
   test("can do no-op conversions", () => {
@@ -88,7 +89,7 @@ describe("getGasPrice method", () => {
 
   test("can convert a price in gallons to a price in liters", () => {
     const result = getGasPrice(
-      3.78541,
+      LITERS_PER_GALLON,
       "BRL",
       "gallon",
       "BRL",
@@ -101,7 +102,7 @@ describe("getGasPrice method", () => {
 
   test("can convert currencies and volumes simultaneously", () => {
     const result = getGasPrice(
-      3.78541,
+      LITERS_PER_GALLON,
       "USD",
       "gallon",
       "BRL",
@@ -114,7 +115,7 @@ describe("getGasPrice method", () => {
 
   test("can do a no-op currency conversion and normal volume conversion", () => {
     const result = getGasPrice(
-      3.78541,
+      LITERS_PER_GALLON,
       "USD",
       "gallon",
       "EUR",
