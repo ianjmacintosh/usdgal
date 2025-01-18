@@ -4,7 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,css,md,yml}": "prettier --write"
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "tsc -b"
+    ],
+    "*.{js,jsx,css,md,yml,json}": "prettier --write"
   },
   "scripts": {
     "dev": "react-router dev --host",
