@@ -6,7 +6,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write",
-      "tsc -b"
+      "tsc-files --noEmit --pretty"
     ],
     "*.{js,jsx,css,md,yml,json}": "prettier --write"
   },
