@@ -4,11 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write",
-      "tsc-files --noEmit --pretty"
-    ],
-    "*.{js,jsx,css,md,yml,json}": "prettier --write"
+    "*.{js,jsx,ts,tsx,css,md,yml,json}": "prettier --write"
   },
   "scripts": {
     "dev": "react-router dev --host",

@@ -29,6 +29,26 @@ export function meta() {
       name: "description",
       content: intl.formatMessage({ id: "meta_description" }),
     },
+    {
+      property: "og:image",
+      content: "https://gasco.st/banner-es.png",
+    },
+    {
+      property: "og:image:secure_url",
+      content: "https://gasco.st/banner-es.png",
+    },
+    {
+      property: "og:image:type",
+      content: "image/png",
+    },
+    {
+      property: "og:image:width",
+      content: "1920",
+    },
+    {
+      property: "og:image:height",
+      content: "1080",
+    },
   ];
 }
 
