@@ -3,6 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "tsc-files --noEmit --pretty"
+    ],
+    "*.{js,jsx,css,md,yml,json}": "prettier --write"
+  },
   "scripts": {
     "dev": "react-router dev --host",
     "dev:local": "react-router dev",
@@ -16,7 +23,8 @@
     "test": "vitest",
     "rates:update": "node update_latest",
     "start": "react-router-serve build/server/index.js",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "prepare": "husky"
   },
   "dependencies": {
     "@ariakit/react": "^0.4.15",
@@ -62,7 +70,9 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
     "happy-dom": "^15.11.6",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
+    "lint-staged": "^15.4.1",
     "msw": "^2.7.0",
     "postcss": "^8.4.49",
     "prettier": "3.3.3",
