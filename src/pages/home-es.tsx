@@ -1,4 +1,7 @@
-import { defaultLinks, getMetaTags } from "./home-defaults.ts";
+import {
+  defaultLinks,
+  getMetaTags,
+} from "../utils/remix-page-attribute-helpers.ts";
 import Converter from "@/components/converter/converter.tsx";
 import { getMessage, I18nProvider } from "@/context/i18n.tsx";
 
