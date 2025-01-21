@@ -20,7 +20,7 @@ const Footer = ({ siteLanguage }: FooterProps) => {
               <span>
                 <FormattedMessage id="sourceCode" />
               </span>
-              <GithubLogo height={18} width={18} />
+              <GithubLogo height={18} width={18} className="link-icon" />
             </a>
           </li>
         </ul>
