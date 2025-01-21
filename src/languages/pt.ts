@@ -3,6 +3,8 @@ export default {
   meta_title: "Conversor de preço de combustível",
   meta_description:
     "Converta preços de combustível listados em litros ou galões, vendidos em dólares, euros, e outras moedas estrangeiras",
+  meta_canonical_url: "https://gasco.st/pt/",
+  meta_og_image_url: "https://gasco.st/banner-pt.png",
 
   // App.tsx
   gasCost: "Preço da Gasolina",

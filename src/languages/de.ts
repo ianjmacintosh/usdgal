@@ -3,6 +3,8 @@ export default {
   meta_title: "Gaspreis-Umrechner",
   meta_description:
     "Sofortige Umrechnung der in ausländischen Einheiten und Währungen angegebenen Benzinpreise",
+  meta_canonical_url: "https://gasco.st/de/",
+  meta_og_image_url: "https://gasco.st/banner-de.png",
 
   // App.tsx
   gasCost: "Gaskosten",

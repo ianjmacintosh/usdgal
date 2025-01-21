@@ -50,5 +50,17 @@ export const getMetaTags = (language: string) => {
       property: "og:image:height",
       content: "1080",
     },
+    {
+      property: "og:url",
+      content: getMessage({ id: "meta_canonical_url", language }),
+    },
+    {
+      property: "og:image",
+      content: getMessage({ id: "meta_og_image_url", language }),
+    },
+    {
+      property: "og:image:secure_url",
+      content: getMessage({ id: "meta_og_image_url", language }),
+    },
   ];
 };
