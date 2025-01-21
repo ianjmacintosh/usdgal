@@ -16,7 +16,7 @@ export function meta() {
     ...getMetaTags(language),
     {
       property: "og:url",
-      content: "https://gasco.st/",
+      content: "https://gasco.st/hi/",
     },
     {
       property: "og:image",
