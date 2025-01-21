@@ -45,10 +45,14 @@ for (const url of homepages) {
       const ogUrl = page.locator("meta[property='og:url']");
       await expect(ogUrl).toHaveCount(1);
     });
-  });
 
-  // OPTIONAL:
-  // Description
-  // Locale
-  // Alternates
+    test("includes optional OGP tags", async ({ page }) => {
+      // Description
+      const ogDescription = page.locator("meta[property='og:description']");
+      await expect(ogDescription).toHaveCount(1);
+
+      // TODO: Locale
+      // TODO: Alternates
+    });
+  });
 }
