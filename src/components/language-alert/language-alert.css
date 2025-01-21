@@ -23,8 +23,3 @@
   justify-self: center;
   align-self: center;
 }
-
-button:hover svg {
-  color: #666;
-  fill: #666;
-}
