@@ -16,6 +16,7 @@ import {
 import Footer from "@/components/footer/footer";
 import { useI18n } from "@/context/i18n";
 import LanguageAlert from "../language-alert/language-alert";
+import { useLocalStorage } from "@/utils/use-local-storage";
 
 /**
  * The main component of the gas price converter.
@@ -26,32 +27,46 @@ import LanguageAlert from "../language-alert/language-alert";
  * @returns {JSX.Element} The main component of the gas price converter
  */
 function Converter() {
+  const [oldUserLocation, setOldUserLocation] = useLocalStorage(
+    "oldUserLocation",
+    null,
+  );
   const { state: i18nState } = useI18n();
   const intl = useIntl();
 
   const { siteLanguage, userLanguage, userLocation } = i18nState;
-
   // Guess the user's home country based on the second part of their browser's language code (`navigator.language`),
   // (e.g., "en-US" -> "US")
   const userLanguageCountry = userLanguage.split("-")[1];
+
+  const [localStorageGasPrices, setLocalStorageGasPrices] = useLocalStorage(
+    "gasPrices",
+    getInitialGasPrices(userLanguageCountry, userLocation || "US"),
+  );
 
   // The `gasPrices` object contains the top and bottom gas prices and defines which gas price number is "driving" (and is responsible for the other)
   // The `dispatch` function is used to handle calls from the GasPrice component's child elements
   const [gasPrices, dispatch] = useReducer(
     // The gasPricesReducer method is what child elements use to update their parent gasPrices object
     gasPricesReducer,
-    // getInitialGasPrices builds default conversion settings based on the user's geolocation (or US if we have to guess) and browser language
-    getInitialGasPrices(userLanguageCountry, userLocation || "US"),
+    localStorageGasPrices,
   );
 
   useEffect(() => {
-    if (userLocation)
-      // Replace the entire gasPrices object when the userLocation changes
+    setLocalStorageGasPrices(gasPrices);
+  }, [gasPrices]);
+
+  useEffect(() => {
+    if (userLocation !== null && userLocation !== oldUserLocation) {
+      setOldUserLocation(userLocation);
+
       dispatch({
         type: "replace",
         payload: getInitialGasPrices(userLanguageCountry, userLocation),
       });
-  }, [userLocation]);
+    }
+    // Replace the entire gasPrices object when the userLocation changes
+  }, [userLocation, oldUserLocation]);
 
   return (
     userLocation && (

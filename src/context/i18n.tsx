@@ -119,7 +119,14 @@ const I18nProvider = ({
   });
   const value = { state, dispatch };
 
-  initializeUserLocation(dispatch, state);
+  async function startFetching() {
+    const countryCode = await fetchCountryCode();
+    dispatch({ type: "setUserLocation", payload: countryCode });
+  }
+
+  if (state.userLocation === null) {
+    startFetching();
+  }
 
   return (
     <I18nContext.Provider value={value}>
@@ -141,15 +148,4 @@ const useI18n = () => {
   }
   return context;
 };
-
-const initializeUserLocation = (dispatch: Dispatch, state: State) => {
-  async function startFetching() {
-    const countryCode = await fetchCountryCode();
-    dispatch({ type: "setUserLocation", payload: countryCode });
-  }
-  if (state.userLocation === null) {
-    startFetching();
-  }
-};
-
-export { I18nProvider, useI18n, initializeUserLocation };
+export { I18nProvider, useI18n };

@@ -31,7 +31,7 @@ test.describe("An en-US user", () => {
       );
     });
 
-    test.only("preserves values when changing languages", async ({ page }) => {
+    test("preserves values when changing languages", async ({ page }) => {
       await page.locator("input").first().fill("1234");
       await page.getByRole("combobox", { name: "Language" }).click();
       await page.getByRole("option", { name: "Deutsch" }).click();
@@ -40,7 +40,7 @@ test.describe("An en-US user", () => {
         page.getByRole("heading", { name: "Gaskosten", exact: true }),
       ).toBeVisible();
 
-      await expect(page.locator("input").first()).toHaveValue("1234.00");
+      await expect(page.locator("input").first()).toHaveValue("1,234.00");
     });
   });
 
