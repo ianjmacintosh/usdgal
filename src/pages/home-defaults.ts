@@ -1,6 +1,8 @@
 // React Router uses various objects (meta, links, scripts, etc.) to build pages
 // This file defines the defaults for those objects, which are used in `home-*.tsx`
 
+import { getMessage } from "@/context/i18n";
+
 export const defaultLinks = () => {
   // This implements the advice of:
   // * Each page lists every alternate language version of the page
@@ -14,5 +16,39 @@ export const defaultLinks = () => {
     { rel: "alternate", hrefLang: "es", href: "https://gasco.st/es/" },
     { rel: "alternate", hrefLang: "hi", href: "https://gasco.st/hi/" },
     { rel: "alternate", hrefLang: "x-default", href: "https://gasco.st/" },
+  ];
+};
+
+export const getMetaTags = (language: string) => {
+  return [
+    {
+      name: "description",
+      content: getMessage({ id: "meta_description", language }),
+    },
+    { title: getMessage({ id: "meta_title", language }) },
+    {
+      property: "og:title",
+      content: getMessage({ id: "meta_title", language }),
+    },
+    {
+      property: "og:description",
+      content: getMessage({ id: "meta_description", language }),
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:image:type",
+      content: "image/png",
+    },
+    {
+      property: "og:image:width",
+      content: "1920",
+    },
+    {
+      property: "og:image:height",
+      content: "1080",
+    },
   ];
 };

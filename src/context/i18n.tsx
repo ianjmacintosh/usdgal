@@ -8,7 +8,7 @@
 
 import { fetchCountryCode } from "@/utils/api";
 import { createContext, useContext, useReducer } from "react";
-import { IntlProvider } from "react-intl";
+import { createIntl, IntlProvider } from "react-intl";
 import en from "@/languages/en.ts";
 import es from "@/languages/es.ts";
 import pt from "@/languages/pt.ts";
@@ -83,6 +83,22 @@ const getMessages = (language: string) => {
   } else {
     return messageFiles["en"];
   }
+};
+
+type GetMessageProps = {
+  id: string;
+  language: string;
+};
+
+export const getMessage = ({ id, language }: GetMessageProps) => {
+  const intl = createIntl({
+    locale: language,
+    messages: getMessages(language),
+  });
+
+  return intl.formatMessage({
+    id,
+  });
 };
 
 const I18nProvider = ({
