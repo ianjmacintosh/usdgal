@@ -79,10 +79,10 @@ export function gasPricesReducer(
 
 export const getInitialGasPrices = (
   homeCountry: string,
-  userLocation: string,
+  userLocation: string | null,
 ): GasPrices => {
   // The imagined "normal" use-case is that someone's in a foreign country and wants to convert from foreign prices to home prices
-  let foreignCountry = userLocation;
+  let foreignCountry = userLocation || "US";
 
   const defaultGasPrices = {
     top: {

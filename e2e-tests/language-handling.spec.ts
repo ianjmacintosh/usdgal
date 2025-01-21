@@ -30,6 +30,18 @@ test.describe("An en-US user", () => {
         "Deutsch",
       );
     });
+
+    test("preserves values when changing languages", async ({ page }) => {
+      await page.locator("input").first().fill("1234");
+      await page.getByRole("combobox", { name: "Language" }).click();
+      await page.getByRole("option", { name: "Deutsch" }).click();
+
+      await expect(
+        page.getByRole("heading", { name: "Gaskosten", exact: true }),
+      ).toBeVisible();
+
+      await expect(page.locator("input").first()).toHaveValue("1,234.00");
+    });
   });
 
   test.describe("visiting the /de/ (German) homepage", () => {
