@@ -3,6 +3,8 @@ export default {
   meta_title: "गैस मूल्य परिवर्तक",
   meta_description:
     "विदेशी इकाइयों और मुद्राओं में सूचीबद्ध गैसोलीन की कीमतों को तुरंत परिवर्तित करें",
+  meta_canonical_url: "https://gasco.st/hi/",
+  meta_og_image_url: "https://gasco.st/banner-hi.png",
 
   // App.tsx
   gasCost: "गैस लागत",

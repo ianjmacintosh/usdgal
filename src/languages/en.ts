@@ -3,6 +3,8 @@ export default {
   meta_title: "Gas Price Converter",
   meta_description:
     "Instantly convert gasoline prices listed in foreign units and currencies",
+  meta_canonical_url: "https://gasco.st/",
+  meta_og_image_url: "https://gasco.st/banner-en.png",
 
   // App.tsx
   gasCost: "Gas Cost",

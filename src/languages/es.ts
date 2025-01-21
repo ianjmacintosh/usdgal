@@ -3,6 +3,8 @@ export default {
   meta_title: "Convertidor de precios del gas",
   meta_description:
     "Convierte instantáneamente los precios de la gasolina en unidades y divisas extranjeras",
+  meta_canonical_url: "https://gasco.st/es/",
+  meta_og_image_url: "https://gasco.st/banner-es.png",
 
   // App.tsx
   gasCost: "Precio de la Gasolina",

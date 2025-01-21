@@ -2,7 +2,7 @@ import "@testing-library/jest-dom/vitest";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, beforeEach } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import { I18nProvider, useI18n } from "./i18n";
+import { getMessage, I18nProvider, useI18n } from "./i18n";
 import { FormattedMessage } from "react-intl";
 
 type TestI18nProviderProps = {
@@ -136,6 +136,16 @@ describe("<I18nProvider />", () => {
     expect(screen.getByText("Gas Price Converter")).toBeVisible();
     await user.click(elements().siteLanguageButton);
     expect(screen.getByText("Conversor de preço de combustível")).toBeVisible();
+  });
+});
+
+describe("getMessage", () => {
+  test("returns strings in different languages", () => {
+    const englishResult = getMessage({ id: "meta_title", language: "en" });
+    const portugueseResult = getMessage({ id: "meta_title", language: "pt" });
+    expect(typeof englishResult).toBe("string");
+    expect(typeof portugueseResult).toBe("string");
+    expect(englishResult).not.toBe(portugueseResult);
   });
 });
 
