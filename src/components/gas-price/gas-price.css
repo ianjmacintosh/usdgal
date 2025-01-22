@@ -10,10 +10,6 @@ fieldset {
   border-radius: 10px;
 }
 
-fieldset legend {
-  display: none;
-}
-
 fieldset input {
   font-weight: bold;
   padding: 10px;

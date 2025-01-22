@@ -77,20 +77,12 @@ function Converter() {
           <GasPricesContext.Provider value={gasPrices}>
             <GasPricesDispatchContext.Provider value={dispatch}>
               <ErrorBoundary FallbackComponent={ErrorFallback}>
-                <h2 className="text-3xl font-bold my-4">
-                  <FormattedMessage id="gasCost" />
-                </h2>
                 {/* This <GasPrice /> component gives us the "top" number, currency, and unit -- what we're converting from */}
                 <GasPrice
                   label={intl.formatMessage({ id: "gasCost" })}
                   gasPricesKey="top"
                   siteLanguage={siteLanguage}
                 />
-
-                <h2 className="text-3xl font-bold my-4">
-                  <FormattedMessage id="convertedGasCost" />
-                </h2>
-
                 {/* This <GasPrice /> component gives us the "bottom" number, currency, and unit -- what we're converting to */}
                 <GasPrice
                   label={intl.formatMessage({ id: "convertedGasCost" })}
