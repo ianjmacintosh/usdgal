@@ -31,7 +31,8 @@ fieldset button {
 }
 
 fieldset button:hover,
-fieldset input:hover {
+fieldset input:hover,
+fieldset button[aria-expanded="true"] {
   background: #efefef;
   transition: all 200ms;
 }
