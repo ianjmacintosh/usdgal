@@ -91,15 +91,17 @@ fieldset .popover {
   font-weight: normal;
 }
 
-.select-value {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.popover {
+  opacity: 0;
+  transition-property: opacity, scale, translate;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 250ms;
+  scale: 0;
+  translate: 0 -0.5rem;
 }
 
-.select-item-value {
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.popover[data-enter] {
+  opacity: 1;
+  scale: 1;
+  translate: 0;
 }
