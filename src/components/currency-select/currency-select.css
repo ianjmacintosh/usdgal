@@ -92,16 +92,18 @@ fieldset .popover {
 }
 
 .popover {
-  opacity: 0;
-  transition-property: opacity, scale, translate;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 250ms;
-  scale: 0;
-  translate: 0 -0.5rem;
+  transition-property: transform;
+  transition-timing-function: linear;
+  transition-duration: 950ms;
+  transform: translateY(calc(-1 * var(--popover-available-height) - 5px));
 }
 
 .popover[data-enter] {
-  opacity: 1;
-  scale: 1;
-  translate: 0;
+  transition-property: transform;
+  transform: translateY(0);
+}
+
+.currency-button + div {
+  overflow: hidden;
+  padding-bottom: 5px;
 }
