@@ -94,12 +94,12 @@ fieldset .popover {
 .popover {
   transition-property: transform;
   transition-timing-function: linear;
-  transition-duration: 950ms;
-  transform: translateY(calc(-1 * var(--popover-available-height) - 5px));
+  transition-duration: 150ms;
+  transform: translateY(-500px);
 }
 
 .popover[data-enter] {
-  transition-property: transform;
+  transition-duration: 200ms;
   transform: translateY(0);
 }
 
