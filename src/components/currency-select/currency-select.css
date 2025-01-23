@@ -75,7 +75,30 @@
   font-weight: normal;
 }
 
+/* Just for Number Input */
+
 /* Just for Currency Select */
+.currency-button,
+.unit-button {
+  z-index: 10;
+}
+
+.number,
+.currency-button[aria-expanded="true"],
+.unit-button[aria-expanded="true"] {
+  z-index: 20;
+}
+
+.popover {
+  z-index: 15;
+}
+
 .currency-popover {
   width: 320px;
+}
+
+.currency-popover,
+.unit-popover {
+  padding-top: 10px;
+  transform: translateY(-10px);
 }
