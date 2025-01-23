@@ -1,23 +1,17 @@
-.label {
-  padding-left: 1rem;
-}
-
+/* Everywhere! */
 .popover {
   border-width: 1px;
   border-style: solid;
   border-color: #ccc;
-}
-
-fieldset .popover {
   z-index: 50;
   overflow: auto;
   overscroll-behavior: contain;
-  border-radius: 0.5rem;
+  border-radius: 10px;
   color: black;
-  padding-top: 0px;
+  padding-top: 0;
   max-height: min(var(--popover-available-height, 480px), 480px);
-  background-color: white;
-  width: 320px;
+  background-color: #fff;
+  transform-origin: var(--popover-transform-origin);
 }
 
 .select-item {
@@ -32,23 +26,17 @@ fieldset .popover {
   scroll-margin-top: 92px;
 }
 
-.currency-popover.placement-bottom-end {
+.popover.placement-bottom-end {
   border-top: 0;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   box-shadow: 0 5px 0 #6683;
-  transform: translateY(-500px);
 }
 
-.currency-popover.placement-top-end {
+.popover.placement-top-end {
   border-bottom: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  transform: translateY(500px);
-}
-
-.select-item[aria-disabled="true"] {
-  opacity: 0.5;
 }
 
 .select-item[data-active-item] {
@@ -81,22 +69,13 @@ fieldset .popover {
   transition: all 200ms;
 }
 
-.currency-popover .combobox::placeholder {
+.popover .combobox::placeholder {
   color: #333;
   font-style: italic;
   font-weight: normal;
 }
 
-.popover {
-  transition-property: transform;
-  transition-timing-function: ease;
-  transition-duration: 350ms;
-}
-
-.popover[data-enter] {
-  transform: translateY(0);
-}
-
-.currency-button + div {
-  overflow: hidden;
+/* Just for Currency Select */
+.currency-popover {
+  width: 320px;
 }
