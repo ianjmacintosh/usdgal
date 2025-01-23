@@ -11,7 +11,6 @@
   padding-top: 0;
   max-height: min(var(--popover-available-height, 480px), 480px);
   background-color: #fff;
-  transform-origin: var(--popover-transform-origin);
 }
 
 .select-item {
@@ -75,30 +74,12 @@
   font-weight: normal;
 }
 
-/* Just for Number Input */
-
 /* Just for Currency Select */
-.currency-button,
-.unit-button {
-  z-index: 10;
-}
-
-.number,
-.currency-button[aria-expanded="true"],
-.unit-button[aria-expanded="true"] {
-  z-index: 20;
-}
-
-.popover {
-  z-index: 15;
-}
-
 .currency-popover {
   width: 320px;
 }
 
-.currency-popover,
-.unit-popover {
-  padding-top: 10px;
-  transform: translateY(-10px);
+.placement-top-end .combobox-wrapper input {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
