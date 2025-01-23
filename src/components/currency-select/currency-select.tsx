@@ -61,7 +61,7 @@ export default function CurrencySelect({
         </Ariakit.Select>
         <Ariakit.SelectPopover
           className={`popover currency-popover placement-${placement}`}
-          unmountOnHide={false}
+          unmountOnHide={true}
         >
           <div className="combobox-wrapper">
             <Ariakit.Combobox
