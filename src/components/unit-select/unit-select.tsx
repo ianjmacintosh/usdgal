@@ -47,7 +47,7 @@ const UnitSelect = ({ id, unit, onChange, disabled }: UnitProps) => {
         sameWidth
         className={`popover unit-popover placement-${placement}`}
         unmountOnHide={true}
-        gutter={4}
+        gutter={-1}
       >
         <Ariakit.SelectItem className="select-item" value="gallon">
           {unit === "gallon" ? "✓" : ""} <FormattedMessage id="perGallon" />

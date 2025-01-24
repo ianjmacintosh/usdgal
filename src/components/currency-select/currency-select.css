@@ -62,8 +62,23 @@
 }
 
 /* Just for Currency Select */
-.currency-popover {
+.popover {
+  opacity: 0;
+  transition:
+    scale ease-out 150ms,
+    opacity ease-out 250ms;
+  scale: 0;
   width: 320px;
+  box-shadow: 0 5px 0 #6683;
+  transform-origin: var(--popover-transform-origin, top right);
+}
+
+.popover[data-enter] {
+  transition:
+    scale cubic-bezier(0.39, 1.56, 0.64, 1.2) 200ms,
+    opacity ease-out 250ms;
+  opacity: 1;
+  scale: 1;
 }
 
 .combobox-wrapper input {
