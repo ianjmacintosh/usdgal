@@ -1,5 +1,4 @@
 import * as Ariakit from "@ariakit/react";
-import "./unit-select.css";
 import { FormattedMessage, useIntl } from "react-intl";
 
 // This value could be "" while initializing
@@ -20,6 +19,9 @@ const UnitSelect = ({ id, unit, onChange, disabled }: UnitProps) => {
     gallon: intl.formatMessage({ id: "perGallon" }),
   };
 
+  const popover = Ariakit.usePopoverStore();
+  const placement = Ariakit.useStoreState(popover, "currentPlacement");
+
   return (
     <Ariakit.SelectProvider
       defaultValue={unit}
@@ -28,6 +30,8 @@ const UnitSelect = ({ id, unit, onChange, disabled }: UnitProps) => {
       }}
       value={unit}
       id={id}
+      store={popover}
+      placement="bottom-end"
     >
       <Ariakit.Select
         className="unit-button button"
@@ -40,10 +44,10 @@ const UnitSelect = ({ id, unit, onChange, disabled }: UnitProps) => {
         <Ariakit.SelectArrow className="chevron" />
       </Ariakit.Select>
       <Ariakit.SelectPopover
-        gutter={4}
         sameWidth
-        className="popover unit-popover"
+        className={`popover unit-popover placement-${placement}`}
         unmountOnHide={true}
+        gutter={4}
       >
         <Ariakit.SelectItem className="select-item" value="gallon">
           {unit === "gallon" ? "✓" : ""} <FormattedMessage id="perGallon" />

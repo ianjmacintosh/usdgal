@@ -12,7 +12,7 @@ test.describe("An en-US user", () => {
 
     test("sees an English heading", async ({ page }) => {
       await expect(
-        page.getByRole("heading", { name: "Gas Cost", exact: true }),
+        page.locator("legend", { hasText: /^Gas Cost$/ }),
       ).toBeVisible();
     });
 
@@ -23,7 +23,7 @@ test.describe("An en-US user", () => {
       await page.getByRole("option", { name: "Deutsch" }).click();
 
       await expect(
-        page.getByRole("heading", { name: "Gaskosten", exact: true }),
+        page.locator("legend", { hasText: /^Gaskosten$/ }),
       ).toBeVisible();
 
       await expect(page.getByRole("combobox", { name: "Sprache" })).toHaveText(
@@ -37,7 +37,7 @@ test.describe("An en-US user", () => {
       await page.getByRole("option", { name: "Deutsch" }).click();
 
       await expect(
-        page.getByRole("heading", { name: "Gaskosten", exact: true }),
+        page.locator("legend", { hasText: /^Gaskosten$/ }),
       ).toBeVisible();
 
       await expect(page.locator("input").first()).toHaveValue("1,234.00");
@@ -51,7 +51,7 @@ test.describe("An en-US user", () => {
 
     test("does not see an English heading", async ({ page }) => {
       await expect(
-        page.getByRole("heading", { name: "Gas Cost", exact: true }),
+        page.locator("legend", { hasText: /^Gas Cost$/ }),
       ).not.toBeVisible();
     });
 

@@ -32,6 +32,9 @@ export default function CurrencySelect({
     });
   }, [listItems, searchValue]);
 
+  const popover = Ariakit.usePopoverStore();
+  const placement = Ariakit.useStoreState(popover, "currentPlacement");
+
   return (
     <Ariakit.ComboboxProvider
       resetValueOnHide
@@ -47,6 +50,7 @@ export default function CurrencySelect({
         setValue={onChange}
         value={currency}
         placement="bottom-end"
+        popover={popover}
       >
         <Ariakit.Select
           className="currency-button button"
@@ -56,9 +60,9 @@ export default function CurrencySelect({
           <Ariakit.SelectArrow className="chevron" />
         </Ariakit.Select>
         <Ariakit.SelectPopover
-          gutter={4}
-          className="currency-popover popover"
+          className={`popover currency-popover placement-${placement}`}
           unmountOnHide={true}
+          gutter={4}
         >
           <div className="combobox-wrapper">
             <Ariakit.Combobox

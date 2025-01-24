@@ -137,7 +137,7 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
         </Ariakit.Select>
         <Ariakit.SelectPopover
           gutter={4}
-          className="popover unit-popover"
+          className="popover language-popover"
           unmountOnHide={true}
         >
           {supportedLanguages.map(

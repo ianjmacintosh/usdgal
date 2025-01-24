@@ -44,7 +44,7 @@ function GasPrice({ label, gasPricesKey, siteLanguage }: GasPriceProps) {
   return (
     <div className="mt-2 mb-8">
       <fieldset>
-        <legend>{label}</legend>
+        <legend className="text-3xl font-bold my-4">{label}</legend>
         <NumberInput
           currency={currency}
           label={label}
