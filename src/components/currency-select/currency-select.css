@@ -1,5 +1,10 @@
 /* Everywhere! */
 .popover {
+  opacity: 0;
+  transform: scaleY(0);
+  transition:
+    transform ease-out 150ms,
+    opacity ease-out 250ms;
   border-width: 1px;
   border-style: solid;
   border-color: #ccc;
@@ -9,7 +14,16 @@
   border-radius: 10px;
   color: black;
   max-height: min(var(--popover-available-height, 480px), 480px);
+  transform-origin: var(--popover-transform-origin, top right);
   background-color: #fff;
+}
+
+.popover[data-enter] {
+  transition:
+    transform cubic-bezier(0.39, 1.56, 0.64, 1) 200ms,
+    opacity ease-out 250ms;
+  opacity: 1;
+  transform: scaleY(1);
 }
 
 .select-item {
