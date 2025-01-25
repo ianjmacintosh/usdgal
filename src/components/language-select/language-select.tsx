@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import "./language-select.css";
 import * as Flag from "country-flag-icons/react/3x2";
 import { supportedLanguages } from "@/utils/supported-languages";
+import { useEffect, useRef } from "react";
 
 type LanguageSelectProps = {
   siteLanguage: string;
@@ -40,6 +41,44 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
   const currentLanguage =
     supportedLanguages.find(({ id }) => id === siteLanguage) ||
     supportedLanguages[0];
+  const select = Ariakit.useSelectStore({
+    defaultValue: siteLanguage,
+    setValue: (newValue) => {
+      handleLanguageChange(String(newValue));
+    },
+    placement: "bottom",
+    value: currentLanguage.id,
+  });
+  const activeItemId = Ariakit.useStoreState(select, "activeId");
+  const activeItemRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const wrapperElement = wrapperRef.current;
+
+    if (wrapperElement !== null) {
+      const activeItemElement = activeItemRef.current;
+
+      if (activeItemElement) {
+        const { offsetTop, offsetHeight } = activeItemElement;
+        wrapperElement.style.setProperty(
+          "--selected-item-offset-top",
+          `${offsetTop}px`,
+        );
+        wrapperElement.style.setProperty(
+          "--selected-item-offset-height",
+          `${offsetHeight}px`,
+        );
+        console.log(`updating offsets: ${offsetTop} ${offsetHeight}`);
+      }
+    }
+  }, [activeItemId, activeItemRef, wrapperRef]);
+
+  // style={{
+  //   "--selected-item-distance-from-top": selectedItemTopOffset,
+  //   "--selected-item-distance-from-bottom": selectedItemBottomOffset,
+  // }}
+
   return (
     <form className="my-4 language-form">
       <label
@@ -49,14 +88,7 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
       >
         <FormattedMessage defaultMessage="Language" id="language" />
       </label>
-      <Ariakit.SelectProvider
-        defaultValue={siteLanguage}
-        setValue={(newValue) => {
-          handleLanguageChange(String(newValue));
-        }}
-        placement="bottom"
-        value={currentLanguage.id}
-      >
+      <Ariakit.SelectProvider store={select}>
         <Ariakit.Select
           className="language-select select-button button"
           id="language-select"
@@ -73,7 +105,7 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
           className="popover language-popover"
           unmountOnHide={true}
         >
-          <div className="select-list-content real">
+          <div className="select-list-content fake" ref={wrapperRef}>
             {supportedLanguages.map(
               ({ id, countryCode, languageName, countryName }) => {
                 return (
@@ -86,7 +118,7 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
               },
             )}
           </div>
-          <div className="select-list-content fake">
+          <div className="select-list-content real">
             {supportedLanguages.map(
               ({ id, countryCode, languageName, countryName }) => {
                 return (
@@ -95,6 +127,7 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
                     key={id}
                     value={id}
                     id={id}
+                    ref={id === activeItemId ? activeItemRef : null}
                   >
                     {currentLanguage.id === id ? "✓" : ""}
                     {getFlagIcon(countryCode)}
