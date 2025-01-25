@@ -1,7 +1,7 @@
 import { I18nProvider, useI18n } from "@/context/i18n";
 import "./language-alert.css";
 import { useState } from "react";
-import { getClosestSupportedLanguage } from "../language-select/language-select";
+import { getClosestSupportedLanguage } from "@/utils/supported-languages";
 import { FormattedMessage } from "react-intl";
 import { useLocalStorage } from "@/utils/use-local-storage";
 
