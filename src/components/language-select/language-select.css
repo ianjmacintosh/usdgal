@@ -79,7 +79,8 @@
   color: #fff;
   background-color: hsl(204 100% 40%);
   clip-path: xywh(
-    0 var(--selected-item-offset-top) 100% var(--selected-item-offset-height)
+    0 var(--selected-item-offset-top, 0) 100%
+      var(--selected-item-offset-height, 0)
   );
-  transition: clip-path 200ms ease-out;
+  transition: clip-path 100ms cubic-bezier(0.19, 1, 0.22, 1);
 }

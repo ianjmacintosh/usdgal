@@ -69,15 +69,10 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
           "--selected-item-offset-height",
           `${offsetHeight}px`,
         );
-        console.log(`updating offsets: ${offsetTop} ${offsetHeight}`);
+        console.log(`Active ID: ${activeItemId}`);
       }
     }
   }, [activeItemId, activeItemRef, wrapperRef]);
-
-  // style={{
-  //   "--selected-item-distance-from-top": selectedItemTopOffset,
-  //   "--selected-item-distance-from-bottom": selectedItemBottomOffset,
-  // }}
 
   return (
     <form className="my-4 language-form">
