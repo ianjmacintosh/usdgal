@@ -1,5 +1,6 @@
 /* Everywhere! */
 .popover {
+  background: #fff;
   opacity: 0;
   scale: 0;
   transition:
