@@ -68,4 +68,20 @@
   border-width: 1px;
   border-style: solid;
   border-color: hsl(204 20% 88%);
+  display: grid;
+  --top-offset: 0;
+  --right-offset: 0;
+  --bottom-offset: 0;
+  --left-offset: 0;
+}
+
+.select-list-content {
+  grid-area: 1/1;
+}
+
+.select-list-content.fake {
+  clip-path: inset(
+    var(--top-offset) var(--right-offset) var(--bottom-offset)
+      var(--left-offset)
+  );
 }

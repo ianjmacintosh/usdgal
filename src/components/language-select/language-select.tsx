@@ -73,22 +73,37 @@ const LanguageSelect = ({ siteLanguage }: LanguageSelectProps) => {
           className="popover language-popover"
           unmountOnHide={true}
         >
-          {supportedLanguages.map(
-            ({ id, countryCode, languageName, countryName }) => {
-              return (
-                <Ariakit.SelectItem
-                  className="select-item"
-                  key={id}
-                  value={id}
-                  id={id}
-                >
-                  {currentLanguage.id === id ? "✓" : ""}
-                  {getFlagIcon(countryCode)}
-                  {languageName} {countryName ? `(${countryName})` : ""}
-                </Ariakit.SelectItem>
-              );
-            },
-          )}
+          <div className="select-list-content real">
+            {supportedLanguages.map(
+              ({ id, countryCode, languageName, countryName }) => {
+                return (
+                  <div className="select-item" key={id}>
+                    {currentLanguage.id === id ? "✓" : ""}
+                    {getFlagIcon(countryCode)}
+                    {languageName} {countryName ? `(${countryName})` : ""}
+                  </div>
+                );
+              },
+            )}
+          </div>
+          <div className="select-list-content fake">
+            {supportedLanguages.map(
+              ({ id, countryCode, languageName, countryName }) => {
+                return (
+                  <Ariakit.SelectItem
+                    className="select-item"
+                    key={id}
+                    value={id}
+                    id={id}
+                  >
+                    {currentLanguage.id === id ? "✓" : ""}
+                    {getFlagIcon(countryCode)}
+                    {languageName} {countryName ? `(${countryName})` : ""}
+                  </Ariakit.SelectItem>
+                );
+              },
+            )}
+          </div>
         </Ariakit.SelectPopover>
       </Ariakit.SelectProvider>
     </form>
