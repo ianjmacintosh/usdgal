@@ -61,13 +61,18 @@ const LanguageAlert = () => {
   return (
     wrongLanguage && (
       <I18nProvider siteLanguage={preferredLanguageId}>
-        <aside className="language-alert" role="alert" aria-hidden={hideAlert}>
+        <div
+          className="language-alert"
+          role="alert"
+          aria-labelledby="language-alert-label"
+          aria-hidden={hideAlert}
+        >
           <figure className="translate-icon">
             <TranslateIcon height={20} width={20} />
           </figure>
           <main>
             <a href={preferredLanguagePath}>
-              <p>
+              <p id="language-alert-label">
                 <FormattedMessage id="languageAlertText" />
               </p>
             </a>
@@ -90,7 +95,7 @@ const LanguageAlert = () => {
               <path d="M39.55 0.549988L43.45 4.44999L4.44999 43.45L0.549988 39.55L39.55 0.549988Z" />
             </svg>
           </button>
-        </aside>
+        </div>
       </I18nProvider>
     )
   );

@@ -42,14 +42,41 @@ describe("<LanguageAlert />", () => {
     await expect(screen.queryByText(americanEnglishSiteLinkText)).toBeNull();
   });
 
-  test.skip("has a close button", async () => {
+  test("can be dismissed by clicking the 'Close' button", async () => {
     const user = userEvent.setup();
+    await waitFor(() => {
+      expect(
+        screen.getByLabelText(americanEnglishSiteLinkText),
+      ).toHaveAttribute("aria-hidden", "false");
+    });
+
     const closeButton = screen.getByRole("button");
     expect(closeButton).toHaveAccessibleName("Close");
 
     await user.click(closeButton);
     await waitFor(() => {
-      expect(screen.queryByText(americanEnglishSiteLinkText)).not.toBeVisible();
+      expect(
+        screen.getByLabelText(americanEnglishSiteLinkText),
+      ).toHaveAttribute("aria-hidden", "true");
+    });
+  });
+
+  test("can be dismissed by hitting 'Escape' on the keyboard", async () => {
+    const user = userEvent.setup();
+    await waitFor(() => {
+      expect(
+        screen.getByLabelText(americanEnglishSiteLinkText),
+      ).toHaveAttribute("aria-hidden", "false");
+    });
+
+    const closeButton = screen.getByRole("button");
+    expect(closeButton).toHaveAccessibleName("Close");
+
+    await user.click(closeButton);
+    await waitFor(() => {
+      expect(
+        screen.getByLabelText(americanEnglishSiteLinkText),
+      ).toHaveAttribute("aria-hidden", "true");
     });
   });
 
