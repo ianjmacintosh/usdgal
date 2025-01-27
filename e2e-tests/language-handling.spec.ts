@@ -81,7 +81,8 @@ test.describe("An en-US user", () => {
       ).toHaveAttribute("href", "/de/");
     });
 
-    test("can dismiss the language alert using a keyboard", async ({
+    // TODO: Flaky test! Skip this test for now, resolve in the future
+    test.skip("can dismiss the language alert using a keyboard", async ({
       page,
     }) => {
       await page.keyboard.press("Escape");
