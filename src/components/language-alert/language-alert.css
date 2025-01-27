@@ -3,9 +3,18 @@
   box-shadow: rgba(36, 36, 36, 0.2) 0 0 10px;
   margin: 20px 0;
   display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas: "content close";
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "icon content close";
   align-items: center;
+}
+
+.language-alert .translate-icon {
+  height: 44px;
+  width: 44px;
+  grid-area: icon;
+  align-items: center;
+  justify-content: center;
+  display: grid;
 }
 
 .language-alert .close-button {
@@ -18,7 +27,7 @@
 }
 
 .language-alert main {
-  padding: 10px 20px;
+  padding: 10px;
   grid-area: content;
   justify-self: center;
   align-self: center;

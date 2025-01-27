@@ -1,9 +1,10 @@
-import { I18nProvider, useI18n } from "@/context/i18n";
 import "./language-alert.css";
 import { useState } from "react";
-import { getClosestSupportedLanguage } from "@/utils/supported-languages";
 import { FormattedMessage } from "react-intl";
+import { I18nProvider, useI18n } from "@/context/i18n";
+import { getClosestSupportedLanguage } from "@/utils/supported-languages";
 import { useLocalStorage } from "@/utils/use-local-storage";
+import TranslateIcon from "@/assets/translate.svg?react";
 
 const LanguageAlert = () => {
   const {
@@ -40,6 +41,16 @@ const LanguageAlert = () => {
     showMessage && (
       <I18nProvider siteLanguage={preferredLanguageId}>
         <aside className="language-alert" role="alert">
+          <figure className="translate-icon">
+            <TranslateIcon height={20} width={20} />
+          </figure>
+          <main>
+            <p>
+              <a href={preferredLanguagePath}>
+                <FormattedMessage id="languageAlertText" />
+              </a>
+            </p>
+          </main>
           <button
             type="button"
             aria-label="Close"
@@ -57,13 +68,6 @@ const LanguageAlert = () => {
               <path d="M39.55 0.549988L43.45 4.44999L4.44999 43.45L0.549988 39.55L39.55 0.549988Z" />
             </svg>
           </button>
-          <main>
-            <p>
-              <a href={preferredLanguagePath}>
-                <FormattedMessage id="languageAlertText" />
-              </a>
-            </p>
-          </main>
         </aside>
       </I18nProvider>
     )
