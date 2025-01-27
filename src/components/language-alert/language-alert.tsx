@@ -1,5 +1,5 @@
 import "./language-alert.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { I18nProvider, useI18n } from "@/context/i18n";
 import { getClosestSupportedLanguage } from "@/utils/supported-languages";
@@ -10,8 +10,25 @@ const LanguageAlert = () => {
   const {
     state: { userLanguage, siteLanguage },
   } = useI18n();
+  const closeButtonElement = useRef<HTMLButtonElement | null>(null);
   // Guess the best language for the visitor based on their browser settings
   const bestSupportedLanguageId = getClosestSupportedLanguage(userLanguage).id;
+
+  const [hideAlert, setHideAlert] = useState(true);
+  useEffect(() => {
+    setHideAlert(false);
+
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeMessage();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
   const [preferredLanguageId, setPreferredLanguageId] = useLocalStorage(
     "preferredLanguageId",
@@ -25,37 +42,42 @@ const LanguageAlert = () => {
   // Only offer a translation if the site language is both...
   // - Not one the user has suggested they want by dismissing the alert
   // - Not our idea of the best language to show them based on their system settings and our supported languages
-  const [showMessage, setShowMessage] = useState(
-    siteLanguage !== preferredLanguageId,
-  );
+  const [wrongLanguage] = useState(siteLanguage !== preferredLanguageId);
 
   const closeMessage = () => {
-    // Store the user's preferred language in local storage
+    // Update the user's preferred language; if they want to see the site in the language they're seeing it in, leave them alone
     setPreferredLanguageId(siteLanguage);
 
-    // Dismiss the message (it won't come back again)
-    setShowMessage(false);
+    // If the close button is focused (it might not be if the user dismissed the alert with the escape key), clear it!
+    // You cannot hide a parent element that contains a focused child element
+    if (closeButtonElement.current) {
+      closeButtonElement.current.blur();
+    }
+
+    // Dismiss the message
+    setHideAlert(true);
   };
 
   return (
-    showMessage && (
+    wrongLanguage && (
       <I18nProvider siteLanguage={preferredLanguageId}>
-        <aside className="language-alert" role="alert">
+        <aside className="language-alert" role="alert" aria-hidden={hideAlert}>
           <figure className="translate-icon">
             <TranslateIcon height={20} width={20} />
           </figure>
           <main>
-            <p>
-              <a href={preferredLanguagePath}>
+            <a href={preferredLanguagePath}>
+              <p>
                 <FormattedMessage id="languageAlertText" />
-              </a>
-            </p>
+              </p>
+            </a>
           </main>
           <button
             type="button"
             aria-label="Close"
             className="close-button"
             onClick={closeMessage}
+            ref={closeButtonElement}
           >
             <svg
               width="15"

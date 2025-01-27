@@ -1,11 +1,25 @@
 .language-alert {
+  --box-shadow-spread: 10px;
   border-radius: 10px;
-  box-shadow: rgba(36, 36, 36, 0.2) 0 0 10px;
-  margin: 20px 0;
+  box-shadow: rgba(36, 36, 36, 0.2) 0 0 var(--box-shadow-spread);
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-areas: "icon content close";
   align-items: center;
+  transform: translateY(calc(-100% - var(--box-shadow-spread)));
+  opacity: 0.2;
+  position: absolute;
+  width: 320px;
+  z-index: 10;
+  background-color: #fff;
+  transition:
+    transform 400ms ease-out,
+    opacity 400ms ease-out;
+}
+
+.language-alert[aria-hidden="false"] {
+  opacity: 1;
+  transform: translateY(20px);
 }
 
 .language-alert .translate-icon {

@@ -80,5 +80,27 @@ test.describe("An en-US user", () => {
         }),
       ).toHaveAttribute("href", "/de/");
     });
+
+    test("can dismiss the language alert using a keyboard", async ({
+      page,
+    }) => {
+      await page.keyboard.press("Escape");
+      await expect(page.getByRole("alert")).not.toBeVisible();
+
+      await page.reload();
+      await expect(page.getByRole("alert")).not.toBeVisible();
+
+      await page.getByRole("combobox", { name: "Sprache" }).click();
+      await page.getByRole("option", { name: "English" }).click();
+
+      await expect(page.getByRole("alert")).toHaveText(
+        "Gehen Sie zur deutschen Version dieser Website",
+      );
+      await expect(
+        page.getByRole("link", {
+          name: "Gehen Sie zur deutschen Version dieser Website",
+        }),
+      ).toHaveAttribute("href", "/de/");
+    });
   });
 });
