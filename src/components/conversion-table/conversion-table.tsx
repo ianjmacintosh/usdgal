@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import "./conversion-table.css";
 import { Units } from "@/components/unit-select/unit-select";
+import InfoIcon from "@/assets/info.svg?react";
 
 type ConversionTableProps = {
   topNumber: number;
@@ -58,16 +59,20 @@ const ConversionTable = ({
   return (
     <>
       <button
-        className="details-button"
+        className={`details-button ${showDetails ? "details-shown" : "details-hidden"}`}
         onClick={() => {
           const newValue = !showDetails;
 
           setShowDetails(newValue);
         }}
       >
-        {showDetails
-          ? intl.formatMessage({ id: "hideDetails" })
-          : intl.formatMessage({ id: "showDetails" })}
+        <InfoIcon height={18} width={18} className="icon" />
+        <span className="hide-details-text">
+          {intl.formatMessage({ id: "hideDetails" })}
+        </span>
+        <span className="show-details-text">
+          {intl.formatMessage({ id: "showDetails" })}
+        </span>
       </button>
       <dl
         className={`details ${showDetails ? "visible" : ""}`}
