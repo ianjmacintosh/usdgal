@@ -4,8 +4,9 @@ import "@testing-library/jest-dom/vitest";
 import ConversionTable from "./conversion-table.tsx";
 import exchangeRateData from "../../utils/exchange-rate-data.ts";
 import userEvent from "@testing-library/user-event";
+import { IntlProvider } from "react-intl";
+import en from "../../languages/en.ts";
 import es from "../../languages/es.ts";
-import TestI18nProvider from "@/context/i18n.test.tsx";
 
 describe("<ConversionTable />", () => {
   const user = userEvent.setup();
@@ -15,14 +16,14 @@ describe("<ConversionTable />", () => {
   });
 
   const TestComponent = ({
-    siteLanguage = "en",
+    messages,
     ...props
   }: {
     messages?: Record<string, string>;
     [key: string]: unknown;
   }) => {
     return (
-      <TestI18nProvider siteLanguage={siteLanguage}>
+      <IntlProvider locale="en-US" messages={messages || en}>
         <ConversionTable
           topNumber={1.23456}
           bottomNumber={5.6789}
@@ -33,7 +34,7 @@ describe("<ConversionTable />", () => {
           exchangeRateData={exchangeRateData}
           {...props}
         />
-      </TestI18nProvider>
+      </IntlProvider>
     );
   };
 
@@ -111,7 +112,7 @@ describe("<ConversionTable />", () => {
   });
 
   test("translates liters and gallons", async () => {
-    render(<TestComponent siteLanguage="es" />);
+    render(<TestComponent messages={es} />);
 
     expect(
       screen.getByLabelText("Detalles de conversión").textContent,

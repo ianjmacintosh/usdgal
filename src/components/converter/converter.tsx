@@ -6,7 +6,7 @@ import ErrorFallback from "@/components/error-fallback/error-fallback";
 import GasPrice from "@/components/gas-price/gas-price";
 import ConversionTable from "@/components/conversion-table/conversion-table";
 import exchangeRateData from "@/utils/exchange-rate-data";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import {
   GasPricesContext,
   GasPricesDispatchContext,
@@ -92,6 +92,17 @@ function Converter() {
               </ErrorBoundary>
             </GasPricesDispatchContext.Provider>
           </GasPricesContext.Provider>
+
+          {/* This paragraph displays when the exchange rates were last converted */}
+          <p className="my-2 text-sm">
+            <em>
+              <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
+              {Intl.DateTimeFormat(siteLanguage, {
+                dateStyle: "medium",
+                timeZone: "UTC",
+              }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}
+            </em>
+          </p>
 
           {/* The "Conversion Table" explains in detail how we came up with the gas price conversion */}
           <ConversionTable

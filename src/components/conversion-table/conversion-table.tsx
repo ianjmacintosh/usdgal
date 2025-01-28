@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import "./conversion-table.css";
 import { Units } from "@/components/unit-select/unit-select";
 import InfoIcon from "@/assets/info.svg?react";
-import { useI18n } from "@/context/i18n";
 
 type ConversionTableProps = {
   topNumber: number;
@@ -38,9 +37,6 @@ const ConversionTable = ({
   exchangeRateData,
 }: ConversionTableProps) => {
   const intl = useIntl();
-  const { state: i18nState } = useI18n();
-
-  const siteLanguage = i18nState.siteLanguage;
 
   const [showDetails, setShowDetails] = useState(false);
   const sourceCurrencyAbsoluteCost =
@@ -62,17 +58,6 @@ const ConversionTable = ({
 
   return (
     <>
-      {/* This paragraph displays when the exchange rates were last converted */}
-      <p className="my-2 text-sm">
-        <em>
-          <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
-          {Intl.DateTimeFormat(siteLanguage, {
-            dateStyle: "medium",
-            timeZone: "UTC",
-          }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}
-        </em>
-      </p>
-
       <button
         className={`details-button ${showDetails ? "details-shown" : "details-hidden"}`}
         onClick={() => {
