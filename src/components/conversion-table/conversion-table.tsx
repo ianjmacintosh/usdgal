@@ -65,12 +65,15 @@ const ConversionTable = ({
 
           setShowDetails(newValue);
         }}
+        aria-labelledby={
+          showDetails ? "hide-details-text" : "show-details-text"
+        }
       >
         <InfoIcon height={18} width={18} className="icon" />
-        <span className="hide-details-text">
+        <span id="hide-details-text">
           {intl.formatMessage({ id: "hideDetails" })}
         </span>
-        <span className="show-details-text">
+        <span id="show-details-text">
           {intl.formatMessage({ id: "showDetails" })}
         </span>
       </button>

@@ -44,7 +44,7 @@ describe("<ConversionTable />", () => {
       "visible",
     );
 
-    await user.click(screen.getByText(/details/i));
+    await user.click(screen.getByRole("button"));
     expect(screen.getByLabelText("Conversion Details")).toHaveClass("visible");
   });
 
