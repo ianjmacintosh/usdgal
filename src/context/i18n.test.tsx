@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, beforeEach } from "vitest";
+import { describe, test, expect, beforeEach, afterEach } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { getMessage, I18nProvider, useI18n } from "./i18n";
 import { FormattedMessage } from "react-intl";
@@ -70,16 +70,18 @@ const elements = () => {
   };
 };
 
-beforeEach(() => {
-  cleanup();
-  render(
-    <TestI18nProvider>
-      <TestComponent />
-    </TestI18nProvider>,
-  );
-});
-
 describe("<I18nProvider />", () => {
+  beforeEach(() => {
+    render(
+      <TestI18nProvider>
+        <TestComponent />
+      </TestI18nProvider>,
+    );
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
   test("renders child elements", async () => {
     expect(screen.getByText("Hello World")).toBeVisible();
   });
