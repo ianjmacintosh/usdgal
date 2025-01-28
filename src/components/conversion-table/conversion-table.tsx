@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import "./conversion-table.css";
 import { Units } from "@/components/unit-select/unit-select";
 import InfoIcon from "@/assets/info.svg?react";
+import RefreshIcon from "@/assets/refresh.svg?react";
 import { useI18n } from "@/context/i18n";
 
 type ConversionTableProps = {
@@ -63,7 +64,8 @@ const ConversionTable = ({
   return (
     <>
       {/* This paragraph displays when the exchange rates were last converted */}
-      <p className="my-2 text-sm">
+      <p className="last-updated my-2 text-sm">
+        <RefreshIcon height={18} width={18} className="icon" />
         <em>
           <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
           {Intl.DateTimeFormat(siteLanguage, {

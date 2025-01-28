@@ -1,3 +1,8 @@
+.last-updated .icon {
+  display: inline-block;
+  margin-right: 5px;
+}
+
 .details {
   display: none;
   transition: display 1s allow-discrete;
