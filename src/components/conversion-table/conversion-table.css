@@ -15,13 +15,13 @@
   display: block;
   opacity: 1;
   transition:
-    opacity 200ms ease-out calc(var(--i) * 50ms),
-    display 1s allow-discrete;
+    opacity 100ms ease-out calc(var(--i) * 30ms),
+    display 350ms allow-discrete;
 }
 
 .details div {
   transition:
-    opacity 200ms ease-out calc((4 - var(--i)) * 50ms),
+    opacity 100ms ease-out calc((4 - var(--i)) * 30ms),
     display 350ms allow-discrete;
   opacity: 0;
   width: 100%;
@@ -49,6 +49,11 @@
   text-decoration: underline;
   margin-bottom: 1em;
   overflow: hidden;
+}
+
+.details-button:hover span,
+.details-button:hover svg {
+  color: #666;
 }
 
 .details-button span {
