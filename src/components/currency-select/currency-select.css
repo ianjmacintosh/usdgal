@@ -84,3 +84,20 @@
   border-top-right-radius: 10px;
   border: solid 1px #ccc;
 }
+
+.popover-top-fog {
+  position: sticky;
+  transform: translateY(40px);
+  top: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(#ffff, #fffe 20%, #fff0);
+}
+
+.popover-bottom-fog {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(#fff0, #fffe 80%, #ffff);
+}

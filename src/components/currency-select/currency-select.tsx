@@ -34,6 +34,8 @@ export default function CurrencySelect({
 
   const popover = Ariakit.usePopoverStore();
   const placement = Ariakit.useStoreState(popover, "currentPlacement");
+  const selectListAtBottom = false;
+  const selectListAtTop = false;
 
   return (
     <Ariakit.ComboboxProvider
@@ -63,6 +65,23 @@ export default function CurrencySelect({
           className={`popover currency-popover placement-${placement}`}
           unmountOnHide={true}
           gutter={4}
+          onScroll={(event) => {
+            const target = event.target as HTMLElement;
+            // const lowestPossible = listboxHeight + comboboxwrapper
+            if (target.scrollTop === 0) {
+              console.log("We at the top");
+            } else {
+              console.log(
+                getComputedStyle(target).getPropertyValue(
+                  "--popover-available-height",
+                ),
+              );
+            }
+
+            if (target.scrollTop === 6000) {
+              console.log("We at the bottom");
+            }
+          }}
         >
           <div className="combobox-wrapper">
             <Ariakit.Combobox
@@ -71,7 +90,13 @@ export default function CurrencySelect({
               className="combobox"
             />
           </div>
-          <Ariakit.ComboboxList>
+          <div className="popover-top-fog"></div>
+          <Ariakit.ComboboxList
+            className={
+              (selectListAtBottom ? "at-bottom" : "") +
+              " currency-combobox-list"
+            }
+          >
             {matches.map(({ value, children, id }) => (
               <Ariakit.SelectItem
                 key={value}
@@ -86,6 +111,7 @@ export default function CurrencySelect({
               />
             ))}
           </Ariakit.ComboboxList>
+          <div className="popover-bottom-fog"></div>
         </Ariakit.SelectPopover>
       </Ariakit.SelectProvider>
     </Ariakit.ComboboxProvider>
