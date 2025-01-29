@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import "./conversion-table.css";
 import { Units } from "@/components/unit-select/unit-select";
+import InfoIcon from "@/assets/info.svg?react";
+import RefreshIcon from "@/assets/refresh.svg?react";
+import { useI18n } from "@/context/i18n";
 
 type ConversionTableProps = {
   topNumber: number;
@@ -36,6 +39,9 @@ const ConversionTable = ({
   exchangeRateData,
 }: ConversionTableProps) => {
   const intl = useIntl();
+  const { state: i18nState } = useI18n();
+
+  const siteLanguage = i18nState.siteLanguage;
 
   const [showDetails, setShowDetails] = useState(false);
   const sourceCurrencyAbsoluteCost =
@@ -57,17 +63,36 @@ const ConversionTable = ({
 
   return (
     <>
+      {/* This paragraph displays when the exchange rates were last converted */}
+      <p className="last-updated my-2 text-sm">
+        <RefreshIcon height={18} width={18} className="icon" />
+        <em>
+          <FormattedMessage id="exchangeRatesLastUpdated" />{" "}
+          {Intl.DateTimeFormat(siteLanguage, {
+            dateStyle: "medium",
+            timeZone: "UTC",
+          }).format(exchangeRateData.timestamp * 1000) ?? "Unknown"}
+        </em>
+      </p>
+
       <button
-        className="details-button"
+        className={`details-button ${showDetails ? "details-shown" : "details-hidden"}`}
         onClick={() => {
           const newValue = !showDetails;
 
           setShowDetails(newValue);
         }}
+        aria-labelledby={
+          showDetails ? "hide-details-text" : "show-details-text"
+        }
       >
-        {showDetails
-          ? intl.formatMessage({ id: "hideDetails" })
-          : intl.formatMessage({ id: "showDetails" })}
+        <InfoIcon height={18} width={18} className="icon" />
+        <span id="hide-details-text">
+          {intl.formatMessage({ id: "hideDetails" })}
+        </span>
+        <span id="show-details-text">
+          {intl.formatMessage({ id: "showDetails" })}
+        </span>
       </button>
       <dl
         className={`details ${showDetails ? "visible" : ""}`}

@@ -1,3 +1,8 @@
+.last-updated .icon {
+  display: inline-block;
+  margin-right: 5px;
+}
+
 .details {
   display: none;
   transition: display 1s allow-discrete;
@@ -15,13 +20,13 @@
   display: block;
   opacity: 1;
   transition:
-    opacity 200ms ease-out calc(var(--i) * 50ms),
-    display 1s allow-discrete;
+    opacity 100ms ease-out calc(var(--i) * 30ms),
+    display 350ms allow-discrete;
 }
 
 .details div {
   transition:
-    opacity 200ms ease-out calc((4 - var(--i)) * 50ms),
+    opacity 100ms ease-out calc((4 - var(--i)) * 30ms),
     display 350ms allow-discrete;
   opacity: 0;
   width: 100%;
@@ -41,6 +46,40 @@
 }
 
 .details-button {
+  display: grid;
+  grid-template-areas: "icon text";
+  align-items: center;
+  justify-items: left;
+  gap: 5px;
   text-decoration: underline;
   margin-bottom: 1em;
+  overflow: hidden;
+}
+
+.details-button:hover span,
+.details-button:hover svg {
+  color: #666;
+}
+
+.details-button span {
+  grid-area: text;
+  transition:
+    transform 200ms ease,
+    opacity 50ms ease;
+}
+
+.details-button.details-shown #show-details-text {
+  transform: translateY(100%);
+  opacity: 0.2;
+}
+
+.details-button.details-shown #hide-details-text,
+.details-button.details-hidden #show-details-text {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.details-button.details-hidden #hide-details-text {
+  transform: translateY(-100%);
+  opacity: 0.2;
 }
