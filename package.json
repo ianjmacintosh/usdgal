@@ -17,6 +17,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
+    "e2e": "npx playwright test",
     "rates:update": "node update_latest",
     "start": "react-router-serve build/server/index.js",
     "typecheck": "react-router typegen && tsc",
