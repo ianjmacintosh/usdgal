@@ -83,6 +83,9 @@ describe("<Currency />", () => {
       "true",
     );
     expect(document.querySelector("#item-mxn")).toHaveTextContent("✓");
+    expect(
+      screen.getByRole("option", { selected: true }),
+    ).not.toHaveAccessibleName(/✓/i);
   });
 
   test("shows a checkmark and a highlight for the selected currency when updated via parent prop", async () => {
@@ -109,6 +112,9 @@ describe("<Currency />", () => {
       "aria-selected",
       "true",
     );
+    expect(
+      screen.getByRole("option", { selected: true }),
+    ).not.toHaveAccessibleName(/✓/i);
   });
 
   test("translates currency names", async () => {

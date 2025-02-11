@@ -47,6 +47,14 @@ npm run dev
 
 ### Run the Tests
 
+Unit and Integration Tests (uses [Vitest](https://vitest.dev/))
+
 ```bash
 npm test
+```
+
+End-to-End ("E2E") Tests (uses [Playwright](https://playwright.dev/))
+
+```bash
+npm run e2e
 ```

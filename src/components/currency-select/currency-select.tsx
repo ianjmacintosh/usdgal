@@ -79,8 +79,15 @@ export default function CurrencySelect({
                 id={id}
                 className="select-item"
                 render={
-                  <Ariakit.ComboboxItem>
-                    {selectValue === value ? "✓" : ""} {children}
+                  <Ariakit.ComboboxItem
+                    className={selectValue === value ? "selected" : ""}
+                  >
+                    {selectValue === value ? (
+                      <span aria-hidden="true">✓</span>
+                    ) : (
+                      ""
+                    )}{" "}
+                    {children}
                   </Ariakit.ComboboxItem>
                 }
               />

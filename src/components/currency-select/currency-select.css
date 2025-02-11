@@ -38,9 +38,14 @@
   scroll-margin-top: 92px;
 }
 
-.select-item[data-active-item] {
+.select-item[data-active-item],
+.select-item.selected[data-active-item] {
   background-color: hsl(204 100% 40%);
   color: white;
+}
+
+.select-item.selected {
+  background: #eee;
 }
 
 .combobox-wrapper {
