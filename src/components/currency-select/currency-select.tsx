@@ -4,6 +4,7 @@ import "./currency-select.css";
 import { matchSorter } from "match-sorter";
 import { debounce } from "lodash-es";
 import { currenciesSelectStoreItems } from "@/utils/exchange-rate-data";
+import { getMessage } from "@/context/i18n";
 
 type CurrencySelectProps = {
   currency: string;
@@ -67,7 +68,10 @@ export default function CurrencySelect({
           <div className="combobox-wrapper">
             <Ariakit.Combobox
               autoSelect
-              placeholder="Search for a currency..."
+              placeholder={getMessage({
+                id: "searchForCurrency",
+                language: siteLanguage,
+              })}
               className="combobox"
             />
           </div>

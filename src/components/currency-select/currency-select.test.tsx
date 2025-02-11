@@ -44,7 +44,7 @@ describe("<Currency />", () => {
   test("supports searching currency based on verbose name (i.e., Bitcoin) instead of ISO code (i.e., BTC)", async () => {
     const currencyButton = screen.getByLabelText("Currency");
     await user.click(currencyButton);
-    await user.click(screen.getByPlaceholderText("Search for a currency..."));
+    await user.click(screen.getByPlaceholderText(/Search/i, { exact: false }));
     await user.keyboard("bit");
     expect(screen.getByText("Bitcoin", { exact: false })).toBeVisible();
   });
