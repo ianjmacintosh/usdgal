@@ -12,6 +12,9 @@ export default {
   exchangeRatesLastUpdated: "Exchange rates last updated:",
   sourceCode: "Source code",
 
+  // currency-select.tsx
+  searchForCurrency: "Search for a currency...",
+
   // ConversionTable.tsx
   showDetails: "Show Details",
   hideDetails: "Hide Details",

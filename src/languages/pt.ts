@@ -13,6 +13,9 @@ export default {
   sourceCode: "Código-fonte",
   language: "Idioma",
 
+  // currency-select.tsx
+  searchForCurrency: "Pesquisar uma moeda...",
+
   // ConversionTable.tsx
   showDetails: "Mostrar detalhes",
   hideDetails: "Ocultar detalhes",

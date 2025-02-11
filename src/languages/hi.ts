@@ -13,6 +13,9 @@ export default {
   sourceCode: "स्रोत कोड",
   language: "भाषा",
 
+  // currency-select.tsx
+  searchForCurrency: "किसी मुद्रा की खोज करें...",
+
   // ConversionTable.tsx
   showDetails: "विवरण दिखाएँ",
   hideDetails: "विवरण छिपाएँ",
