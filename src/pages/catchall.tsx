@@ -1,5 +1,3 @@
-import { redirect } from "react-router";
-
 export async function loader() {
-  return redirect("/");
+  throw new Response(null, { status: 404, statusText: "Not Found" });
 }
