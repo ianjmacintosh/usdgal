@@ -1,0 +1,7 @@
+name = "usdgal"
+account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID" # Get this from the Cloudflare dashboard
+workers_dev = true # Optional, but recommended for local development
+compatibility_date = "2023-11-20" # Or the latest compatibility date
+pages_build_output_dir = "build/client"
+[build]
+command = "npm run build"

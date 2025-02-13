@@ -23,6 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# Wrangler generated assets
+.wrangler/
+
 # React Router generated assets
 .react-router/
 build/
