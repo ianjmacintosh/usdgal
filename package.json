@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "react-router dev --host",
     "dev:local": "react-router dev",
-    "dev:wrangler": "wrangler pages dev --ip 127.0.0.1",
+    "dev:wrangler": "wrangler pages dev --ip 127.0.0.1 --port 5173",
     "build": "react-router build",
     "build:preview": "react-router build --mode=preview",
     "coverage": "vitest run --coverage",
