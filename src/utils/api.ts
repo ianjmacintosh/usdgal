@@ -21,7 +21,7 @@ export async function fetchCountryCode() {
     const data = await response.json();
     return data.ipData.country;
   } catch (error) {
-    console.error(error);
-    return null;
+    console.error(`Could not fetch country code\n\n${error}`);
+    return "US";
   }
 }
