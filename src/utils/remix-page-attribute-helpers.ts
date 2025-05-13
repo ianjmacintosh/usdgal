@@ -1,3 +1,5 @@
+import { MetaDescriptor } from "react-router";
+
 // React Router uses various objects (meta, links, scripts, etc.) to build pages
 // This file defines the defaults for those objects, which are used in `home-*.tsx`
 
@@ -19,7 +21,7 @@ export const defaultLinks = () => {
   ];
 };
 
-export const getMetaTags = (language: string) => {
+export const getMetaTags = (language: string): MetaDescriptor[] => {
   return [
     {
       name: "description",
