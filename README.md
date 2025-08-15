@@ -45,6 +45,14 @@ npm install
 npm run dev
 ```
 
+> NOTE: If you need to test behavior specific to how Cloudflare Pages works, you need to use Wrangler, Cloudflare's CLI tool for developers:
+>
+> ```
+> npm run dev:wrangler
+> ```
+>
+> 🚨 Geolocation will not work! The app will try to access `https://gasco.st/workers/getLocation` and get blocked due to CORS
+
 ### Run the Tests
 
 Unit and Integration Tests (uses [Vitest](https://vitest.dev/))
