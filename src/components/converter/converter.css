@@ -3,24 +3,6 @@ h1 {
   line-height: 2rem;
 }
 
-footer nav {
-  margin-bottom: 10px;
-}
-
-footer ul {
-  display: flex;
-  flex-direction: row;
-  align-content: stretch;
-  justify-content: center;
-}
-
-footer nav a {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-}
-
 a {
   text-decoration: underline;
 }

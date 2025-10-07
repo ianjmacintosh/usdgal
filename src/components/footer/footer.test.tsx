@@ -49,6 +49,14 @@ describe('<Footer> element (loaded in the English site with "en-US" language)', 
     expect(languageDropdown).toBeInTheDocument();
     expect(languageDropdown).toHaveTextContent("English");
   });
+
+  test("offers visitors an explanation of the site", () => {
+    const aboutLink = screen.getByRole("link", { name: "About this site" });
+    expect(aboutLink).toHaveAttribute(
+      "href",
+      "https://www.ianjmacintosh.com/articles/introducing-gascost/",
+    );
+  });
 });
 
 describe('<Footer> element (loaded in the Portuguese site with "pt-BR" language)', () => {
