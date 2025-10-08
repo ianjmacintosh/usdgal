@@ -13,9 +13,7 @@ export type ExchangeRateData = {
 // Export a TS type for symbols (currency symbols) from the symbols variable
 
 export async function getExchangeRateData() {
-  const response = await fetch(
-    "https://exchange-rate-api.ian-01c.workers.dev/",
-  );
+  const response = await fetch("https://gasco.st/workers/exchange-rates");
   if (!response.ok) {
     throw new Error(`Failed to fetch exchange rates: ${response.status}`);
   }

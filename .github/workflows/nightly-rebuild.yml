@@ -1,0 +1,13 @@
+name: Trigger nightly rebuild
+on:
+  schedule:
+    - cron: "0 3 * * *" # 3 AM UTC (after Worker updates at 2 AM)
+  workflow_dispatch: # Allow manual trigger for testing
+
+jobs:
+  trigger-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deploy
+        run: |
+          curl -X POST "${{ secrets.WEBHOOK_REDEPLOY }}"
