@@ -42,6 +42,7 @@ function GasPrice({
       type: "update",
       id: gasPricesKey,
       payload: { key: key as "number" | "currency" | "unit", value: newValue },
+      exchangeRates: exchangeRateData.rates,
     });
   };
 
