@@ -18,7 +18,6 @@
     "preview": "vite preview",
     "test": "vitest",
     "e2e": "npx playwright test --reporter=list",
-    "rates:update": "node update_latest",
     "start": "react-router-serve build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "prepare": "husky"
