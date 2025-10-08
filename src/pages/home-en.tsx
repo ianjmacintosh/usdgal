@@ -5,6 +5,15 @@ import {
 import Converter from "@/components/converter/converter.tsx";
 import { getMessage, I18nProvider } from "@/context/i18n.tsx";
 
+import { useLoaderData } from "react-router";
+import type { ExchangeRateData } from "@/utils/exchange-rate-data.server";
+import { getExchangeRateData } from "@/utils/exchange-rate-data.server";
+
+export async function loader() {
+  const exchangeRateData = await getExchangeRateData();
+  return { exchangeRateData };
+}
+
 const language = "en";
 
 export const links = () => {
@@ -22,9 +31,12 @@ export function meta() {
 }
 
 export default function Component() {
+  const { exchangeRateData } = useLoaderData() as {
+    exchangeRateData: ExchangeRateData;
+  };
   return (
     <I18nProvider siteLanguage={language}>
-      <Converter />
+      <Converter exchangeRateData={exchangeRateData} />
     </I18nProvider>
   );
 }

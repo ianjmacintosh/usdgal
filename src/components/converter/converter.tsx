@@ -5,7 +5,6 @@ import ErrorFallback from "@/components/error-fallback/error-fallback";
 
 import GasPrice from "@/components/gas-price/gas-price";
 import ConversionTable from "@/components/conversion-table/conversion-table";
-import exchangeRateData from "@/utils/exchange-rate-data";
 import { useIntl } from "react-intl";
 import {
   GasPricesContext,
@@ -17,6 +16,7 @@ import Footer from "@/components/footer/footer";
 import { useI18n } from "@/context/i18n";
 import LanguageAlert from "../language-alert/language-alert";
 import { useLocalStorage } from "@/utils/use-local-storage";
+import type { ExchangeRateData } from "@/utils/exchange-rate-data.server";
 
 /**
  * The main component of the gas price converter.
@@ -26,7 +26,11 @@ import { useLocalStorage } from "@/utils/use-local-storage";
  *
  * @returns {JSX.Element} The main component of the gas price converter
  */
-function Converter() {
+function Converter({
+  exchangeRateData,
+}: {
+  exchangeRateData: ExchangeRateData;
+}) {
   const [oldUserLocation, setOldUserLocation] = useLocalStorage(
     "oldUserLocation",
     null,
@@ -82,12 +86,14 @@ function Converter() {
                   label={intl.formatMessage({ id: "gasCost" })}
                   gasPricesKey="top"
                   siteLanguage={siteLanguage}
+                  exchangeRateData={exchangeRateData}
                 />
                 {/* This <GasPrice /> component gives us the "bottom" number, currency, and unit -- what we're converting to */}
                 <GasPrice
                   label={intl.formatMessage({ id: "convertedGasCost" })}
                   gasPricesKey="bottom"
                   siteLanguage={siteLanguage}
+                  exchangeRateData={exchangeRateData}
                 />
               </ErrorBoundary>
             </GasPricesDispatchContext.Provider>
