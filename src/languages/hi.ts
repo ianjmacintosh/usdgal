@@ -10,6 +10,9 @@ export default {
   gasCost: "गैस लागत",
   convertedGasCost: "रूपांतरित गैस लागत",
   exchangeRatesLastUpdated: "विनिमय दरें अंतिम बार अपडेट की गईं:",
+
+  // footer.tsx
+  aboutSite: "इस साइट के बारे में",
   sourceCode: "स्रोत कोड",
   language: "भाषा",
 

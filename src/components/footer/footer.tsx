@@ -21,10 +21,7 @@ const Footer = ({ siteLanguage }: FooterProps) => {
               target="_blank"
             >
               <span>
-                <FormattedMessage
-                  id="article"
-                  defaultMessage={"About this site"}
-                />
+                <FormattedMessage id="aboutSite" />
               </span>
               <DocumentText height={18} width={18} className="link-icon" />
             </a>

@@ -10,6 +10,9 @@ export default {
   gasCost: "Gaskosten",
   convertedGasCost: "Umgerechnete Gaskosten",
   exchangeRatesLastUpdated: "Zuletzt aktualisierte Wechselkurse:",
+
+  // footer.tsx
+  aboutSite: "Über diese Website",
   sourceCode: "Quellcode",
   language: "Sprache",
 
