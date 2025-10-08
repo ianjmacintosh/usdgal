@@ -1,4 +1,4 @@
-import exchangeRateData from "./exchange-rate-data";
+import type { ExchangeRateData } from "./exchange-rate-data.server";
 import { getUnits } from "./number-format";
 import { Units } from "@/components/unit-select/unit-select";
 
@@ -6,7 +6,7 @@ const getPriceInCurrency = (
   price: number,
   currency: string,
   targetCurrency: string,
-  exchangeRates: { [key: string]: number } = exchangeRateData.rates,
+  exchangeRates: { [key: string]: number },
 ) => {
   const sourceCurrencyExchangeRate = exchangeRates[currency] ?? 1;
   const targetCurrencyExchangeRate = exchangeRates[targetCurrency] ?? 1;
@@ -27,11 +27,8 @@ const getGasPrice = (
   sourceUnit: Units | "",
   targetCurrency: string,
   targetUnit: Units | "",
-  exchangeRates?: { [key: string]: number },
+  exchangeRates: ExchangeRateData["rates"],
 ): number => {
-  if (exchangeRates === undefined) {
-    exchangeRates = exchangeRateData.rates;
-  }
   // Return 0 if we're missing info
   if (
     sourceCurrency === "" ||

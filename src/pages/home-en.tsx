@@ -4,6 +4,13 @@ import {
 } from "../utils/remix-page-attribute-helpers.ts";
 import Converter from "@/components/converter/converter.tsx";
 import { getMessage, I18nProvider } from "@/context/i18n.tsx";
+import { useLoaderData } from "react-router";
+import { getExchangeRateData } from "@/utils/exchange-rate-data.server";
+
+export async function loader() {
+  const exchangeRateData = await getExchangeRateData();
+  return { exchangeRateData };
+}
 
 const language = "en";
 
@@ -22,9 +29,10 @@ export function meta() {
 }
 
 export default function Component() {
+  const { exchangeRateData } = useLoaderData();
   return (
     <I18nProvider siteLanguage={language}>
-      <Converter />
+      <Converter exchangeRateData={exchangeRateData} />
     </I18nProvider>
   );
 }

@@ -2,11 +2,13 @@ import { getCurrencyByCountry, getUnitsByCountry } from "@/utils/locale-data";
 import { Units } from "@/components/unit-select/unit-select";
 import getGasPrice from "@/utils/get-gas-price";
 import { createContext } from "react";
+import type { ExchangeRateData } from "@/utils/exchange-rate-data.server";
 
 export type GasPricesUpdateAction = {
   type: "update";
   id: "top" | "bottom";
   payload: { key: "number" | "currency" | "unit"; value: number | string };
+  exchangeRates: ExchangeRateData["rates"];
 };
 
 export type GasPricesReplaceAction = {
@@ -31,16 +33,10 @@ export type GasPrices = {
 export function gasPricesReducer(
   gasPrices: GasPrices,
   action: GasPricesAction,
-  options?: {
-    exchangeRates?: {
-      rates: {
-        [key: string]: number;
-      };
-    };
-  },
 ) {
   switch (action.type) {
     case "update": {
+      const { exchangeRates } = action;
       const newGasPrices = { ...gasPrices };
       // Update which gas price is in control when the number changes
       if (action.payload.key === "number") {
@@ -62,7 +58,7 @@ export function gasPricesReducer(
         newGasPrices[driver].unit,
         newGasPrices[driven].currency,
         newGasPrices[driven].unit,
-        options?.exchangeRates?.rates,
+        exchangeRates,
       );
 
       // Return the new gas prices object

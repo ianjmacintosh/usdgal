@@ -5,11 +5,9 @@ import { LITERS_PER_GALLON } from "@/utils/number-format";
 
 describe("gasPricesReducer", () => {
   const fakeExchangeRates = {
-    rates: {
-      USD: 1,
-      EUR: 1,
-      BRL: 6,
-    },
+    USD: 1,
+    EUR: 1,
+    BRL: 6,
   };
 
   const startingGasPrices = (): GasPrices => {
@@ -25,11 +23,10 @@ describe("gasPricesReducer", () => {
       type: "update",
       id: "bottom",
       payload: { key: "unit", value: "gallon" },
+      exchangeRates: fakeExchangeRates,
     } as GasPricesAction;
 
-    const updatedGasPrices = gasPricesReducer(startingGasPrices(), action, {
-      exchangeRates: fakeExchangeRates,
-    });
+    const updatedGasPrices = gasPricesReducer(startingGasPrices(), action);
 
     const expectedGasPrices = {
       top: { number: 1, currency: "USD", unit: "liter" },
@@ -49,11 +46,10 @@ describe("gasPricesReducer", () => {
       type: "update",
       id: "bottom",
       payload: { key: "currency", value: "BRL" },
+      exchangeRates: fakeExchangeRates,
     } as GasPricesAction;
 
-    const updatedGasPrices = gasPricesReducer(startingGasPrices(), action, {
-      exchangeRates: fakeExchangeRates,
-    });
+    const updatedGasPrices = gasPricesReducer(startingGasPrices(), action);
 
     const expectedGasPrices = {
       top: { number: 1, currency: "USD", unit: "liter" },
@@ -73,11 +69,10 @@ describe("gasPricesReducer", () => {
       type: "update",
       id: "bottom",
       payload: { key: "number", value: 3 },
+      exchangeRates: fakeExchangeRates,
     } as GasPricesAction;
 
-    const updatedGasPrices = gasPricesReducer(startingGasPrices(), action, {
-      exchangeRates: fakeExchangeRates,
-    });
+    const updatedGasPrices = gasPricesReducer(startingGasPrices(), action);
 
     const expectedGasPrices = {
       top: { number: 3, currency: "USD", unit: "liter" },

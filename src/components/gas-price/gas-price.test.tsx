@@ -11,6 +11,7 @@ import {
 } from "@/context/gas-price-context";
 import { useReducer } from "react";
 import { I18nProvider } from "@/context/i18n";
+import { fakeExchangeRateData as exchangeRateData } from "@/utils/exchange-rate-data.server";
 
 describe("<GasPrice />", () => {
   const user = userEvent.setup();
@@ -28,6 +29,7 @@ describe("<GasPrice />", () => {
               label="test"
               siteLanguage="en-US"
               gasPricesKey="top"
+              exchangeRateData={exchangeRateData}
               {...props}
             />
           </GasPricesDispatchContext.Provider>

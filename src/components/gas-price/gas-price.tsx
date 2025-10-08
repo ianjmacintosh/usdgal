@@ -9,14 +9,21 @@ import CurrencySelect from "@/components/currency-select/currency-select";
 import UnitSelect from "@/components/unit-select/unit-select";
 import { getFormattedPrice, isTinyNumber } from "@/utils/number-format";
 import { FormattedMessage } from "react-intl";
+import type { ExchangeRateData } from "@/utils/exchange-rate-data.server";
 
 type GasPriceProps = {
   label: string;
   gasPricesKey: "top" | "bottom";
   siteLanguage: string;
+  exchangeRateData: ExchangeRateData;
 };
 
-function GasPrice({ label, gasPricesKey, siteLanguage }: GasPriceProps) {
+function GasPrice({
+  label,
+  gasPricesKey,
+  siteLanguage,
+  exchangeRateData,
+}: GasPriceProps) {
   const context = useContext(GasPricesContext);
   const dispatch = useContext(GasPricesDispatchContext);
 
@@ -35,6 +42,7 @@ function GasPrice({ label, gasPricesKey, siteLanguage }: GasPriceProps) {
       type: "update",
       id: gasPricesKey,
       payload: { key: key as "number" | "currency" | "unit", value: newValue },
+      exchangeRates: exchangeRateData.rates,
     });
   };
 
@@ -61,6 +69,7 @@ function GasPrice({ label, gasPricesKey, siteLanguage }: GasPriceProps) {
             if (newValue === currency) return; // Return early the value wouldn't change
             updateHandler({ key: "currency", value: newValue });
           }}
+          exchangeRateData={exchangeRateData}
           siteLanguage={siteLanguage}
         />
         <UnitSelect
