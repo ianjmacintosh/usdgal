@@ -5,6 +5,7 @@ import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 import { selectItemFromFancySelect } from "../../utils/test-utils";
+import { fakeExchangeRateData as exchangeRateData } from "@/utils/exchange-rate-data.server";
 import { IntlProvider } from "react-intl";
 import en from "../../languages/en";
 
@@ -21,6 +22,7 @@ describe("<Currency />", () => {
           onChange={(newValue) => {
             setCurrency(newValue);
           }}
+          exchangeRateData={exchangeRateData}
           {...props}
         />
       </IntlProvider>

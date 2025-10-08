@@ -2,7 +2,7 @@ import { describe, test, expect, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import ConversionTable from "./conversion-table.tsx";
-import exchangeRateData from "../../utils/exchange-rate-data.ts";
+import { fakeExchangeRateData as exchangeRateData } from "@/utils/exchange-rate-data.server.ts";
 import userEvent from "@testing-library/user-event";
 import TestI18nProvider from "@/context/i18n.test.tsx";
 

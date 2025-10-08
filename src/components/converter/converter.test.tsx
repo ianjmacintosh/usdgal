@@ -7,7 +7,7 @@ import { getFormattedPrice } from "../../utils/number-format.ts";
 import { selectItemFromFancySelect } from "../../utils/test-utils.ts";
 import "@testing-library/jest-dom/vitest";
 import { createRoutesStub } from "react-router";
-import exchangeRateData from "@/utils/exchange-rate-data";
+import { fakeExchangeRateData as exchangeRateData } from "@/utils/exchange-rate-data.server.ts";
 import TestI18nProvider from "@/context/i18n.test.tsx";
 import { server } from "@/mocks/server.ts";
 import { getGeolocationHandlers } from "@/mocks/handlers.ts";
@@ -19,7 +19,7 @@ afterEach(() => {
 const englishTestComponent = ({ ...props }: { [key: string]: unknown }) => {
   return (
     <TestI18nProvider siteLanguage="en" userLanguage="en-US">
-      <Converter {...props} />
+      <Converter exchangeRateData={exchangeRateData} {...props} />
     </TestI18nProvider>
   );
 };
@@ -31,7 +31,7 @@ const mixedUpEnglishTestComponent = ({
 }) => {
   return (
     <TestI18nProvider siteLanguage="en" userLanguage="pt-BR">
-      <Converter {...props} />
+      <Converter exchangeRateData={exchangeRateData} {...props} />
     </TestI18nProvider>
   );
 };
@@ -39,7 +39,7 @@ const mixedUpEnglishTestComponent = ({
 const spanishTestComponent = ({ ...props }: { [key: string]: unknown }) => {
   return (
     <TestI18nProvider siteLanguage="es" userLanguage="es-MX">
-      <Converter {...props} />
+      <Converter exchangeRateData={exchangeRateData} {...props} />
     </TestI18nProvider>
   );
 };
@@ -47,7 +47,7 @@ const spanishTestComponent = ({ ...props }: { [key: string]: unknown }) => {
 const PortugueseTestComponent = ({ ...props }: { [key: string]: unknown }) => {
   return (
     <TestI18nProvider siteLanguage="pt" userLanguage="pt-BR">
-      <Converter {...props} />
+      <Converter exchangeRateData={exchangeRateData} {...props} />
     </TestI18nProvider>
   );
 };
@@ -139,7 +139,14 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
       bottomUnitInput,
     } = elements();
 
-    const convertedPrice = getGasPrice(1, "BRL", "liter", "USD", "gallon");
+    const convertedPrice = getGasPrice(
+      1,
+      "BRL",
+      "liter",
+      "USD",
+      "gallon",
+      exchangeRateData.rates,
+    );
     const formattedPrice = getFormattedPrice(convertedPrice, "en-US", "BRL");
 
     // Act
@@ -173,16 +180,23 @@ describe('<Converter siteLanguage="en-US" userLanguage="en-US" />', () => {
     } = elements();
 
     // Store the correct conversion of 1.00 BRL per liter to USD per gallon in a variable named "expectedPrice"
-    const expectedPrice = getGasPrice(1, "BRL", "liter", "USD", "gallon");
+    const expectedPrice = getGasPrice(
+      1,
+      "BRL",
+      "liter",
+      "USD",
+      "gallon",
+      exchangeRateData.rates,
+    );
 
     await user.click(topPriceInput);
+    await user.keyboard("{backspace}{backspace}{backspace}{backspace}");
     await user.keyboard("1");
 
     await selectItemFromFancySelect(topCurrencyInput, "BRL");
     await selectItemFromFancySelect(bottomCurrencyInput, "USD");
     await selectItemFromFancySelect(topUnitInput, "per liter");
     await selectItemFromFancySelect(bottomUnitInput, "per gallon");
-
     expect(bottomPriceInput.value).not.toBe("0.00");
     expect(bottomPriceInput.value).toBe(expectedPrice.toFixed(2));
   });
@@ -279,7 +293,14 @@ describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {
       bottomUnitInput,
     } = elements();
 
-    const convertedPrice = getGasPrice(1, "BRL", "liter", "USD", "gallon");
+    const convertedPrice = getGasPrice(
+      1,
+      "BRL",
+      "liter",
+      "USD",
+      "gallon",
+      exchangeRateData.rates,
+    );
     const formattedPrice = getFormattedPrice(convertedPrice, "pt-BR", "BRL");
 
     // Act
