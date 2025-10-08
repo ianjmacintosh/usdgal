@@ -1,8 +1,5 @@
 import kebabCase from "lodash/kebabCase";
-import latest from "../latest.json";
-const exchangeRateData = latest;
-
-const symbols = {
+const currencies: Record<string, string> = {
   AED: "United Arab Emirates Dirham",
   AFN: "Afghan Afghani",
   ALL: "Albanian Lek",
@@ -176,9 +173,17 @@ const symbols = {
   ZWL: "Zimbabwean Dollar",
 };
 
-const getCurrencies = (language = "en-US") =>
-  Object.keys(exchangeRateData.rates).map((code) => {
-    let currencyName = symbols[code as keyof typeof symbols];
+// A currency symbol could be any key of the currencySymbols object
+export type CurrencyCode = keyof typeof currencies;
+
+import type { ExchangeRateData } from "./exchange-rate-data.server";
+
+const getCurrencies = (
+  language = "en-US",
+  exchangeRateData: ExchangeRateData,
+): { id: string; value: string; name: string; children: string }[] =>
+  Object.keys(exchangeRateData.rates).map((code: string) => {
+    let currencyName = currencies[code] || "Unknown";
 
     if (language.substring(0, 2) !== "en") {
       currencyName = Intl.NumberFormat(language, {
@@ -199,8 +204,4 @@ const getCurrencies = (language = "en-US") =>
     };
   });
 
-const currenciesSelectStoreItems = getCurrencies;
-
-export default exchangeRateData;
-
-export { currenciesSelectStoreItems, symbols };
+export { currencies, getCurrencies };
