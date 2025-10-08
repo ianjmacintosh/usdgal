@@ -22,7 +22,7 @@ const Footer = ({ siteLanguage }: FooterProps) => {
             >
               <span>
                 <FormattedMessage
-                  id="article"
+                  id="aboutSite"
                   defaultMessage={"About this site"}
                 />
               </span>

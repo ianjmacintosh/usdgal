@@ -10,6 +10,9 @@ export default {
   gasCost: "Gas Cost",
   convertedGasCost: "Converted Gas Cost",
   exchangeRatesLastUpdated: "Exchange rates last updated:",
+
+  // footer.tsx
+  aboutSite: "About this site",
   sourceCode: "Source code",
 
   // currency-select.tsx
