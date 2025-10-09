@@ -5,7 +5,7 @@ import {
 import Converter from "@/components/converter/converter.tsx";
 import { getMessage, I18nProvider } from "@/context/i18n.tsx";
 import { useLoaderData, useParams } from "react-router";
-import { supportedLanguages } from "@/utils/supported-languages.ts";
+import { isSupportedLanguage } from "@/utils/supported-languages.ts";
 import { getExchangeRateData } from "@/utils/exchange-rate-data.server";
 
 export async function loader() {
@@ -13,8 +13,10 @@ export async function loader() {
   return { exchangeRateData };
 }
 
-export const links = ({ params }: { params: { lang?: string } }) => {
-  const language = params.lang || "en";
+export const links = ({
+  params = { lang: "en" },
+}: { params?: { lang: string } } = {}) => {
+  const language = isSupportedLanguage(params.lang) ? params.lang : "en";
   return [
     ...defaultLinks(),
     {
@@ -24,16 +26,19 @@ export const links = ({ params }: { params: { lang?: string } }) => {
   ];
 };
 
-export function meta({ params }: { params: { lang?: string } }) {
-  const language = params.lang || "en";
+export function meta({
+  params = { lang: "en" },
+}: { params?: { lang: string } } = {}) {
+  const language = isSupportedLanguage(params.lang) ? params.lang : "en";
   return [...getMetaTags(language)];
 }
 
-export const handle = ({ params }: { params: { lang?: string } }) => {
-  const language = params.lang || "en";
-  const matchedLanguage = supportedLanguages.find(({ id }) => id === language);
+export const handle = ({
+  params = { lang: "en" },
+}: { params?: { lang: string } } = {}) => {
+  const language = isSupportedLanguage(params.lang) ? params.lang : "en";
   return {
-    lang: matchedLanguage ? matchedLanguage.id : "en",
+    lang: language,
   };
 };
 
@@ -41,9 +46,10 @@ export default function Component() {
   const { exchangeRateData } = useLoaderData();
 
   const params = useParams();
-  const langParam = params.lang || "en";
-  const matchedLanguage = supportedLanguages.find(({ id }) => id === langParam);
-  const language = matchedLanguage ? matchedLanguage.id : "en";
+  const language =
+    params && params.lang && isSupportedLanguage(params.lang)
+      ? params.lang
+      : "en";
 
   return (
     <I18nProvider siteLanguage={language}>

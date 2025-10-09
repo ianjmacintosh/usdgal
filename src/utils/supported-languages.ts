@@ -13,6 +13,9 @@ type LanguageObject = {
   messages: Record<string, string>;
 };
 
+export const isSupportedLanguage = (code: string) =>
+  supportedLanguages.some(({ id }) => id === code);
+
 export const supportedLanguages: LanguageObject[] = [
   // ⬇️ WARNING: The first language in this array will be the site language picker's value when we don't know what language they're using!!
   {
