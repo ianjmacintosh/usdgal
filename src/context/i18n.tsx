@@ -119,10 +119,8 @@ const I18nProvider = ({
   });
 
   useEffect(() => {
-    if (state.siteLanguage !== siteLanguage) {
-      dispatch({ type: "setSiteLanguage", payload: siteLanguage });
-    }
-  }, [siteLanguage, state.siteLanguage]);
+    dispatch({ type: "setSiteLanguage", payload: siteLanguage });
+  }, [siteLanguage]);
 
   const value = { state, dispatch };
 
