@@ -42,7 +42,7 @@ const LanguageAlert = () => {
   // Only offer a translation if the site language is both...
   // - Not one the user has suggested they want by dismissing the alert
   // - Not our idea of the best language to show them based on their system settings and our supported languages
-  const [wrongLanguage] = useState(siteLanguage !== preferredLanguageId);
+  const wrongLanguage = siteLanguage !== preferredLanguageId;
 
   const closeMessage = () => {
     // Update the user's preferred language; if they want to see the site in the language they're seeing it in, leave them alone
@@ -57,6 +57,12 @@ const LanguageAlert = () => {
     // Dismiss the message
     setHideAlert(true);
   };
+
+  useEffect(() => {
+    if (wrongLanguage) {
+      setHideAlert(false);
+    }
+  }, [wrongLanguage]);
 
   return (
     wrongLanguage && (
