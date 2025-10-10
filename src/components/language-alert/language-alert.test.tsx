@@ -45,9 +45,7 @@ describe("<LanguageAlert />", () => {
   test("can be dismissed by clicking the 'Close' button", async () => {
     const user = userEvent.setup();
     await waitFor(() => {
-      expect(
-        screen.getByLabelText(americanEnglishSiteLinkText),
-      ).toHaveAttribute("aria-hidden", "false");
+      expect(screen.getByRole("alert")).toBeInTheDocument();
     });
 
     const closeButton = screen.getByRole("button");
@@ -55,18 +53,17 @@ describe("<LanguageAlert />", () => {
 
     await user.click(closeButton);
     await waitFor(() => {
-      expect(
-        screen.getByLabelText(americanEnglishSiteLinkText),
-      ).toHaveAttribute("aria-hidden", "true");
+      expect(screen.getByRole("alert", { hidden: true })).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
     });
   });
 
   test("can be dismissed by hitting 'Escape' on the keyboard", async () => {
     const user = userEvent.setup();
     await waitFor(() => {
-      expect(
-        screen.getByLabelText(americanEnglishSiteLinkText),
-      ).toHaveAttribute("aria-hidden", "false");
+      expect(screen.getByRole("alert")).toBeInTheDocument();
     });
 
     const closeButton = screen.getByRole("button");
@@ -74,9 +71,10 @@ describe("<LanguageAlert />", () => {
 
     await user.click(closeButton);
     await waitFor(() => {
-      expect(
-        screen.getByLabelText(americanEnglishSiteLinkText),
-      ).toHaveAttribute("aria-hidden", "true");
+      expect(screen.getByRole("alert", { hidden: true })).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
     });
   });
 
