@@ -1,5 +1,5 @@
 import "./language-alert.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { FormattedMessage } from "react-intl";
 import { I18nProvider, useI18n } from "@/context/i18n";
 import { getClosestSupportedLanguage } from "@/utils/supported-languages";
@@ -14,10 +14,7 @@ const LanguageAlert = () => {
   // Guess the best language for the visitor based on their browser settings
   const bestSupportedLanguageId = getClosestSupportedLanguage(userLanguage).id;
 
-  const [hideAlert, setHideAlert] = useState(true);
   useEffect(() => {
-    setHideAlert(false);
-
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeMessage();
@@ -53,16 +50,7 @@ const LanguageAlert = () => {
     if (closeButtonElement.current) {
       closeButtonElement.current.blur();
     }
-
-    // Dismiss the message
-    setHideAlert(true);
   };
-
-  useEffect(() => {
-    if (wrongLanguage) {
-      setHideAlert(false);
-    }
-  }, [wrongLanguage]);
 
   return (
     wrongLanguage && (
@@ -71,7 +59,6 @@ const LanguageAlert = () => {
           className="language-alert"
           role="alert"
           aria-labelledby="language-alert-label"
-          aria-hidden={hideAlert}
         >
           <figure className="translate-icon">
             <TranslateIcon height={20} width={20} />

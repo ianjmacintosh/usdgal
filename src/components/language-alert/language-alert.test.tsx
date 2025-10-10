@@ -52,12 +52,7 @@ describe("<LanguageAlert />", () => {
     expect(closeButton).toHaveAccessibleName("Close");
 
     await user.click(closeButton);
-    await waitFor(() => {
-      expect(screen.getByRole("alert", { hidden: true })).toHaveAttribute(
-        "aria-hidden",
-        "true",
-      );
-    });
+    expect(screen.queryByRole("alert")).toBeNull();
   });
 
   test("can be dismissed by hitting 'Escape' on the keyboard", async () => {
@@ -70,12 +65,7 @@ describe("<LanguageAlert />", () => {
     expect(closeButton).toHaveAccessibleName("Close");
 
     await user.click(closeButton);
-    await waitFor(() => {
-      expect(screen.getByRole("alert", { hidden: true })).toHaveAttribute(
-        "aria-hidden",
-        "true",
-      );
-    });
+    expect(screen.queryByRole("alert")).toBeNull();
   });
 
   test("shows a link to the English site when a en-US user shows up to the Spanish site", () => {
