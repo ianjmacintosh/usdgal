@@ -1,4 +1,4 @@
-import en from "@/languages/es";
+import en from "@/languages/en";
 import es from "@/languages/es";
 import de from "@/languages/de";
 import hi from "@/languages/hi";
