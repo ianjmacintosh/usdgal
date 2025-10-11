@@ -13,9 +13,6 @@ type LanguageObject = {
   messages: Record<string, string>;
 };
 
-export const isSupportedLanguage = (code: string) =>
-  supportedLanguages.some(({ id }) => id === code);
-
 export const supportedLanguages: LanguageObject[] = [
   // ⬇️ WARNING: The first language in this array will be the site language picker's value when we don't know what language they're using!!
   {
@@ -57,7 +54,14 @@ export const supportedLanguages: LanguageObject[] = [
   },
 ];
 
-export const getClosestSupportedLanguage = (language: string) => {
+export const isSupportedLanguage = (language: string) => {
+  return supportedLanguages.some(({ id }) => id === language);
+};
+
+export const getClosestSupportedLanguage = (
+  language: string | undefined,
+): LanguageObject => {
+  if (typeof language === "undefined") return supportedLanguages[0];
   return (
     // Try to find an exact match
     supportedLanguages.find(({ id }) => id === language) ||
