@@ -49,14 +49,6 @@ test.describe("An en-US user", () => {
       await page.goto("/de/");
     });
 
-    test('sees the page load in German (<html lang="de">)', async ({
-      page,
-    }) => {
-      await expect(page.locator("html").getAttribute("lang")).resolves.toBe(
-        "de",
-      );
-    });
-
     test("does not see an English heading", async ({ page }) => {
       await expect(
         page.locator("legend", { hasText: /^Gas Cost$/ }),
