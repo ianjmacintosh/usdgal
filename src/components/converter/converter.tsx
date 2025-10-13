@@ -67,7 +67,7 @@ function Converter({
 
   useEffect(() => {
     setLocalStorageGasPrices(gasPrices);
-  }, [gasPrices]);
+  }, [gasPrices, setLocalStorageGasPrices]);
 
   useEffect(() => {
     if (userLocation !== null && userLocation !== oldUserLocation) {
@@ -79,7 +79,7 @@ function Converter({
       });
     }
     // Replace the entire gasPrices object when the userLocation changes
-  }, [userLocation, oldUserLocation]);
+  }, [userLocation, oldUserLocation, setOldUserLocation, userLanguageCountry]);
 
   return (
     userLocation && (
