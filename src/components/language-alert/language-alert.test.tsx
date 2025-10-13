@@ -1,18 +1,14 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { beforeAll, beforeEach, describe, expect, test } from "vitest";
 import LanguageAlert from "./language-alert";
+import type { LanguageAlertProps } from "./language-alert";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
-
-type LanguageAlertTestComponentProps = {
-  language: string; // Add this - what language to show alert in
-  onDismiss?: () => void; // Add this - optional, defaults to no-op
-};
 
 const TestComponent = ({
   language,
   onDismiss = () => {}, // Default to no-op function
-}: LanguageAlertTestComponentProps) => {
+}: LanguageAlertProps) => {
   return <LanguageAlert language={language} onDismiss={onDismiss} />;
 };
 

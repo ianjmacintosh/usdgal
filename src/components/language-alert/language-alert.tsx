@@ -7,7 +7,7 @@ import TranslateIcon from "@/assets/translate.svg?react";
 
 type LanguageAlertProps = {
   language: string;
-  onDismiss: () => void;
+  onDismiss?: () => void;
 };
 
 const LanguageAlert = ({ language, onDismiss }: LanguageAlertProps) => {
@@ -26,7 +26,7 @@ const LanguageAlert = ({ language, onDismiss }: LanguageAlertProps) => {
     setWrongLanguage(false);
 
     setTimeout(() => {
-      onDismiss();
+      if (onDismiss) onDismiss();
     }, ANIMATION_DURATION);
 
     if (closeButtonElement.current) {
@@ -89,4 +89,5 @@ const LanguageAlert = ({ language, onDismiss }: LanguageAlertProps) => {
   );
 };
 
+export type { LanguageAlertProps };
 export default LanguageAlert;
