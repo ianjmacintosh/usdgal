@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import "./converter.css";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/error-fallback/error-fallback";
@@ -15,6 +15,7 @@ import {
 import Footer from "@/components/footer/footer";
 import { useI18n } from "@/context/i18n";
 import LanguageAlert from "../language-alert/language-alert";
+import { getClosestSupportedLanguage } from "@/utils/supported-languages";
 import { useLocalStorage } from "@/utils/use-local-storage";
 import type { ExchangeRateData } from "@/utils/exchange-rate-data.server";
 
@@ -42,6 +43,14 @@ function Converter({
   // Guess the user's home country based on the second part of their browser's language code (`navigator.language`),
   // (e.g., "en-US" -> "US")
   const userLanguageCountry = userLanguage.split("-")[1];
+  // Language alert logic: determine if we should show the alert and in what language
+  const bestSupportedLanguageId = getClosestSupportedLanguage(userLanguage).id;
+  const [preferredLanguageId, setPreferredLanguageId] = useLocalStorage(
+    "preferredLanguageId",
+    bestSupportedLanguageId,
+  );
+  const initialPreferredLanguage = useRef(preferredLanguageId);
+  const shouldShowAlert = siteLanguage !== preferredLanguageId;
 
   const [localStorageGasPrices, setLocalStorageGasPrices] = useLocalStorage(
     "gasPrices",
@@ -76,7 +85,12 @@ function Converter({
     userLocation && (
       <>
         <div className="container">
-          <LanguageAlert />
+          {shouldShowAlert && (
+            <LanguageAlert
+              language={initialPreferredLanguage.current}
+              onDismiss={() => setPreferredLanguageId(siteLanguage)}
+            />
+          )}
           {/* GasPricesContext.Provider provides the top & bottom gas cost, currency, and amount (per gallon/per liter) */}
           <GasPricesContext.Provider value={gasPrices}>
             <GasPricesDispatchContext.Provider value={dispatch}>

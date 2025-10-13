@@ -52,6 +52,42 @@ const PortugueseTestComponent = ({ ...props }: { [key: string]: unknown }) => {
   );
 };
 
+const BritishOnSpanishSiteTestComponent = ({
+  ...props
+}: {
+  [key: string]: unknown;
+}) => {
+  return (
+    <TestI18nProvider siteLanguage="es" userLanguage="en-UK">
+      <Converter exchangeRateData={exchangeRateData} {...props} />
+    </TestI18nProvider>
+  );
+};
+
+const ChineseOnSpanishSiteTestComponent = ({
+  ...props
+}: {
+  [key: string]: unknown;
+}) => {
+  return (
+    <TestI18nProvider siteLanguage="es" userLanguage="zh-Hans">
+      <Converter exchangeRateData={exchangeRateData} {...props} />
+    </TestI18nProvider>
+  );
+};
+
+const EcuadorianOnSpanishSiteTestComponent = ({
+  ...props
+}: {
+  [key: string]: unknown;
+}) => {
+  return (
+    <TestI18nProvider siteLanguage="es" userLanguage="es-EC">
+      <Converter exchangeRateData={exchangeRateData} {...props} />
+    </TestI18nProvider>
+  );
+};
+
 const Stub = createRoutesStub([
   {
     path: "/",
@@ -68,6 +104,18 @@ const Stub = createRoutesStub([
   {
     path: "/pt/",
     Component: PortugueseTestComponent,
+  },
+  {
+    path: "/es/british/",
+    Component: BritishOnSpanishSiteTestComponent,
+  },
+  {
+    path: "/es/chinese/",
+    Component: ChineseOnSpanishSiteTestComponent,
+  },
+  {
+    path: "/es/ecuadorian/",
+    Component: EcuadorianOnSpanishSiteTestComponent,
   },
 ]);
 
@@ -331,4 +379,46 @@ describe('<Converter siteLanguage="pt-BR" userLanguage="pt-BR" />', () => {
   test.skip("converts units to BRL and liters", () => {});
   test.skip("renders 0 like '0,00' (with a comma, not a period)", () => {});
   test.skip("allows the user to update the number field", async () => {});
+});
+
+describe("<Converter /> - Language Alert Behavior", () => {
+  test("shows language alert in English for Chinese user on Spanish site", async () => {
+    cleanup();
+    localStorage.clear();
+    server.use(...getGeolocationHandlers("US"));
+
+    render(<Stub initialEntries={["/es/chinese/"]} />);
+
+    await waitFor(() => {
+      const alert = screen.queryByRole("alert");
+      expect(alert).toBeInTheDocument();
+      expect(alert).toHaveAttribute("lang", "en");
+      expect(alert).toHaveTextContent("Go to the English version of this site");
+    });
+  });
+
+  test("shows language alert in English for British user on Spanish site", async () => {
+    cleanup();
+    localStorage.clear();
+    server.use(...getGeolocationHandlers("US"));
+
+    render(<Stub initialEntries={["/es/british/"]} />);
+
+    await waitFor(() => {
+      const alert = screen.queryByRole("alert");
+      expect(alert).toBeInTheDocument();
+      expect(alert).toHaveAttribute("lang", "en");
+    });
+  });
+
+  test("does NOT show language alert for Ecuadorian Spanish user on Spanish site", async () => {
+    cleanup();
+    localStorage.clear();
+    server.use(...getGeolocationHandlers("US"));
+
+    render(<Stub initialEntries={["/es/ecuadorian/"]} />);
+    await waitFor(() => {
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    });
+  });
 });
