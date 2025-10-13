@@ -28,7 +28,7 @@ will come.
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches();
   const lastMatch = matches[matches.length - 1];
-  const lang = lastMatch?.handle?.lang || "en";
+  const lang = lastMatch?.params?.lang || "en";
 
   return (
     <html lang={lang}>
