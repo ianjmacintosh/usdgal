@@ -64,6 +64,7 @@ const LanguageAlert = () => {
         role="alert"
         aria-labelledby="language-alert-label"
         aria-hidden={!wrongLanguage}
+        lang={preferredLanguageId}
       >
         <figure className="translate-icon">
           <TranslateIcon height={20} width={20} />

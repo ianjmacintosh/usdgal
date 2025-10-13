@@ -1,5 +1,5 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeAll, beforeEach, describe, expect, test } from "vitest";
 import LanguageAlert from "./language-alert";
 import TestI18nProvider from "@/context/i18n.test";
 import userEvent from "@testing-library/user-event";
@@ -27,21 +27,32 @@ describe("<LanguageAlert />", () => {
     render(<TestComponent siteLanguage="es" userLanguage="en-US" />);
   });
 
-  test("shows the language alert if the user's browser language is en-US and the site shows in Spanish", async () => {
-    expect(screen.queryByRole("alert")).toBeVisible();
-  });
+  describe('when the user\'s browser language is en-US and the site language is "es"', () => {
+    beforeAll(() => {
+      cleanup();
+      localStorage.clear();
+      render(<TestComponent siteLanguage="es" userLanguage="en-US" />);
+    });
+    test("shows the language alert", async () => {
+      expect(screen.queryByRole("alert")).toBeVisible();
+    });
+    test("alerts the user in English", async () => {
+      expect(screen.queryByRole("alert")).toHaveAttribute("lang", "en");
+    });
 
-  test("keeps the language alert in the same language when dismissed", async () => {
-    const alertText = screen.getByRole("alert").textContent;
+    test("keeps the language alert in English when dismissed", async () => {
+      const alertTextInEnglish = screen.getByRole("alert").textContent;
 
-    const closeButton = screen.getByRole("button");
-    expect(closeButton).toHaveAccessibleName("Close");
+      const closeButton = screen.getByRole("button");
+      expect(closeButton).toHaveAccessibleName("Close");
 
-    await userEvent.click(closeButton);
+      await userEvent.click(closeButton);
 
-    expect(screen.getByRole("alert", { hidden: true }).textContent).toBe(
-      alertText,
-    );
+      expect(screen.getByRole("alert", { hidden: true }).textContent).toBe(
+        alertTextInEnglish,
+      );
+      expect(screen.getByRole("alert")).toHaveAttribute("lang", "en");
+    });
   });
 
   test("does NOT show a language alert if the user's browser language is es-EC and the site shows in Spanish (es)", async () => {
