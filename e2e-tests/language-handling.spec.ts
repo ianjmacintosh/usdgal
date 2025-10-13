@@ -72,6 +72,8 @@ test.describe("An en-US user", () => {
     }) => {
       await page.getByRole("button", { name: "Close" }).click();
       await expect(page.getByRole("alert")).not.toBeVisible();
+      // Wait for alert to animate out and be removed from DOM
+      await page.locator('[role="alert"]').waitFor({ state: "detached" });
 
       await page.reload();
       await expect(page.getByRole("alert")).not.toBeVisible();
@@ -90,11 +92,13 @@ test.describe("An en-US user", () => {
     });
 
     // TODO: Flaky test! Skip this test for now, resolve in the future
-    test.skip("can dismiss the language alert using a keyboard", async ({
+    test("can dismiss the language alert using a keyboard", async ({
       page,
     }) => {
       await page.keyboard.press("Escape");
       await expect(page.getByRole("alert")).not.toBeVisible();
+      // Wait for alert to animate out and be removed from DOM
+      await page.locator('[role="alert"]').waitFor({ state: "detached" });
 
       await page.reload();
       await expect(page.getByRole("alert")).not.toBeVisible();
