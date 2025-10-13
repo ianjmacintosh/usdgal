@@ -36,7 +36,7 @@ const NumberInput = ({
     if (isNumberFocused) return;
 
     setDisplayNumber(getFormattedPrice(number, userLanguage, currency));
-  }, [number, currency, isNumberFocused]);
+  }, [number, currency, isNumberFocused, userLanguage]);
 
   const handleDisplayNumberChange = (
     event: React.ChangeEvent<HTMLInputElement>,

@@ -1,4 +1,4 @@
-import en from "@/languages/es";
+import en from "@/languages/en";
 import es from "@/languages/es";
 import de from "@/languages/de";
 import hi from "@/languages/hi";
@@ -54,7 +54,14 @@ export const supportedLanguages: LanguageObject[] = [
   },
 ];
 
-export const getClosestSupportedLanguage = (language: string) => {
+export const isSupportedLanguage = (language: string) => {
+  return supportedLanguages.some(({ id }) => id === language);
+};
+
+export const getClosestSupportedLanguage = (
+  language: string | undefined,
+): LanguageObject => {
+  if (typeof language === "undefined") return supportedLanguages[0];
   return (
     // Try to find an exact match
     supportedLanguages.find(({ id }) => id === language) ||

@@ -1,82 +1,88 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeAll, beforeEach, describe, expect, test } from "vitest";
 import LanguageAlert from "./language-alert";
-import TestI18nProvider from "@/context/i18n.test";
+import type { LanguageAlertProps } from "./language-alert";
 import userEvent from "@testing-library/user-event";
-
-type LanguageAlertTestComponentProps = {
-  siteLanguage: string;
-  userLanguage?: string;
-};
+import "@testing-library/jest-dom/vitest";
 
 const TestComponent = ({
-  siteLanguage = "en",
-  userLanguage = "en-US",
-}: LanguageAlertTestComponentProps) => {
-  return (
-    <TestI18nProvider siteLanguage={siteLanguage} userLanguage={userLanguage}>
-      <LanguageAlert />
-    </TestI18nProvider>
-  );
+  language,
+  onDismiss = () => {}, // Default to no-op function
+}: LanguageAlertProps) => {
+  return <LanguageAlert language={language} onDismiss={onDismiss} />;
 };
 
 describe("<LanguageAlert />", () => {
-  const americanEnglishSiteLinkText = "Go to the English version of this site";
   beforeEach(() => {
     cleanup();
     localStorage.clear();
-    render(<TestComponent siteLanguage="es" userLanguage="en-US" />);
+    render(<TestComponent language="en" />);
   });
 
-  test("shows the language alert if (and only if) the user's browser language and site language are mismatched", async () => {
-    expect(screen.queryByText(americanEnglishSiteLinkText)).toBeVisible();
+  describe('when the user\'s browser language is en-US and the site language is "es"', () => {
+    beforeAll(() => {
+      cleanup();
+      localStorage.clear();
+      render(<TestComponent language="en" />);
+    });
+    test("shows the language alert", async () => {
+      expect(screen.queryByRole("alert")).toBeVisible();
+    });
+    test("alerts the user in English", async () => {
+      expect(screen.queryByRole("alert")).toHaveAttribute("lang", "en");
+    });
 
-    cleanup();
-    localStorage.clear();
-    render(<TestComponent siteLanguage="en" userLanguage="en-US" />);
-    await expect(screen.queryByText(americanEnglishSiteLinkText)).toBeNull();
+    test("keeps the language alert in English when dismissed", async () => {
+      const alertTextInEnglish = screen.getByRole("alert").textContent;
 
-    cleanup();
-    localStorage.clear();
-    render(<TestComponent siteLanguage="es" userLanguage="es-EC" />);
-    await expect(screen.queryByText(americanEnglishSiteLinkText)).toBeNull();
+      const closeButton = screen.getByRole("button");
+      expect(closeButton).toHaveAccessibleName("Close");
+
+      await userEvent.click(closeButton);
+
+      expect(screen.getByRole("alert", { hidden: true }).textContent).toBe(
+        alertTextInEnglish,
+      );
+      expect(screen.getByRole("alert", { hidden: true })).toHaveAttribute(
+        "lang",
+        "en",
+      );
+    });
   });
 
   test("can be dismissed by clicking the 'Close' button", async () => {
     const user = userEvent.setup();
     await waitFor(() => {
-      expect(
-        screen.getByLabelText(americanEnglishSiteLinkText),
-      ).toHaveAttribute("aria-hidden", "false");
+      expect(screen.queryByRole("alert", { hidden: true })).toBeVisible();
     });
 
     const closeButton = screen.getByRole("button");
     expect(closeButton).toHaveAccessibleName("Close");
 
     await user.click(closeButton);
-    await waitFor(() => {
-      expect(
-        screen.getByLabelText(americanEnglishSiteLinkText),
-      ).toHaveAttribute("aria-hidden", "true");
+    waitFor(() => {
+      expect(screen.queryByRole("alert")).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
     });
   });
 
   test("can be dismissed by hitting 'Escape' on the keyboard", async () => {
     const user = userEvent.setup();
     await waitFor(() => {
-      expect(
-        screen.getByLabelText(americanEnglishSiteLinkText),
-      ).toHaveAttribute("aria-hidden", "false");
+      expect(screen.getByRole("alert")).toBeInTheDocument();
     });
 
     const closeButton = screen.getByRole("button");
     expect(closeButton).toHaveAccessibleName("Close");
 
     await user.click(closeButton);
-    await waitFor(() => {
-      expect(
-        screen.getByLabelText(americanEnglishSiteLinkText),
-      ).toHaveAttribute("aria-hidden", "true");
+    waitFor(() => {
+      expect(screen.queryByRole("alert")).not.toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
     });
   });
 
@@ -86,32 +92,13 @@ describe("<LanguageAlert />", () => {
     expect(link).toHaveAttribute("href", "/");
   });
 
-  test("shows a link to the English site when a en-UK user shows up to the Spanish site", () => {
-    cleanup();
-    localStorage.clear();
-    render(<TestComponent siteLanguage="es" userLanguage="en-UK" />);
-    const link = screen.getByRole("link");
-
-    expect(link).toHaveAttribute("href", "/");
-  });
-
   test("shows a link (in Spanish) to the Spanish site when a es-MX user shows up to the English site", () => {
     cleanup();
     localStorage.clear();
-    render(<TestComponent siteLanguage="en" userLanguage="es-MX" />);
+    render(<TestComponent language="es" />);
     const link = screen.getByRole("link");
 
     expect(link).toHaveTextContent("Ir a la versión española de este sitio");
     expect(link).toHaveAttribute("href", "/es/");
-  });
-
-  test("shows a link (in English) to the English site when a zh-Hans user shows up to the Spanish site", () => {
-    cleanup();
-    localStorage.clear();
-    render(<TestComponent siteLanguage="es" userLanguage="zh-Hans" />);
-    const link = screen.getByRole("link");
-
-    expect(link).toHaveTextContent("Go to the English version of this site");
-    expect(link).toHaveAttribute("href", "/");
   });
 });

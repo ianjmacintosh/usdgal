@@ -49,6 +49,14 @@ test.describe("An en-US user", () => {
       await page.goto("/de/");
     });
 
+    test('sees the page load in German (<html lang="de">)', async ({
+      page,
+    }) => {
+      await expect(page.locator("html").getAttribute("lang")).resolves.toBe(
+        "de",
+      );
+    });
+
     test("does not see an English heading", async ({ page }) => {
       await expect(
         page.locator("legend", { hasText: /^Gas Cost$/ }),
@@ -64,6 +72,8 @@ test.describe("An en-US user", () => {
     }) => {
       await page.getByRole("button", { name: "Close" }).click();
       await expect(page.getByRole("alert")).not.toBeVisible();
+      // Wait for alert to animate out and be removed from DOM
+      await page.locator('[role="alert"]').waitFor({ state: "detached" });
 
       await page.reload();
       await expect(page.getByRole("alert")).not.toBeVisible();
@@ -82,11 +92,13 @@ test.describe("An en-US user", () => {
     });
 
     // TODO: Flaky test! Skip this test for now, resolve in the future
-    test.skip("can dismiss the language alert using a keyboard", async ({
+    test("can dismiss the language alert using a keyboard", async ({
       page,
     }) => {
       await page.keyboard.press("Escape");
       await expect(page.getByRole("alert")).not.toBeVisible();
+      // Wait for alert to animate out and be removed from DOM
+      await page.locator('[role="alert"]').waitFor({ state: "detached" });
 
       await page.reload();
       await expect(page.getByRole("alert")).not.toBeVisible();

@@ -7,7 +7,7 @@
 // * Support async "user location" lookup via [helper function](https://kentcdodds.com/blog/how-to-use-react-context-effectively#what-about-async-actions)
 
 import { fetchCountryCode } from "@/utils/api";
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useEffect } from "react";
 import { createIntl, IntlProvider } from "react-intl";
 import en from "@/languages/en.ts";
 import es from "@/languages/es.ts";
@@ -117,6 +117,11 @@ const I18nProvider = ({
     ...initialState,
     siteLanguage,
   });
+
+  useEffect(() => {
+    dispatch({ type: "setSiteLanguage", payload: siteLanguage });
+  }, [siteLanguage]);
+
   const value = { state, dispatch };
 
   async function startFetching() {

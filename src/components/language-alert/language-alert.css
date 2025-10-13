@@ -1,4 +1,5 @@
 .language-alert {
+  --animation-duration: 400ms; /* This needs to be kept in sync with the TSX */
   --box-shadow-spread: 10px;
   border-radius: 10px;
   box-shadow: rgba(36, 36, 36, 0.2) 0 0 var(--box-shadow-spread);
@@ -12,14 +13,11 @@
   width: 320px;
   z-index: 10;
   background-color: #fff;
-  transition:
-    transform 400ms ease-out,
-    opacity 400ms ease-out;
+  animation: slideIn var(--animation-duration) ease-out forwards;
 }
 
-.language-alert[aria-hidden="false"] {
-  opacity: 1;
-  transform: translateY(20px);
+.language-alert[aria-hidden="true"] {
+  animation: slideOut var(--animation-duration) ease-out forwards;
 }
 
 .language-alert .translate-icon {
@@ -45,4 +43,26 @@
   grid-area: content;
   justify-self: center;
   align-self: center;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0.2;
+    transform: translateY(calc(-100% - var(--box-shadow-spread)));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(20px);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 0.2;
+    transform: translateY(calc(-100% - var(--box-shadow-spread)));
+  }
 }
