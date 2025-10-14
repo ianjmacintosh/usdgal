@@ -5,15 +5,24 @@
   "icons": [
     {
       "src": "/gas_pump.svg",
-      "sizes": "512x512 192x192",
-      "type": "image/svg+xml"
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
-      "src": "/gas_pump.svg",
-      "type": "image/svg+xml"
+      "src": "/gas_pump_512-min.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/gas_pump_192-min.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
