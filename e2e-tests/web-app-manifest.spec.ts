@@ -11,10 +11,7 @@ interface ManifestJson {
 const homepage = "/";
 
 test.describe("Web app manifest", () => {
-  test("can be found and reached from the homepage", async ({
-    page,
-    request,
-  }) => {
+  test("satisfies Google Chrome's criteria", async ({ page, request }) => {
     await page.goto(homepage);
 
     const manifestLink = page.locator("link[rel='manifest']");
