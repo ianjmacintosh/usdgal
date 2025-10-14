@@ -27,6 +27,11 @@ for (const url of homepages) {
         .toBeGreaterThan(0);
     });
 
+    test("include web app manifest", async ({ page }) => {
+      const manifest = page.locator("link[rel='manifest']");
+      await expect(manifest).toHaveCount(1);
+    });
+
     test("include required OGP tags", async ({ page }) => {
       // REQUIRED:
       // og:title
