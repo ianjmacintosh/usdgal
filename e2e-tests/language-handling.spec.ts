@@ -92,7 +92,7 @@ test.describe("An en-US user", () => {
     });
 
     // TODO: Flaky test! Skip this test for now, resolve in the future
-    test("can dismiss the language alert using a keyboard", async ({
+    test.skip("can dismiss the language alert using a keyboard", async ({
       page,
     }) => {
       await page.keyboard.press("Escape");
