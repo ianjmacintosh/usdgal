@@ -18,6 +18,7 @@ export const defaultLinks = () => {
     { rel: "alternate", hrefLang: "hi", href: "https://gasco.st/hi/" },
     { rel: "alternate", hrefLang: "x-default", href: "https://gasco.st/" },
     { rel: "manifest", href: "/gascost.webmanifest" },
+    { rel: "apple-touch-icon", href: "/gas_pump_512-min.png" },
   ];
 };
 
@@ -64,5 +65,8 @@ export const getMetaTags = (language: string) => {
       property: "og:image:secure_url",
       content: getMessage({ id: "meta_og_image_url", language }),
     },
+    { name: "mobile-web-app-capable", content: "yes" },
+    { name: "apple-mobile-web-app-status-bar-style", content: "black" },
+    { name: "apple-mobile-web-app-title", content: "Gas Co.st" },
   ];
 };

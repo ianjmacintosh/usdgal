@@ -26,8 +26,13 @@ test.describe("Web app manifest", () => {
     expect("name" in manifestJson || "short_name" in manifestJson).toBeTruthy();
     expect(manifestJson).toHaveProperty("icons");
     expect(
-      manifestJson.icons?.some(({ sizes }) => sizes.includes("192x192")) &&
-        manifestJson.icons?.some(({ sizes }) => sizes.includes("512x512")),
+      manifestJson.icons?.some(
+        ({ sizes, type }) => sizes.includes("192x192") && type === "image/png",
+      ) &&
+        manifestJson.icons?.some(
+          ({ sizes, type }) =>
+            sizes.includes("512x512") && type === "image/png",
+        ),
     ).toBeTruthy();
     expect(manifestJson).toHaveProperty("start_url");
     expect(manifestJson).toHaveProperty("display");
