@@ -66,7 +66,7 @@ export const getMetaTags = (language: string) => {
       content: getMessage({ id: "meta_og_image_url", language }),
     },
     { name: "mobile-web-app-capable", content: "yes" },
-    { name: "apple-mobile-web-app-status-bar-style", content: "black" },
+    { name: "apple-mobile-web-app-status-bar-style", content: "default" },
     { name: "apple-mobile-web-app-title", content: "Gas Co.st" },
   ];
 };
