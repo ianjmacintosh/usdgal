@@ -67,6 +67,6 @@ export const getMetaTags = (language: string) => {
     },
     { name: "mobile-web-app-capable", content: "yes" },
     { name: "apple-mobile-web-app-status-bar-style", content: "default" },
-    { name: "apple-mobile-web-app-title", content: "CHICKEN BUTT" },
+    { name: "apple-mobile-web-app-title", content: "Gas Co.st" },
   ];
 };
