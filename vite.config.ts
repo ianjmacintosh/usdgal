@@ -17,6 +17,9 @@ export default defineConfig({
       manifest: false,
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,svg}"],
+        additionalManifestEntries: [{ url: "index.html", revision: null }],
+        navigateFallback: "/index.html",
+        navigateFallbackDenylist: [/^\/workers/],
         runtimeCaching: [
           {
             urlPattern: ({ url }) => url.pathname === "/workers/exchange-rates",
