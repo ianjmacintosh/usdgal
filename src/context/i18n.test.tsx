@@ -89,7 +89,7 @@ describe("<I18nProvider />", () => {
   test("provides expected default values for userLanguage, siteLanguage, and userLocation", async () => {
     expect(elements().siteLanguageText).toHaveTextContent("en.");
     expect(elements().userLanguageText).toHaveTextContent("en-US.");
-    expect(elements().userLocationText).toHaveTextContent(": .");
+    expect(elements().userLocationText).toHaveTextContent("US.");
   });
 
   test("supports setting siteLanguage and userLanguage via props", async () => {
