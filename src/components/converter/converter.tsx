@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import "./converter.css";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/error-fallback/error-fallback";
@@ -52,17 +52,29 @@ function Converter({
   const initialPreferredLanguage = useRef(preferredLanguageId);
   const shouldShowAlert = siteLanguage !== preferredLanguageId;
 
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  const defaultGasPrices = getInitialGasPrices(
+    userLanguageCountry,
+    userLocation || "US",
+  );
   const [localStorageGasPrices, setLocalStorageGasPrices] = useLocalStorage(
     "gasPrices",
-    getInitialGasPrices(userLanguageCountry, userLocation || "US"),
+    isHydrated ? undefined : defaultGasPrices,
   );
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   // The `gasPrices` object contains the top and bottom gas prices and defines which gas price number is "driving" (and is responsible for the other)
   // The `dispatch` function is used to handle calls from the GasPrice component's child elements
   const [gasPrices, dispatch] = useReducer(
     // The gasPricesReducer method is what child elements use to update their parent gasPrices object
     gasPricesReducer,
-    localStorageGasPrices,
+    isHydrated && localStorageGasPrices
+      ? localStorageGasPrices
+      : defaultGasPrices,
   );
 
   useEffect(() => {
