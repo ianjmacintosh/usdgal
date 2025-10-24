@@ -21,7 +21,7 @@ for (const url of homepages) {
       await expect(metaDescription).toHaveCount(1);
     });
 
-    test.only("include correct canonical URL", async ({ page }) => {
+    test("include correct canonical URL", async ({ page }) => {
       // Canonical URL
       const metaCanonical = page.locator("link[rel='canonical']");
       await expect(metaCanonical).toHaveCount(1);
