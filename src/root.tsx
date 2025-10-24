@@ -6,6 +6,7 @@ import {
   ScrollRestoration,
   useMatches,
 } from "react-router";
+import { getMessage } from "./context/i18n";
 
 /*
 
@@ -39,6 +40,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
         <Meta />
+        <link
+          rel="canonical"
+          href={getMessage({ id: "meta_canonical_url", language: lang })}
+        />
         <Links />
       </head>
       <body>
