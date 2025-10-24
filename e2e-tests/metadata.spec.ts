@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 
+const siteBaseUrl = "https://gasco.st";
 const homepages = ["/", "/es/", "/de/", "/pt/", "/hi/"];
 
 for (const url of homepages) {
@@ -8,23 +9,32 @@ for (const url of homepages) {
       await page.goto(url);
     });
 
-    test("include standard meta tags", async ({ page }) => {
+    test("include a title", async ({ page }) => {
       // Title
       const pageTitle = page.locator("html > head > title");
       await expect(pageTitle).toHaveCount(1);
+    });
 
+    test("include meta description", async ({ page }) => {
       // Description
       const metaDescription = page.locator("meta[name='description']");
       await expect(metaDescription).toHaveCount(1);
+    });
 
+    test.only("include correct canonical URL", async ({ page }) => {
       // Canonical URL
       const metaCanonical = page.locator("link[rel='canonical']");
       await expect(metaCanonical).toHaveCount(1);
+      await expect(metaCanonical).toHaveAttribute(
+        "href",
+        new URL(url, siteBaseUrl).toString(),
+      );
+    });
 
+    test("include alternate URLs", async ({ page }) => {
       // Alternate URLs
-      await expect
-        .poll(() => page.locator("link[rel='alternate']").count())
-        .toBeGreaterThan(0);
+      const metaAlternate = page.locator("link[rel='alternate']");
+      await expect(metaAlternate).not.toHaveCount(0);
     });
 
     test("include web app manifest", async ({ page }) => {
