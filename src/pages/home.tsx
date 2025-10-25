@@ -3,7 +3,7 @@ import {
   getMetaTags,
 } from "../utils/remix-page-attribute-helpers.ts";
 import Converter from "@/components/converter/converter.tsx";
-import { getMessage, I18nProvider } from "@/context/i18n.tsx";
+import { I18nProvider } from "@/context/i18n.tsx";
 import {
   LoaderFunctionArgs,
   Params,
