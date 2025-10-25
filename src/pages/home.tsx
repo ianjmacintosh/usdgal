@@ -3,7 +3,7 @@ import {
   getMetaTags,
 } from "../utils/remix-page-attribute-helpers.ts";
 import Converter from "@/components/converter/converter.tsx";
-import { getMessage, I18nProvider } from "@/context/i18n.tsx";
+import { I18nProvider } from "@/context/i18n.tsx";
 import {
   LoaderFunctionArgs,
   Params,
@@ -25,17 +25,8 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { exchangeRateData };
 }
 
-export const links = ({ params }: { params?: Params<string> } = {}) => {
-  return [
-    ...defaultLinks(),
-    {
-      rel: "canonical",
-      href: getMessage({
-        id: "meta_canonical_url",
-        language: params?.lang ?? "en",
-      }),
-    },
-  ];
+export const links = () => {
+  return [...defaultLinks()];
 };
 
 export const meta = ({ params }: { params?: Params<string> } = {}) => {

@@ -6,6 +6,8 @@ import {
   ScrollRestoration,
   useMatches,
 } from "react-router";
+import { getMessage } from "./context/i18n";
+import { getClosestSupportedLanguage } from "./utils/supported-languages";
 
 /*
 
@@ -28,7 +30,7 @@ will come.
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches();
   const lastMatch = matches[matches.length - 1];
-  const lang = lastMatch?.params?.lang || "en";
+  const lang = getClosestSupportedLanguage(lastMatch?.params?.lang).id;
 
   return (
     <html lang={lang}>
@@ -39,6 +41,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
         <Meta />
+        <link
+          rel="canonical"
+          href={getMessage({ id: "meta_canonical_url", language: lang })}
+        />
         <Links />
       </head>
       <body>
