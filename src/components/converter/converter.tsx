@@ -60,7 +60,7 @@ function Converter({
   );
   const [localStorageGasPrices, setLocalStorageGasPrices] = useLocalStorage(
     "gasPrices",
-    isHydrated ? undefined : defaultGasPrices,
+    defaultGasPrices,
   );
 
   useEffect(() => {
@@ -70,11 +70,8 @@ function Converter({
   // The `gasPrices` object contains the top and bottom gas prices and defines which gas price number is "driving" (and is responsible for the other)
   // The `dispatch` function is used to handle calls from the GasPrice component's child elements
   const [gasPrices, dispatch] = useReducer(
-    // The gasPricesReducer method is what child elements use to update their parent gasPrices object
     gasPricesReducer,
-    isHydrated && localStorageGasPrices
-      ? localStorageGasPrices
-      : defaultGasPrices,
+    localStorageGasPrices || defaultGasPrices,
   );
 
   useEffect(() => {

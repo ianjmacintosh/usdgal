@@ -8,6 +8,9 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    allowedHosts: ["duck-temperature-match-watt.trycloudflare.com"],
+  },
   plugins: [
     !process.env.VITEST && reactRouter(),
     svgr(),

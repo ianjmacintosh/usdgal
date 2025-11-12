@@ -10,6 +10,14 @@ ReactDOM.hydrateRoot(
   </React.StrictMode>,
 );
 
+// Eruda mobile console (remove before production)
+if (true) {
+  const script = document.createElement("script");
+  script.src = "https://cdn.jsdelivr.net/npm/eruda";
+  script.onload = () => (window as any).eruda.init();
+  document.head.appendChild(script);
+}
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/sw.js").then(
