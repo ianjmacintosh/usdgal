@@ -48,6 +48,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <div itemScope itemType="https://schema.org/WebSite">
+          <link itemProp="url" href="https://gasco.st/" />
+          <meta itemProp="name" content="Gas Co.st" />
+        </div>
         <div id="root">{children}</div>
         <ScrollRestoration />
         <Scripts />
