@@ -3,6 +3,26 @@ import { test, expect } from "@playwright/test";
 const siteBaseUrl = "https://gasco.st";
 const homepages = ["/", "/es/", "/de/", "/pt/", "/hi/"];
 
+test.describe("Home page", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
+
+  test("includes structured data for WebSite", async ({ page }) => {
+    const microdataWrapper = page.locator(
+      "div[itemtype='https://schema.org/WebSite']",
+    );
+
+    await expect(microdataWrapper).toHaveCount(1);
+
+    const urlElement = page.locator("link[itemprop='url']");
+    await expect(urlElement).toHaveAttribute("href", "https://gasco.st/");
+
+    const nameElement = page.locator("meta[itemprop='name']");
+    await expect(nameElement).toHaveAttribute("content", "Gas Co.st");
+  });
+});
+
 for (const url of homepages) {
   test.describe(`${url} sharing tags`, () => {
     test.beforeEach(async ({ page }) => {
