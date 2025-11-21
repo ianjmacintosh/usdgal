@@ -5,7 +5,7 @@
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [5173],
+  "appPort": [5173],
   // Use 'postCreateCommand' to run commands after the container is created.
   // "post": "yarn install",
   "postCreateCommand": "npm install",

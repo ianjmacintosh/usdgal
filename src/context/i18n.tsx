@@ -7,7 +7,13 @@
 // * Support async "user location" lookup via [helper function](https://kentcdodds.com/blog/how-to-use-react-context-effectively#what-about-async-actions)
 
 import { fetchCountryCode } from "@/utils/api";
-import { createContext, useContext, useReducer, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  useState,
+} from "react";
 import { createIntl, IntlProvider } from "react-intl";
 import en from "@/languages/en.ts";
 import es from "@/languages/es.ts";
@@ -109,8 +115,8 @@ const I18nProvider = ({
 }: I18nProviderProps) => {
   const initialState: State = {
     siteLanguage: "en",
-    userLanguage: userLanguageProp || navigator?.language || "en-US",
-    userLocation: userLocationProp || null,
+    userLanguage: userLanguageProp || "en-US",
+    userLocation: userLocationProp || "US",
   };
 
   const [state, dispatch] = useReducer(i18nReducer, {
@@ -122,16 +128,33 @@ const I18nProvider = ({
     dispatch({ type: "setSiteLanguage", payload: siteLanguage });
   }, [siteLanguage]);
 
+  useEffect(() => {
+    if (
+      !userLanguageProp &&
+      typeof navigator !== "undefined" &&
+      navigator.language
+    ) {
+      dispatch({ type: "setUserLanguage", payload: navigator.language });
+    }
+  }, [userLanguageProp]);
+
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   const value = { state, dispatch };
 
-  async function startFetching() {
-    const countryCode = await fetchCountryCode();
-    dispatch({ type: "setUserLocation", payload: countryCode });
-  }
-
-  if (state.userLocation === null) {
-    startFetching();
-  }
+  useEffect(() => {
+    if (isHydrated && !userLocationProp) {
+      async function startFetching() {
+        const countryCode = await fetchCountryCode();
+        dispatch({ type: "setUserLocation", payload: countryCode });
+      }
+      startFetching();
+    }
+  }, [isHydrated, userLocationProp]);
 
   return (
     <I18nContext.Provider value={value}>

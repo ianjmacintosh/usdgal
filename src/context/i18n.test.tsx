@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { getMessage, I18nProvider, useI18n } from "./i18n";
 import { FormattedMessage } from "react-intl";
@@ -9,6 +9,7 @@ type TestI18nProviderProps = {
   children: React.ReactNode;
   siteLanguage?: string;
   userLanguage?: string;
+  userLocation?: string;
 };
 
 const TestI18nProvider = ({
@@ -89,7 +90,7 @@ describe("<I18nProvider />", () => {
   test("provides expected default values for userLanguage, siteLanguage, and userLocation", async () => {
     expect(elements().siteLanguageText).toHaveTextContent("en.");
     expect(elements().userLanguageText).toHaveTextContent("en-US.");
-    expect(elements().userLocationText).toHaveTextContent(": .");
+    expect(elements().userLocationText).toHaveTextContent("US.");
   });
 
   test("supports setting siteLanguage and userLanguage via props", async () => {
@@ -138,6 +139,86 @@ describe("<I18nProvider />", () => {
     expect(screen.getByText("Gas Price Converter")).toBeVisible();
     await user.click(elements().siteLanguageButton);
     expect(screen.getByText("Conversor de preço de combustível")).toBeVisible();
+  });
+
+  test("initializes with SSR-safe default userLanguage when navigator is unavailable", () => {
+    // Simulate SSR environment where navigator.language doesn't exist
+    const originalNavigator = window.navigator;
+    Object.defineProperty(window, "navigator", {
+      writable: true,
+      configurable: true,
+      value: {},
+    });
+
+    cleanup();
+
+    render(
+      <TestI18nProvider>
+        <TestComponent />
+      </TestI18nProvider>,
+    );
+
+    const userLanguageText = screen.getByText("User Language:", {
+      exact: false,
+    });
+
+    // Without navigator.language available, should use default "en-US"
+    expect(userLanguageText).toHaveTextContent("en-US.");
+
+    // Restore navigator
+    Object.defineProperty(window, "navigator", {
+      writable: true,
+      configurable: true,
+      value: originalNavigator,
+    });
+  });
+
+  test("initializes with SSR-safe default userLocation before geolocation fetch", () => {
+    cleanup();
+
+    // Don't pass userLocation prop, so it will try to fetch from API
+    render(
+      <TestI18nProvider>
+        <TestComponent />
+      </TestI18nProvider>,
+    );
+
+    const userLocationText = screen.getByText("User Location:", {
+      exact: false,
+    });
+
+    // Should start with "US" default immediately, before async fetch completes
+    expect(userLocationText).toHaveTextContent("US.");
+
+    // Note: The existing "updates userLocation using geolocation endpoint" test
+    // already verifies it eventually updates to "FR" from the mocked API
+  });
+
+  test("does not call fetchCountryCode when userLocation prop is provided", async () => {
+    cleanup();
+
+    const fetchSpy = vi.spyOn(global, "fetch");
+
+    // Provide userLocation prop (like in tests/SSR scenarios)
+    render(
+      <TestI18nProvider siteLanguage="en" userLocation="BR">
+        <TestComponent />
+      </TestI18nProvider>,
+    );
+
+    // Should use the provided prop, not fetch from API
+    const userLocationText = screen.getByText("User Location:", {
+      exact: false,
+    });
+    expect(userLocationText).toHaveTextContent("BR.");
+
+    // Wait a moment to ensure no fetch happens
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Verify fetch was never called
+    expect(fetchSpy).not.toHaveBeenCalled();
+
+    fetchSpy.mockRestore();
   });
 });
 

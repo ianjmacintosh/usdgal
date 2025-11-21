@@ -27,6 +27,9 @@ dist-ssr
 .react-router/
 build/
 
+# Wrangler generated assets
+.wrangler/
+
 # Code coverage directory
 /coverage
 /test-results/

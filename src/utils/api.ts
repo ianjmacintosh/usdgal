@@ -3,7 +3,7 @@ const API_GETLOCATION_PATH = "/workers/getLocation";
 export async function fetchCountryCode() {
   // Create absolute URL; the concept of a relative fetch does not make sense in Node.js
 
-  // Default to Production
+  // Default to Production -- yields CORS errors in non-prod environments!
   let baseUrl = "https://gasco.st";
 
   // Cloudflare Pages exposes the HTTP server's host as "CF_PAGES_URL"
@@ -21,7 +21,10 @@ export async function fetchCountryCode() {
     const data = await response.json();
     return data.ipData.country;
   } catch (error) {
-    console.error(error);
-    return null;
+    console.error(
+      `Error fetching country code from ${geolocationApiUrl}`,
+      error,
+    );
+    return "US"; // Default to US
   }
 }
