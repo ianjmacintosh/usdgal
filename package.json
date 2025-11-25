@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "react-router dev --host",
+    "dev:wrangler": "wrangler pages dev ./build/client/",
     "dev:local": "react-router dev",
     "build": "react-router build",
     "build:preview": "react-router build --mode=preview",
