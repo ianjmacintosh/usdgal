@@ -7,9 +7,9 @@
     "*.{js,jsx,ts,tsx,css,md,yml,json}": "prettier --write"
   },
   "scripts": {
-    "dev": "react-router dev --host",
-    "dev:wrangler": "wrangler pages dev ./build/client/",
-    "dev:local": "react-router dev",
+    "dev": "wrangler pages dev ./build/client/",
+    "dev:vite": "react-router dev --host",
+    "dev:vite:local": "react-router dev",
     "build": "react-router build",
     "build:preview": "react-router build --mode=preview",
     "coverage": "vitest run --coverage",
