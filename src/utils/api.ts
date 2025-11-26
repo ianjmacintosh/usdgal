@@ -20,8 +20,12 @@ export async function fetchCountryCode() {
     const response = await fetch(geolocationApiUrl);
     const data = await response.json();
     return data.ipData.country;
-  } catch (error) {
-    console.error(error);
-    return null;
+  } catch {
+    console.error(
+      `This app normally uses a Cloudflare Worker to determine user location, but failed to fetch from ${geolocationApiUrl}, so it will default to US.`,
+    );
+
+    // If we don't know where the user is, default to US
+    return "US";
   }
 }
