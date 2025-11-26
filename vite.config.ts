@@ -4,10 +4,11 @@ import { defineConfig } from "vite";
 import { reactRouter } from "@react-router/dev/vite";
 import svgr from "vite-plugin-svgr";
 import { configDefaults } from "vitest/config";
+import { cloudflare } from "@cloudflare/vite-plugin";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [!process.env.VITEST && reactRouter(), svgr()],
+  plugins: [!process.env.VITEST && reactRouter(), cloudflare(), svgr()],
   envPrefix: ["VITE_", "CF_PAGES_"],
   test: {
     coverage: {
