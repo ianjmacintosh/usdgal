@@ -14,11 +14,8 @@ import { isSupportedLanguage } from "@/utils/supported-languages.ts";
 import { getExchangeRateData } from "@/utils/exchange-rate-data.server";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  if (params?.lang && !isSupportedLanguage(params.lang)) {
-    throw new Response(`Not Found: Invalid language '${params.lang}'`, {
-      status: 404,
-      statusText: "Not Found",
-    });
+  if (params && params?.lang && !isSupportedLanguage(params.lang)) {
+    throw new Response(null, { status: 404, statusText: "Not Found" });
   }
 
   const exchangeRateData = await getExchangeRateData();
