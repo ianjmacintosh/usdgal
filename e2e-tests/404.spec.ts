@@ -12,7 +12,7 @@ const nonexistentPages = [
 ];
 
 for (const url of nonexistentPages) {
-  test.describe.only(`${url} response`, () => {
+  test.describe.skip(`${url} response`, () => {
     test("throws a 404 error", async ({ request }) => {
       const response = await request.get(url);
 
