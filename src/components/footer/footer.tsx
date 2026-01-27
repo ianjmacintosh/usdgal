@@ -8,6 +8,10 @@ type FooterProps = {
   siteLanguage: string;
 };
 
+const hardcodedYear = 2026;
+const currentYear = new Date().getFullYear();
+const copyrightYear = Math.max(hardcodedYear, currentYear);
+
 const Footer = ({ siteLanguage }: FooterProps) => {
   return (
     <footer>
@@ -41,7 +45,7 @@ const Footer = ({ siteLanguage }: FooterProps) => {
         </ul>
       </nav>
       <p>
-        &copy; 2025{" "}
+        &copy; {copyrightYear}{" "}
         <a href="https://www.ianjmacintosh.com/" target="_blank">
           Ian J. MacIntosh
         </a>

@@ -57,6 +57,12 @@ describe('<Footer> element (loaded in the English site with "en-US" language)', 
       "https://www.ianjmacintosh.com/articles/introducing-gascost/",
     );
   });
+
+  test("displays the current year in the copyright statement", () => {
+    const currentYear = new Date().getFullYear().toString();
+    const copyright = screen.getByText(`© ${currentYear}`);
+    expect(copyright).toBeInTheDocument();
+  });
 });
 
 describe('<Footer> element (loaded in the Portuguese site with "pt-BR" language)', () => {
